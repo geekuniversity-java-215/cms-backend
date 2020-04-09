@@ -8,6 +8,7 @@
         <artifactId>cms-backend</artifactId>
         <groupId>com.github.geekuniversity_java_215</groupId>
         <version>0.1</version>
+
     </parent>
 
     <artifactId>core</artifactId>
@@ -24,10 +25,10 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <dependency>
+<!--    <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -84,6 +85,7 @@
         </dependency>
 
     </dependencies>
+    
 
     <build>
         <plugins>
@@ -91,6 +93,14 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+<!--        <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.0.1</version>
+                <configuration>
+                    <configFiles>src/main/resources/flyway.conf</configFiles>
+                </configuration>
+            </plugin>-->
         </plugins>
         <finalName>cms-backend-core-0.1</finalName>
     </build>
