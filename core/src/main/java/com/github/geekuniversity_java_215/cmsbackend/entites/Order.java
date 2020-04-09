@@ -1,15 +1,12 @@
 package com.github.geekuniversity_java_215.cmsbackend.entites;
 
+import com.github.geekuniversity_java_215.cmsbackend.entites.base.AbstractEntity;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "delivery_order")
-public class Order {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long Id;
+public class Order extends AbstractEntity {
 
     @OneToOne
     @JoinColumn(name = "customer_id")
@@ -17,19 +14,11 @@ public class Order {
 
     @OneToOne
     @JoinColumn(name = "courier_id")
-    private Сourier courier;
+    private Courier courier;
 
-    public Order (){
 
-    }
+    public Order (){}
 
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
 
     public Customer getCustomer() {
         return customer;
@@ -39,11 +28,11 @@ public class Order {
         this.customer = customer;
     }
 
-    public Сourier getCourier() {
+    public Courier getCourier() {
         return courier;
     }
 
-    public void setCourier(Сourier courier) {
+    public void setCourier(Courier courier) {
         this.courier = courier;
     }
 }

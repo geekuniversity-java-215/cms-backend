@@ -1,15 +1,11 @@
-package com.github.geekuniversity_java_215.cmsbackend.entites;
+package com.github.geekuniversity_java_215.cmsbackend.entites.base;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "courier")
-public class Сourier {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long Id;
+@MappedSuperclass
+public abstract class Person extends AbstractEntity {
 
     @Column(name = "first_name")
     private String firstName;
@@ -23,18 +19,6 @@ public class Сourier {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-
-    public Сourier(){
-
-    }
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -67,6 +51,5 @@ public class Сourier {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-}
 
-// TODO: 09.04.2020 Добавить сущность автомобиль и подвязать к курьеру.
+}
