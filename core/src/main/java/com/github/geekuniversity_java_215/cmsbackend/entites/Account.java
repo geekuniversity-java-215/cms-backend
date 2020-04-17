@@ -1,16 +1,20 @@
 package com.github.geekuniversity_java_215.cmsbackend.entites;
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.AbstractEntity;
+import com.github.geekuniversity_java_215.cmsbackend.entites.base.AbstractEntityNoId;
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "account")
-public class Account extends AbstractEntity {
+public class Account extends AbstractEntityNoId {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "account_id_seq")
+    protected Long id;
+
 
     @Column(name = "num")
     private long num;
