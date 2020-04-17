@@ -57,7 +57,7 @@ public class AppStartupRunner implements ApplicationRunner {
         cus.setLastName("Пупкин");
         cus.setAccount(acc);
 
-        acc = accountService.save(acc);
+        personService.save(cus);
         log.info("customer id: {}", cus.getId());
 
         // should be the same
