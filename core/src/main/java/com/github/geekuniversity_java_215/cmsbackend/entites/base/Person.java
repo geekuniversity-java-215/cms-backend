@@ -36,7 +36,8 @@ public abstract class Person extends AbstractEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 

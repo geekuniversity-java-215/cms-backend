@@ -16,12 +16,12 @@ public class Order extends AbstractEntity {
     @GeneratedValue(generator = "delivery_order_id_seq")
     protected Long id;
 
-
+    @NotNull
     @ManyToOne
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-
+    @NotNull
     @ManyToOne
     @JoinColumn(name="courier_id")
     private Courier courier;

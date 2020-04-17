@@ -51,12 +51,16 @@ public class AppStartupRunner implements ApplicationRunner {
 
         Account acc = new Account(123456789L);
 
+
         Customer cus = new Customer();
         cus.setFirstName("Вася");
         cus.setLastName("Пупкин");
         cus.setAccount(acc);
-        personService.save(cus);
 
+        acc = accountService.save(acc);
+        log.info("customer id: {}", cus.getId());
+
+        // should be the same
         acc = accountService.findById(1L).get();
 
 
