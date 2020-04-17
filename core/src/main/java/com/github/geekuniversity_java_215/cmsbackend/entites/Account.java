@@ -1,14 +1,17 @@
 package com.github.geekuniversity_java_215.cmsbackend.entites;
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.AbstractEntity;
-import com.github.geekuniversity_java_215.cmsbackend.entites.base.AbstractEntityNoId;
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
 
 import javax.persistence.*;
 
+
+/**
+ * Счет
+ */
 @Entity
 @Table(name = "account")
-public class Account extends AbstractEntityNoId {
+public class Account extends AbstractEntity {
 
     @Id
     @Column(name = "id")
@@ -22,11 +25,21 @@ public class Account extends AbstractEntityNoId {
     @OneToOne(mappedBy = "account")
     private Person person;
 
+
+    
+    protected Account() {}
+
+    public Account(long num) {
+        this.num = num;
+    }
+
+
+
     public long getNum() {
         return num;
     }
 
-    public void setNum(long num) {
+    protected void setNum(long num) {
         this.num = num;
     }
 
@@ -36,5 +49,12 @@ public class Account extends AbstractEntityNoId {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+               "num=" + num +
+               '}';
     }
 }

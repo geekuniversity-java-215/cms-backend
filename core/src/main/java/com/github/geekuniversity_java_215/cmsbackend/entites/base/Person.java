@@ -1,21 +1,28 @@
 package com.github.geekuniversity_java_215.cmsbackend.entites.base;
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.Account;
+import com.github.geekuniversity_java_215.cmsbackend.entites.Order;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 
 //@MappedSuperclass
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Person extends AbstractEntityNoId {
+@Table(
+    indexes = {@Index(name = "_idx", columnList = "account_id"),
+               @Index(name = "_unq", columnList = "last_name, first_name",unique = true)
+    })
+public abstract class Person extends AbstractEntity {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "person_id_seq")
     protected Long id;
-
-
 
     @Column(name = "first_name")
     private String firstName;
@@ -29,10 +36,19 @@ public abstract class Person extends AbstractEntityNoId {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
+
+    @NotNull
+    @OneToMany(mappedBy= "courier", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OrderBy("id ASC")
+    private List<Order> orderList = new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -73,5 +89,17 @@ public abstract class Person extends AbstractEntityNoId {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+               "id=" + id +
+               ", firstName='" + firstName + '\'' +
+               ", lastName='" + lastName + '\'' +
+               ", email='" + email + '\'' +
+               ", phoneNumber='" + phoneNumber + '\'' +
+               ", account=" + account +
+               '}';
     }
 }

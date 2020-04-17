@@ -9,11 +9,6 @@ import javax.persistence.*;
 @Table(name = "customer")
 public class Customer extends Person {
 
-//    @Id
-//    @Column(name = "id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    protected Long id;
-
     public Customer(){}
 
 }
