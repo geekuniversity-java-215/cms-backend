@@ -1,11 +1,21 @@
 package com.github.geekuniversity_java_215.cmsbackend.entites.base;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
+import com.github.geekuniversity_java_215.cmsbackend.entites.Account;
 
-@MappedSuperclass
-public abstract class Person extends AbstractEntity {
+
+import javax.persistence.*;
+
+//@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Person extends AbstractEntityNoId {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "person_id_seq")
+    protected Long id;
+
+
 
     @Column(name = "first_name")
     private String firstName;
@@ -18,6 +28,10 @@ public abstract class Person extends AbstractEntity {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
 
 
     public String getFirstName() {
@@ -52,4 +66,12 @@ public abstract class Person extends AbstractEntity {
         this.phoneNumber = phoneNumber;
     }
 
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }

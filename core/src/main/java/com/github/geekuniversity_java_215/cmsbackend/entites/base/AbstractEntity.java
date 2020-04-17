@@ -8,34 +8,14 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @MappedSuperclass
-public abstract class AbstractEntity implements Serializable {
-
-    @Column(name = "created", updatable = false)
-    @CreationTimestamp
-    protected Instant created;
-
-
-    @Column(name = "updated")
-    @UpdateTimestamp
-    protected Instant updated;
+public abstract class AbstractEntity extends AbstractEntityNoId {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     protected AbstractEntity() {}
 
-    public Long getId() {
-        return id;
-    }
-
-    public Instant getCreated() {
-        return created;
-    }
-
-    public Instant getUpdated() {
-        return updated;
-    }
 }
 

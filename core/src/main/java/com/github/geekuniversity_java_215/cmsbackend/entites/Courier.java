@@ -8,8 +8,22 @@ import javax.persistence.*;
 @Table(name = "courier")
 public class Courier extends Person {
 
+//    @Id
+//    @Column(name = "id")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+
+    private String CourierCourierCourier;
+
     public Courier(){}
 
+    public String getCourierCourierCourier() {
+        return CourierCourierCourier;
+    }
+
+    public void setCourierCourierCourier(String courierCourierCourier) {
+        CourierCourierCourier = courierCourierCourier;
+    }
 }
 
 // TODO: 09.04.2020 Добавить сущность автомобиль и подвязать к курьеру.
