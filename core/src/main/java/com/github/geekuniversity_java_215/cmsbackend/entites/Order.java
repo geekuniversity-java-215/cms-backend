@@ -26,14 +26,6 @@ public class Order extends AbstractEntity {
     @JoinColumn(name="courier_id")
     private Courier courier;
 
-    @NotNull
-    @OneToMany(mappedBy= "order", orphanRemoval = true,
-        cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    @OrderBy("id ASC")
-    private List<Item> itemList = new ArrayList<>();
-
-
-
 
     public Order (){}
 
@@ -57,9 +49,6 @@ public class Order extends AbstractEntity {
         this.courier = courier;
     }
 
-    public List<Item> getItemList() {
-        return itemList;
-    }
 
 
     @Override
@@ -68,7 +57,6 @@ public class Order extends AbstractEntity {
                "id=" + id +
                ", customer=" + customer +
                ", courier=" + courier +
-               ", itemList=" + itemList +
                '}';
     }
 }

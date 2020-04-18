@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.service;
 
-import com.github.geekuniversity_java_215.cmsbackend.entites.Item;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Order;
 import com.github.geekuniversity_java_215.cmsbackend.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +43,6 @@ public class OrderService {
 
     public Order save(Order order) {
 
-        for (Item item : order.getItemList()) {
-            item.setOrder(order);
-        }
 
         order = orderRepository.save(order);
 
