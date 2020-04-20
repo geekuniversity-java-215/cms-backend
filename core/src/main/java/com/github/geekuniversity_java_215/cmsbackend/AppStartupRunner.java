@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-//import static com.pivovarit.function.ThrowingRunnable.unchecked;
+import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 @Component
 public class AppStartupRunner implements ApplicationRunner {
@@ -108,16 +108,16 @@ public class AppStartupRunner implements ApplicationRunner {
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
-//        Account finalAcc1 = accountService.findById(1L).get();
-//        Account finalAcc2 = accountService.findById(1L).get();
-//        Future<?> f1 = executor.submit(unchecked(() -> accountService.addBalance(finalAcc1, BigDecimal.valueOf(100))));
-//        Future<?> f2 = executor.submit(unchecked(() -> accountService.addBalance(finalAcc2, BigDecimal.valueOf(100))));
-//
-//        f1.get();
-//        f2.get();
-//        acc = accountService.findById(1L).get();
-//
-//        log.info("баланс: {}", acc.getBalance());
+        Account finalAcc1 = accountService.findById(1L).get();
+        Account finalAcc2 = accountService.findById(1L).get();
+        Future<?> f1 = executor.submit(unchecked(() -> accountService.addBalance(finalAcc1, BigDecimal.valueOf(100))));
+        Future<?> f2 = executor.submit(unchecked(() -> accountService.addBalance(finalAcc2, BigDecimal.valueOf(100))));
+
+        f1.get();
+        f2.get();
+        acc = accountService.findById(1L).get();
+
+        log.info("баланс: {}", acc.getBalance());
 
 //        Customer customer = (Customer) personService.findById(4L).get();
 //        Courier courier = (Courier) personService.findById(3L).get();
