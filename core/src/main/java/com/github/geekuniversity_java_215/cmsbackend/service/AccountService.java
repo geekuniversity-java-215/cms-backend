@@ -42,20 +42,20 @@ public class AccountService extends BaseService<Account> {
      */
     public void addBalance(Account account, BigDecimal amount) throws InterruptedException {
 
-        log.warn("Хотип пополнить баланс");
+        log.info("Хотип пополнить баланс, id={}", account.getId());
 
         accountRepository.lockByAccount(account);
 
         // TESTING
-        log.warn("Усиленно работаем ...");
+        log.info("Усиленно работаем ...");
         TimeUnit.SECONDS.sleep(5);
 
-        log.warn("Пополняем баланс");
+        log.info("Пополняем баланс, id={}", account.getId());
         account.setBalance(account.getBalance().add(amount));
 
         accountRepository.save(account);
 
-        log.warn("Снимаем блокировку строки");
+        log.info("Снимаем блокировку строки, id={}", account.getId());
     }
 
     /**

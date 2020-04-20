@@ -42,13 +42,13 @@ public class AppStartupRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        log.info("\n");
-        log.info("Testing logback logging:");
-        log.trace("TRACE");
-        log.debug("DEBUG");
-        log.info("INFO");
-        log.warn("WARN");
-        log.error("ERROR");
+//        log.info("\n");
+//        log.info("Testing logback logging:");
+//        log.trace("TRACE");
+//        log.debug("DEBUG");
+//        log.info("INFO");
+//        log.warn("WARN");
+//        log.error("ERROR");
 
         // TESTING DB
 
