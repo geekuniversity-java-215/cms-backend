@@ -42,20 +42,27 @@ public class AccountService extends BaseService<Account> {
      */
     public void addBalance(Account account, BigDecimal amount) throws InterruptedException {
 
-        log.info("Хотип пополнить баланс, id={}", account.getId());
+        //ToDo: Убрать тестирование
+        log.info("Хотип пополнить баланс, id={} balance: {} ", account.getId(), account.getBalance());
 
         accountRepository.lockByAccount(account);
+        log.info("Заблокировали строку, id={} balance: {}", account.getId(), account.getBalance());
+
+        // reload
+        account = findById(account.getId()).get();
+        log.info("Перечитали account из базы, id={} balance: {}", account.getId(), account.getBalance());
+
 
         // TESTING
         log.info("Усиленно работаем ...");
         TimeUnit.SECONDS.sleep(5);
 
-        log.info("Пополняем баланс, id={}", account.getId());
         account.setBalance(account.getBalance().add(amount));
+        log.info("Пополняем баланс, id={} balance: {}", account.getId(), account.getBalance());
 
         accountRepository.save(account);
 
-        log.info("Снимаем блокировку строки, id={}", account.getId());
+        log.info("Снимаем блокировку строки, id={} balance: {}", account.getId(), account.getBalance());
     }
 
     /**
@@ -66,8 +73,15 @@ public class AccountService extends BaseService<Account> {
     public void removeBalance(Account account, BigDecimal amount) {
 
         accountRepository.lockByAccount(account);
-        account.getBalance().subtract(amount);
-        accountRepository.save(account);
+
+        if(account.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) >=0) {
+
+            account.setBalance(account.getBalance().subtract(amount));
+            accountRepository.save(account);
+        }
+        else {
+            throw new RuntimeException("Нужно больше минералов, Милорд");
+        }
     }
 
 }

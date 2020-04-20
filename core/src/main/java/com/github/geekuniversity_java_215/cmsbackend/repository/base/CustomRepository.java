@@ -14,6 +14,6 @@ public interface CustomRepository<T, ID extends Serializable> extends JpaReposit
     @Transactional
     void refresh(T t);
 
-//    @Transactional
-//    T merge(T t);
+    @Transactional
+    void merge(T t);
 }

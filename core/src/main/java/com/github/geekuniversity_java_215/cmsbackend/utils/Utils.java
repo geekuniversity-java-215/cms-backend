@@ -24,4 +24,25 @@ public class Utils {
             throw new RuntimeException(e);
         }
     }
+
+    public static long fieldGetter(String fieldName, Object o) {
+
+        try {
+            Class<?> clazz = o.getClass();
+            Field field = null;
+            do {
+                try {
+                    field = clazz.getDeclaredField(fieldName);
+                } catch(Exception ignore) {}
+            }
+            while((clazz = clazz.getSuperclass()) != null);
+
+            assert field != null;
+            field.setAccessible(true);
+            return (long)field.get(o);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -6,6 +6,7 @@ import com.github.geekuniversity_java_215.cmsbackend.service.AccountService;
 import com.github.geekuniversity_java_215.cmsbackend.service.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.service.PersonService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
+import org.omg.CORBA.TIMEOUT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -17,6 +18,8 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
@@ -107,9 +110,14 @@ public class AppStartupRunner implements ApplicationRunner {
 
         Account finalAcc1 = accountService.findById(1L).get();
         Account finalAcc2 = accountService.findById(1L).get();
-        executor.execute(unchecked(() -> accountService.addBalance(finalAcc1, BigDecimal.valueOf(100))));
-        executor.execute(unchecked(() -> accountService.addBalance(finalAcc2, BigDecimal.valueOf(100))));
+        Future<?> f1 = executor.submit(unchecked(() -> accountService.addBalance(finalAcc1, BigDecimal.valueOf(100))));
+        Future<?> f2 = executor.submit(unchecked(() -> accountService.addBalance(finalAcc2, BigDecimal.valueOf(100))));
 
+        f1.get();
+        f2.get();
+        acc = accountService.findById(1L).get();
+
+        log.info("баланс: {}", acc.getBalance());
 
 //        Customer customer = (Customer) personService.findById(4L).get();
 //        Courier courier = (Courier) personService.findById(3L).get();
@@ -120,6 +128,9 @@ public class AppStartupRunner implements ApplicationRunner {
 //        order.setStatus(OrderStatus.NEW);
 
         //orderService.save(order);
+
+
+
 
 
     }
