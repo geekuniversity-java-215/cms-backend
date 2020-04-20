@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend;
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.*;
+import com.github.geekuniversity_java_215.cmsbackend.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.service.AccountService;
 import com.github.geekuniversity_java_215.cmsbackend.service.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.service.PersonService;
@@ -12,6 +13,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Optional;
 
 @Component
 public class AppStartupRunner implements ApplicationRunner {
@@ -46,23 +48,21 @@ public class AppStartupRunner implements ApplicationRunner {
 
         // TESTING DB
 
-        Account acc = new Account(123456789L);
 
-
+        Account acc = new Account();
         Customer cus = new Customer();
         cus.setFirstName("Вася");
         cus.setLastName("Пупкин");
         cus.setAccount(acc);
-
         personService.save(cus);
         log.info("customer id: {}", cus.getId());
 
         // should be the same
         acc = accountService.findById(1L).get();
 
-
-        acc = new Account(987654321L);
+        acc = new Account();
         cus = new Customer();
+
         cus.setFirstName("Семен");
         cus.setLastName("Семенов");
         cus.setAccount(acc);
@@ -72,8 +72,7 @@ public class AppStartupRunner implements ApplicationRunner {
         log.info("loaded: {} ok!", acc);
 
 
-
-        acc = new Account(234234234L);
+        acc = new Account();
         Courier cur = new Courier();
         cur.setFirstName("Zed");
         cur.setLastName("Zed");
@@ -84,11 +83,33 @@ public class AppStartupRunner implements ApplicationRunner {
         Order o = new Order();
         o.setCourier(cur);
         o.setCustomer(cus);
+        o.setStatus(OrderStatus.IN_PROGRESS);
         o = orderService.save(o);
         log.info("order: {}", o);
 
         o = orderService.save(o);
         log.info("new order: {}", o);
+
+
+        acc = new Account();
+        cus = new Customer();
+
+        cus.setFirstName("Артем");
+        cus.setLastName("Артемов");
+        cus.setAccount(acc);
+
+
+//        Customer customer = (Customer) personService.findById(4L).get();
+//        Courier courier = (Courier) personService.findById(3L).get();
+//        Order order = new Order();
+//
+//        order.setCourier(courier);
+//        order.setCustomer(customer);
+//        order.setStatus(OrderStatus.NEW);
+
+        //orderService.save(order);
+
+
     }
 }
 

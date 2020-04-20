@@ -8,14 +8,14 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @MappedSuperclass
-public abstract class AbstractEntity extends AbstractEntityNoId {
+ public abstract class AbstractEntity extends AbstractEntityNoId {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+     @Id
+     @Column(name = "id")
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     protected Long id;
 
-    protected AbstractEntity() {}
+     protected AbstractEntity() {}
 
-}
+ }
 

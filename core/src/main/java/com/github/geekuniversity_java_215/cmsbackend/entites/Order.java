@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.entites;
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.AbstractEntity;
+import com.github.geekuniversity_java_215.cmsbackend.enums.OrderStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -26,6 +27,9 @@ public class Order extends AbstractEntity {
     @JoinColumn(name="courier_id")
     private Courier courier;
 
+    @NotNull
+    @Column(name = "status")
+    private OrderStatus status;
 
     public Order (){}
 
@@ -49,7 +53,13 @@ public class Order extends AbstractEntity {
         this.courier = courier;
     }
 
+    public OrderStatus getStatus() {
+        return status;
+    }
 
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {
@@ -57,6 +67,7 @@ public class Order extends AbstractEntity {
                "id=" + id +
                ", customer=" + customer +
                ", courier=" + courier +
+               ", status=" + status +
                '}';
     }
 }

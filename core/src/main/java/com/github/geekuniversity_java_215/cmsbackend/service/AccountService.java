@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.service;
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.Account;
+import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
 import com.github.geekuniversity_java_215.cmsbackend.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -51,4 +52,15 @@ public class AccountService {
 
         return accountRepository.findAll(spec, pageable);
     }
+
+
+    public void topUpBalance(Person person, Long num){
+
+        Account currentAccount;
+        currentAccount = person.getAccount();
+
+        currentAccount.setbalance(currentAccount.getbalance() + num);
+
+    }
+
 }

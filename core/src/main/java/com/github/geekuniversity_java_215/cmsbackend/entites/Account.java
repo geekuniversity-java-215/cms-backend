@@ -18,29 +18,22 @@ public class Account extends AbstractEntity {
     @GeneratedValue(generator = "account_id_seq")
     protected Long id;
 
-
-    @Column(name = "num")
-    private long num;
+    @Column(name = "balance")
+    private long balance;
 
     @OneToOne(mappedBy = "account")
     private Person person;
 
-
-    
-    protected Account() {}
-
-    public Account(long num) {
-        this.num = num;
+    public Account() {
+        this.balance = 0L;
     }
 
-
-
-    public long getNum() {
-        return num;
+    public long getbalance() {
+        return balance;
     }
 
-    protected void setNum(long num) {
-        this.num = num;
+    public void setbalance(long num) {
+        this.balance = num;
     }
 
     public Person getPerson() {
@@ -54,7 +47,7 @@ public class Account extends AbstractEntity {
     @Override
     public String toString() {
         return "Account{" +
-               "num=" + num +
+               "balance=" + balance +
                '}';
     }
 }
