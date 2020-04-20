@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockModeType;
 import java.util.List;
 
-public interface OrderRepository extends CustomRepository<Order, Long>, JpaSpecificationExecutor<Order> {
+public interface OrderRepository extends CustomRepository<Order, Long> {
 
-
+    @Transactional
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("FROM Order o " +
            "WHERE o = :#{#order}")

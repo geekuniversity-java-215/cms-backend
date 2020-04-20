@@ -4,6 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.entites.base.AbstractEntity
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -19,21 +20,21 @@ public class Account extends AbstractEntity {
     protected Long id;
 
     @Column(name = "balance")
-    private long balance;
+    private BigDecimal balance = new BigDecimal(0);
 
     @OneToOne(mappedBy = "account")
     private Person person;
 
-    public Account() {
-        this.balance = 0L;
-    }
-
-    public long getbalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setbalance(long num) {
-        this.balance = num;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Person getPerson() {

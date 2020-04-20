@@ -90,6 +90,7 @@ public abstract class Person extends AbstractEntity {
 
     public void setAccount(Account account) {
         this.account = account;
+        account.setPerson(this);
     }
 
     @Override

@@ -13,13 +13,17 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.lang.invoke.MethodHandles;
+import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 @Component
 public class AppStartupRunner implements ApplicationRunner {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 
     private final AccountService accountService;
     private final PersonService personService;
@@ -36,7 +40,7 @@ public class AppStartupRunner implements ApplicationRunner {
 
 
     @Override
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws Exception {
 
         log.info("\n");
         log.info("Testing logback logging:");
@@ -57,8 +61,6 @@ public class AppStartupRunner implements ApplicationRunner {
         personService.save(cus);
         log.info("customer id: {}", cus.getId());
 
-        // should be the same
-        acc = accountService.findById(1L).get();
 
         acc = new Account();
         cus = new Customer();
@@ -97,6 +99,16 @@ public class AppStartupRunner implements ApplicationRunner {
         cus.setFirstName("Артем");
         cus.setLastName("Артемов");
         cus.setAccount(acc);
+
+
+
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        Account finalAcc1 = accountService.findById(1L).get();
+        Account finalAcc2 = accountService.findById(1L).get();
+        executor.execute(unchecked(() -> accountService.addBalance(finalAcc1, BigDecimal.valueOf(100))));
+        executor.execute(unchecked(() -> accountService.addBalance(finalAcc2, BigDecimal.valueOf(100))));
 
 
 //        Customer customer = (Customer) personService.findById(4L).get();

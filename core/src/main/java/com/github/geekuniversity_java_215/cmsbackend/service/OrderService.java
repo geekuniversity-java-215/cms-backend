@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.service;
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.Order;
 import com.github.geekuniversity_java_215.cmsbackend.repository.OrderRepository;
+import com.github.geekuniversity_java_215.cmsbackend.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,44 +18,14 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class OrderService {
+public class OrderService extends BaseService<Order> {
 
 
-    private final OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
     public OrderService(OrderRepository orderRepository) {
+        super(orderRepository);
         this.orderRepository = orderRepository;
-    }
-
-
-    public Optional<Order> findById(Long id) {
-        return orderRepository.findById(id);
-    }
-
-    public List<Order> findAllById(List<Long> listId) {
-
-        return orderRepository.findAllById(listId);
-    }
-
-    public List<Order> findAll(Specification<Order> spec) {
-        return orderRepository.findAll(spec);
-    }
-
-    public Order save(Order order) {
-
-        order = orderRepository.save(order);
-
-        return order;
-    }
-
-    public void delete(Order order) {
-
-        orderRepository.delete(order);
-    }
-
-    public Page<Order> findAll(Specification<Order> spec, PageRequest pageable) {
-
-        return orderRepository.findAll(spec, pageable);
     }
 }

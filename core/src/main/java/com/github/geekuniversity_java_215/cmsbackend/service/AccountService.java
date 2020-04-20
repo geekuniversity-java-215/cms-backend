@@ -3,6 +3,10 @@ package com.github.geekuniversity_java_215.cmsbackend.service;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Account;
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
 import com.github.geekuniversity_java_215.cmsbackend.repository.AccountRepository;
+import com.github.geekuniversity_java_215.cmsbackend.repository.base.CustomRepository;
+import com.github.geekuniversity_java_215.cmsbackend.service.base.BaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,57 +14,60 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.invoke.MethodHandles;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
-public class AccountService {
+public class AccountService extends BaseService<Account> {
+
+    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final AccountRepository accountRepository;
 
     @Autowired
     public AccountService(AccountRepository accountRepository) {
+        super(accountRepository);
         this.accountRepository = accountRepository;
     }
 
-    public Optional<Account> findById(Long id) {
-        return accountRepository.findById(id);
+
+    /**
+     * Зачислить на счет
+     * @param account
+     * @param amount
+     */
+    public void addBalance(Account account, BigDecimal amount) throws InterruptedException {
+
+        log.warn("Хотип пополнить баланс");
+
+        accountRepository.lockByAccount(account);
+
+        // TESTING
+        log.warn("Усиленно работаем ...");
+        TimeUnit.SECONDS.sleep(5);
+
+        log.warn("Пополняем баланс");
+        account.setBalance(account.getBalance().add(amount));
+
+        accountRepository.save(account);
+
+        log.warn("Снимаем блокировку строки");
     }
 
-    public List<Account> findAllById(List<Long> listId) {
+    /**
+     * Снять со счета
+     * @param account
+     * @param amount
+     */
+    public void removeBalance(Account account, BigDecimal amount) {
 
-        return accountRepository.findAllById(listId);
-    }
-
-    public List<Account> findAll(Specification<Account> spec) {
-        return accountRepository.findAll(spec);
-    }
-
-    public Account save(Account account) {
-
-        return accountRepository.save(account);
-    }
-
-
-    public void delete(Account account) {
-
-        accountRepository.delete(account);
-    }
-
-    public Page<Account> findAll(Specification<Account> spec, PageRequest pageable) {
-
-        return accountRepository.findAll(spec, pageable);
-    }
-
-
-    public void topUpBalance(Person person, Long num){
-
-        Account currentAccount;
-        currentAccount = person.getAccount();
-
-        currentAccount.setbalance(currentAccount.getbalance() + num);
-
+        accountRepository.lockByAccount(account);
+        account.getBalance().subtract(amount);
+        accountRepository.save(account);
     }
 
 }
