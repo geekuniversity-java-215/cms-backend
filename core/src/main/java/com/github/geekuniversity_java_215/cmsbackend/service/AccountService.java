@@ -1,24 +1,19 @@
 package com.github.geekuniversity_java_215.cmsbackend.service;
 
+import com.github.geekuniversity_java_215.cmsbackend.aop.LogExecutionTime;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Account;
-import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
 import com.github.geekuniversity_java_215.cmsbackend.repository.AccountRepository;
-import com.github.geekuniversity_java_215.cmsbackend.repository.base.CustomRepository;
 import com.github.geekuniversity_java_215.cmsbackend.service.base.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
+import static com.github.geekuniversity_java_215.cmsbackend.utils.Utils.fieldSetter;
 
 @Service
 @Transactional
@@ -40,6 +35,7 @@ public class AccountService extends BaseService<Account> {
      * @param account
      * @param amount
      */
+    @LogExecutionTime
     public void addBalance(Account account, BigDecimal amount) throws InterruptedException {
 
         //ToDo: Убрать тестирование
@@ -57,7 +53,8 @@ public class AccountService extends BaseService<Account> {
         log.info("Усиленно работаем ...");
         TimeUnit.SECONDS.sleep(5);
 
-        account.setBalance(account.getBalance().add(amount));
+        fieldSetter("balance", account, account.getBalance().add(amount));
+        //propertySetter("setBalance", account, BigDecimal.class, account.getBalance().add(amount));
         log.info("Пополняем баланс, id={} balance: {}", account.getId(), account.getBalance());
 
         accountRepository.save(account);
@@ -76,7 +73,7 @@ public class AccountService extends BaseService<Account> {
 
         if(account.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) >=0) {
 
-            account.setBalance(account.getBalance().subtract(amount));
+            fieldSetter("balance", account, account.getBalance().subtract(amount));
             accountRepository.save(account);
         }
         else {

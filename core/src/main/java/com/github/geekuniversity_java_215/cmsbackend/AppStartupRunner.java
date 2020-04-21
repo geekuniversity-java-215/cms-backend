@@ -21,6 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import static com.github.geekuniversity_java_215.cmsbackend.utils.Utils.fieldSetter;
 import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 @Component
@@ -55,7 +56,6 @@ public class AppStartupRunner implements ApplicationRunner {
 
         // TESTING DB
 
-
         Account acc = new Account();
         Customer cus = new Customer();
         cus.setFirstName("Вася");
@@ -63,7 +63,6 @@ public class AppStartupRunner implements ApplicationRunner {
         cus.setAccount(acc);
         personService.save(cus);
         log.info("customer id: {}", cus.getId());
-
 
         acc = new Account();
         cus = new Customer();
