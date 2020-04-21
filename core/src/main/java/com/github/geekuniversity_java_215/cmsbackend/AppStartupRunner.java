@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import static com.github.geekuniversity_java_215.cmsbackend.utils.Utils.fieldSetter;
 import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
+@org.springframework.core.annotation.Order(0)
 @Component
 public class AppStartupRunner implements ApplicationRunner {
 
