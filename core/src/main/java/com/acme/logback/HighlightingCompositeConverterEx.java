@@ -9,8 +9,8 @@ public class HighlightingCompositeConverterEx extends ForegroundCompositeConvert
 
     @Override
     protected String getForegroundColorCode(ILoggingEvent event) {
-        Level level = event.getLevel();
-        switch (level.toInt()) {
+        int level = event.getLevel().toInt();
+        switch (level) {
             case Level.ERROR_INT:
                 return ANSIConstants.BOLD + ANSIConstants.RED_FG; // same as default color scheme
             case Level.WARN_INT:

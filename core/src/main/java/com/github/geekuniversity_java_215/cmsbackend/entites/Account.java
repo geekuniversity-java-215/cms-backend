@@ -3,6 +3,8 @@ package com.github.geekuniversity_java_215.cmsbackend.entites;
 import com.github.geekuniversity_java_215.cmsbackend.aop.LogExecutionTime;
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
+import lombok.Data;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "account")
+@Data
 public class Account extends AbstractEntity {
 
     @Id
@@ -39,17 +42,6 @@ public class Account extends AbstractEntity {
         this.balance = balance;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
 
     @Override
     public String toString() {

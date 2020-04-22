@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.service.base;
 
 import com.github.geekuniversity_java_215.cmsbackend.repository.base.CustomRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,18 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public abstract class BaseService<T> {
 
     private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final CustomRepository<T, Long> baseRepository;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Autowired
-    public BaseService(CustomRepository<T, Long> baseRepository) {
-        this.baseRepository = baseRepository;
-    }
+//    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+//    @Autowired
+//    public BaseService(CustomRepository<T, Long> baseRepository) {
+//        this.baseRepository = baseRepository;
+//    }
 
 
     public Optional<T> findById(Long id) {

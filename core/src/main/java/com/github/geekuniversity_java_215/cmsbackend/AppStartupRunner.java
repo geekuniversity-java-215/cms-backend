@@ -5,8 +5,6 @@ import com.github.geekuniversity_java_215.cmsbackend.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.service.AccountService;
 import com.github.geekuniversity_java_215.cmsbackend.service.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.service.PersonService;
-import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
-import org.omg.CORBA.TIMEOUT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -15,13 +13,10 @@ import org.springframework.stereotype.Component;
 
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
-import static com.github.geekuniversity_java_215.cmsbackend.utils.Utils.fieldSetter;
 import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 @org.springframework.core.annotation.Order(0)
@@ -46,6 +41,7 @@ public class AppStartupRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
 
 //        log.info("\n");
 //        log.info("Testing logback logging:");
@@ -134,6 +130,8 @@ public class AppStartupRunner implements ApplicationRunner {
 
 
     }
+
+
 }
 
 
