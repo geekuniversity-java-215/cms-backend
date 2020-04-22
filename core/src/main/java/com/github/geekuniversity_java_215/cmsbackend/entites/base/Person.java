@@ -2,6 +2,10 @@ package com.github.geekuniversity_java_215.cmsbackend.entites.base;
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.Account;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Order;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 
 import javax.persistence.*;
@@ -17,6 +21,10 @@ import java.util.List;
     indexes = {@Index(name = "_idx", columnList = "account_id"),
                @Index(name = "_unq", columnList = "last_name, first_name",unique = true)
     })
+
+@Data
+@EqualsAndHashCode(callSuper=true)
+@RequiredArgsConstructor
 public abstract class Person extends AbstractEntity {
 
     @Id
@@ -24,15 +32,19 @@ public abstract class Person extends AbstractEntity {
     @GeneratedValue(generator = "person_id_seq")
     protected Long id;
 
+    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
+    @NotNull
     @Column(name = "last_name")
     private String lastName;
 
+    @NotNull
     @Column(name = "email")
     private String email;
 
+    @NotNull
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -47,45 +59,8 @@ public abstract class Person extends AbstractEntity {
     @OrderBy("id ASC")
     private List<Order> orderList = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-
-    public Account getAccount() {
-        return account;
+    protected void setId(Long id) {
+        this.id = id;
     }
 
     public void setAccount(Account account) {

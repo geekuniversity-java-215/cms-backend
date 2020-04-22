@@ -39,7 +39,7 @@ public class AccountService extends BaseService<Account> {
     public void addBalance(Account account, BigDecimal amount) throws InterruptedException {
 
         //ToDo: Убрать тестирование
-        log.info("Хотип пополнить баланс, id={} balance: {} ", account.getId(), account.getBalance());
+        log.info("Хотим пополнить баланс, id={} balance: {} ", account.getId(), account.getBalance());
 
         accountRepository.lockByAccount(account);
         log.info("Заблокировали строку, id={} balance: {}", account.getId(), account.getBalance());
@@ -70,6 +70,9 @@ public class AccountService extends BaseService<Account> {
     public void removeBalance(Account account, BigDecimal amount) {
 
         accountRepository.lockByAccount(account);
+
+        // reload
+        account = findById(account.getId()).get();
 
         if(account.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) >=0) {
 

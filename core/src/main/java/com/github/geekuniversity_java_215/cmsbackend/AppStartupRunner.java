@@ -55,8 +55,7 @@ public class AppStartupRunner implements ApplicationRunner {
 
         Account acc = new Account();
         Customer cus = new Customer();
-        cus.setFirstName("Вася");
-        cus.setLastName("Пупкин");
+        cus.setFirstName("Вася"); cus.setLastName("Пупкин"); cus.setEmail("m@m.ru"); cus.setPhoneNumber("123");
         cus.setAccount(acc);
         personService.save(cus);
         log.info("customer id: {}", cus.getId());
@@ -64,8 +63,7 @@ public class AppStartupRunner implements ApplicationRunner {
         acc = new Account();
         cus = new Customer();
 
-        cus.setFirstName("Семен");
-        cus.setLastName("Семенов");
+        cus.setFirstName("Семен"); cus.setLastName("Семенов"); cus.setEmail("m@m.ru"); cus.setPhoneNumber("123");
         cus.setAccount(acc);
         personService.save(cus);
 
@@ -75,9 +73,8 @@ public class AppStartupRunner implements ApplicationRunner {
 
         acc = new Account();
         Courier cur = new Courier();
-        cur.setFirstName("Zed");
-        cur.setLastName("Zed");
-        cur.setBlaBla("BlaBla");
+        cur.setFirstName("Zed"); cur.setLastName("Zed"); cur.setBlaBla("BlaBla");
+        cur.setEmail("m@m.ru"); cur.setPhoneNumber("123");
         cur.setAccount(acc);
         personService.save(cur);
 
@@ -95,8 +92,7 @@ public class AppStartupRunner implements ApplicationRunner {
         acc = new Account();
         cus = new Customer();
 
-        cus.setFirstName("Артем");
-        cus.setLastName("Артемов");
+        cus.setFirstName("Артем"); cus.setLastName("Артемов"); cus.setEmail("m@m.ru"); cus.setPhoneNumber("123");
         cus.setAccount(acc);
 
 
