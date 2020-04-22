@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface OrderRepository extends CustomRepository<Order, Long> {
 
+    // SELECT FOR UPDATE
     @Transactional
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("FROM Order o " +

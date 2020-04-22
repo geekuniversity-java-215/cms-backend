@@ -14,6 +14,7 @@ import java.util.Optional;
 
 public interface AccountRepository extends CustomRepository<Account, Long> {
 
+    // SELECT FOR UPDATE
     @Transactional
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("FROM Account a " +
