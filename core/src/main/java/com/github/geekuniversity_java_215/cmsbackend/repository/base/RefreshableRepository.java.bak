@@ -1,7 +1,0 @@
-package jsonrpc.resourceserver.repository.base;
-
-import jsonrpc.resourceserver.entities.order.Order;
-
-public interface RefreshableRepository extends CustomRepository<Order, Long> {
-
-}

@@ -21,12 +21,12 @@ import static com.github.geekuniversity_java_215.cmsbackend.utils.Utils.fieldGet
 
 @NoRepositoryBean
 @Transactional
-public class CustomRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
+public class RepositoryWithEntityManager<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
     implements CustomRepository<T, ID> {
 
     private final EntityManager entityManager;
 
-    public CustomRepositoryImpl(JpaEntityInformation entityInformation, EntityManager entityManager) {
+    public RepositoryWithEntityManager(JpaEntityInformation entityInformation, EntityManager entityManager) {
         //noinspection unchecked
         super(entityInformation, entityManager);
         this.entityManager = entityManager;
