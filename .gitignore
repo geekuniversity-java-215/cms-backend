@@ -34,7 +34,6 @@ build/
 log/
 
 ### Profiles ###
-application-dev-my.properties
-logback-spring-dev-my.xml
-
+application-dev.properties
+logback-spring-dev.xml
 private.properties

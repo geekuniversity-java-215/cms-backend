@@ -10,5 +10,14 @@ cd utils
 mvn -DskipTests clean install
 ```
 
+У кого не установлен ключ RSA для ssh и не установлен maven
+```
+
+
+``` 
+
+
+Permission denied (publickey)
+
 ### 2. Setup postgres
 Read  database/readme.txt 
