@@ -1,15 +1,13 @@
-package com.github.geekuniversity_java_215.cmsbackend.service;
+package com.github.geekuniversity_java_215.cmsbackend.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.aop.LogExecutionTime;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Account;
 import com.github.geekuniversity_java_215.cmsbackend.repository.AccountRepository;
-import com.github.geekuniversity_java_215.cmsbackend.service.base.BaseService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.geekuniversity_java_215.cmsbackend.services.base.BaseService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
@@ -17,10 +15,8 @@ import static com.github.geekuniversity_java_215.cmsbackend.utils.Utils.fieldSet
 
 @Service
 @Transactional
+@Slf4j
 public class AccountService extends BaseService<Account> {
-
-    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
     private final AccountRepository accountRepository;
 
     @Autowired
@@ -80,7 +76,7 @@ public class AccountService extends BaseService<Account> {
             accountRepository.save(account);
         }
         else {
-            throw new RuntimeException("Нужно больше минералов, Милорд");
+            throw new RuntimeException("Не хватает минералов, Милорд");
         }
     }
 

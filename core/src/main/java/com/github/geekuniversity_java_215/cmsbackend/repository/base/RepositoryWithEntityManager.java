@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
 
-import static com.github.geekuniversity_java_215.cmsbackend.utils.Utils.fieldGetter;
 
 
 // делаем нашу реализацию репо-интерфейса  CustomRepository базовым для Spring Data JPA,

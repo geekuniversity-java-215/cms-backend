@@ -25,6 +25,16 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
 <!--    <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
@@ -33,12 +43,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -60,41 +64,19 @@
             <scope>test</scope>
         </dependency>
 
-        <!--junit5-->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.5.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.5.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/net.tascalate/net.tascalate.concurrent -->
-        <dependency>
-            <groupId>net.tascalate</groupId>
-            <artifactId>net.tascalate.concurrent</artifactId>
-            <version>0.8.4</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.pivovarit/throwing-function -->
-        <dependency>
-            <groupId>com.pivovarit</groupId>
-            <artifactId>throwing-function</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-
-
         <!--module -->
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
             <artifactId>protocol</artifactId>
             <version>${jrpc.protocol.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <!--module -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>utils</artifactId>
+            <version>0.1</version>
             <scope>compile</scope>
         </dependency>
 

@@ -22,6 +22,7 @@
     <modules>
         <module>core</module>
         <module>protocol</module>
+        <module>utils</module>
     </modules>
 
 
@@ -53,8 +54,35 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+<!--            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!--junit5-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
         </dependency>
 
 
@@ -68,10 +96,37 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
-            <!-- IntelliJ does not pick up the processor if it is not in the dependencies.
-             There is already an open issue for IntelliJ see https://youtrack.jetbrains.com/issue/IDEA-150621
+            <!--
+            IntelliJ does not pick up the processor if it is not in the dependencies.
+            There is already an open issue for IntelliJ see https://youtrack.jetbrains.com/issue/IDEA-150621
             -->
         </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/net.tascalate/net.tascalate.concurrent -->
+        <dependency>
+            <groupId>net.tascalate</groupId>
+            <artifactId>net.tascalate.concurrent</artifactId>
+            <version>0.8.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.pivovarit/throwing-function -->
+        <dependency>
+            <groupId>com.pivovarit</groupId>
+            <artifactId>throwing-function</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+
+
+        <!-- ru.geekbrains.dreamworkerln.spring.utils -->
+        <!-- Read README.md to install this -->
+        <dependency>
+            <groupId>ru.geekbrains.dreamworkerln.spring</groupId>
+            <artifactId>utils</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+
 
     </dependencies>
 
