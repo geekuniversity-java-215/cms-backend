@@ -14,7 +14,7 @@ mvn -DskipTests clean install
 git clone https://github.com/dreamworkerln/utils.git
 ```
 Далее открываем проект utils в Intellij Idea  
-Идем в правый toolbar
+View -> Tool Windows -> Maven Projects
 ``` 
 Maven Projects -> Profiles
 ```    
