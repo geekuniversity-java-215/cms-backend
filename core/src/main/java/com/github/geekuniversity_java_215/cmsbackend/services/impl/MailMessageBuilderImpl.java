@@ -21,11 +21,11 @@ public class MailMessageBuilderImpl implements MailMessageBuilder {
         context.setVariable("order", "order");
         return templateEngine.process("mail/payment_success", context);
     }
-
-    public String buildRegConfirmationEmail(String clientId) {
+//todo на вход buildRegConfirmationEmail необходимо передавать сущность Клиента, который регистрируется
+    public String buildRegConfirmationEmail(String client, String url) {
         Context context = new Context();
-        context.setVariable("user", "user");
-        context.setVariable("reg_url","url");
+        context.setVariable("user", client);
+        context.setVariable("reg_url",url);
         return templateEngine.process("mail/reg_confirmation-mail", context);
 
     }

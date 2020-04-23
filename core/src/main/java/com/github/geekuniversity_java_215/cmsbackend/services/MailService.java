@@ -5,5 +5,6 @@ public interface MailService {
     void sendPaymentSuccess();
 
     //todo endRegConfirmation() - это болванка для отправки уведомлений при регистрации нового клиента/курьера
-    void sendRegConfirmation();
+    //навход необходимо подавать сущность нового пользователя
+    void sendRegConfirmation(String client);
 }
