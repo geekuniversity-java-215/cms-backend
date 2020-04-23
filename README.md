@@ -18,7 +18,9 @@ git clone https://github.com/dreamworkerln/utils.git
 ``` 
 Maven Projects -> Profiles
 ```    
-чекаем intellij-javadoc-fix
+чекаем intellij-javadoc-fix  
+
+Далее 
 ```   
 utils -> Lifecycle -> install
 ``` 
