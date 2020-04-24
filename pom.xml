@@ -122,8 +122,8 @@
         <!-- Read README.md to install this -->
         <dependency>
             <groupId>ru.geekbrains.dreamworkerln.spring</groupId>
-            <artifactId>utils</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <artifactId>dreamworkerln-common-utils</artifactId>
+            <version>0.1</version>
         </dependency>
 
 
