@@ -25,16 +25,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
 <!--    <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
@@ -52,7 +42,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--module -->
+        <!--module protocol -->
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
             <artifactId>protocol</artifactId>
@@ -60,33 +50,19 @@
             <scope>compile</scope>
         </dependency>
         
-        <!--module -->
+        <!--module utils -->
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
             <artifactId>utils</artifactId>
-            <version>0.1</version>
+            <version>${app.version}</version>
             <scope>compile</scope>
         </dependency>
 
     </dependencies>
-    
 
+<!--
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-<!--        <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>6.0.1</version>
-                <configuration>
-                    <configFiles>src/main/resources/flyway.conf</configFiles>
-                </configuration>
-            </plugin>-->
-        </plugins>
-        <finalName>cms-backend-core-0.1</finalName>
+        <finalName>cms-backend-core-${app.version}</finalName>
     </build>
-
+-->
 </project>

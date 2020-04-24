@@ -1,0 +1,19 @@
+package com.github.geekuniversity_java_215.cmsbackend.mail.configuration;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+
+@Configuration
+public class MailPropertiesConfiguration {
+
+    @Configuration
+    @Profile("default")
+    @PropertySource({"classpath:mail.properties"})
+    static class DefaultProperties {}
+
+    @Configuration
+    @Profile("!default")
+    @PropertySource({"classpath:mail-${spring.profiles.active}.properties"})
+    static class NonDefaultProperties {}
+}
