@@ -32,7 +32,7 @@ Read  database/readme.txt
 
 
 ### 3. Setup profiles
-Копируем профили
+Выполняем (копируются профили)
 ```
 ./install-properties.sh
 ```
