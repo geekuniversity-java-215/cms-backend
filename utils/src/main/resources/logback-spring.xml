@@ -105,7 +105,7 @@
     <logger name="org.hibernate.ejb.HibernatePersistence" level="OFF"/>
     <logger name="org.hibernate.SQL" level="OFF"/>                        <!-- SHOW SQL -->
     <logger name="org.hibernate.type.descriptor.sql" level="OFF"/>        <!-- SHOW PARAMS VALUES -->
-    <logger name="org.hibernate.tool" level="DEBUG"/>                     <!-- ? -->
+    <logger name="org.hibernate.tool.hbm2ddl" level="OFF"/>               <!-- DDL SQL SCHEMA MIGRATION -->
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.security" level="WARN"/>
