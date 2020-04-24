@@ -1,7 +1,0 @@
-package com.github.geekuniversity_java_215.cmsbackend.mailsystem;
-
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-// Allow run tests (prepare Spring Configuration)
-@SpringBootApplication
-public class MailSystemApplication {}
