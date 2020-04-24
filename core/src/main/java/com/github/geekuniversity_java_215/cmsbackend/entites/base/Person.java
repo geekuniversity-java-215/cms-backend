@@ -2,10 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.entites.base;
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.Account;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Order;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 
 import javax.persistence.*;
@@ -22,9 +19,9 @@ import java.util.List;
                @Index(name = "_unq", columnList = "last_name, first_name",unique = true)
     })
 
+
 @Data
 @EqualsAndHashCode(callSuper=true)
-@RequiredArgsConstructor
 public abstract class Person extends AbstractEntity {
 
     @Id
@@ -34,30 +31,40 @@ public abstract class Person extends AbstractEntity {
 
     @NotNull
     @Column(name = "first_name")
-    private String firstName;
+    protected String firstName;
 
     @NotNull
     @Column(name = "last_name")
-    private String lastName;
+    protected String lastName;
 
     @NotNull
     @Column(name = "email")
-    private String email;
+    protected String email;
 
     @NotNull
     @Column(name = "phone_number")
-    private String phoneNumber;
+    protected String phoneNumber;
 
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    protected Account account;
 
 
     @NotNull
     @OneToMany(mappedBy= "courier", orphanRemoval = true, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
-    private List<Order> orderList = new ArrayList<>();
+    protected List<Order> orderList = new ArrayList<>();
+
+
+    public Person() {}
+
+    public Person(@NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 
     protected void setId(Long id) {
         this.id = id;

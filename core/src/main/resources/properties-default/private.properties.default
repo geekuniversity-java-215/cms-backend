@@ -1,2 +1,8 @@
+#mail settings
 mail.username=vasya@mail.ru
-mail.password=vasya_password
+mail.password=vasyapassword
+
+#paypal settings
+paypal.client-id=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+paypal.client-secret=kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+paypal.mode=sandbox

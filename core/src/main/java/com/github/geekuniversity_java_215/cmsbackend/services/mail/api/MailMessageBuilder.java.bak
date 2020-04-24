@@ -1,0 +1,7 @@
+package com.github.geekuniversity_java_215.cmsbackend.services.mail.api;
+
+// Пока не пишем интерфейсы до MVP
+public interface MailMessageBuilder {
+    String buildPaymentSuccess(String clientId);
+
+}

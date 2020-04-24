@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService extends BaseService<Order> {
 
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public OrderService(OrderRepository orderRepository) {

@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
 import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +43,8 @@ public class AccountService extends BaseService<Account> {
         log.info("Заблокировали строку, id={} balance: {}", account.getId(), account.getBalance());
 
         // reload
-        account = findById(account.getId()).get();
+        account = findById(account.getId()).orElse(null);
+        Assert.notNull(account,"Account after reload == null");
         log.info("Перечитали account из базы, id={} balance: {}", account.getId(), account.getBalance());
 
 
@@ -68,7 +71,8 @@ public class AccountService extends BaseService<Account> {
         accountRepository.lockByAccount(account);
 
         // reload
-        account = findById(account.getId()).get();
+        account = findById(account.getId()).orElse(null);
+        Assert.notNull(account,"Account after reload == null");
 
         if(account.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) >=0) {
 

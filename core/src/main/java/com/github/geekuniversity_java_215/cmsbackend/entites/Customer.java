@@ -2,17 +2,20 @@ package com.github.geekuniversity_java_215.cmsbackend.entites;
 
 
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "customer")
 @Data
 @EqualsAndHashCode(callSuper=true)
-@NoArgsConstructor
 public class Customer extends Person {
 
+    public Customer() {}
+    
+    public Customer(@NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String phoneNumber) {
+        super(firstName, lastName, email, phoneNumber);
+    }
 }

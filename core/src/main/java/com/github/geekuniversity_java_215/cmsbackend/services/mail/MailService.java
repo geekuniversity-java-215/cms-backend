@@ -1,6 +1,12 @@
 package com.github.geekuniversity_java_215.cmsbackend.services.mail;
 
+import com.github.geekuniversity_java_215.cmsbackend.entites.Order;
+import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
+import com.github.geekuniversity_java_215.cmsbackend.utils.JobPool;
 import lombok.extern.slf4j.Slf4j;
+import net.tascalate.concurrent.Promise;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,88 +17,112 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.time.Duration;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.function.Consumer;
+
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Service
 @Slf4j
 public class MailService {
-    private JavaMailSender sender;
+    private JavaMailSender javaMailSender;
     private MailMessageBuilder messageBuilder;
-    private TaskExecutor taskExecutor;
+    private JobPool<Void> jobPool;
 
     @Autowired
-    public void setSender(JavaMailSender sender) {
-        this.sender = sender;
-    }
-
-    @Autowired
-    public void setMessageBuilder(MailMessageBuilder messageBuilder) {
+    public MailService(JavaMailSender javaMailSender, MailMessageBuilder messageBuilder) {
+        this.javaMailSender = javaMailSender;
         this.messageBuilder = messageBuilder;
+
+        jobPool = new JobPool<>("SendMail",2, Duration.ofSeconds(60), null);
     }
 
-    public MailService(TaskExecutor taskExecutor) {
-        this.taskExecutor = taskExecutor;
-    }
-
-    public void  sendPaymentSuccess() {
-        //todo добавить в метод execute email получателя, текст сообщения, сформированное письмо и отправителя
-        //taskExecutor.execute(new scheduleSendEmail(order.getUser().getEmail(), String.format("Заказ %d%n отправлен в обработку", order.getId()), messageBuilder.buildPaymentSuccess(clientId), sender));
-
-    }
-
-    public void sendRegConfirmation() {
-        //todo добавить в метод execute email получателя, текст сообщения, сформированное письмо и отправителя
-
-
-//        new scheduleSendEmail("myomenhope@yandex.ru",
-//            "Завершение регистрации пользователя Вася Пупкин",
-//            "Test Test Test 2!",
-//            sender).run();
-
-        log.info("message send");
-    }
-
-    /*
-    метод формирует url для подтверждения регистрации
+    /**
+     * Отправляет письмо об успешном платеже
+     * - НЕ ГОТОВО
      */
-    private String urlGenerate(String user) {
-        String url = new BigInteger(130, new SecureRandom()).toString(32);
-        //user.setUrl(url); url необходимо сохранить в пользователе, для проверки соответствия при подтверждении
-        return "http://localhost:8189/app/registration/confirmation/" + url;
+    public void sendPaymentSuccess(Order order) {
+
+        //todo добавить в метод execute email получателя, текст сообщения, сформированное письмо и отправителя
+//        log.trace("Отправляем письмо о успешно проведенном платеже");
+//
+//        final String email = person.getEmail();
+//        final String subject = "Платеж успешно проведен";
+//        final String body = messageBuilder.buildPaymentSuccess(order.getId());
+//        jobPool.add(() -> sendMessage(email, subject, body));
+
+
+
+        //taskExecutor.execute(new scheduleSendEmail("cmsbackendgeek@gmail.com", "Завершение регистрации", , sender));
+        //taskExecutor.execute(new scheduleSendEmail(email, subject, messageBuilder.buildPaymentSuccess("clientId"), sender));
+        //jobPool.addRunnable(new scheduleSendEmail(email, subject, messageBuilder.buildPaymentSuccess("clientId"), sender),taskExecutor);
     }
 
-    /*
-    шедуллер для отправки писем, чтобы пользователь не ждал
-     */
-    private static class scheduleSendEmail implements Runnable {
-        private String email;
-        private String subject;
-        private String text;
-        private JavaMailSender sender;
 
-        scheduleSendEmail(String email, String subject, String text, JavaMailSender sender) {
-            this.email = email;
-            this.subject = subject;
-            this.text = text;
-            this.sender = sender;
+    /**
+     * Отправляет письмо с подтверждением о регистрации
+     *
+     * confirnmationUrl = generateConfirmationUrl(person)
+     */
+    public Promise sendRegistrationConfirmation(Person person, String confirmationUrl) {
+
+        //todo почту получателя достать из сущности регистрируемого пользователя.
+        // В тему добавить ник пользователя, сформировать письмо с нормальным url`ом
+
+        log.trace("Отправляем письмо о успешной регистрации");
+        final String email = person.getEmail();
+        final String subject = "Завершение регистрации";
+        final String body = messageBuilder.buildRegistrationConfirmationEmail(person, confirmationUrl);
+
+        return sendMessage(email, subject, body);
+    }
+
+
+    /**
+     * метод формирует url для подтверждения регистрации, перенести в сервис авторизации
+     */
+    //ToDo: generateConfirmationUrl перенести в сервис авторизации
+    public String generateConfirmationUrl(Person person) {
+        String token = new BigInteger(130, new SecureRandom()).toString(32);
+
+        // ToDo: сгенерированный url является ключом. необходимо сохранить для пользователя,
+        // чтобы потом провести проверки для завершения регистрации
+        // Токен должен протухать через некоторое время - Guava Cache
+        // https://www.baeldung.com/guava-cache
+
+        // Add token to cache
+
+        // ToDo: Move url to variable, include host and port vars from application.properties
+        //return "http://localhost:8189/app/registration/confirmation/" + token;
+        return "https://natribu.org/";
+    }
+
+
+    // ==================================================================================================================
+
+
+    private Promise sendMessage(String email, String subject, String body) {
+
+        Promise result = null;
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+        try {
+            helper.setTo(email);
+            helper.setText(body, true);
+            helper.setSubject(subject);
+        } catch (MessagingException e) {
+            log.error("MimeMessageHelper error:", e);
         }
 
-
-        @Override
-        public void run() {
-            MimeMessage message = sender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
-            try {
-                //helper.setFrom("librarianw40k@yandex.ru");
-                helper.setTo(email);
-                helper.setText(text, true);
-                helper.setSubject(subject);
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
-
-            sender.send(message);
+        try {
+            result = jobPool.add(() -> javaMailSender.send(message));
         }
+        catch (Exception e) {
+            log.error("JobPool " + jobPool.getPoolName() + " error:", e);
+        }
+        return result;
     }
-
 
 }

@@ -27,6 +27,7 @@ import java.util.concurrent.Future;
 import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 
+@SuppressWarnings("ConstantConditions")
 @SpringBootTest
 @Slf4j
 class CmsBackendApplicationTests {

@@ -1,10 +1,12 @@
 package com.github.geekuniversity_java_215.cmsbackend.services.mail;
 
 
+import com.github.geekuniversity_java_215.cmsbackend.entites.base.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
 
 @Service
 public class MailMessageBuilder {
@@ -22,14 +24,17 @@ public class MailMessageBuilder {
         return templateEngine.process("mail/payment_success", context);
     }
 
-    public String buildRegConfirmationEmail(String clientId) {
+    
+    //todo на вход buildRegConfirmationEmail необходимо передавать сущность Клиента, который регистрируется
+    public String buildRegistrationConfirmationEmail(Person person, String url) {
         Context context = new Context();
-        context.setVariable("user", "user");
-        context.setVariable("reg_url","url");
+        context.setVariable("user", person.getLastName() + " " + person.getFirstName());
+        context.setVariable("reg_url", url);
+        context.setVariable("user_confirm_mail", "Завершить регистрацию");
         return templateEngine.process("mail/reg_confirmation-mail", context);
-
     }
 
 
 
 }
+
