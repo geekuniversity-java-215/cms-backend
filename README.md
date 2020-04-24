@@ -36,7 +36,7 @@ Read  database/readme.txt
 ```
 ./install-properties.sh
 ```
-On windows 10 in powershell (не проверялось)
+On windows 10 in powershell  
 ```
 sh install-properties.sh
 ```
