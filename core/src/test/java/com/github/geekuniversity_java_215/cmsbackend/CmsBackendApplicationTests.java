@@ -1,26 +1,20 @@
 package com.github.geekuniversity_java_215.cmsbackend;
 
+import com.github.geekuniversity_java_215.cmsbackend.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Account;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Customer;
 import com.github.geekuniversity_java_215.cmsbackend.entites.Order;
-import com.github.geekuniversity_java_215.cmsbackend.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.services.AccountService;
 import com.github.geekuniversity_java_215.cmsbackend.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.services.PersonService;
 import lombok.extern.slf4j.Slf4j;
-import net.tascalate.concurrent.CompletableTask;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;

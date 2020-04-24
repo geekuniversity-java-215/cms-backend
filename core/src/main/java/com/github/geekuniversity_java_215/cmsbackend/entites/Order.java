@@ -1,15 +1,13 @@
 package com.github.geekuniversity_java_215.cmsbackend.entites;
 
+import com.github.geekuniversity_java_215.cmsbackend.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.entites.base.AbstractEntity;
-import com.github.geekuniversity_java_215.cmsbackend.enums.OrderStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "delivery_order")
