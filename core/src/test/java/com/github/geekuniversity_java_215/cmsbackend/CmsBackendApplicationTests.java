@@ -29,7 +29,7 @@ import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 
 @SpringBootTest
-@ActiveProfiles("dev")
+//@ActiveProfiles("dev")
 @Slf4j
 @SuppressWarnings("ConstantConditions")
 class CmsBackendApplicationTests {

@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.concurrent.ExecutionException;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+//@ActiveProfiles("dev")
 @Slf4j
 class MailServiceTest {
 

@@ -62,20 +62,20 @@ public class JobPool<T> {
             // обрабатываем ошибки возникшие во время выполнения (в том числе timeout)
             .handleAsync((t, throwable) -> {
 
-                log.trace(poolName + " handle: + " + Thread.currentThread().getName());
+                log.trace(poolName + " handle");
 
                 if (throwable != null) {
-                    log.error(poolName + " error:  " + throwable);
+                    log.error(poolName + " error: " + throwable);
                     t = null;
                 }
-                log.trace(poolName + " handle result: + " + t);
+                log.trace(poolName + " handle result: " + t);
                 return t;
             })
             // Оповещаем о завершении задачи
             .thenAcceptAsync(
                 t -> {
                     if (callback != null) {
-                        log.trace(poolName + "callback: + " + Thread.currentThread().getName());
+                        log.trace(poolName + " callback");
                         callback.accept(null);
                     }
 
@@ -101,20 +101,20 @@ public class JobPool<T> {
             // обрабатываем ошибки возникшие во время выполнения (в том числе timeout)
             .handleAsync((t, throwable) -> {
 
-                log.trace(poolName + " handle: + " + Thread.currentThread().getName());
+                log.trace(poolName + " handle");
 
                 if (throwable != null) {
-                    log.error(poolName + " error:  " + throwable);
+                    log.error(poolName + " error:" + throwable);
                     t = null;
                 }
-                log.trace(poolName + " handle result: + " + t);
+                log.trace(poolName + " handle result: " + t);
                 return t;
             })
             // Оповещаем о завершении задачи
             .thenAcceptAsync(
                 t -> {
                     if (callback != null) {
-                        log.trace(poolName + "callback: + " + Thread.currentThread().getName());
+                        log.trace(poolName + " callback");
                         callback.accept(t);
                     }
                 }
