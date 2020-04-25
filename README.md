@@ -48,7 +48,7 @@ sh install-properties.sh
 
 ```
 git checkout dev
-git checkout dev_имясвоейветки
+git checkout -b dev_имясвоейветки
 ```
 
 3\. Для своего кода делаем unit-тесты
