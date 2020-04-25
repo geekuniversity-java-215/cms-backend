@@ -21,7 +21,7 @@ public class MailMessageBuilder {
     String buildPaymentSuccess(String clientId) {
         Context context = new Context();
         context.setVariable("order", "order");
-        return templateEngine.process("templates/mail/payment_success", context);
+        return templateEngine.process("mail/payment_success", context);
     }
 
     
@@ -31,7 +31,7 @@ public class MailMessageBuilder {
         context.setVariable("user", person.getLastName() + " " + person.getFirstName());
         context.setVariable("reg_url", url);
         context.setVariable("user_confirm_mail", "Завершить регистрацию");
-        return templateEngine.process("templates/mail/reg_confirmation-mail", context);
+        return templateEngine.process("mail/reg_confirmation-mail", context);
     }
 
 

@@ -17,7 +17,6 @@ class MailServiceTest {
 
     @Autowired
     private ApplicationContext context;
-
     @Autowired
     private MailService mailService;
 
