@@ -16,8 +16,16 @@ fi
 fromPath=core/src/main/resources/
 FROM=${fromPath}core.properties
 TO=${fromPath}core-dev.properties
-
 cp -an $FROM $TO
+
+
+FROM=${fromPath}logback-spring.xml
+TO=${fromPath}logback-spring-dev.xml
+if [ ! -f "$TO" ]; then
+
+    cp -an $FROM $TO
+    sed -i 's/<logger name=\"org.hibernate.SQL\" level=\"OFF\"\/>/<logger name=\"org.hibernate.SQL\" level=\"TRACE\"\/>/g' $TO
+fi
 
 
 
@@ -44,14 +52,4 @@ fromPath=payment/src/main/resources/
 
 
 
-# utils
-fromPath=utils/src/main/resources/
-FROM=${fromPath}logback-spring.xml
-TO=${fromPath}logback-spring-dev.xml
-
-if [ ! -f "$TO" ]; then
-
-    cp -an $FROM $TO
-    sed -i 's/<logger name=\"org.hibernate.SQL\" level=\"OFF\"\/>/<logger name=\"org.hibernate.SQL\" level=\"TRACE\"\/>/g' $TO
-fi
 
