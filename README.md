@@ -41,7 +41,7 @@ On windows 10 in powershell
 sh install-properties.sh
 ```
 
-### 2. Workflow
+### 2. git Workflow
 
 1\. Основная ветка разработки - dev  
 2\. Для своего кода делаем отдельную ветку, ответвляясь от dev  
