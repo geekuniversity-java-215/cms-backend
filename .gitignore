@@ -36,7 +36,9 @@ log/
 ### Profiles ###
 core-dev.properties
 utils-dev.properties
+mail.properties
 mail-dev.properties
+payment.properties
 payment-dev.properties
 application-dev.properties
 logback-spring-dev.xml
