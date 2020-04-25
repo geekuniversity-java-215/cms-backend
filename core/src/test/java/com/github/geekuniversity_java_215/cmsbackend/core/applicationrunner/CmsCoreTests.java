@@ -1,14 +1,18 @@
-package com.github.geekuniversity_java_215.cmsbackend;
+package com.github.geekuniversity_java_215.cmsbackend.core.applicationrunner;
 
-import com.github.geekuniversity_java_215.cmsbackend.entites.*;
-import com.github.geekuniversity_java_215.cmsbackend.enums.OrderStatus;
-import com.github.geekuniversity_java_215.cmsbackend.services.AccountService;
-import com.github.geekuniversity_java_215.cmsbackend.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
@@ -17,38 +21,25 @@ import java.util.concurrent.Future;
 
 import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
-@org.springframework.core.annotation.Order(1)
-@Component
+
+@SpringBootTest
+//@ActiveProfiles("dev")
 @Slf4j
-public class AppStartupRunner implements ApplicationRunner {
+@SuppressWarnings("ConstantConditions")
+class CmsCoreTests {
 
-    //private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    @Autowired
+    ApplicationContext context;
 
-    private final AccountService accountService;
-    private final PersonService personService;
-    private final OrderService orderService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private PersonService personService;
+    @Autowired
+    private OrderService orderService;
 
-
-
-
-    public AppStartupRunner(AccountService accountService, PersonService personService, OrderService orderService) {
-        this.accountService = accountService;
-        this.personService = personService;
-        this.orderService = orderService;
-    }
-
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-
-
-//        log.info("\n");
-//        log.info("Testing logback logging:");
-//        log.trace("TRACE");
-//        log.debug("DEBUG");
-//        log.info("INFO");
-//        log.warn("WARN");
-//        log.error("ERROR");
+    @Test
+    void contextLoads() throws Exception {
 
         // TESTING DB
 
@@ -94,9 +85,6 @@ public class AppStartupRunner implements ApplicationRunner {
         cus.setFirstName("Артем"); cus.setLastName("Артемов"); cus.setEmail("m@m.ru"); cus.setPhoneNumber("123");
         cus.setAccount(acc);
 
-
-
-
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
         Account finalAcc1 = accountService.findById(1L).get();
@@ -109,25 +97,6 @@ public class AppStartupRunner implements ApplicationRunner {
         acc = accountService.findById(1L).get();
 
         log.info("баланс: {}", acc.getBalance());
-
-//        Customer customer = (Customer) personService.findById(4L).get();
-//        Courier courier = (Courier) personService.findById(3L).get();
-//        Order order = new Order();
-//
-//        order.setCourier(courier);
-//        order.setCustomer(customer);
-//        order.setStatus(OrderStatus.NEW);
-
-        //orderService.save(order);
-
-
-
-
-
     }
 
-
 }
-
-
-
