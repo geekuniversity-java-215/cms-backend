@@ -32,6 +32,5 @@ class MailServiceTest {
         Promise promise = mailService.sendRegistrationConfirmation(cus, tokenUrl);
         promise.get();
         log.info("Message send");
-
     }
 }
