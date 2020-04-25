@@ -28,7 +28,7 @@ utils -> Lifecycle -> install
 
 
 ### 2. Setup postgres
-Read  database/readme.txt 
+Read  infrastructure/database/readme.txt 
 
 
 ### 3. Setup profiles
