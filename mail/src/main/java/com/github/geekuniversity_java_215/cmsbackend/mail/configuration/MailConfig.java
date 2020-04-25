@@ -13,7 +13,8 @@ import java.util.Arrays;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+//уже все настройки включены в PropertiesConfiguration
+//@PropertySource("classpath:application.properties")
 public class MailConfig {
     @Value("${mail.username}")
     private String username;
@@ -21,8 +22,12 @@ public class MailConfig {
     @Value("${mail.password}")
     private String password;
 
+    private final Environment env;
+
     @Autowired
-    Environment env;
+    public MailConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public JavaMailSender javaMailSender() {
