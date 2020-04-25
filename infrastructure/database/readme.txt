@@ -9,6 +9,9 @@ postgres_local_create_database_cms.sh
 
 docker_run_cms-postgres.sh
 
+(windows 10 в powershell
+sh docker_run_cms-postgres.sh)
+
 При этом файлы базы cms разместятся на локальной машине в ${HOME}/pgdata/cms/
 а порт postgres будет 5442
 
