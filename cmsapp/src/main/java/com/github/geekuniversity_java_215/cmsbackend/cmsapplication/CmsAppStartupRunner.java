@@ -22,7 +22,7 @@ public class CmsAppStartupRunner implements ApplicationRunner {
     private final MailService mailService;
 
     @Autowired
-    public CmsAppStartupRunner(AccountService accountService, PersonService personService, TestRepository testRepository, MailService mailService) {
+    public CmsAppStartupRunner(PersonService personService, TestRepository testRepository, MailService mailService) {
         this.personService = personService;
         this.testRepository = testRepository;
         this.mailService = mailService;
@@ -39,9 +39,9 @@ public class CmsAppStartupRunner implements ApplicationRunner {
 
         cus = (Customer) personService.findById(1L).get();
 
-        log.info("Customer: ", cus);
+        log.info("Customer: {}", cus);
 
-        mailService.sendRegistrationConfirmation(cus, "http://ocko-zalupa.com");
+        mailService.sendMessage("cmsbackendgeek@gmail.com", "Дарова", "Дарова чувачелло, как жизяя?");
     }
 }
 

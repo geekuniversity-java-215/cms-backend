@@ -18,4 +18,9 @@ public class Customer extends Person {
     public Customer(@NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String phoneNumber) {
         super(firstName, lastName, email, phoneNumber);
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
