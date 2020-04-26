@@ -19,6 +19,8 @@ TO=${fromPath}core-dev.properties
 cp -an $FROM $TO
 
 
+# configuration
+fromPath=configuration/src/main/resources/
 FROM=${fromPath}logback-spring.xml
 TO=${fromPath}logback-spring-dev.xml
 if [ ! -f "$TO" ]; then
