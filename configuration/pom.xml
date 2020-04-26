@@ -10,28 +10,23 @@
         <version>0.1</version>
     </parent>
 
-    <artifactId>utils</artifactId>
+
+    <artifactId>configuration</artifactId>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.10</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-
+        <!--module utils -->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>utils</artifactId>
+            <version>${app.version}</version>
             <scope>compile</scope>
         </dependency>
-
+        
     </dependencies>
 
 

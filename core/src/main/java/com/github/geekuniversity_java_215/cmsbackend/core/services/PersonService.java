@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
-import com.github.geekuniversity_java_215.cmsbackend.core.repository.PersonRepository;
+import com.github.geekuniversity_java_215.cmsbackend.core.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

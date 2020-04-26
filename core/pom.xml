@@ -25,11 +25,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-<!--    <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>-->
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -49,20 +44,27 @@
             <version>${jrpc.protocol.version}</version>
             <scope>compile</scope>
         </dependency>
-        
-        <!--module utils -->
+
+        <!--module configuration -->
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
-            <artifactId>utils</artifactId>
+            <artifactId>configuration</artifactId>
             <version>${app.version}</version>
             <scope>compile</scope>
         </dependency>
 
+        <!--
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        -->
+
     </dependencies>
 
-<!--
-    <build>
-        <finalName>cms-backend-core-${app.version}</finalName>
-    </build>
--->
+    <!--
+        <build>
+            <finalName>cms-backend-core-${app.version}</finalName>
+        </build>
+    -->
 </project>

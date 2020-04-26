@@ -1,11 +1,8 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.annotations;
+package com.github.geekuniversity_java_215.cmsbackend.configuration.configurations;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.repository.base.RepositoryWithEntityManager;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.RepositoryWithEntityManager;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.lang.annotation.*;

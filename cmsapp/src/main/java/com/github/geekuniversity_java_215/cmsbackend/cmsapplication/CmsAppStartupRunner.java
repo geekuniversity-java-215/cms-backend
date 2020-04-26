@@ -1,16 +1,14 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication;
 
 import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.entities.TestEntity;
-import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.repository.TestRepository;
+import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.repositories.TestRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
 import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.mail.MailMessage;
 import org.springframework.stereotype.Component;
 
 @Component

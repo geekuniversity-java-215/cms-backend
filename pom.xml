@@ -20,12 +20,13 @@
 
 
     <modules>
+        <module>utils</module>
         <module>core</module>
         <module>protocol</module>
-        <module>utils</module>
         <module>mail</module>
         <module>cmsapp</module>
         <module>payment</module>
+        <module>configuration</module>
     </modules>
 
 
