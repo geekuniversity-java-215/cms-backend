@@ -41,6 +41,16 @@ class CmsCoreTests {
     @Test
     void contextLoads() throws Exception {
 
+        // TESTING LOG LEVELS
+        log.info("TESTING LOG LEVELS");
+
+        log.trace("TRACE");
+        log.debug("DEBUG");
+        log.info("INFO");
+        log.warn("WARN");
+        log.error("ERROR");
+        log.info("");
+
         // TESTING DB
 
         Account acc = new Account();

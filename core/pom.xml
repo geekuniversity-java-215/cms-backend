@@ -31,10 +31,18 @@
             <scope>runtime</scope>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.security</groupId>-->
+<!--            <artifactId>spring-security-test</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+
+        <!--module configuration -->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>configuration</artifactId>
+            <version>${app.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!--module protocol -->
@@ -45,13 +53,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--module configuration -->
-        <dependency>
-            <groupId>com.github.geekuniversity_java_215</groupId>
-            <artifactId>configuration</artifactId>
-            <version>${app.version}</version>
-            <scope>compile</scope>
-        </dependency>
+
 
         <!--
         <dependency>
