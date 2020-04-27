@@ -4,6 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.aop.LogExecutionTime;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.AccountRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.geekuniversity_java_215.cmsbackend.utils.Utils.fieldSetter;
+import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 @Service
 @Transactional
@@ -34,7 +36,7 @@ public class AccountService extends BaseRepoAccessService<Account> {
      * @param amount
      */
     @LogExecutionTime
-    public void addBalance(Account account, BigDecimal amount) throws InterruptedException {
+    public void addBalance(Account account, BigDecimal amount) {
 
         //ToDo: Убрать тестирование
         log.info("Хотим пополнить баланс, id={} balance: {} ", account.getId(), account.getBalance());
@@ -50,7 +52,7 @@ public class AccountService extends BaseRepoAccessService<Account> {
 
         // TESTING
         log.info("Усиленно работаем ...");
-        TimeUnit.SECONDS.sleep(5);
+        unchecked(() -> TimeUnit.SECONDS.sleep(2));
 
         fieldSetter("balance", account, account.getBalance().add(amount));
         //propertySetter("setBalance", account, BigDecimal.class, account.getBalance().add(amount));

@@ -60,9 +60,11 @@ TO=${fromPath}mail-dev.properties
 if [[ ! -f "$FROM" ]]; then
 
     echo -e "#mail settings" >> $FROM
+    echo -e "mail.host=smtp.gmail.com" >> $FROM
+    echo -e "mail.port=587" >> $FROM
     echo -e "mail.username=vasya@pypkin.com" >> $FROM
     echo -e "mail.password=vasyapassword" >> $FROM
-
+    
     cp -an $FROM $TO
 fi
 

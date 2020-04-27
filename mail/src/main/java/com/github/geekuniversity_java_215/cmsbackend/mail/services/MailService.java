@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.time.Duration;
@@ -19,9 +20,9 @@ import java.time.Duration;
 @Service
 @Slf4j
 public class MailService {
-    private JavaMailSender javaMailSender;
-    private MailMessageBuilder messageBuilder;
-    private JobPool<Void> jobPool;
+    private final JavaMailSender javaMailSender;
+    private final MailMessageBuilder messageBuilder;
+    private final JobPool<Void> jobPool;
 
     @Autowired
     public MailService(JavaMailSender javaMailSender, MailMessageBuilder messageBuilder) {
@@ -31,27 +32,22 @@ public class MailService {
         jobPool = new JobPool<>("SendMail",2, Duration.ofSeconds(60), null);
     }
 
-    //ToDO: НЕ ГОТОВО
+
+
     /**
      * Отправляет письмо об успешном платеже
+     * @param person Person
+     * @param amount сумма платежа
      */
-    public void sendPaymentSuccess(Order order) {
+    public Promise sendPaymentSuccess(Person person, BigDecimal amount) {
 
-        //todo добавить в метод execute email получателя, текст сообщения, сформированное письмо и отправителя
-//        log.trace("Отправляем письмо о успешно проведенном платеже");
-//
-//        final String email = person.getEmail();
-//        final String subject = "Платеж успешно проведен";
-//        final String body = messageBuilder.buildPaymentSuccess(order.getId());
-//        jobPool.add(() -> sendMessage(email, subject, body));
-
-
-
-        //taskExecutor.execute(new scheduleSendEmail("cmsbackendgeek@gmail.com", "Завершение регистрации", , sender));
-        //taskExecutor.execute(new scheduleSendEmail(email, subject, messageBuilder.buildPaymentSuccess("clientId"), sender));
-        //jobPool.addRunnable(new scheduleSendEmail(email, subject, messageBuilder.buildPaymentSuccess("clientId"), sender),taskExecutor);
+        log.trace("Отправляем письмо о успешно проведенном платеже");
+        System.out.println(person.getAccount());
+        final String email = person.getEmail();
+        final String subject = "Платеж успешно проведен";
+        final String body = messageBuilder.buildPaymentSuccess(person,amount);
+        return sendMessage(email, subject, body);
     }
-
 
     /**
      * Отправляет письмо с подтверждением о регистрации
@@ -59,10 +55,9 @@ public class MailService {
      * @param confirmationUrl сслка для завершения регистрации
      * @return
      */
-    public Promise sendRegistrationConfirmation(Person person, String confirmationUrl) {
+    public Promise<Void> sendRegistrationConfirmation(Person person, String confirmationUrl) {
 
-        //ToDo: сформировать письмо с нормальным url`ом
-
+        //ToDo: нужно убедиться, что формируется нормальный url из сервиса авторизации
         log.trace("Отправляем письмо о успешной регистрации");
         final String email = person.getEmail();
         final String subject = "Завершение регистрации";
@@ -81,8 +76,10 @@ public class MailService {
 
         // ToDo: сгенерированный url является ключом. необходимо сохранить для пользователя,
         // чтобы потом провести проверки для завершения регистрации
-        // Токен должен протухать через некоторое время - Guava Cache
-        // https://www.baeldung.com/guava-cache
+        // Токен должен протухать через некоторое время - хранить в отдельной таблице registrationToken,
+        // запускать @Scheduled чтобы прибивать пользователей, которые не подтвердили регистрацию
+        // и их записи в табле registrationToken
+
 
         // Add token to cache
 
@@ -99,9 +96,9 @@ public class MailService {
      * @param body message body
      * @return Promise, use Promise.get() to wait till mail have send
      */
-    public Promise sendMessage(String email, String subject, String body) {
+    public Promise<Void> sendMessage(String email, String subject, String body) {
 
-        Promise result = null;
+        Promise<Void> result = null;
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
