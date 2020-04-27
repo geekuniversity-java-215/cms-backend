@@ -28,7 +28,7 @@ utils -> Lifecycle -> install
 
 
 ### 2. Setup postgres
-Read  database/readme.txt 
+Read  infrastructure/database/readme.txt 
 
 
 ### 3. Setup profiles
@@ -40,3 +40,31 @@ On windows 10 in powershell
 ```
 sh install-properties.sh
 ```
+
+### 2. git workflow
+
+1\. Основная ветка разработки - dev  
+2\. Для своего кода делаем отдельную ветку, ответвляясь от dev  
+
+```
+git checkout dev
+git checkout -b dev_имясвоейветки
+```
+
+3\. Для своего кода делаем unit-тесты
+(За осонову брать уже сделанные для модуля core)  
+4\. Перед тем, как делать pull request запускаем тесты.
+```
+mvn test
+```
+У кого не установлен maven запускаем test  
+View -> Tool Windows -> Maven Projects
+```   
+cms-backend -> Lifecycle -> test
+``` 
+5\. Если упали свои или чужие тесты - исправляем свой код, 
+который что-то сломал.
+
+6\. После того, как код принят и слит с dev, удаляем свою ветку локально
+(на удаленном репозитории удалять свою ветку не надо), 
+возвращаясь к пункту 1\. 

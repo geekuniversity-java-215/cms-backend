@@ -20,9 +20,13 @@
 
 
     <modules>
+        <module>utils</module>
         <module>core</module>
         <module>protocol</module>
-        <module>utils</module>
+        <module>mail</module>
+        <module>cmsapp</module>
+        <module>payment</module>
+        <module>configuration</module>
     </modules>
 
 
@@ -36,6 +40,7 @@
         <org.projectlombok.version>1.18.12</org.projectlombok.version>
         <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
         <jrpc.protocol.version>0.1</jrpc.protocol.version>
+        <app.version>0.1</app.version>
     </properties>
 
 
