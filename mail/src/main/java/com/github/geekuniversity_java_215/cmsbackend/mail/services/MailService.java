@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
 import com.github.geekuniversity_java_215.cmsbackend.utils.JobPool;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.time.Duration;
@@ -27,31 +27,23 @@ public class MailService {
     public MailService(JavaMailSender javaMailSender, MailMessageBuilder messageBuilder) {
         this.javaMailSender = javaMailSender;
         this.messageBuilder = messageBuilder;
-
         jobPool = new JobPool<>("SendMail",2, Duration.ofSeconds(60), null);
     }
 
-    //ToDO: НЕ ГОТОВО
     /**
      * Отправляет письмо об успешном платеже
+     * @param person Person
+     * @param amount сумма платежа
      */
-    public void sendPaymentSuccess(Order order) {
+    public Promise sendPaymentSuccess(Person person, BigDecimal amount) {
 
-        //todo добавить в метод execute email получателя, текст сообщения, сформированное письмо и отправителя
-//        log.trace("Отправляем письмо о успешно проведенном платеже");
-//
-//        final String email = person.getEmail();
-//        final String subject = "Платеж успешно проведен";
-//        final String body = messageBuilder.buildPaymentSuccess(order.getId());
-//        jobPool.add(() -> sendMessage(email, subject, body));
-
-
-
-        //taskExecutor.execute(new scheduleSendEmail("cmsbackendgeek@gmail.com", "Завершение регистрации", , sender));
-        //taskExecutor.execute(new scheduleSendEmail(email, subject, messageBuilder.buildPaymentSuccess("clientId"), sender));
-        //jobPool.addRunnable(new scheduleSendEmail(email, subject, messageBuilder.buildPaymentSuccess("clientId"), sender),taskExecutor);
+        log.trace("Отправляем письмо о успешно проведенном платеже");
+        System.out.println(person.getAccount());
+        final String email = person.getEmail();
+        final String subject = "Платеж успешно проведен";
+        final String body = messageBuilder.buildPaymentSuccess(person,amount);
+        return sendMessage(email, subject, body);
     }
-
 
     /**
      * Отправляет письмо с подтверждением о регистрации
@@ -61,8 +53,7 @@ public class MailService {
      */
     public Promise sendRegistrationConfirmation(Person person, String confirmationUrl) {
 
-        //ToDo: сформировать письмо с нормальным url`ом
-
+        //ToDo: нужно убедиться, что формируется нормальный url из сервиса авторизации
         log.trace("Отправляем письмо о успешной регистрации");
         final String email = person.getEmail();
         final String subject = "Завершение регистрации";
@@ -70,7 +61,6 @@ public class MailService {
 
         return sendMessage(email, subject, body);
     }
-
 
     //ToDo: generateConfirmationUrl перенести в сервис авторизации
     /**
@@ -81,7 +71,7 @@ public class MailService {
 
         // ToDo: сгенерированный url является ключом. необходимо сохранить для пользователя,
         // чтобы потом провести проверки для завершения регистрации
-        // Токен должен протухать через некоторое время - Guava Cache
+        //
         // https://www.baeldung.com/guava-cache
 
         // Add token to cache
@@ -90,7 +80,6 @@ public class MailService {
         //return "http://localhost:8189/app/registration/confirmation/" + token;
         return "https://natribu.org/";
     }
-
 
     /**
      * Send custom message

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.math.BigDecimal;
+
 
 @Service
 public class MailMessageBuilder {
@@ -18,9 +20,11 @@ public class MailMessageBuilder {
     }
 
 
-    String buildPaymentSuccess(String clientId) {
+    String buildPaymentSuccess(Person person, BigDecimal amount ) {
         Context context = new Context();
-        context.setVariable("order", "order");
+        context.setVariable("sender", person.getFirstName());
+        context.setVariable("amount",amount);
+        context.setVariable("balance",person.getAccount().getBalance().toString());
         return templateEngine.process("mail/payment_success", context);
     }
 
@@ -29,6 +33,7 @@ public class MailMessageBuilder {
     String buildRegistrationConfirmationEmail(Person person, String url) {
         Context context = new Context();
         context.setVariable("user", person.getLastName() + " " + person.getFirstName());
+
         context.setVariable("reg_url", url);
         context.setVariable("user_confirm_mail", "Завершить регистрацию");
         return templateEngine.process("mail/reg_confirmation-mail", context);

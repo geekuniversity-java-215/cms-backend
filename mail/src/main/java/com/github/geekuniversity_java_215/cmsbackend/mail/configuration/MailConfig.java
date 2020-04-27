@@ -16,11 +16,21 @@ import java.util.Properties;
 //уже все настройки включены в PropertiesConfiguration
 //@PropertySource("classpath:application.properties")
 public class MailConfig {
+    private final String MAIL_TRANSPORT_PROTOCOL="smtp";
+    private final String MAIL_SMTP_AUTH="true";
+    private final String MAIL_SMTP_STARTTLS_ENABLE="true";
+
     @Value("${mail.username}")
     private String username;
 
     @Value("${mail.password}")
     private String password;
+
+    @Value("${mail.host}")
+    private String host;
+
+    @Value("${mail.port}")
+    private Integer port;
 
     private final Environment env;
 
@@ -32,19 +42,19 @@ public class MailConfig {
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
+        mailSender.setHost(host);
+        mailSender.setPort(port);
+
 
         mailSender.setUsername(username);
         mailSender.setPassword(password);
 
-        //Arrays.stream(env.getActiveProfiles()).noneMatch("default"::equals);
         boolean debugMail = env.getActiveProfiles().length > 0;
 
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.transport.protocol", MAIL_TRANSPORT_PROTOCOL);
+        props.put("mail.smtp.auth", MAIL_SMTP_AUTH);
+        props.put("mail.smtp.starttls.enable", MAIL_SMTP_STARTTLS_ENABLE);
         props.put("mail.debug", Boolean.toString(debugMail));
         props.put("mail.from", username);
 

@@ -27,7 +27,7 @@ public class PropertiesConfiguration {
     @PropertySource(value ={
         "classpath:application.properties",
         "classpath:core.properties",
-        "classpath:mail.properties",
+        "classpath:mail-dev.properties",
         "classpath:payment.properties"},
         ignoreResourceNotFound=true)
     static class DefaultProperties {}
