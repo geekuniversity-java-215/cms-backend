@@ -2,7 +2,7 @@
 
 LIB_MODULES=(core mail payment utils)
 
-# Prepare logging config fom library modules ------------------------
+# Prepare test logging config for library modules ------------------------
 
 # cp application.properties application-dev.properties in <module>/test/main/resources/
 # inside replace logback-spring.xml to logback-spring-dev.xml
