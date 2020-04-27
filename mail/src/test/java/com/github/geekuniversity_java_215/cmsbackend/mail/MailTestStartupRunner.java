@@ -25,6 +25,7 @@ public class MailTestStartupRunner implements ApplicationRunner {
         this.accountService = accountService;
     }
 
+    // will run before tests
     @Override
     public void run(ApplicationArguments args) {
 
