@@ -56,6 +56,7 @@ public class JobPool<T> {
 
     public Promise add(Runnable runnable) {
 
+        log.trace(poolName + " adding job {}", runnable);
 
         return CompletableTask
             .runAsync(runnable, threadPool)
