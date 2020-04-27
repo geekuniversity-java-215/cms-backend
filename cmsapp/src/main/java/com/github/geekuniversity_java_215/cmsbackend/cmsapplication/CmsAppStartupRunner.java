@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.cmsapplication;
 
 import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.entities.TestEntity;
 import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.repositories.TestRepository;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
 import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
@@ -32,14 +33,15 @@ public class CmsAppStartupRunner implements ApplicationRunner {
         testRepository.save(new TestEntity("Вася test"));
         log.info("TestEntity saved");
 
-        Customer cus = new Customer("Вася", "Пупкин", "vasya@mail.ru", "1122334455");
-        personService.save(cus);
+        Account account = new Account();
+        Customer customer = new Customer("Вася", "Пупкин", "vasya@mail.ru", "1122334455");
+        customer.setAccount(account);
+        personService.save(customer);
 
-        cus = (Customer) personService.findById(1L).get();
-
-        log.info("Customer: {}", cus);
-
-        mailService.sendMessage("cmsbackendgeek@gmail.com", "Дарова", "Дарова чувачелло, как жизяя?");
+        customer = (Customer) personService.findById(1L).get();
+        log.info("Customer: {}", customer);
+        
+        //mailService.sendMessage("cmsbackendgeek@gmail.com", "Дарова", "Дарова чувачелло, как жизяя?");
     }
 }
 
