@@ -14,10 +14,8 @@ import org.springframework.context.annotation.PropertySource;
  *
  * Поэтому ignoreResourceNotFound=true, иначе бы пришлось для каждого модуля
  * указывать .properties отдельно, а так - общая помойка, ну и норм.
- * (Все равно лишние настройки в библиотеку не попадут, правда пропадет "Exception property [blabla] not found")
+ * (Все равно лишние настройки в библиотеку не попадут, правда пропадет "Exception property file [blabla] not found")
  * Главное префиксы ключей внутри .properties для разных модулей делать разными иначе перекроются.
- * По мне - так лучше чем один большой .properties в верхнем модуле,
- * т.к. верхних модулей может быть несколько.
  */
 @Configuration
 public class PropertiesConfiguration {

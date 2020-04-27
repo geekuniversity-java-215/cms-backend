@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.configuration.annotations;
+package com.github.geekuniversity_java_215.cmsbackend.utils.annotations;
 
 import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.RepositoryWithEntityManager;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
