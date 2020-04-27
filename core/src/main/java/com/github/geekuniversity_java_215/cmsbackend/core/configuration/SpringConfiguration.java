@@ -3,10 +3,10 @@ package com.github.geekuniversity_java_215.cmsbackend.core.configuration;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -22,6 +22,9 @@ public class SpringConfiguration {
 
         // allow convertation to/from Instant
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        // will write as string ISO 8601
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
 
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

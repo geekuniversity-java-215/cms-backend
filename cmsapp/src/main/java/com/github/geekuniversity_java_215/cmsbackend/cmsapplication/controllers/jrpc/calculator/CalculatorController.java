@@ -48,8 +48,7 @@ public class CalculatorController {
     public JsonNode add(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
-        double res = calculatorService.add(pair[0], pair[1]);
-        return toJson(res);
+        return toJson(calculatorService.add(pair[0], pair[1]));
     }
 
 
@@ -57,8 +56,7 @@ public class CalculatorController {
     public JsonNode sub(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
-        double res = calculatorService.sub(pair[0], pair[1]);
-        return toJson(res);
+        return toJson(calculatorService.sub(pair[0], pair[1]));
     }
 
 
@@ -66,8 +64,7 @@ public class CalculatorController {
     public JsonNode mul(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
-        double res = calculatorService.mul(pair[0], pair[1]);
-        return toJson(res);
+        return toJson(calculatorService.mul(pair[0], pair[1]));
     }
 
 
@@ -75,8 +72,7 @@ public class CalculatorController {
     public JsonNode div(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
-        double res = calculatorService.div(pair[0], pair[1]);
-        return toJson(res);
+        return toJson(calculatorService.div(pair[0], pair[1]));
     }
 
 
@@ -120,9 +116,9 @@ public class CalculatorController {
 
 
     // Entity => Json
-    private JsonNode toJson(Double d) {
+    private JsonNode toJson(Object o) {
         try {
-            return objectMapper.valueToTree(d);
+            return objectMapper.valueToTree(o);
         }
         catch (Exception e) {
             throw new ParseException(0, "toJson convert error", e);
