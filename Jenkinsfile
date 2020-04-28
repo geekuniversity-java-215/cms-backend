@@ -7,6 +7,7 @@ pipeline {
             steps {
                 sh '''
                 ls -lah
+                pwd
                 mkdir -p dependencies
                 cd dependencies/
                 if [ ! -d "utils" ] ; then
