@@ -4,10 +4,19 @@ pipeline {
 
         // madness
         stage('dependencies') {
+            environment {
+                MAIL_URL     = credentials('mail_url')
+                AWS_SECRET_ACCESS_KEY = credentials('mail_password')
+            }
             steps {
                 sh '''
+
+                echo "$MAIL_URL"
+                curl "$MAIL_URL"
+
                 #ls -lah
                 pwd
+                cp ../
                 mkdir -p dependencies
                 cd dependencies/
                 if [ ! -d "utils" ] ; then
@@ -23,7 +32,21 @@ pipeline {
             steps {
                 sh 'git clean -fdx -e /dependencies'
                 sh './install-properties.sh'
-                //sh 'wget http://ya.ru'
+
+//                 withCredentials([usernameColonPassword(credentialsId: 'mysecret_mail', variable: 'URL')]) {
+//                 sh '''
+//                     wget "url"
+//                 '''
+//                 }
+//
+//                 withCredentials([usernameColonPassword(credentialsId: 'mysecret_mail', variable: 'password')]) {
+//                 sh '''
+//                     unzip
+//                 '''
+//                 }
+
+
+                //
             }
         }
 
