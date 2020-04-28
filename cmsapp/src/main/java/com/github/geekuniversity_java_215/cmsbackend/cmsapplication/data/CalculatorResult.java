@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
 
-// Такие штуки должны уехать в DTO в 
+// Такие штуки должны уехать в DTO в protocol
 @Data
 public class CalculatorResult {
     private double result;
