@@ -10,7 +10,7 @@ pipeline {
         }
 
         // madness
-        stage('dependencies') {
+        stage('dependencies2') {
             steps {
                 sh 'wget http://ya.ru'
             }
