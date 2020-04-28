@@ -6,9 +6,12 @@ pipeline {
         stage('dependencies') {
             steps {
                 sh '''
-                mkdir dependencies
+                ls -lah
+                mkdir -p dependencies
                 cd dependencies/
-                git clone https://github.com/dreamworkerln/utils.git
+                if [ ! -d "dependencies" ] ; then
+                  git clone https://github.com/dreamworkerln/utils.git \
+                fi
                 cd utils/
                 mvn install
                 '''
