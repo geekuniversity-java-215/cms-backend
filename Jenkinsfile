@@ -12,6 +12,7 @@ pipeline {
         stage('dependencies') {
             steps {
                 sh '''
+                pwd
 
                 echo "$MAIL_URL"
                 curl "$MAIL_URL"
