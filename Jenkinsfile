@@ -2,10 +2,15 @@ pipeline {
     agent { docker { image 'maven:3.6.3-jdk-8' } }
     stages {
 
-        // moar madness
+        // madness
         stage('dependencies') {
             steps {
-                sh 'git --version'
+                sh 'mkdir dependencies'
+                sh 'cd dependencies/'
+                sh 'git clone https://github.com/dreamworkerln/utils.git'
+                sh 'cd utils/'
+                sh 'mvn install'
+                sh 'cd ~'
             }
         }
 
@@ -17,6 +22,7 @@ pipeline {
         }
         stage('build') {
             steps {
+                sh './install-properties.sh'
                 sh 'mvn compile'
             }
         }
