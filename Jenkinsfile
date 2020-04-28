@@ -11,13 +11,6 @@ pipeline {
         // madness
         stage('dependencies') {
             steps {
-                sh '''
-                    set -x
-                    pwd
-                    wget "$MAIL_URL" -O mail.resources.zip
-                    unzip -o mail.resources.zip -d mail/src/main/resources/
-                '''
-
 
                 sh '''
                 #ls -lah
@@ -37,6 +30,14 @@ pipeline {
             steps {
                 sh 'git clean -fdx -e /dependencies'
                 sh './install-properties.sh'
+
+                sh '''
+                    set -x
+                    pwd
+                    wget "$MAIL_URL" -O mail.resources.zip
+                    unzip -o mail.resources.zip -d mail/src/main/resources/
+                    rm mail.resources.zip
+                '''
             }
         }
 
