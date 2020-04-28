@@ -12,25 +12,25 @@ pipeline {
                 cd dependencies/
                 if [ ! -d "utils" ] ; then
                     git clone https://github.com/dreamworkerln/utils.git
-                    cd utils/
-                    mvn install
                 fi
+                cd utils/
+                mvn install
                 '''
-
-                sh 'pwd'
+                
+                //sh 'pwd'
                 sh 'git clean -fdx -e /dependencies'
             }
         }
 
-//         stage('dependencies2') {
-//             steps {
-//                 sh 'wget http://ya.ru'
-//             }
-//         }
+        stage('properties') {
+            steps {
+                //sh 'wget http://ya.ru'
+                sh './install-properties.sh'
+            }
+        }
 
         stage('build') {
             steps {
-                sh './install-properties.sh'
                 sh 'mvn compile'
             }
         }
