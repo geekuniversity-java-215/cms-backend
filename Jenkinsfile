@@ -1,10 +1,10 @@
 pipeline {
     agent { docker { image 'maven:3.6.3-jdk-8' } }
 
-//     environment {
-//         MAIL_URL     = credentials('mail_url')
-//         AWS_SECRET_ACCESS_KEY = credentials('mail_password')
-//     }
+    environment {
+        MAIL_URL=credentials('mail_url')
+        AWS_SECRET_ACCESS_KEY=credentials('mail_password')
+    }
         
     stages {
 
