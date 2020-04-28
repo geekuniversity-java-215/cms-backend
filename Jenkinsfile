@@ -10,7 +10,7 @@ pipeline {
                 mkdir -p dependencies
                 cd dependencies/
                 if [ ! -d "dependencies" ] ; then
-                  git clone https://github.com/dreamworkerln/utils.git \
+                    git clone https://github.com/dreamworkerln/utils.git
                 fi
                 cd utils/
                 mvn install
