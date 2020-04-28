@@ -12,14 +12,13 @@ pipeline {
                 cd dependencies/
                 if [ ! -d "utils" ] ; then
                     git clone https://github.com/dreamworkerln/utils.git
+                    cd utils/
+                    mvn install
                 fi
-                cd utils/
-                mvn install
-                cd ~
-                pwd
-                ls -lah
-                git clean -fdx -e /dependencies
                 '''
+
+                sh 'pwd'
+                sh 'git clean -fdx -e /dependencies'
             }
         }
 
