@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
 
-// Такие штуки должны уехать в DTO в protocol - test for jenkins auto rebuild
+// Такие штуки должны уехать в DTO в protocol - test for jenkins auto rebuild 2
 @Data
 public class CalculatorResult {
     private double result;
