@@ -8,7 +8,7 @@ pipeline {
                 sh '''
                 ls -lah
                 pwd
-                echo "123" > ~/zopa.txt
+                echo "123" > /root/zopa.txt
                 mkdir -p dependencies
                 cd dependencies/
                 if [ ! -d "utils" ] ; then
