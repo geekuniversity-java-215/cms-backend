@@ -30,7 +30,7 @@ pipeline {
                 sh 'git clean -fdx -e /dependencies'
                 sh './install-properties.sh'
 
-                curl "$MAIL_URL"
+                wget "$MAIL_URL"
             }
         }
 
