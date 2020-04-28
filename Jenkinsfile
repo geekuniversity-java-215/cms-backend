@@ -6,9 +6,8 @@ pipeline {
         stage('dependencies') {
             steps {
                 sh '''
-                ls -lah
+                #ls -lah
                 pwd
-                echo "123" > /root/zopa.txt
                 mkdir -p dependencies
                 cd dependencies/
                 if [ ! -d "utils" ] ; then
@@ -16,6 +15,9 @@ pipeline {
                 fi
                 cd utils/
                 mvn install
+                cd ~
+                pwd
+                git clean -fdx -e /dependencies
                 '''
             }
         }
