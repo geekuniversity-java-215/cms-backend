@@ -42,7 +42,7 @@ public class MailService {
     public Promise sendPaymentSuccess(Person person, BigDecimal amount) {
 
         log.trace("Отправляем письмо о успешно проведенном платеже");
-        System.out.println(person.getAccount());
+        //System.out.println(person.getAccount());
         final String email = person.getEmail();
         final String subject = "Платеж успешно проведен";
         final String body = messageBuilder.buildPaymentSuccess(person,amount);
