@@ -5,12 +5,13 @@ pipeline {
         // madness
         stage('dependencies') {
             steps {
-                sh 'mkdir dependencies'
-                sh 'cd dependencies/'
-                sh 'git clone https://github.com/dreamworkerln/utils.git'
-                sh 'cd utils/'
-                sh 'mvn install'
-                sh 'cd ~'
+                sh '''
+                mkdir dependencies
+                cd dependencies/
+                git clone https://github.com/dreamworkerln/utils.git
+                cd utils/
+                mvn install
+                '''
             }
         }
 
