@@ -16,14 +16,12 @@ pipeline {
                 cd utils/
                 mvn install
                 '''
-                
-                //sh 'pwd'
-                sh 'git clean -fdx -e /dependencies'
             }
         }
 
         stage('properties') {
             steps {
+                sh 'git clean -fdx -e /dependencies'
                 sh './install-properties.sh'
                 //sh 'wget http://ya.ru'
             }
@@ -35,10 +33,9 @@ pipeline {
             }
         }
 
-        // not working, need database
         stage('test') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test -Dspring.datasource.url=jdbc:h2:mem:testdb -Dspring.datasource.driverClassName=org.h2.Driver -Dspring.datasource.username=sa -Dspring.datasource.password=password -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect'
             }
         }
     }
