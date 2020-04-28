@@ -24,8 +24,8 @@ pipeline {
 
         stage('properties') {
             steps {
-                //sh 'wget http://ya.ru'
                 sh './install-properties.sh'
+                //sh 'wget http://ya.ru'
             }
         }
 
@@ -35,11 +35,11 @@ pipeline {
             }
         }
 
-           // not working, need database
-//         stage('test') {
-//             steps {
-//                 sh 'mvn test'
-//             }
-//         }
+        // not working, need database
+        stage('test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
     }
 }
