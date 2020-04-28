@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         MAIL_URL=credentials('mail_url')
-        AWS_SECRET_ACCESS_KEY=credentials('mail_password')
+        //AWS_SECRET_ACCESS_KEY=credentials('mail_password')
     }
         
     stages {
