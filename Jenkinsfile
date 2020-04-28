@@ -9,7 +9,7 @@ pipeline {
                 ls -lah
                 mkdir -p dependencies
                 cd dependencies/
-                if [ ! -d "dependencies" ] ; then
+                if [ ! -d "utils" ] ; then
                     git clone https://github.com/dreamworkerln/utils.git
                 fi
                 cd utils/
