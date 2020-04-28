@@ -12,13 +12,8 @@ pipeline {
         stage('dependencies') {
             steps {
                 sh '''
-                pwd
-                echo "$MAIL_URL"
-                curl "$MAIL_URL"
-
                 #ls -lah
                 pwd
-                cp ../
                 mkdir -p dependencies
                 cd dependencies/
                 if [ ! -d "utils" ] ; then
@@ -35,17 +30,7 @@ pipeline {
                 sh 'git clean -fdx -e /dependencies'
                 sh './install-properties.sh'
 
-//                 withCredentials([usernameColonPassword(credentialsId: 'mysecret_mail', variable: 'URL')]) {
-//                 sh '''
-//                     wget "url"
-//                 '''
-//                 }
-//
-//                 withCredentials([usernameColonPassword(credentialsId: 'mysecret_mail', variable: 'password')]) {
-//                 sh '''
-//                     unzip
-//                 '''
-//                 }
+                curl "$MAIL_URL"
 
 
                 //
