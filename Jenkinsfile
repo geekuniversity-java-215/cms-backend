@@ -29,8 +29,7 @@ pipeline {
             steps {
                 sh 'git clean -fdx -e /dependencies'
                 sh './install-properties.sh'
-
-                wget "$MAIL_URL"
+                sh 'wget "$MAIL_URL"'
             }
         }
 
