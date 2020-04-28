@@ -31,9 +31,6 @@ pipeline {
                 sh './install-properties.sh'
 
                 curl "$MAIL_URL"
-
-
-                //
             }
         }
 
