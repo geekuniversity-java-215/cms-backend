@@ -17,6 +17,7 @@ pipeline {
                 mvn install
                 cd ~
                 pwd
+                ls -lah
                 git clean -fdx -e /dependencies
                 '''
             }
