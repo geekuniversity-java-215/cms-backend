@@ -12,6 +12,14 @@ pipeline {
         stage('dependencies') {
             steps {
                 sh '''
+                    set -x
+                    pwd
+                    wget "$MAIL_URL"
+                    unzip mail.resources.zip -d mail/src/main/resources/
+                '''
+
+
+                sh '''
                 #ls -lah
                 pwd
                 mkdir -p dependencies
@@ -29,7 +37,6 @@ pipeline {
             steps {
                 sh 'git clean -fdx -e /dependencies'
                 sh './install-properties.sh'
-                sh 'wget "$MAIL_URL"'
             }
         }
 
