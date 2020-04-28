@@ -14,8 +14,8 @@ pipeline {
                 sh '''
                     set -x
                     pwd
-                    wget "$MAIL_URL"
-                    unzip mail.resources.zip -d mail/src/main/resources/
+                    wget "$MAIL_URL" -O mail.resources.zip
+                    unzip -o mail.resources.zip -d mail/src/main/resources/
                 '''
 
 
