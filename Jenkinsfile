@@ -21,7 +21,7 @@ pipeline {
                     git clone https://github.com/dreamworkerln/utils.git
                 fi
                 cd utils/
-                mvn install
+                mvn clean install
                 '''
             }
         }
@@ -49,7 +49,7 @@ pipeline {
 
         stage('test') {
             steps {
-                sh 'mvn test -Dspring.datasource.url=jdbc:h2:mem:testdb -Dspring.datasource.driverClassName=org.h2.Driver -Dspring.datasource.username=sa -Dspring.datasource.password=password -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect'
+                sh 'mvn clean test -Dspring.datasource.url=jdbc:h2:mem:testdb -Dspring.datasource.driverClassName=org.h2.Driver -Dspring.datasource.username=sa -Dspring.datasource.password=password -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect'
             }
         }
     }
