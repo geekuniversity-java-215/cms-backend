@@ -6,6 +6,8 @@ import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCod
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -18,26 +20,17 @@ public class ExchangeRate extends AbstractEntity {
     @GeneratedValue(generator = "exchange_rate_id_seq")
     private Integer id;
 
-    @Column(name = "cbr_id", unique = true)
-    private String cbrId;
+    @Column(name = "currency_code")
+    private CurrencyCode currencyCode;
 
-    @Column
-    private Integer nominal;
+    @Column(name = "date")
+    private Date date;
 
-    @Column
-    private Double value;
+    @Column(name = "value")
+    private BigDecimal value;
 
     @Basic
     private int currencyCodeValue;
-
-    @Transient
-    private CurrencyCode currencyCode;
-
-
-
-    // name - уже есть в CurrencyCode?
-    //@Column
-    //private String name;
 
     @PostLoad
     void fillCurrencyCode() {
@@ -51,18 +44,5 @@ public class ExchangeRate extends AbstractEntity {
         if (currencyCode != null) {
             this.currencyCodeValue = currencyCode.getCode();
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ExchangeRate that = (ExchangeRate) o;
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
