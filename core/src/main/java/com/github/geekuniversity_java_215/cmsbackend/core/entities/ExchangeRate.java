@@ -21,14 +21,19 @@ public class ExchangeRate extends AbstractEntity {
     @Column(name = "cbr_id", unique = true)
     private String cbrId;
 
+    @Column
+    private Integer nominal;
+
+    @Column
+    private Double value;
+
     @Basic
     private int currencyCodeValue;
 
     @Transient
     private CurrencyCode currencyCode;
 
-    @Column
-    private Integer nominal;
+
 
     // name - уже есть в CurrencyCode?
     //@Column
