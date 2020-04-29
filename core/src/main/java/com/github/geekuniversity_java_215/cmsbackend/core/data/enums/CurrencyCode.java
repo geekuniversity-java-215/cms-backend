@@ -22,6 +22,7 @@ public enum CurrencyCode {
     @ToString.Include
     private final String name;
 
+    @ToString.Exclude
     private final String cbrId;
 
     private final static Map<Integer, CurrencyCode> ENUM_MAP = new HashMap<>();

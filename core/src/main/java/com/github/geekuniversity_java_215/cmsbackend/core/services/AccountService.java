@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.aop.LogExecutionTime;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
+
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.AccountRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
@@ -21,6 +22,7 @@ import static com.pivovarit.function.ThrowingRunnable.unchecked;
 @Transactional
 @Slf4j
 public class AccountService extends BaseRepoAccessService<Account> {
+
     private final AccountRepository accountRepository;
     private final CurrencyConverterService currencyConverterService;
 
@@ -33,6 +35,7 @@ public class AccountService extends BaseRepoAccessService<Account> {
 
     /**
      *  Use new constructor with currency parameter
+     *  this method use default CurrencyCode (RUB)
      *
      * Зачислить на счет
      * @param account
@@ -42,29 +45,8 @@ public class AccountService extends BaseRepoAccessService<Account> {
     @LogExecutionTime
     public void addBalance(Account account, BigDecimal amount) {
 
-        //ToDo: Убрать тестирование
-        log.info("Хотим пополнить баланс, id={} balance: {} ", account.getId(), account.getBalance());
+        addBalance(account, amount, CurrencyCode.RUB);
 
-        accountRepository.lockByAccount(account);
-        log.info("Заблокировали строку, id={} balance: {}", account.getId(), account.getBalance());
-
-        // reload
-        account = findById(account.getId()).orElse(null);
-        Assert.notNull(account,"Account after reload == null");
-        log.info("Перечитали account из базы, id={} balance: {}", account.getId(), account.getBalance());
-
-
-        // TESTING
-        log.info("Усиленно работаем ...");
-        unchecked(() -> TimeUnit.SECONDS.sleep(2));
-
-        fieldSetter("balance", account, account.getBalance().add(amount));
-        //propertySetter("setBalance", account, BigDecimal.class, account.getBalance().add(amount));
-        log.info("Пополняем баланс, id={} balance: {}", account.getId(), account.getBalance());
-
-        accountRepository.save(account);
-
-        log.info("Снимаем блокировку строки, id={} balance: {}", account.getId(), account.getBalance());
     }
 
     /**
@@ -73,6 +55,7 @@ public class AccountService extends BaseRepoAccessService<Account> {
      * @param amount
      * @param currencyCode
      */
+
     @LogExecutionTime
     public BigDecimal addBalance(Account account, BigDecimal amount, CurrencyCode currencyCode) {
 
@@ -107,6 +90,7 @@ public class AccountService extends BaseRepoAccessService<Account> {
 
     /**
      *  Use new constructor with currency parameter
+     *  this method use default CurrencyCode (RUB)
      *
      * Снять со счета
      * @param account
@@ -115,20 +99,8 @@ public class AccountService extends BaseRepoAccessService<Account> {
     @Deprecated
     public void removeBalance(Account account, BigDecimal amount) {
 
-        accountRepository.lockByAccount(account);
+        removeBalance(account, amount, CurrencyCode.RUB);
 
-        // reload
-        account = findById(account.getId()).orElse(null);
-        Assert.notNull(account,"Account after reload == null");
-
-        if(account.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) >=0) {
-
-            fieldSetter("balance", account, account.getBalance().subtract(amount));
-            accountRepository.save(account);
-        }
-        else {
-            throw new RuntimeException("Не хватает минералов, Милорд");
-        }
     }
 
     /**
@@ -137,9 +109,10 @@ public class AccountService extends BaseRepoAccessService<Account> {
      * Снять со счета
      * @param account
      * @param amount
+     * @param currencyCode
      */
-    @Deprecated
-    public void removeBalance(Account account, BigDecimal amount, CurrencyCode currencyCode) {
+
+    public BigDecimal removeBalance(Account account, BigDecimal amount, CurrencyCode currencyCode) {
 
         amount = currencyConverterService.convertCurrency(amount, currencyCode);
 
@@ -157,6 +130,8 @@ public class AccountService extends BaseRepoAccessService<Account> {
         else {
             throw new RuntimeException("Не хватает минералов, Милорд");
         }
+
+        return amount;
     }
 
 }
