@@ -19,7 +19,7 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
 
 # LOGGING
-logging.config=classpath:logback-spring-dev.xml
+logging.com.boshko.config=classpath:logback-spring-dev.xml
 #spring.jpa.show-sql=true
 
 

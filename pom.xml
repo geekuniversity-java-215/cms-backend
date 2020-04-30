@@ -23,6 +23,7 @@
         <module>core</module>
         <module>protocol</module>
         <module>utils</module>
+        <module>chat</module>
     </modules>
 
 
