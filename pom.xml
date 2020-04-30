@@ -27,6 +27,7 @@
         <module>cmsapp</module>
         <module>payment</module>
         <module>configuration</module>
+        <module>geodata</module>
     </modules>
 
 
