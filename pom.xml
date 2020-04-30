@@ -26,6 +26,7 @@
         <module>mail</module>
         <module>cmsapp</module>
         <module>payment</module>
+        <module>geodata</module>
         <module>configuration</module>
     </modules>
 

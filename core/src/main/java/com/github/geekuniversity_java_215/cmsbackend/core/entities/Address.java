@@ -1,22 +1,21 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
+import lombok.*;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
-@Getter
-@Setter
+
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "address")
-public class Address {
+public class Address extends AbstractEntity {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    protected Long id;
 
     @Column
     private String city;
@@ -51,10 +50,17 @@ public class Address {
     }
 
     public String addressFormatToRequest(){
-        if(building == 0){
-            return  "+" + city + "+" + street + "+" + house;
+
+        // TODO: geodata
+//        if(building == 0){
+//            return  "+" + city + "+" + street + "+" + house;
+//        }
+//        return "+" + city + "+" + street + "+" + house + "+" + building;
+        String result = city + "+" + street + "+" + house;
+        if(building != 0) {
+            result +=  "+" + house;
         }
-        return "+" + city + "+" + street + "+" + house + "+" + building;
+        return result;
     }
 
     @Override

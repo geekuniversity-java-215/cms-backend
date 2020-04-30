@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.protocol.base;
+package com.github.geekuniversity_java_215.cmsbackend.protocol.dto.base;
 
 public class HandlerName {
 
@@ -19,16 +19,22 @@ public class HandlerName {
     private static final String mul ="mul";
     private static final String div ="div";
 
+    //geodata specific
+    private static final String getRoute = "getRoute";
 
-
-
-    public static class calculatorN {
+    public static class calculator {
         public static final String path = "calculator.actions";
 
         public static final String add = HandlerName.add;
         public static final String sub = HandlerName.sub;
         public static final String mul = HandlerName.mul;
         public static final String div = HandlerName.div;
+    }
+
+    public static class geodata {
+        public static final String path = "geodata";
+
+        public static final String getRoute = HandlerName.getRoute;
     }
 
 

@@ -1,11 +1,13 @@
-package geo;
+package com.github.geekuniversity_java_215.cmsbackend.geodata.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
-public class ConstructTest {
+public class GeoServiceTest {
     private String ROUTE_URL = "http://router.project-osrm.org/route/v1/";
     private String CODE_URL = "https://nominatim.openstreetmap.org/search?q=100";
     private String transport = "driving";

@@ -13,31 +13,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
             <artifactId>core</artifactId>
             <version>0.1</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.geekuniversity_java_215</groupId>
-            <artifactId>configuration</artifactId>
-            <version>0.1</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

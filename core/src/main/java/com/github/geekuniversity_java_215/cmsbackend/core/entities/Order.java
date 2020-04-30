@@ -17,8 +17,9 @@ import javax.validation.constraints.NotNull;
 public class Order extends AbstractEntity {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "delivery_order_id_seq")
+    //@Column(name = "id")
+    //@GeneratedValue(generator = "delivery_order_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @NotNull

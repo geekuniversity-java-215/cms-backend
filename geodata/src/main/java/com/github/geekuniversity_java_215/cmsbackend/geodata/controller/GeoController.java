@@ -1,0 +1,76 @@
+package com.github.geekuniversity_java_215.cmsbackend.geodata.controller;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.Transport;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcController;
+import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcMethod;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
+import com.github.geekuniversity_java_215.cmsbackend.geodata.services.GeoService;
+import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
+
+import java.io.IOException;
+
+/**
+ * Интерфейс управления геосервисом
+ */
+@JrpcController(path = HandlerName.geodata.path)
+public class GeoController {
+
+    private final GeoService geoService;
+    private final OrderConverter converter;
+    private RestTemplate restTemplate;
+
+    @Autowired public GeoController(GeoService geoService) {
+        this.geoService = geoService;
+
+        // configure RestTemplate
+        restTemplate = RestTemplateFactory.getRestTemplate(10);
+    }
+
+
+    @JrpcMethod(method = HandlerName.geodata.getRoute)
+    public String getRoute() {
+
+        Long id = converter.getId(params);
+        Order order = orderService.findById(id).orElse(null);
+        return converter.toDtoJson(order);
+
+         // TODO: geodata: перенести логику по работе с restTemplate в отдельный сервис,
+         //   Убрать это из контроллера restTemplate
+        RestTemplate restTemplate = new RestTemplate();
+
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String fromPoint = restTemplate.getForObject(geoService.geocode(order.getFrom()), String.class);
+        String toPoint = restTemplate.getForObject(geoService.geocode(order.getTo()), String.class);
+        String[] fromPoints = fromPoint.split("},");
+        String[] toPoints = toPoint.split("},");
+        String primaryPointFrom = fromPoints[0].substring(1) + "}";
+        String primaryPointTo = toPoints[0].substring(1) + "}";
+        JsonNode nodeFrom = null, nodeTo = null;
+        try {
+            nodeFrom = mapper.readTree(primaryPointFrom);
+            nodeTo = mapper.readTree(primaryPointTo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String latFrom = nodeFrom.get("lat").asText();
+        String lonFrom = nodeFrom.get("lon").asText();
+        String latTo = nodeTo.get("lat").asText();
+        String lonTo = nodeTo.get("lon").asText();
+
+        order.getFrom().setLongitude(lonFrom);
+        order.getFrom().setLatitude(latFrom);
+        order.getTo().setLongitude(lonTo);
+        order.getTo().setLatitude(latTo);
+
+        String route = geoService.createRoute(order, Transport.driving);
+        return restTemplate.getForObject(route, String.class);
+    }
+}

@@ -17,8 +17,9 @@ public class ExchangeRate extends AbstractEntity {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(generator = "exchange_rate_id_seq")
-    private Integer id;
+    //@GeneratedValue(generator = "exchange_rate_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "currency_code")
     private CurrencyCode currencyCode;

@@ -1,5 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
 
+import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,6 +11,8 @@ import java.time.Instant;
 
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
+
+    protected Long id;
 
     @Column(name = "created", updatable = false)
     @CreationTimestamp
@@ -27,6 +31,13 @@ public abstract class AbstractEntity implements Serializable {
 
     public Instant getUpdated() {
         return updated;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    protected void setId(Long id) {
+        this.id = id;
     }
 
 }

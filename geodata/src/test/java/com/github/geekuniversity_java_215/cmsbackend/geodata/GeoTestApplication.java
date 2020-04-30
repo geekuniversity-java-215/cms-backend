@@ -1,4 +1,4 @@
-package geo;
+package com.github.geekuniversity_java_215.cmsbackend.geodata;
 
 import com.github.geekuniversity_java_215.cmsbackend.configuration.configurations.MultimoduleSpringBootApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

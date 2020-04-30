@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.protocol.base;
+package com.github.geekuniversity_java_215.cmsbackend.protocol.dto.base;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -6,8 +6,8 @@ import java.time.Instant;
 public abstract class AbstractDto implements Serializable {
 
     protected Long id;
-    protected Instant created; // Можно поменять на Long
-    protected Instant updated; // Можно поменять на Long
+    protected Instant created;
+    protected Instant updated;
 
     public Long getId() {
         return id;

@@ -1,15 +1,18 @@
-package geo;
+package com.github.geekuniversity_java_215.cmsbackend.geodata.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.Transport;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.geodata.services.GeoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class GeoControllerTest {
@@ -19,14 +22,14 @@ public class GeoControllerTest {
     public void getRoute() {
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper mapper = new ObjectMapper();
-        Construct construct = new Construct();
+        GeoService geoService = new GeoService();
         Order order = new Order();
 
         Address from = new Address("Санкт-Петербург", "Кондратьевский", 70, 2, 100);
         Address to = new Address("Санкт-Петербург", "Кондратьевский", 20, 0, 100);
 
-        String fromPoint = restTemplate.getForObject(construct.decodeAddressToPoint(from), String.class);
-        String toPoint = restTemplate.getForObject(construct.decodeAddressToPoint(to), String.class);
+        String fromPoint = restTemplate.getForObject(geoService.geocode(from), String.class);
+        String toPoint = restTemplate.getForObject(geoService.geocode(to), String.class);
 
         String[] fromPoints = fromPoint.split("}");
         String[] toPoints = toPoint.split("}");
@@ -53,7 +56,6 @@ public class GeoControllerTest {
         order.setFrom(from);
         order.setTo(to);
 
-        String route = construct.createRouteByPoint(order, Transport.driving);
+        String route = geoService.createRoute(order, Transport.driving);
         System.out.println(restTemplate.getForObject(route, String.class));
     }
-}
