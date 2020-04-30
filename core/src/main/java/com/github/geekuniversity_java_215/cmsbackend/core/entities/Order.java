@@ -35,6 +35,14 @@ public class Order extends AbstractEntity {
     @Column(name = "status")
     private OrderStatus status;
 
+    @OneToOne
+    @JoinColumn
+    private Address from;
+
+    @OneToOne
+    @JoinColumn
+    private Address to;
+
     protected void setId(Long id) {
         this.id = id;
     }
