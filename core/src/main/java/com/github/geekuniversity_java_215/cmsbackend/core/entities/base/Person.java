@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import lombok.*;
 
 
@@ -12,35 +13,49 @@ import java.util.List;
 //@MappedSuperclass
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+
 @Table(
+    name = "person",
     indexes = {@Index(name = "_idx", columnList = "account_id"),
                @Index(name = "_unq", columnList = "last_name, first_name",unique = true)
     })
-
-
 @Data
 @EqualsAndHashCode(callSuper=true)
 public abstract class Person extends AbstractEntity {
 
     @Id
-    @Column(name = "id")
+    //@Column(name = "id")
     @GeneratedValue(generator = "person_id_seq")
     protected Long id;
 
     @NotNull
-    @Column(name = "first_name")
+    //@Column(name = "login")
+    protected String login;
+
+    @NotNull
+    //@Column(name = "password") // bcrypt hash
+    protected String password;
+
+    // Это список только refresh_token
+    @NotNull
+    @OneToMany(mappedBy= "person", orphanRemoval = true, cascade = CascadeType.ALL)
+    //@OrderBy("id ASC")
+    private List<RefreshToken> refreshTokens = new ArrayList<>();
+
+    @NotNull
+    //@Column(name = "first_name")
     protected String firstName;
 
     @NotNull
-    @Column(name = "last_name")
+    //@Column(name = "last_name")
     protected String lastName;
 
     @NotNull
-    @Column(name = "email")
+    //@Column(name = "email")
     protected String email;
 
     @NotNull
-    @Column(name = "phone_number")
+    //@Column(name = "phone_number")
     protected String phoneNumber;
 
 
