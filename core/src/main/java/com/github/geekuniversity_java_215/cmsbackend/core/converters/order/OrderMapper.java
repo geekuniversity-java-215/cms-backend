@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         unmappedTargetPolicy = ReportingPolicy.ERROR,
         uses = {InstantMapper.class, AddressMapper.class})
 // ProductMapper.class, ProductItemMapper.class, OrderItemMapper.class
-public abstract class OrderMapper extends AbstractMapper {
+public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 
 //    @Autowired
 //    OrderService orderService;

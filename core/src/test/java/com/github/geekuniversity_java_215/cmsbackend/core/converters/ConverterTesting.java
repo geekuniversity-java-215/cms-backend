@@ -7,8 +7,11 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.AddressService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.util.Assert;
 
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 
 @SpringBootTest
 @Slf4j
@@ -28,6 +32,8 @@ class ConverterTesting {
     private PersonService personService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private AddressService addressService;
 
     Address from;
     Address to;
@@ -62,10 +68,27 @@ class ConverterTesting {
     void OrderConverterTest() {
 
         JsonNode orderJson = orderConverter.toDtoJson(order);
+        String json = orderJson.toString();
         log.info(orderJson.toPrettyString());
         Order newWorldOrder = orderConverter.toEntity(orderJson);
 
-        Assert.isTrue(order.equals(newWorldOrder), "OrderConverter failed");
+//        copyTimes(newWorldOrder, order);
+//        copyTimes(newWorldOrder.getFrom(), order.getFrom());
+//        copyTimes(newWorldOrder.getTo(), order.getTo());
+
+        JsonNode orderJsonNew = orderConverter.toDtoJson(order);
+        String jsonNew = orderJson.toString();
+        log.info(orderJsonNew.toPrettyString());
+
+        Assert.isTrue(json.equals(jsonNew), "OrderConverter failed");
+    }
+
+
+
+    private void copyTimes(AbstractEntity entity, AbstractEntity from) {
+
+        Utils.fieldSetter("created", entity, from.getCreated());
+        Utils.fieldSetter("updated", entity, from.getUpdated());
 
     }
 }

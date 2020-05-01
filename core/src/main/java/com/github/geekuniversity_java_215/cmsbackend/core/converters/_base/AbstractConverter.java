@@ -3,7 +3,12 @@ package com.github.geekuniversity_java_215.cmsbackend.core.converters._base;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.dto._base.AbstractDto;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.address.AddressDto;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.order.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
@@ -17,10 +22,15 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public abstract class AbstractConverter<E> {
+public abstract class AbstractConverter<E,D,S> {
 
     private  Validator validator;
     protected ObjectMapper objectMapper;
+    protected AbstractMapper<E,D> entityMapper;
+
+    protected Class<E> entityClass;
+    protected Class<D> dtoClass;
+    protected Class<S> specClass;
 
     // Будешь @Autowired через конструктор - придется в конструкторах наследников юзать super.constructor(...)
     @Autowired
@@ -86,6 +96,41 @@ public abstract class AbstractConverter<E> {
         return objectMapper.valueToTree(entity.getId());
     }
 
+    // -------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+    // Json => Dto => Entity
+    public E toEntity(JsonNode params)  {
+        try {
+            D dto = objectMapper.treeToValue(params, dtoClass);
+            E result = entityMapper.toEntity(dto);
+            validate(result);
+            return result;
+        }
+        catch (ValidationException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new ParseException(0, "Dto parse error", e);
+        }
+    }
+
+
+    // Entity => Dto => Json
+    public JsonNode toDtoJson(E entity) {
+        try {
+            D dto = entityMapper.toDto(entity);
+            return objectMapper.valueToTree(dto);
+        }
+        catch (Exception e) {
+            throw new ParseException(0, "ToDtoJson convert error", e);
+        }
+    }
+
 
     // check Entity validity
     protected void validate(E entity) {
@@ -95,7 +140,7 @@ public abstract class AbstractConverter<E> {
         }
     }
 
-//                            Not Implemented
+//  Not Implemented
 /*
     // check SpecDto validity
     private void validateSpecDto(E specDto) {
