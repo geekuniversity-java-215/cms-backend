@@ -1,10 +1,10 @@
-package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.jrpc.calculator;
+package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.services.CalculatorService;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcMethod;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ import java.lang.invoke.MethodHandles;
 /**
  * Интерфейс управления калькулятором
  */
-@JrpcController(path = HandlerName.calculatorN.path)
+@JrpcController(HandlerName.calculator.path)
 public class CalculatorController {
 
     private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -44,7 +44,7 @@ public class CalculatorController {
 
 
 
-    @JrpcMethod(method = HandlerName.calculatorN.add)
+    @JrpcMethod(HandlerName.calculator.add)
     public JsonNode add(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
@@ -52,7 +52,7 @@ public class CalculatorController {
     }
 
 
-    @JrpcMethod(method = HandlerName.calculatorN.sub)
+    @JrpcMethod(HandlerName.calculator.sub)
     public JsonNode sub(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
@@ -60,7 +60,7 @@ public class CalculatorController {
     }
 
 
-    @JrpcMethod(method = HandlerName.calculatorN.mul)
+    @JrpcMethod(HandlerName.calculator.mul)
     public JsonNode mul(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
@@ -68,7 +68,7 @@ public class CalculatorController {
     }
 
 
-    @JrpcMethod(method = HandlerName.calculatorN.div)
+    @JrpcMethod(HandlerName.calculator.div)
     public JsonNode div(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);

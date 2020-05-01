@@ -5,11 +5,13 @@ import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.CustomRe
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockModeType;
 import java.util.List;
 
+@Repository
 public interface OrderRepository extends CustomRepository<Order, Long> {
 
     // SELECT FOR UPDATE

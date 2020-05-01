@@ -22,11 +22,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Account extends AbstractEntity {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "account_id_seq")
-    protected Long id;
-
     @NotNull
     @Column(name = "balance")
     private BigDecimal balance = new BigDecimal(0);

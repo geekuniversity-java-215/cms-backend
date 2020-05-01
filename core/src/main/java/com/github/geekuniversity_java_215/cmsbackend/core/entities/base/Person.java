@@ -12,6 +12,7 @@ import java.util.List;
 
 //@MappedSuperclass
 @Entity
+//@AttributeOverride(name="id", column = )
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 
 @Table(
@@ -21,11 +22,12 @@ import java.util.List;
     })
 @Data
 @EqualsAndHashCode(callSuper=true)
-public abstract class Person extends AbstractEntity {
+public abstract class Person extends AbstractEntityNoGen {
 
     @Id
     //@Column(name = "id")
     @GeneratedValue(generator = "person_id_seq")
+    @EqualsAndHashCode.Exclude
     protected Long id;
 
     @NotNull

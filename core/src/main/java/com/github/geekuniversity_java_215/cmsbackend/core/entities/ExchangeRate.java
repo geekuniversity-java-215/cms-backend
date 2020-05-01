@@ -15,11 +15,6 @@ import java.util.Objects;
 @Data
 public class ExchangeRate extends AbstractEntity {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "exchange_rate_id_seq")
-    private Integer id;
-
     @Column(name = "currency_code")
     private CurrencyCode currencyCode;
 
@@ -29,6 +24,7 @@ public class ExchangeRate extends AbstractEntity {
     @Column(name = "value")
     private BigDecimal value;
 
+    // Enum mapping
     @Basic
     private int currencyCodeValue;
 

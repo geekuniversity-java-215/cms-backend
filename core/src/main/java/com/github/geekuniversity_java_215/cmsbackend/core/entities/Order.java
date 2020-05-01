@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import lombok.Data;
@@ -16,11 +17,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class Order extends AbstractEntity {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "delivery_order_id_seq")
-    protected Long id;
-
     @NotNull
     @ManyToOne
     @JoinColumn(name="customer_id")
@@ -31,13 +27,38 @@ public class Order extends AbstractEntity {
     @JoinColumn(name="courier_id")
     private Courier courier;
 
-    @NotNull
-    @Column(name = "status")
+    @Transient
     private OrderStatus status;
 
-    protected void setId(Long id) {
-        this.id = id;
+    // Enum mapping
+    @Basic
+    private int statusValue;
+
+    @PostLoad
+    void fillCurrencyCode() {
+        if (statusValue > 0) {
+            this.status = OrderStatus.idOf(statusValue);
+        }
     }
+
+    @PrePersist
+    void fillCurrencyCodeValue() {
+        if (status != null) {
+            this.statusValue = status.getId();
+        }
+    }
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn
+    private Address from;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn
+    private Address to;
+
+//    protected void setId(Long id) {
+//        this.id = id;
+//    }
 
 
     @Override

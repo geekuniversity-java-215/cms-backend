@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers;
+package com.github.geekuniversity_java_215.cmsbackend.core.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -226,7 +226,7 @@ public class ApiController {
                         // Checked(как и unchecked) исключения будут проброшены к вызывающему
                         JrpcMethodHandler handler = params -> (JsonNode)method.invoke(bean,params);
 
-                        handlers.put(jrpcController.path() + "." + jrpcMethod.method(), handler);
+                        handlers.put(jrpcController.value() + "." + jrpcMethod.value(), handler);
                     }
                 }
             }
