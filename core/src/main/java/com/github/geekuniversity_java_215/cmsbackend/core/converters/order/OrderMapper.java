@@ -1,33 +1,59 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.converters.order;
+package com.github.geekuniversity_java_215.cmsbackend.core.converters;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.order.OrderDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+@SuppressWarnings({"SpringJavaAutowiredMembersInspection"})
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
         uses = {InstantMapper.class, AddressMapper.class})
 // ProductMapper.class, ProductItemMapper.class, OrderItemMapper.class
 public abstract class OrderMapper extends AbstractMapper {
 
+//    @Autowired
+//    OrderService orderService;
+
     @Autowired
-    OrderService orderService;
+    PersonService personService;
 
     //@Mapping(source = "client", target = "client", qualifiedByName = "toClientDto")
     //@Mapping(source = "manager", target = "manager", qualifiedByName = "toManagerDto")
 
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "courier.id", target = "courierId")
+    @Mapping(source = "status.id", target = "status")
     public abstract OrderDto toDto(Order order);
 
     @Mapping(target = "customer", ignore = true)
     @Mapping(target = "courier", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "statusValue", ignore = true)
     public abstract Order toEntity(OrderDto orderDto);
+
+    @AfterMapping
+    void afterMapping(OrderDto source, @MappingTarget Order target) {
+
+        idMap(source, target);
+
+        Customer customer = (Customer) personService.findById(source.getCustomerId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        Courier courier = (Courier) personService.findById(source.getCourierId())
+                .orElseThrow(() -> new RuntimeException("Courier not found"));
+        target.setCustomer(customer);
+        target.setCourier(courier);
+
+        target.setStatus(OrderStatus.idOf(source.getStatus()));
+    }
 
 
 
@@ -62,10 +88,7 @@ public abstract class OrderMapper extends AbstractMapper {
 //    }
 
 
-    @AfterMapping
-    void afterMapping(OrderDto source, @MappingTarget Order target) {
-        idMap(source, target);
-    }
+
 
 //    @AfterMapping
 //    void afterMapping(OrderItemDto source, @MappingTarget OrderItem target) {

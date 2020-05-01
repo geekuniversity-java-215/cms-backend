@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.converters.order;
+package com.github.geekuniversity_java_215.cmsbackend.core.converters;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractConverter;
