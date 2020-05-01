@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.converters.base;
+package com.github.geekuniversity_java_215.cmsbackend.core.converters._base;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,8 +19,14 @@ import java.util.Set;
 @Service
 public abstract class AbstractConverter<E> {
 
-    private Validator validator;
+    private  Validator validator;
     protected ObjectMapper objectMapper;
+
+    // Будешь @Autowired через конструктор - придется в конструкторах наследников юзать super.constructor(...)
+    @Autowired
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
 
     @Autowired
     public void setObjectMapper(ObjectMapper objectMapper) {
@@ -89,14 +95,16 @@ public abstract class AbstractConverter<E> {
         }
     }
 
+//                            Not Implemented
+/*
+    // check SpecDto validity
+    private void validateSpecDto(E specDto) {
+        Set<ConstraintViolation<S>> violations = validator.validate(specDto);
+        if (violations.size() != 0) {
+            throw new ConstraintViolationException("Entity validation failed", violations);
+        }
 
-//    // check SpecDto validity
-//    private void validateSpecDto(E specDto) {
-//        Set<ConstraintViolation<S>> violations = validator.validate(specDto);
-//        if (violations.size() != 0) {
-//            throw new ConstraintViolationException("Entity validation failed", violations);
-//        }
-//
-//    }
+    }
+    */
 
 }

@@ -31,11 +31,17 @@ public class HandlerName {
         public static final String div = HandlerName.div;
     }
 
-    public static class geodata {
-        public static final String path = "geodata";
+    public static class order {
+        public static final String path = "cmsapp.core.order";
 
-        public static final String getRoute = HandlerName.getRoute;
+        public static final String findById = HandlerName.findById;
     }
+
+//    public static class geodata {
+//        public static final String path = "geodata";
+//
+//        public static final String getRoute = HandlerName.getRoute;
+//    }
 
 
    /*

@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "address")
 public class Address extends AbstractEntity {
@@ -56,7 +57,7 @@ public class Address extends AbstractEntity {
 //            return  "+" + city + "+" + street + "+" + house;
 //        }
 //        return "+" + city + "+" + street + "+" + house + "+" + building;
-        String result = city + "+" + street + "+" + house;
+        String result = "+" + city + "+" + street + "+" + house;
         if(building != 0) {
             result +=  "+" + house;
         }

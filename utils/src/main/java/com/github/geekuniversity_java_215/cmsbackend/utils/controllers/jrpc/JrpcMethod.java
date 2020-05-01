@@ -21,5 +21,5 @@ public @interface JrpcMethod {
     /**
      * Method name, coming from json request 'method' param value
      */
-    String method();
+    String value();
 }

@@ -1,31 +1,31 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.converters.order;
+package com.github.geekuniversity_java_215.cmsbackend.core.converters.address;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractConverter;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.order.OrderDto;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.address.AddressDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
-import org.springframework.stereotype.Component;
 
 import javax.validation.ValidationException;
 
-@Component
-public class OrderConverter extends AbstractConverter<Order> {
+public class AddressConverter extends AbstractConverter<Address> {
 
-    private final OrderMapper orderMapper;
+    private final AddressMapper addressMapper;
 
     @Autowired
-    OrderConverter(OrderMapper orderMapper) {
-        this.orderMapper = orderMapper;
+    public AddressConverter(AddressMapper addressMapper) {
+        this.addressMapper = addressMapper;
     }
 
 
+
+
     // Json => Dto => Entity
-    public Order toEntity(JsonNode params)  {
+    public Address toEntity(JsonNode params)  {
         try {
-            OrderDto dto = objectMapper.treeToValue(params, OrderDto.class);
-            Order result = orderMapper.toEntity(dto);
+            AddressDto dto = objectMapper.treeToValue(params, AddressDto.class);
+            Address result = addressMapper.toEntity(dto);
             validate(result);
             return result;
         }
@@ -39,9 +39,9 @@ public class OrderConverter extends AbstractConverter<Order> {
 
 
     // Entity => Dto => Json
-    public JsonNode toDtoJson(Order order) {
+    public JsonNode toDtoJson(Address address) {
         try {
-            OrderDto dto = orderMapper.toDto(order);
+            AddressDto dto = addressMapper.toDto(address);
             return objectMapper.valueToTree(dto);
         }
         catch (Exception e) {
@@ -50,8 +50,8 @@ public class OrderConverter extends AbstractConverter<Order> {
     }
 
     @Override
-    protected void validate(Order order) {
-        super.validate(order);
+    protected void validate(Address address) {
+        super.validate(address);
 
         // ... custom validation
     }

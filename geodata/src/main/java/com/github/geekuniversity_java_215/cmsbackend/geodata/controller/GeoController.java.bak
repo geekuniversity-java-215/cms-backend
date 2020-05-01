@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.geodata.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.Transport;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.base.HandlerName;
@@ -24,8 +25,9 @@ public class GeoController {
     private final OrderConverter converter;
     private RestTemplate restTemplate;
 
-    @Autowired public GeoController(GeoService geoService) {
+    @Autowired public GeoController(GeoService geoService, OrderConverter converter) {
         this.geoService = geoService;
+        this.converter = converter;
 
         // configure RestTemplate
         restTemplate = RestTemplateFactory.getRestTemplate(10);
@@ -33,11 +35,11 @@ public class GeoController {
 
 
     @JrpcMethod(method = HandlerName.geodata.getRoute)
-    public String getRoute() {
+    public String getRoute(JsonNode params) {
 
-        Long id = converter.getId(params);
-        Order order = orderService.findById(id).orElse(null);
-        return converter.toDtoJson(order);
+//        Long id = converter.getId(params);
+//        Order order = orderService.findById(id).orElse(null);
+//        return converter.toDtoJson(order);
 
          // TODO: geodata: перенести логику по работе с restTemplate в отдельный сервис,
          //   Убрать это из контроллера restTemplate

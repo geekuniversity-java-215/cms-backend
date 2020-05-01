@@ -226,7 +226,7 @@ public class ApiController {
                         // Checked(как и unchecked) исключения будут проброшены к вызывающему
                         JrpcMethodHandler handler = params -> (JsonNode)method.invoke(bean,params);
 
-                        handlers.put(jrpcController.path() + "." + jrpcMethod.method(), handler);
+                        handlers.put(jrpcController.value() + "." + jrpcMethod.value(), handler);
                     }
                 }
             }

@@ -20,7 +20,7 @@ import java.lang.invoke.MethodHandles;
 /**
  * Интерфейс управления калькулятором
  */
-@JrpcController(path = HandlerName.calculator.path)
+@JrpcController(HandlerName.calculator.path)
 public class CalculatorController {
 
     private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -44,7 +44,7 @@ public class CalculatorController {
 
 
 
-    @JrpcMethod(method = HandlerName.calculator.add)
+    @JrpcMethod(HandlerName.calculator.add)
     public JsonNode add(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
@@ -52,7 +52,7 @@ public class CalculatorController {
     }
 
 
-    @JrpcMethod(method = HandlerName.calculator.sub)
+    @JrpcMethod(HandlerName.calculator.sub)
     public JsonNode sub(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
@@ -60,7 +60,7 @@ public class CalculatorController {
     }
 
 
-    @JrpcMethod(method = HandlerName.calculator.mul)
+    @JrpcMethod(HandlerName.calculator.mul)
     public JsonNode mul(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);
@@ -68,7 +68,7 @@ public class CalculatorController {
     }
 
 
-    @JrpcMethod(method = HandlerName.calculator.div)
+    @JrpcMethod(HandlerName.calculator.div)
     public JsonNode div(JsonNode params) {
 
         Double[] pair = parseDoublePair(params);

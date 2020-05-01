@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.converters.base;
+package com.github.geekuniversity_java_215.cmsbackend.core.converters._base;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

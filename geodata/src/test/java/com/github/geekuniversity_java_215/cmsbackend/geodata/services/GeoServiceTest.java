@@ -1,33 +1,34 @@
 package com.github.geekuniversity_java_215.cmsbackend.geodata.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class GeoServiceTest {
-    private String ROUTE_URL = "http://router.project-osrm.org/route/v1/";
-    private String CODE_URL = "https://nominatim.openstreetmap.org/search?q=100";
-    private String transport = "driving";
-    Address address = new Address("Санкт-Петербург", "Кондратьевский", 20, 0, 100);
-    String latFrom = "56.00222";
-    String lonFrom = "25.56776";
-    String latTo = "56.67222";
-    String lonTo = "25.99776";
+@Slf4j
+class GeoServiceTest {
+
+    @Autowired
+    private GeoService geoService;
+
 
     @Test
-    public void createRouteByPoint() {
-        StringBuilder url = new StringBuilder();
-        url.append(ROUTE_URL).append(transport).append("/");
-        url.append(lonFrom).append(",").append(latFrom).append(";");
-        url.append(lonTo).append(",").append(latTo);
-        System.out.println(url);
-    }
+    void getRoute() throws JsonProcessingException {
 
-    @Test
-    public void decodeAddressToPoint() {
-        System.out.println(CODE_URL +address.addressFormatToRequest()+"&format=json");
+        Address from = new Address("Санкт-Петербург", "Кондратьевский", 70, 2, 0);
+        Address to = new Address("Москва", "Красная площадь", 1, 0, 0);
+
+        Order order = new Order();
+        order.setFrom(from);
+        order.setTo(to);
+
+        String result = geoService.getRoute(order);
+        log.info(result);
     }
 }

@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.converters.order;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.base.AbstractMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.base.InstantMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.order.OrderDto;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
-        uses = {InstantMapper.class})
+        uses = {InstantMapper.class, AddressMapper.class})
 // ProductMapper.class, ProductItemMapper.class, OrderItemMapper.class
 public abstract class OrderMapper extends AbstractMapper {
 
@@ -20,8 +21,15 @@ public abstract class OrderMapper extends AbstractMapper {
     //@Mapping(source = "client", target = "client", qualifiedByName = "toClientDto")
     //@Mapping(source = "manager", target = "manager", qualifiedByName = "toManagerDto")
 
+    @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "courier.id", target = "courierId")
     public abstract OrderDto toDto(Order order);
+
+    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "courier", ignore = true)
     public abstract Order toEntity(OrderDto orderDto);
+
+
 
     //OrderN toItemEntity(OrderDto orderDto, @Context ProductRepository productRepository);
 
@@ -54,15 +62,9 @@ public abstract class OrderMapper extends AbstractMapper {
 //    }
 
 
-
-
-//    @AfterMapping
-//    default void postMap(OrderDto source, @MappingTarget OrderN target,@Context ProductRepository productRepository) {
-
-    
     @AfterMapping
     void afterMapping(OrderDto source, @MappingTarget Order target) {
-        idMap(orderService::findById, source, target);
+        idMap(source, target);
     }
 
 //    @AfterMapping

@@ -20,5 +20,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface JrpcController {
 
-    String path();
+    // controller path
+    String value();
 }
