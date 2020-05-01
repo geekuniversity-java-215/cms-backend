@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.converters;
+package com.github.geekuniversity_java_215.cmsbackend.core.converters.order;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
@@ -28,6 +28,8 @@ public abstract class OrderMapper extends AbstractMapper {
 
     //@Mapping(source = "client", target = "client", qualifiedByName = "toClientDto")
     //@Mapping(source = "manager", target = "manager", qualifiedByName = "toManagerDto")
+
+    //ToDo: move first two to Person and Customer mapper
 
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "courier.id", target = "courierId")

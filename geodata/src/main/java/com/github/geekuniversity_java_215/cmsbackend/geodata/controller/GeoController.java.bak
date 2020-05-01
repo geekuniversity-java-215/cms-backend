@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.geodata.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
+import OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.Transport;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.base.HandlerName;

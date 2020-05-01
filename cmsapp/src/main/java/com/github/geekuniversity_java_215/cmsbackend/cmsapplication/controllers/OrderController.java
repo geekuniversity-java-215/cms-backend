@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcMethod;
 import org.springframework.beans.factory.annotation.Autowired;

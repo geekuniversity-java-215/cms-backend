@@ -23,7 +23,6 @@ import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 
 @SpringBootTest
-//@ActiveProfiles("dev")
 @Slf4j
 @SuppressWarnings("ConstantConditions")
 class CmsCoreTests {

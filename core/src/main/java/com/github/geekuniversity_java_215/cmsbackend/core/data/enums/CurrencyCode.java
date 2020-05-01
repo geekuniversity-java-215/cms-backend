@@ -28,7 +28,6 @@ public enum CurrencyCode {
     private final static Map<Integer, CurrencyCode> ENUM_MAP = new HashMap<>();
 
     static {
-
         for(CurrencyCode item : CurrencyCode.values()) {
             ENUM_MAP.put(item.code, item);
         }
@@ -39,7 +38,7 @@ public enum CurrencyCode {
 
         CurrencyCode result = ENUM_MAP.get(code);
         if (result == null) {
-            throw new IllegalArgumentException("No matching constant for [" + code + "]");
+            throw new IllegalArgumentException("CurrencyCode - no matching constant for [" + code + "]");
         }
         return result;
     }

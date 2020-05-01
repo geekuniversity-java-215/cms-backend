@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.protocol.dto.base;
+package com.github.geekuniversity_java_215.cmsbackend.protocol.dto._base;
 
 public class HandlerName {
 

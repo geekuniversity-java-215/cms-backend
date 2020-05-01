@@ -4,35 +4,50 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Objects;
 
 @AllArgsConstructor
 @Getter
-@ToString(exclude = "inWork")
+//@ToString(exclude = "inWork")
 public enum OrderStatus {
 
-    NEW(0, true),
-    DONE(0,false),
-    IN_PROGRESS(0,true),
-    CANCEL(0,false),
-    IN_MODERATION(0,true);
+    NULL(-1), // kludge
+    NEW(0),
+    IN_PROGRESS(1),
+    IN_MODERATION(2),
+    CANCEL(3),
+    DONE(4);
 
-    private final int id;
-    private final boolean inWork;
+    private final static Map<Integer, OrderStatus> ENUM_MAP = new HashMap<>();
 
-
-    public boolean equals(OrderStatus orderStatus){
-
-        if (Objects.nonNull(orderStatus)) {
-            return this.getId() == orderStatus.getId();
+    static {
+        for(OrderStatus item : OrderStatus.values()) {
+            ENUM_MAP.put(item.id, item);
         }
-
-        return false;
-
     }
 
-    public LinkedList<OrderStatus> getStatusInWork(){
+    private final int id;
+    
+    public static OrderStatus idOf(int id) {
+
+        OrderStatus result = ENUM_MAP.get(id);
+        if (result == null) {
+            throw new IllegalArgumentException("OrderStatus - no matching constant for [" + id + "]");
+        }
+        return result;
+    }
+
+    //ToDo: разобраться с жизненным циклом заказа
+    // пример
+    // https://github.com/dreamworkerln/geekbrains_spring1/blob/master/lesson_02/jsonrpc/resource-server/src/main/java/jsonrpc/resourceserver/service/order/OrderService.java#L83
+    // сделать матрицу решений, вместо .ordinal() использовать
+
+    /*
+     private final boolean inWork;
+     public LinkedList<OrderStatus> getStatusInWork(){
         return getOrderByInWork(true);
     }
 
@@ -52,7 +67,7 @@ public enum OrderStatus {
 
         return workList;
 
-    }
+    }*/
 
 
 }

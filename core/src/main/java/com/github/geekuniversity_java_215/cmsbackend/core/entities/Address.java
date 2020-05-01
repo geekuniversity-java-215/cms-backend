@@ -13,15 +13,11 @@ import javax.persistence.*;
 @Table(name = "address")
 public class Address extends AbstractEntity {
 
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
-
     @Column
     private String city;
 
     @Column
+
     private String street;
 
     @Column
@@ -30,8 +26,8 @@ public class Address extends AbstractEntity {
     @Column
     private int building;
 
-    @Column
-    private int front_door;
+//    @Column
+//    private int frontDoor;
 
     @Column
     private int flat;
@@ -70,7 +66,7 @@ public class Address extends AbstractEntity {
                 + ", street= " + street
                 + ", house= " + house
                 + ", building= " + building
-                + ", front_door= " + front_door
+                //+ ", front_door= " + frontDoor
                 + ", flat= " + flat
                 + ", longitude= " + longitude
                 + ", latitude= " + latitude + "}";

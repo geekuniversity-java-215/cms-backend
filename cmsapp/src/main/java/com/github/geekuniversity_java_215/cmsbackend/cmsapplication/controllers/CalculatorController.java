@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.services.CalculatorService;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcMethod;
 import org.slf4j.Logger;

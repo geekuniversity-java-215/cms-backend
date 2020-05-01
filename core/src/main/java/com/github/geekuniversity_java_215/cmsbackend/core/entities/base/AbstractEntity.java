@@ -1,32 +1,24 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.Instant;
 
+/**
+ * Base for simple entities
+ */
 
 @MappedSuperclass
-public abstract class AbstractEntity implements Serializable, IdGetter {
+public abstract class AbstractEntity extends AbstractEntityNoGen {
 
-    @Column(name = "created", updatable = false)
-    @CreationTimestamp
-    protected Instant created;
+    @Id
+    @Column(name = "id")
+    // https://stackoverflow.com/questions/2951454/should-transient-property-be-used-in-equals-hashcode-tostring
+    @EqualsAndHashCode.Exclude
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
 
-
-    @Column(name = "updated")
-    @UpdateTimestamp
-    protected Instant updated;
-
-    protected AbstractEntity() {}
-
-    public Instant getCreated() {
-        return created;
-    }
-
-    public Instant getUpdated() {
-        return updated;
-    }
+    @Override
+    public Long getId() { return id; }
 }
