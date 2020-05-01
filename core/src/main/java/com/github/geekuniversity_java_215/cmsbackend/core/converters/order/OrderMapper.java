@@ -12,8 +12,9 @@ import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.order.OrderDto
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+// При пересборке предупреждение пропадает ?
+//@SuppressWarnings({"SpringJavaAutowiredMembersInspection"})
 
-@SuppressWarnings({"SpringJavaAutowiredMembersInspection"})
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
         uses = {InstantMapper.class, AddressMapper.class})
@@ -29,7 +30,7 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
     //@Mapping(source = "client", target = "client", qualifiedByName = "toClientDto")
     //@Mapping(source = "manager", target = "manager", qualifiedByName = "toManagerDto")
 
-    //ToDo: move first two to Person and Customer mapper
+    //ToDo: move customer&courier two to Person and Customer mapper ?? 
 
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "courier.id", target = "courierId")
@@ -42,11 +43,18 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
     @Mapping(target = "statusValue", ignore = true)
     public abstract Order toEntity(OrderDto orderDto);
 
+    /**
+     * Custom conversion logic, need to further setup
+     * @param source Dto
+     * @param target Entity
+     */
     @AfterMapping
     void afterMapping(OrderDto source, @MappingTarget Order target) {
 
+        // map entity id
         idMap(source, target);
 
+        // Manual mapping
         Customer customer = (Customer) personService.findById(source.getCustomerId())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
         Courier courier = (Courier) personService.findById(source.getCourierId())
@@ -56,6 +64,18 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 
         target.setStatus(OrderStatus.idOf(source.getStatus()));
     }
+
+
+
+
+    
+
+    // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  \\
+    // ============================================== подвало-помойка-кода ================================================  \\
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \\
+
+
+
 
 
 

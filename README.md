@@ -18,7 +18,7 @@ View -> Tool Windows -> Maven Projects
 ``` 
 Maven Projects -> Profiles
 ```    
-чекаем intellij-javadoc-fix (Для Intellij Idea 2020 не надо) 
+чекаем intellij-javadoc-fix (Для Intellij Idea 2019.3 и выше не надо) 
 
 Далее 
 ```   
