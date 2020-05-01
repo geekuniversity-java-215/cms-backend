@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.applicationrunner;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
@@ -24,7 +25,7 @@ import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 @SpringBootTest
 @Slf4j
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"OptionalGetWithoutIsPresent"})
 class CmsCoreTests {
 
     @Autowired
@@ -54,7 +55,7 @@ class CmsCoreTests {
 
         Account acc = new Account();
         Customer cus = new Customer();
-        cus.setFirstName("Вася"); cus.setLastName("Пупкин"); cus.setEmail("m@m.ru"); cus.setPhoneNumber("123");
+        cus.setFirstName("Вася"); cus.setLastName("Залипов"); cus.setEmail("m@m.ru"); cus.setPhoneNumber("123");
         cus.setAccount(acc);
         personService.save(cus);
         log.info("customer id: {}", cus.getId());
@@ -98,8 +99,10 @@ class CmsCoreTests {
 
         Account finalAcc1 = accountService.findById(1L).get();
         Account finalAcc2 = accountService.findById(1L).get();
-        Future<?> f1 = executor.submit(unchecked(() -> accountService.addBalance(finalAcc1, BigDecimal.valueOf(100))));
-        Future<?> f2 = executor.submit(unchecked(() -> accountService.addBalance(finalAcc2, BigDecimal.valueOf(100))));
+        Future<?> f1 = executor.submit(unchecked(() -> 
+                accountService.addBalance(finalAcc1, BigDecimal.valueOf(100), CurrencyCode.RUB)));
+        Future<?> f2 = executor.submit(unchecked(() ->
+                accountService.addBalance(finalAcc2, BigDecimal.valueOf(100), CurrencyCode.RUB)));
 
         f1.get();
         f2.get();

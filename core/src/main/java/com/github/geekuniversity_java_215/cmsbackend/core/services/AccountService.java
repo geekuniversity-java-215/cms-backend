@@ -34,22 +34,6 @@ public class AccountService extends BaseRepoAccessService<Account> {
     }
 
     /**
-     *  Use new constructor with currency parameter
-     *  this method use default CurrencyCode (RUB)
-     *
-     * Зачислить на счет
-     * @param account
-     * @param amount
-     */
-    @Deprecated(/* STOPSHIP: 28.04.2020 */)
-    @LogExecutionTime
-    public void addBalance(Account account, BigDecimal amount) {
-
-        addBalance(account, amount, CurrencyCode.RUB);
-
-    }
-
-    /**
      * Зачислить на счет
      * @param account
      * @param amount
@@ -89,23 +73,6 @@ public class AccountService extends BaseRepoAccessService<Account> {
     }
 
     /**
-     *  Use new constructor with currency parameter
-     *  this method use default CurrencyCode (RUB)
-     *
-     * Снять со счета
-     * @param account
-     * @param amount
-     */
-    @Deprecated
-    public void removeBalance(Account account, BigDecimal amount) {
-
-        removeBalance(account, amount, CurrencyCode.RUB);
-
-    }
-
-    /**
-     *  Use new constructor with currency parameter
-     *
      * Снять со счета
      * @param account
      * @param amount
@@ -135,3 +102,36 @@ public class AccountService extends BaseRepoAccessService<Account> {
     }
 
 }
+
+
+
+//    /**
+//     *  Use new constructor with currency parameter
+//     *  this method use default CurrencyCode (RUB)
+//     *
+//     * Зачислить на счет
+//     * @param account
+//     * @param amount
+//     */
+//    @Deprecated(/* STOPSHIP: 28.04.2020 */)
+//    @LogExecutionTime
+//    public void addBalance(Account account, BigDecimal amount) {
+//
+//        addBalance(account, amount, CurrencyCode.RUB);
+//
+//    }
+
+//    /**
+//     *  Use new constructor with currency parameter
+//     *  this method use default CurrencyCode (RUB)
+//     *
+//     * Снять со счета
+//     * @param account
+//     * @param amount
+//     */
+//    @Deprecated
+//    public void removeBalance(Account account, BigDecimal amount) {
+//
+//        removeBalance(account, amount, CurrencyCode.RUB);
+//
+//    }

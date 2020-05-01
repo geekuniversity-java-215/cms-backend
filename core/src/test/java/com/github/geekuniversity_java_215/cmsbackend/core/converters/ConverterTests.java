@@ -22,9 +22,10 @@ import org.springframework.util.Assert;
 import javax.annotation.PostConstruct;
 import java.time.Instant;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @SpringBootTest
 @Slf4j
-class ConverterTesting {
+class ConverterTests {
 
     @Autowired
     private OrderConverter orderConverter;
@@ -35,37 +36,18 @@ class ConverterTesting {
     @Autowired
     private AddressService addressService;
 
-    Address from;
-    Address to;
-    Order order;
 
-    Customer customer;
-    Courier courier;
 
     //Заместо @BeforeAll
     @PostConstruct
     private void postConstruct() {
-        from = new Address("Москва", "Улица красных тюленей", 1, 2, 3);
-        to = new Address("Мухосранск", "Западная", 2, 2, 5);
-
-        customer = new Customer("Вася", "Пупкин", "vasya@mail.ru", "1122334455");
-        courier = new Courier("Сема", "Пасечкин", "sema@mail.ru", "908796786543", "блабла");
-
-        personService.save(customer);
-        personService.save(courier);
-
-        order = new Order();
-        order.setFrom(from);
-        order.setTo(to);
-        order.setStatus(OrderStatus.DONE);
-        order.setCourier(courier);
-        order.setCustomer(customer);
-        orderService.save(order);
     }
 
 
     @Test
     void OrderConverterTest() {
+
+        Order order = orderService.findById(1L).get();
 
         JsonNode orderJson = orderConverter.toDtoJson(order);
         String json = orderJson.toString();

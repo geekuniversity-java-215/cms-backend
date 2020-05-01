@@ -39,7 +39,7 @@ public class MailService {
      * @param person Person
      * @param amount сумма платежа
      */
-    public Promise sendPaymentSuccess(Person person, BigDecimal amount) {
+    public Promise<Void> sendPaymentSuccess(Person person, BigDecimal amount) {
 
         log.trace("Отправляем письмо о успешно проведенном платеже");
         //System.out.println(person.getAccount());

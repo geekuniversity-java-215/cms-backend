@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.mail;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
@@ -35,7 +36,7 @@ public class MailTestStartupRunner implements ApplicationRunner {
         customer.setAccount(account);
         personService.save(customer);
 
-        accountService.addBalance(customer.getAccount(), BigDecimal.TEN);
+        accountService.addBalance(customer.getAccount(), BigDecimal.TEN, CurrencyCode.USD);
     }
 }
 
