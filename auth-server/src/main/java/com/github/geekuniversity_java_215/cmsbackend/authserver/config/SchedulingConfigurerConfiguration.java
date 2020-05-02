@@ -23,6 +23,8 @@ public class SchedulingConfigurerConfiguration implements SchedulingConfigurer {
         taskScheduler.setPoolSize(10);
         taskScheduler.initialize();
         taskRegistrar.setTaskScheduler(taskScheduler);
+
+        //ToDo: прикрутить timeout или юзать net.tascalate.concurrent
     }
 
     // Use this in scheduling tasks:

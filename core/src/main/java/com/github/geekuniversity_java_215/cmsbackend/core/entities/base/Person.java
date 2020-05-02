@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import lombok.*;
 
@@ -8,7 +9,9 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 //@MappedSuperclass
 @Entity
@@ -25,18 +28,22 @@ import java.util.List;
 public abstract class Person extends AbstractEntityNoGen {
 
     @Id
-    //@Column(name = "id")
+    @Column(name = "id")
     @GeneratedValue(generator = "person_id_seq")
     @EqualsAndHashCode.Exclude
     protected Long id;
 
     @NotNull
-    //@Column(name = "login")
+    @Column(name = "login")
     protected String login;
 
     @NotNull
-    //@Column(name = "password") // bcrypt hash
+    @Column(name = "password") // bcrypt hash
     protected String password;
+
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    private Set<UserRole> roles = new HashSet<>();
 
     // Это список только refresh_token
     @NotNull
@@ -45,19 +52,19 @@ public abstract class Person extends AbstractEntityNoGen {
     private List<RefreshToken> refreshTokens = new ArrayList<>();
 
     @NotNull
-    //@Column(name = "first_name")
+    @Column(name = "first_name")
     protected String firstName;
 
     @NotNull
-    //@Column(name = "last_name")
+    @Column(name = "last_name")
     protected String lastName;
 
     @NotNull
-    //@Column(name = "email")
+    @Column(name = "email")
     protected String email;
 
     @NotNull
-    //@Column(name = "phone_number")
+    @Column(name = "phone_number")
     protected String phoneNumber;
 
 

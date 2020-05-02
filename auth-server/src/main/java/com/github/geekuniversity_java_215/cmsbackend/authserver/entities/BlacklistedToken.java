@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.entities;
 
-import jsonrpc.authserver.entities.base.AbstractEntity;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

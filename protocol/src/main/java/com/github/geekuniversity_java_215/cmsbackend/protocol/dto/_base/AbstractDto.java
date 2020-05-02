@@ -9,6 +9,7 @@ import java.time.Instant;
 public abstract class AbstractDto implements Serializable {
 
     protected Long id;
+    protected Boolean enabled;
     protected Instant created;
     protected Instant updated;
 

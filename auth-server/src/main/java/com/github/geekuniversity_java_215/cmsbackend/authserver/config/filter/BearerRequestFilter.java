@@ -1,15 +1,16 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.config.filter;
 
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.RequestScopeBean;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.service.JwtTokenService;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
+import com.github.geekuniversity_java_215.cmsbackend.utils.SecurityUtils;
 import io.jsonwebtoken.Claims;
-import jsonrpc.authserver.config.AuthType;
-import jsonrpc.authserver.config.RequestScopeBean;
-import jsonrpc.authserver.entities.Role;
-import jsonrpc.authserver.entities.token.AccessToken;
-import jsonrpc.authserver.entities.token.RefreshToken;
-import jsonrpc.authserver.entities.token.Token;
-import jsonrpc.authserver.service.JwtTokenService;
-import jsonrpc.authserver.service.TokenService;
-import jsonrpc.protocol.token.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,10 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 
-import static jsonrpc.authserver.config.SpringConfiguration.ISSUER;
-import static jsonrpc.utils.Utils.rolesToGrantedAuthority;
-
+import static com.github.geekuniversity_java_215.cmsbackend.authserver.config.SpringConfiguration.ISSUER;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter {
+public class BearerRequestFilter extends OncePerRequestFilter {
 
     private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -48,8 +47,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final RequestScopeBean requestScopeBean;
 
     @Autowired
-    public JwtRequestFilter(@Qualifier("myUserDetailsService")UserDetailsService userDetailsService,
-        JwtTokenService jwtTokenService, TokenService tokenService, RequestScopeBean requestScopeBean) {
+    public BearerRequestFilter(@Qualifier("CustomUserDetailsService")UserDetailsService userDetailsService,
+                               JwtTokenService jwtTokenService, TokenService tokenService, RequestScopeBean requestScopeBean) {
 
         this.userDetailsService = userDetailsService;
         this.jwtTokenService = jwtTokenService;
@@ -82,9 +81,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // TOKEN Is NOT EXPIRED
                 // TOKEN is PRESENT in my DB (NOT deleted/blacklisted)
                 if (claims.getIssuer().equals(ISSUER) &&
-                    tokenIsActive(claims) &&
+                    isTokenActive(claims) &&
                     (token = findToken(claims))!=null) {
-
 
                     UsernamePasswordAuthenticationToken authToken = getAuthToken(claims);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -121,7 +119,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
 
-    private boolean tokenIsActive(Claims claims) {
+    private boolean isTokenActive(Claims claims) {
         return claims.getExpiration().toInstant().toEpochMilli() > Instant.now().toEpochMilli();
 
     }
@@ -154,7 +152,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
 
-
         if (userDetails != null) {
 
             Collection<? extends GrantedAuthority> grantedAuthority = null;
@@ -165,7 +162,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
             else if (type == TokenType.REFRESH) {
                 // Set ROLE_REFRESH only
-                grantedAuthority = rolesToGrantedAuthority(Collections.singletonList(Role.REFRESH));
+                grantedAuthority = SecurityUtils.rolesToGrantedAuthority(Collections.singletonList(UserRole.REFRESH));
             }
 
             // configure Spring Security to manually set authentication

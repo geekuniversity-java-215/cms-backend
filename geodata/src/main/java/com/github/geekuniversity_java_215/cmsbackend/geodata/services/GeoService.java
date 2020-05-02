@@ -1,7 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.geodata.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.Transport;
@@ -59,7 +58,7 @@ public class GeoService {
         order.getTo().setLongitude(lonTo);
         order.getTo().setLatitude(latTo);
 
-        String route = getRouteUrl(order, Transport.driving);
+        String route = getRouteUrl(order, Transport.DRIVING);
         return restTemplate.getForObject(route, String.class);
     }
 

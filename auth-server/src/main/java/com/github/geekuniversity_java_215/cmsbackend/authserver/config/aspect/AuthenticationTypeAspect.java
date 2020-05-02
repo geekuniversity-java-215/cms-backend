@@ -31,7 +31,7 @@ public class AuthenticationTypeAspect {
      *
      * @param joinPoint
      */
-    @Before("@annotation(jsonrpc.authserver.config.aspect.ValidAuthenticationType)")
+    @Before("@annotation(ValidAuthenticationType)")
     public void validateAuthenticationType(JoinPoint joinPoint) {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();

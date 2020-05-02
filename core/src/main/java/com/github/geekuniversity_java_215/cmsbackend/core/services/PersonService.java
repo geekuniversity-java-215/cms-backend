@@ -3,6 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.services;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.PersonRepository;
+import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,15 @@ public class PersonService extends BaseRepoAccessService<Person> {
     public PersonService(PersonRepository personRepository) {
         super(personRepository);
         this.personRepository = personRepository;
+    }
+
+    public Person findByLogin(String login) {
+        Person result = null;
+        if (!Utils.isBlank(login)) {
+            result = personRepository.findOneByLogin(login).orElse(null);
+        }
+        return result;
+
     }
 
 }

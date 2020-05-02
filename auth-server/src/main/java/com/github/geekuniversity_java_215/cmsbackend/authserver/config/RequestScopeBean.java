@@ -1,8 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.config;
 
-import jsonrpc.authserver.entities.token.AccessToken;
-import jsonrpc.authserver.entities.token.RefreshToken;
-import jsonrpc.authserver.entities.token.Token;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

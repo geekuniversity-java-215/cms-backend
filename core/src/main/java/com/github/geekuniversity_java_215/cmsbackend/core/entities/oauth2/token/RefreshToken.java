@@ -17,8 +17,8 @@ public class RefreshToken extends Token {
 
     protected RefreshToken() {}
 
-    public RefreshToken(Person person, boolean enabled, Instant expiredAt) {
-        super(person, enabled, expiredAt);
+    public RefreshToken(Person person, Instant expiredAt) {
+        super(person, expiredAt);
     }
 
     public AccessToken getAccessToken() {

@@ -39,6 +39,7 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 
     @Mapping(target = "customer", ignore = true)
     @Mapping(target = "courier", ignore = true)
+
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "statusValue", ignore = true)
     public abstract Order toEntity(OrderDto orderDto);

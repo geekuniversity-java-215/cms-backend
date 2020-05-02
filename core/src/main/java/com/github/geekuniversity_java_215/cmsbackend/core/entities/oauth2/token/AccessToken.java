@@ -17,8 +17,8 @@ public class AccessToken extends Token {
     @JoinColumn(name = "refresh_token_id", referencedColumnName = "id")
     private RefreshToken refreshToken;
 
-    public AccessToken(Person user, boolean enabled, RefreshToken refreshToken, Instant expiredAt) {
-        super(user, enabled, expiredAt);
+    public AccessToken(Person user, RefreshToken refreshToken, Instant expiredAt) {
+        super(user, expiredAt);
         this.refreshToken = refreshToken;
     }
 

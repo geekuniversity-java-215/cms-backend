@@ -1,6 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,6 +15,7 @@ import java.time.Instant;
  * entities with InheritanceType.TABLE_PER_CLASS
  */
 @MappedSuperclass
+@Getter
 public abstract class AbstractEntityNoGen implements Serializable, IdGetter {
 
     @Column(name = "created", updatable = false)
@@ -24,13 +27,11 @@ public abstract class AbstractEntityNoGen implements Serializable, IdGetter {
     @UpdateTimestamp
     protected Instant updated;
 
+    @Setter
+    @Getter
+    protected Boolean enabled = true;
+
     protected AbstractEntityNoGen() {}
-
-    public Instant getCreated() {
-        return created;
-    }
-
-    public Instant getUpdated() {return updated;}
 
 
 }

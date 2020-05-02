@@ -1,8 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.config;
 
-import jsonrpc.authserver.config.filter.CustomBasicAuthFilter;
-import jsonrpc.authserver.config.filter.JwtRequestFilter;
-import jsonrpc.authserver.entities.Role;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.filter.CustomBasicAuthFilter;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.filter.BearerRequestFilter;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +50,8 @@ public class MultipleWebSecurityConfig {
     // Как робят фильтры в spring(security)
     // https://habr.com/ru/post/346628/
     @Bean
-    public FilterRegistrationBean<JwtRequestFilter> jwtRequestFilterRegistration(JwtRequestFilter filter) {
-        FilterRegistrationBean<JwtRequestFilter> result = new FilterRegistrationBean<>(filter);
+    public FilterRegistrationBean<BearerRequestFilter> jwtRequestFilterRegistration(BearerRequestFilter filter) {
+        FilterRegistrationBean<BearerRequestFilter> result = new FilterRegistrationBean<>(filter);
         result.setEnabled(false);
         return result;
     }
@@ -73,22 +73,22 @@ public class MultipleWebSecurityConfig {
     @Order(1)
     public static class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        private final JwtRequestFilter jwtRequestFilter;
+        private final BearerRequestFilter bearerRequestFilter;
         private final CustomBasicAuthFilter customBasicAuthFilter;
 
         @Autowired
-        public AdminWebSecurityConfig(JwtRequestFilter jwtRequestFilter, CustomBasicAuthFilter customBasicAuthFilter) {
-            this.jwtRequestFilter = jwtRequestFilter;
+        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter, CustomBasicAuthFilter customBasicAuthFilter) {
+            this.bearerRequestFilter = bearerRequestFilter;
             this.customBasicAuthFilter = customBasicAuthFilter;
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(Role.ADMIN)
+            http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
-                .addFilterAfter(jwtRequestFilter, LogoutFilter.class)
+                .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
                 .addFilterAfter(customBasicAuthFilter, LogoutFilter.class);
         }
     }
@@ -98,18 +98,19 @@ public class MultipleWebSecurityConfig {
     /**
      * Token operations
      * Authorisation: Basic + Bearer
+     * <br> We like hand-made security!
      */
     @Configuration
     @Order(2)
     public static class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        private final JwtRequestFilter jwtRequestFilter;
+        private final BearerRequestFilter bearerRequestFilter;
         private final CustomBasicAuthFilter customBasicAuthFilter;
 
 
         @Autowired
-        public TokenWebSecurityConfig(JwtRequestFilter jwtRequestFilter, CustomBasicAuthFilter customBasicAuthFilter) {
-            this.jwtRequestFilter = jwtRequestFilter;
+        public TokenWebSecurityConfig(BearerRequestFilter bearerRequestFilter, CustomBasicAuthFilter customBasicAuthFilter) {
+            this.bearerRequestFilter = bearerRequestFilter;
             this.customBasicAuthFilter = customBasicAuthFilter;
         }
 
@@ -121,7 +122,7 @@ public class MultipleWebSecurityConfig {
             http.antMatcher("/oauzz/token/**").authorizeRequests().anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
-                .addFilterAfter(jwtRequestFilter, LogoutFilter.class)
+                .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
                 .addFilterAfter(customBasicAuthFilter, LogoutFilter.class);
         }
 

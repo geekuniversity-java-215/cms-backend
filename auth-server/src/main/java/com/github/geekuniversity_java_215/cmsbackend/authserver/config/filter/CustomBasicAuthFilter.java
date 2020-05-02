@@ -1,7 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.config.filter;
 
-import jsonrpc.authserver.config.AuthType;
-import jsonrpc.authserver.config.RequestScopeBean;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.RequestScopeBean;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class CustomBasicAuthFilter extends OncePerRequestFilter {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomBasicAuthFilter(@Qualifier("myUserDetailsService")UserDetailsService userDetailsService,
+    public CustomBasicAuthFilter(@Qualifier("CustomUserDetailsService")UserDetailsService userDetailsService,
         RequestScopeBean requestScopeBean, PasswordEncoder passwordEncoder) {
 
         this.userDetailsService = userDetailsService;
@@ -51,7 +51,7 @@ public class CustomBasicAuthFilter extends OncePerRequestFilter {
         final String requestBasicHeader = request.getHeader("Authorization");
 
 
-        // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
+        // Parsing BasicAuth string
         if (requestBasicHeader != null &&
             requestBasicHeader.startsWith("Basic ")) {
 
@@ -62,9 +62,9 @@ public class CustomBasicAuthFilter extends OncePerRequestFilter {
                 byte[] decodedBytes = Base64.decodeBase64(basicAuth);
                 String decodedAuth = new String(decodedBytes);
                 
-                String[] splitted = decodedAuth.split(":", 2);
-                String userName = splitted[0];
-                String password = splitted[1];
+                String[] slitted = decodedAuth.split(":", 2);
+                String userName = slitted[0];
+                String password = slitted[1];
 
                 UsernamePasswordAuthenticationToken authToken = getAuthToken(userName, password);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -80,6 +80,7 @@ public class CustomBasicAuthFilter extends OncePerRequestFilter {
 
         chain.doFilter(request, response);
     }
+
 
     private UsernamePasswordAuthenticationToken getAuthToken(String userName, String password) {
 

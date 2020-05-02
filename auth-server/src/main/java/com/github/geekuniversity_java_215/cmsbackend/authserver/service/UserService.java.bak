@@ -1,0 +1,30 @@
+package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
+
+
+import com.github.geekuniversity_java_215.cmsbackend.core.repositories.PersonRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    private final PersonRepository personRepository;
+
+    public UserService(PersonRepository userRepository) {
+        this.personRepository = personRepository;
+    }
+
+    public void save(User user) {
+
+        userRepository.save(user);
+    }
+
+    public User findByName(String name) {
+
+        User result = null;
+        if (name != null) {
+            result = userRepository.findOneByName(name).orElse(null);
+        }
+        return result;
+    }
+
+}

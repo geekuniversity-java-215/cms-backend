@@ -39,7 +39,6 @@ public class AccountService extends BaseRepoAccessService<Account> {
      * @param amount
      * @param currencyCode
      */
-
     @LogExecutionTime
     public BigDecimal addBalance(Account account, BigDecimal amount, CurrencyCode currencyCode) {
 

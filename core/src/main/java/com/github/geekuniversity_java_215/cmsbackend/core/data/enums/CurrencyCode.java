@@ -29,6 +29,9 @@ public enum CurrencyCode {
 
     static {
         for(CurrencyCode item : CurrencyCode.values()) {
+            if (ENUM_MAP.containsKey(item.code)){
+                throw new RuntimeException("CurrencyCode duplicate code");
+            }
             ENUM_MAP.put(item.code, item);
         }
     }

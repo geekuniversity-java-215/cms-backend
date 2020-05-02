@@ -13,13 +13,8 @@ import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = true)
 @MappedSuperclass
-@Data
 @Getter
 public abstract class Token extends AbstractEntity {
-
-    @Id
-    @GeneratedValue(generator = "token_id_seq")
-    protected Long id;
 
     @Column(name = "expired_at", updatable = false)
     protected Instant expiredAt;
@@ -33,16 +28,8 @@ public abstract class Token extends AbstractEntity {
     protected Person person;
 
     protected Token() {}
-
-    public Token(Person person, boolean enabled, Instant expiredAt) {
+    public Token(Person person, Instant expiredAt) {
         this.person = person;
-        this.enabled = enabled;
         this.expiredAt = expiredAt;
     }
-
-    public Instant getExpiredAt() {
-        return expiredAt;
-    }
-
-    public Person getPerson() {return person;}
 }

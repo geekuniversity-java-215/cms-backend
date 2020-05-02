@@ -25,6 +25,9 @@ public enum OrderStatus {
 
     static {
         for(OrderStatus item : OrderStatus.values()) {
+            if (ENUM_MAP.containsKey(item.id)){
+                throw new RuntimeException("OrderStatus duplicate id");
+            }
             ENUM_MAP.put(item.id, item);
         }
     }
