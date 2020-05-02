@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import lombok.Data;
@@ -19,10 +18,9 @@ public class Order extends AbstractEntity {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name="customer_id")
-    private Customer customer;
+    @JoinColumn(name="client_id")
+    private Client client;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name="courier_id")
     private Courier courier;
@@ -49,11 +47,11 @@ public class Order extends AbstractEntity {
     }
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn
+    @JoinColumn(name="from_id")
     private Address from;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn
+    @JoinColumn(name="to_id")
     private Address to;
 
 //    protected void setId(Long id) {
@@ -65,7 +63,7 @@ public class Order extends AbstractEntity {
     public String toString() {
         return "Order{" +
                "id=" + id +
-               ", customer=" + customer +
+               ", client=" + client +
                ", courier=" + courier +
                ", status=" + status +
                '}';

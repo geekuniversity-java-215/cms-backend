@@ -1,13 +1,12 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.applicationrunner;
+package com.github.geekuniversity_java_215.cmsbackend.core.basic;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -16,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -34,12 +34,18 @@ class CmsCoreTests {
     @Autowired
     private AccountService accountService;
     @Autowired
-    private PersonService personService;
+    private UserService userService;
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private CourierService courierService;
     @Autowired
     private OrderService orderService;
 
+
     @Test
-    void contextLoads() throws Exception {
+    @org.junit.jupiter.api.Order(-1000)
+    void basicTest() {
 
         // TESTING LOG LEVELS
         log.info("TESTING LOG LEVELS");
@@ -54,33 +60,31 @@ class CmsCoreTests {
         // TESTING DB
 
         Account acc = new Account();
-        Customer cus = new Customer();
-        cus.setFirstName("Вася"); cus.setLastName("Залипов"); cus.setEmail("m@m.ru"); cus.setPhoneNumber("123");
-        cus.setAccount(acc);
-        personService.save(cus);
-        log.info("customer id: {}", cus.getId());
+        User user = new User("Залипов", "Вася", "vasya@mail.ru", "123");
+        user.setAccount(acc);
+        userService.save(user);
+        log.info("user id: {}", user.getId());
+        Courier courier = new Courier(user, "КУРЬЕР_DATA");
+        courierService.save(courier);
 
         acc = new Account();
-        cus = new Customer();
+        user = new User("Семенов", "Семен", "semen@mail.ru", "456");
+        user.setAccount(acc);
+        userService.save(user);
+        Client client = new Client(user, "КЛИЕНТ_DATA");
+        clientService.save(client);
+        
 
-        cus.setFirstName("Семен"); cus.setLastName("Семенов"); cus.setEmail("m@m.ru"); cus.setPhoneNumber("123");
-        cus.setAccount(acc);
-        personService.save(cus);
 
         acc = accountService.findById(2L).get();
         log.info("loaded: {} ok!", acc);
 
 
-        acc = new Account();
-        Courier cur = new Courier();
-        cur.setFirstName("Zed"); cur.setLastName("Zed"); cur.setBlaBla("BlaBla");
-        cur.setEmail("m@m.ru"); cur.setPhoneNumber("123");
-        cur.setAccount(acc);
-        personService.save(cur);
+
 
         Order o = new Order();
-        o.setCourier(cur);
-        o.setCustomer(cus);
+        o.setCourier(courier);
+        o.setClient(client);
         o.setStatus(OrderStatus.IN_PROGRESS);
         o = orderService.save(o);
         log.info("order: {}", o);
@@ -88,27 +92,24 @@ class CmsCoreTests {
         o = orderService.save(o);
         log.info("new order: {}", o);
 
+    }
 
-        acc = new Account();
-        cus = new Customer();
-
-        cus.setFirstName("Артем"); cus.setLastName("Артемов"); cus.setEmail("m@m.ru"); cus.setPhoneNumber("123");
-        cus.setAccount(acc);
+    @Test
+    void checkTableRowLock() throws Exception {
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
         Account finalAcc1 = accountService.findById(1L).get();
         Account finalAcc2 = accountService.findById(1L).get();
-        Future<?> f1 = executor.submit(unchecked(() -> 
+        Future<?> f1 = executor.submit(unchecked(() ->
                 accountService.addBalance(finalAcc1, BigDecimal.valueOf(100), CurrencyCode.RUB)));
         Future<?> f2 = executor.submit(unchecked(() ->
                 accountService.addBalance(finalAcc2, BigDecimal.valueOf(100), CurrencyCode.RUB)));
 
         f1.get();
         f2.get();
-        acc = accountService.findById(1L).get();
+        Account acc = accountService.findById(1L).get();
 
         log.info("баланс: {}", acc.getBalance());
     }
-
 }

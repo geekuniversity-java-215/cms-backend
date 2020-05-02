@@ -55,10 +55,9 @@ public class AccountService extends BaseRepoAccessService<Account> {
         Assert.notNull(account,"Account after reload == null");
         log.info("Перечитали account из базы, id={} balance: {}", account.getId(), account.getBalance());
 
-
         // TESTING
         log.info("Усиленно работаем ...");
-        unchecked(() -> TimeUnit.SECONDS.sleep(2));
+        unchecked(() -> TimeUnit.SECONDS.sleep(2)).run();
 
         fieldSetter("balance", account, account.getBalance().add(amount));
         //propertySetter("setBalance", account, BigDecimal.class, account.getBalance().add(amount));
@@ -101,36 +100,3 @@ public class AccountService extends BaseRepoAccessService<Account> {
     }
 
 }
-
-
-
-//    /**
-//     *  Use new constructor with currency parameter
-//     *  this method use default CurrencyCode (RUB)
-//     *
-//     * Зачислить на счет
-//     * @param account
-//     * @param amount
-//     */
-//    @Deprecated(/* STOPSHIP: 28.04.2020 */)
-//    @LogExecutionTime
-//    public void addBalance(Account account, BigDecimal amount) {
-//
-//        addBalance(account, amount, CurrencyCode.RUB);
-//
-//    }
-
-//    /**
-//     *  Use new constructor with currency parameter
-//     *  this method use default CurrencyCode (RUB)
-//     *
-//     * Снять со счета
-//     * @param account
-//     * @param amount
-//     */
-//    @Deprecated
-//    public void removeBalance(Account account, BigDecimal amount) {
-//
-//        removeBalance(account, amount, CurrencyCode.RUB);
-//
-//    }

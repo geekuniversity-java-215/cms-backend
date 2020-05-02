@@ -1,20 +1,19 @@
-package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
+package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UserRoleRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRoleRepository;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserRoleService {
+public class UserRoleService extends BaseRepoAccessService<UserRole> {
 
     private final UserRoleRepository userRoleRepository;
 
     public UserRoleService(UserRoleRepository userRoleRepository) {
+        super(userRoleRepository);
         this.userRoleRepository = userRoleRepository;
-    }
-
-    public void save(UserRole role) {
-        userRoleRepository.save(role);
     }
 
     public UserRole findByName(String name) {

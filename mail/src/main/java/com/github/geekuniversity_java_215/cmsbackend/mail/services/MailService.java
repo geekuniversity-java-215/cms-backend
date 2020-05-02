@@ -1,7 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import com.github.geekuniversity_java_215.cmsbackend.utils.JobPool;
 import lombok.extern.slf4j.Slf4j;
 import net.tascalate.concurrent.Promise;
@@ -36,32 +35,31 @@ public class MailService {
 
     /**
      * Отправляет письмо об успешном платеже
-     * @param person Person
+     * @param user User
      * @param amount сумма платежа
      */
-    public Promise<Void> sendPaymentSuccess(Person person, BigDecimal amount) {
+    public Promise<Void> sendPaymentSuccess(User user, BigDecimal amount) {
 
         log.trace("Отправляем письмо о успешно проведенном платеже");
-        //System.out.println(person.getAccount());
-        final String email = person.getEmail();
+        final String email = user.getEmail();
         final String subject = "Платеж успешно проведен";
-        final String body = messageBuilder.buildPaymentSuccess(person,amount);
+        final String body = messageBuilder.buildPaymentSuccess(user,amount);
         return sendMessage(email, subject, body);
     }
 
     /**
      * Отправляет письмо с подтверждением о регистрации
-     * @param person Person
+     * @param user User
      * @param confirmationUrl сслка для завершения регистрации
      * @return
      */
-    public Promise<Void> sendRegistrationConfirmation(Person person, String confirmationUrl) {
+    public Promise<Void> sendRegistrationConfirmation(User user, String confirmationUrl) {
 
         //ToDo: нужно убедиться, что формируется нормальный url из сервиса авторизации
         log.trace("Отправляем письмо о успешной регистрации");
-        final String email = person.getEmail();
+        final String email = user.getEmail();
         final String subject = "Завершение регистрации";
-        final String body = messageBuilder.buildRegistrationConfirmationEmail(person, confirmationUrl);
+        final String body = messageBuilder.buildRegistrationConfirmationEmail(user, confirmationUrl);
 
         return sendMessage(email, subject, body);
     }
@@ -71,7 +69,7 @@ public class MailService {
     /**
      * метод формирует url для подтверждения регистрации, перенести в сервис авторизации
      */
-    public String generateConfirmationUrl(Person person) {
+    public String generateConfirmationUrl(User user) {
         String token = new BigInteger(130, new SecureRandom()).toString(32);
 
         // ToDo: сгенерированный url является ключом. необходимо сохранить для пользователя,

@@ -38,6 +38,8 @@ public class Address extends AbstractEntity {
     @Column
     private String latitude;
 
+
+
     public Address(String city, String street, int house, int building, int flat) {
         this.city = city;
         this.street = street;

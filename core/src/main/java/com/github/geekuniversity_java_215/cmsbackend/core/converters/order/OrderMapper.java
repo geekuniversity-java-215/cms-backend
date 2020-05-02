@@ -4,10 +4,10 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.Abstr
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.order.OrderDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +24,25 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 //    @Autowired
 //    OrderService orderService;
 
+    //ToDo: move client & courier to ClientMapper and CourierMapper
+
     @Autowired
-    PersonService personService;
+    ClientService clientService;
+
+    @Autowired
+    CourierService courierService;
 
     //@Mapping(source = "client", target = "client", qualifiedByName = "toClientDto")
     //@Mapping(source = "manager", target = "manager", qualifiedByName = "toManagerDto")
 
-    //ToDo: move customer&courier two to Person and Customer mapper ?? 
 
-    @Mapping(source = "customer.id", target = "customerId")
+
+    @Mapping(source = "client.id", target = "clientId")
     @Mapping(source = "courier.id", target = "courierId")
     @Mapping(source = "status.id", target = "status")
     public abstract OrderDto toDto(Order order);
 
-    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "client", ignore = true)
     @Mapping(target = "courier", ignore = true)
 
     @Mapping(target = "status", ignore = true)
@@ -56,11 +61,11 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
         idMap(source, target);
 
         // Manual mapping
-        Customer customer = (Customer) personService.findById(source.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-        Courier courier = (Courier) personService.findById(source.getCourierId())
+        Client client = clientService.findById(source.getClientId())
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+        Courier courier = courierService.findById(source.getCourierId())
                 .orElseThrow(() -> new RuntimeException("Courier not found"));
-        target.setCustomer(customer);
+        target.setClient(client);
         target.setCourier(courier);
 
         target.setStatus(OrderStatus.idOf(source.getStatus()));

@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class OrderDto extends AbstractDto {
 
-    private Long customerId;
+    private Long clientId;
     private Long courierId;
 
     private AddressDto from;

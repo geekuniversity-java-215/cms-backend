@@ -4,8 +4,8 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.aspect.ValidAuthenticationType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     private final TokenService tokenService;
-    private final PersonService personService;
+    private final UserService userService;
 
     @Autowired
-    public AdminController(TokenService tokenService, PersonService personService) {
+    public AdminController(TokenService tokenService, UserService userService) {
         this.tokenService = tokenService;
-        this.personService = personService;
+        this.userService = userService;
     }
 
     @PostMapping("/test")
@@ -44,13 +44,13 @@ public class AdminController {
 
         HttpStatus status;
 
-        Person person = personService.findByLogin(login);
+        User user = userService.findByLogin(login);
 
-        if (person == null) {
+        if (user == null) {
             status = HttpStatus.NOT_FOUND;
         }
         else {
-           tokenService.deleteByPerson(person);
+           tokenService.deleteByUser(user);
             status = HttpStatus.OK;
         }
         

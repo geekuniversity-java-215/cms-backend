@@ -1,8 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.data.UserPrincipalCustom;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
-import com.github.geekuniversity_java_215.cmsbackend.core.repositories.PersonRepository;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,19 +12,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceCustom implements UserDetailsService {
 
-    private final PersonRepository personRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserDetailsServiceCustom(PersonRepository personRepository) {
-        this.personRepository = personRepository;
+    public UserDetailsServiceCustom(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String login) {
 
-        Person person = personRepository.findOneByLogin(login)
+        User user = userRepository.findOneByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException(login));
 
-        return new UserPrincipalCustom(person);
+        return new UserPrincipalCustom(user);
     }
 }

@@ -1,7 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CmsAppTestStartupRunner implements ApplicationRunner {
 
-    private final PersonService personService;
+    private final UserService userService;
     private final AccountService accountService;
 
     @Autowired
-    public CmsAppTestStartupRunner(PersonService personService, AccountService accountService) {
-        this.personService = personService;
+    public CmsAppTestStartupRunner(UserService userService, AccountService accountService) {
+        this.userService = userService;
         this.accountService = accountService;
     }
 

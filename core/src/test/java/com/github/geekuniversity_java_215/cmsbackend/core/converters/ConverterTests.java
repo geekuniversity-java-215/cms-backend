@@ -2,15 +2,11 @@ package com.github.geekuniversity_java_215.cmsbackend.core.converters;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AddressService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -20,7 +16,6 @@ import org.springframework.util.Assert;
 
 
 import javax.annotation.PostConstruct;
-import java.time.Instant;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 @SpringBootTest
@@ -30,7 +25,7 @@ class ConverterTests {
     @Autowired
     private OrderConverter orderConverter;
     @Autowired
-    private PersonService personService;
+    private UserService userService;
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -41,11 +36,14 @@ class ConverterTests {
     //Заместо @BeforeAll
     @PostConstruct
     private void postConstruct() {
+        log.info("Checking Converter an Mapper logic");
     }
 
 
     @Test
     void OrderConverterTest() {
+
+        log.info("Checking OrderConverter");
 
         Order order = orderService.findById(1L).get();
 

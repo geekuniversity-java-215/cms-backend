@@ -2,9 +2,10 @@ package com.github.geekuniversity_java_215.cmsbackend.mail;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Customer;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -17,12 +18,12 @@ import java.math.BigDecimal;
 @Slf4j
 public class MailTestStartupRunner implements ApplicationRunner {
 
-    private final PersonService personService;
+    private final UserService userService;
     private final AccountService accountService;
 
     @Autowired
-    public MailTestStartupRunner(PersonService personService, AccountService accountService) {
-        this.personService = personService;
+    public MailTestStartupRunner(UserService userService, AccountService accountService) {
+        this.userService = userService;
         this.accountService = accountService;
     }
 
@@ -31,12 +32,11 @@ public class MailTestStartupRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
 
         Account account = new Account();
-        Customer customer = new Customer();
-        customer.setFirstName("Вася"); customer.setLastName("Пупкин"); customer.setEmail("cmsbackendgeek@gmail.com"); customer.setPhoneNumber("123");
-        customer.setAccount(account);
-        personService.save(customer);
+        User user = new User("Пупкин", "Вася", "cmsbackendgeek@gmail.com","123");
+        user.setAccount(account);
+        userService.save(user);
 
-        accountService.addBalance(customer.getAccount(), BigDecimal.TEN, CurrencyCode.USD);
+        accountService.addBalance(user.getAccount(), BigDecimal.TEN, CurrencyCode.USD);
     }
 }
 

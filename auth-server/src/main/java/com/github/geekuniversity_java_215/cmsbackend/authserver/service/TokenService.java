@@ -3,11 +3,11 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.AccessTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.RefreshTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.PersonService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import org.slf4j.Logger;
@@ -33,20 +33,20 @@ public class TokenService {
     private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final JwtTokenService jwtTokenService;
-    private final PersonService personService;
+    private final UserService userService;
     private final AccessTokenRepository accessTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final BlacklistTokenService blacklistTokenService;
 
     @Autowired
     public TokenService(JwtTokenService jwtTokenService,
-                        PersonService personService,
+                        UserService userService,
                         AccessTokenRepository accessTokenRepository,
                         RefreshTokenRepository refreshTokenRepository,
                         BlacklistTokenService blacklistTokenService) {
 
         this.jwtTokenService = jwtTokenService;
-        this.personService = personService;
+        this.userService = userService;
         this.accessTokenRepository = accessTokenRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.blacklistTokenService = blacklistTokenService;
@@ -71,10 +71,10 @@ public class TokenService {
         String refreshTokenString = null;
         //
         //
-        // find person
-        Person person = personService.findByLogin(login);
-        if(person == null) {
-            throw new UsernameNotFoundException("Person not exists: " + login);
+        // find user
+        User user = userService.findByLogin(login);
+        if(user == null) {
+            throw new UsernameNotFoundException("User not exists: " + login);
         }
 
 
@@ -83,27 +83,27 @@ public class TokenService {
         long ttl = TokenType.REFRESH.getTtl();
         Instant expiredAt = Instant.now().plusSeconds(ttl);
 
-        refreshToken = new RefreshToken(person, expiredAt);
+        refreshToken = new RefreshToken(user, expiredAt);
         refreshTokenRepository.save(refreshToken);
 
         Set<String> refreshRoles = new HashSet<>(Collections.singletonList(UserRole.REFRESH));
 
         refreshTokenString = jwtTokenService.createJWT(
-                TokenType.REFRESH, refreshToken.getId(), ISSUER, person.getLogin(), refreshRoles, ttl);
+                TokenType.REFRESH, refreshToken.getId(), ISSUER, user.getLogin(), refreshRoles, ttl);
 
         // 2. Access Token ---------------------------------------------------------------------
 
         expiredAt = Instant.now().plusSeconds(TokenType.ACCESS.getTtl());
-        accessToken = new AccessToken(person, refreshToken, expiredAt);
+        accessToken = new AccessToken(refreshToken, expiredAt);
         refreshToken.setAccessToken(accessToken);
 
         accessTokenRepository.save(accessToken);
 
         Set<String> roles =
-                person.getRoles().stream().map(UserRole::getName).collect(Collectors.toSet());
+                user.getRoles().stream().map(UserRole::getName).collect(Collectors.toSet());
 
         accessTokenString = jwtTokenService.createJWT(
-                TokenType.ACCESS, accessToken.getId(), ISSUER, person.getLogin(), roles, TokenType.ACCESS.getTtl());
+                TokenType.ACCESS, accessToken.getId(), ISSUER, user.getLogin(), roles, TokenType.ACCESS.getTtl());
 
 
 
@@ -159,8 +159,8 @@ public class TokenService {
         }
     }
 
-    public void deleteByPerson(Person person) {
-        refreshTokenRepository.deleteByPerson(person);
+    public void deleteByUser(User user) {
+        refreshTokenRepository.deleteByUser(user);
     }
 
 

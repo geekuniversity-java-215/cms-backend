@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -15,14 +16,11 @@ public class AccessToken extends Token {
 
     @OneToOne
     @JoinColumn(name = "refresh_token_id", referencedColumnName = "id")
+    @Getter
     private RefreshToken refreshToken;
 
-    public AccessToken(Person user, RefreshToken refreshToken, Instant expiredAt) {
-        super(user, expiredAt);
+    public AccessToken(RefreshToken refreshToken, Instant expiredAt) {
+        super(expiredAt);
         this.refreshToken = refreshToken;
-    }
-
-    public RefreshToken getRefreshToken() {
-        return refreshToken;
     }
 }

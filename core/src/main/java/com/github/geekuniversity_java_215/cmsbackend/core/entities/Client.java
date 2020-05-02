@@ -1,9 +1,9 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 
+
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,38 +11,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "courier")
+@Table(name = "client")
 @Data
 @EqualsAndHashCode(callSuper=true)
-public class Courier extends AbstractEntity {
+public class Client extends AbstractEntity {
 
     @NotNull
     @OneToOne
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany(mappedBy= "courier", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy= "client", orphanRemoval = true, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
     protected List<Order> orderList = new ArrayList<>();
 
     // stub
-    private String courierSpecificData;
+    private String clientSpecificData;
 
+    protected Client() {}
 
-    protected Courier() {}
-
-    public Courier(@NotNull User user, String courierSpecificData) {
+    public Client(@NotNull User user, String clientSpecificData) {
         this.user = user;
-        this.courierSpecificData = courierSpecificData;
+        this.clientSpecificData = clientSpecificData;
     }
 
     @Override
     public String toString() {
-        return "Courier{" +
+        return "Client{" +
                 "id=" + id +
                 ", user=" + user +
                 '}';
     }
 }
-
-// TODO: 09.04.2020 Добавить сущность автомобиль и подвязать к курьеру.

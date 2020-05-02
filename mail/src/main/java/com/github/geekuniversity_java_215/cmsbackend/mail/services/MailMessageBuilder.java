@@ -1,7 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -20,19 +20,19 @@ public class MailMessageBuilder {
     }
 
 
-    String buildPaymentSuccess(Person person, BigDecimal amount ) {
+    String buildPaymentSuccess(User user, BigDecimal amount ) {
         Context context = new Context();
-        context.setVariable("sender", person.getFirstName());
+        context.setVariable("sender", user.getFirstName());
         context.setVariable("amount",amount);
-        context.setVariable("balance",person.getAccount().getBalance().toString());
+        context.setVariable("balance", user.getAccount().getBalance().toString());
         return templateEngine.process("mail/payment_success", context);
     }
 
     
     //todo на вход buildRegConfirmationEmail необходимо передавать сущность Клиента, который регистрируется
-    String buildRegistrationConfirmationEmail(Person person, String url) {
+    String buildRegistrationConfirmationEmail(User user, String url) {
         Context context = new Context();
-        context.setVariable("user", person.getLastName() + " " + person.getFirstName());
+        context.setVariable("user", user.getLastName() + " " + user.getFirstName());
 
         context.setVariable("reg_url", url);
         context.setVariable("user_confirm_mail", "Завершить регистрацию");

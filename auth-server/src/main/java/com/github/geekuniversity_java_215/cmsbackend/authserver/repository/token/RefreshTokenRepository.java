@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.CustomRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RefreshTokenRepository extends CustomRepository<RefreshToken, Long> {
 
-    void findAllByPersonLogin(String login);
+    void findAllByUserLogin(String login);
 
 
 
@@ -20,6 +20,6 @@ public interface RefreshTokenRepository extends CustomRepository<RefreshToken, L
     @Query("DELETE FROM RefreshToken t WHERE t.expiredAt < CURRENT_TIMESTAMP")
     void vacuum();
 
-    void deleteByPersonLogin(String login);
-    void deleteByPerson(Person user);
+    void deleteByUserLogin(String login);
+    void deleteByUser(User user);
 }

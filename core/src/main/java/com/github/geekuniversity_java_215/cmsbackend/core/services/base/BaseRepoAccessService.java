@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,18 +43,21 @@ public abstract class BaseRepoAccessService<T> {
         return baseRepository.findAll(spec);
     }
 
-    public T save(T t) {
+    public Page<T> findAll(Specification<T> spec, PageRequest pageable) {
+        return baseRepository.findAll(spec, pageable);
+    }
 
+    public T save(T t) {
         return baseRepository.save(t);
     }
 
-    public void delete(T t) {
+    public List<T> saveAll(Iterable<T> list) {
+        return baseRepository.saveAll(list);
+    }
 
+    public void delete(T t) {
         baseRepository.delete(t);
     }
 
-    public Page<T> findAll(Specification<T> spec, PageRequest pageable) {
 
-        return baseRepository.findAll(spec, pageable);
-    }
 }

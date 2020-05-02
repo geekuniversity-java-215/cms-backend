@@ -1,7 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import lombok.*;
 
@@ -16,30 +14,30 @@ import java.util.Set;
 //@MappedSuperclass
 @Entity
 //@AttributeOverride(name="id", column = )
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 
 @Table(
-    name = "person",
-    indexes = {@Index(name = "_idx", columnList = "account_id"),
-               @Index(name = "_unq", columnList = "last_name, first_name",unique = true)
+    name = "uzer",
+    indexes = {@Index(name = "user_account_id_idx", columnList = "account_id"),
+               @Index(name = "user_first_name_last_name_unq", columnList = "last_name, first_name",unique = true)
     })
 @Data
 @EqualsAndHashCode(callSuper=true)
-public abstract class Person extends AbstractEntityNoGen {
+public class User extends AbstractEntityNoGen {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(generator = "person_id_seq")
+    @GeneratedValue(generator = "user_id_seq")
     @EqualsAndHashCode.Exclude
-    protected Long id;
+    private Long id;
 
     @NotNull
     @Column(name = "login")
-    protected String login;
+    private String login;
 
     @NotNull
     @Column(name = "password") // bcrypt hash
-    protected String password;
+    private String password;
 
 
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -47,45 +45,57 @@ public abstract class Person extends AbstractEntityNoGen {
 
     // Это список только refresh_token
     @NotNull
-    @OneToMany(mappedBy= "person", orphanRemoval = true, cascade = CascadeType.ALL)
-    //@OrderBy("id ASC")
-    private List<RefreshToken> refreshTokens = new ArrayList<>();
+    @OneToMany(mappedBy= "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OrderBy("id ASC")
+    private List<RefreshToken> refreshTokenList = new ArrayList<>();
 
     @NotNull
     @Column(name = "first_name")
-    protected String firstName;
+    private String firstName;
 
     @NotNull
     @Column(name = "last_name")
-    protected String lastName;
+    private String lastName;
 
     @NotNull
     @Column(name = "email")
-    protected String email;
+    private String email;
 
     @NotNull
     @Column(name = "phone_number")
-    protected String phoneNumber;
+    private String phoneNumber;
 
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    protected Account account;
+    private Account account;
 
 
-    @NotNull
-    @OneToMany(mappedBy= "courier", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy= "user", orphanRemoval = true)
     @OrderBy("id ASC")
-    protected List<Order> orderList = new ArrayList<>();
+    private Client client;
+
+    @OneToOne(mappedBy= "user", orphanRemoval = true)
+    @OrderBy("id ASC")
+    private Courier courier;
 
 
-    public Person() {}
 
-    public Person(@NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String phoneNumber) {
+
+    protected User() {}
+
+    public User(@NotNull String firstName,
+                @NotNull String lastName,
+                @NotNull String email,
+                @NotNull String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+
+        // ToDo: ASAP EDC remove this
+        login = "123";
+        password = "456";
     }
 
     protected void setId(Long id) {
@@ -94,12 +104,12 @@ public abstract class Person extends AbstractEntityNoGen {
 
     public void setAccount(Account account) {
         this.account = account;
-        account.setPerson(this);
+        account.setUser(this);
     }
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "User{" +
                "id=" + id +
                ", firstName='" + firstName + '\'' +
                ", lastName='" + lastName + '\'' +

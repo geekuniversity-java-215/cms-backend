@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.data;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Person;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,30 +10,30 @@ import java.util.stream.Collectors;
 
 public class UserPrincipalCustom implements UserDetails {
 
-    private Person person;
+    private User user;
 
-    public UserPrincipalCustom(Person person) {
-        this.person = person;
+    public UserPrincipalCustom(User user) {
+        this.user = user;
     }
 
 
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return person.getRoles().stream().map(c -> new SimpleGrantedAuthority(c.getName())).collect(Collectors.toSet());
+        return user.getRoles().stream().map(c -> new SimpleGrantedAuthority(c.getName())).collect(Collectors.toSet());
     }
 
     @Override
     public String getPassword() {
-        return person.getPassword();
+        return user.getPassword();
     }
 
     @Override
-    public String getUsername() {return person.getLogin();}
+    public String getUsername() {return user.getLogin();}
 
     @Override
     public boolean isEnabled() {
-        return person.getEnabled();
+        return user.getEnabled();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class UserPrincipalCustom implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return person.getEnabled();
+        return user.getEnabled();
     }
 
 
