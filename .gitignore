@@ -34,7 +34,8 @@ build/
 log/
 
 ### Profiles ###
-core-dev.properties
+core-controllers-dev.properties
+core-services-dev.properties
 utils-dev.properties
 mail.properties
 mail-dev.properties

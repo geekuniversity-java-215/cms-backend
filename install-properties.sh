@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LIB_MODULES=(core mail payment utils)
+LIB_MODULES=(core/core-controllers core/core-services  mail payment utils)
 
 # Prepare test logging config for library modules ------------------------
 
