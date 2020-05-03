@@ -10,7 +10,7 @@
         <version>0.1</version>
     </parent>
 
-    <artifactId>core</artifactId>
+    <artifactId>core-services</artifactId>
 
     <dependencies>
 
@@ -55,6 +55,14 @@
             <groupId>com.github.geekuniversity_java_215</groupId>
             <artifactId>protocol</artifactId>
             <version>${jrpc.protocol.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--module util -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>utils</artifactId>
+            <version>${app.version}</version>
             <scope>compile</scope>
         </dependency>
 

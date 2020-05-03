@@ -21,14 +21,16 @@
 
     <modules>
         <module>utils</module>
-        <module>core</module>
-        <module>protocol</module>
         <module>mail</module>
-        <module>cmsapp</module>
+        <module>protocol</module>
+        <module>configuration</module>
+        <module>core/core-services</module>
         <module>payment</module>
         <module>geodata</module>
-        <module>configuration</module>
+        <module>core/core-controllers</module>
+        <module>cmsapp</module>
         <module>auth-server</module>
+
     </modules>
 
 

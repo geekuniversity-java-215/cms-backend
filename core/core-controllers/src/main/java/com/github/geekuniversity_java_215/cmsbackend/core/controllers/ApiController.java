@@ -74,7 +74,7 @@ public class ApiController {
         // http response
         HttpResponse httpResponse;
 
-        log.info("POST " + API_PATH + ": " + request);
+        log.debug("POST " + API_PATH + ": " + request);
 
 
         try {
@@ -182,7 +182,7 @@ public class ApiController {
         // add request id to response (if have one)
         httpResponse.getResult().setId(id);
 
-        log.info(httpResponse.getResult().toString());
+        log.debug(httpResponse.getResult().toString());
 
         return new ResponseEntity<>(httpResponse.getResult(), httpResponse.getStatus());
     }

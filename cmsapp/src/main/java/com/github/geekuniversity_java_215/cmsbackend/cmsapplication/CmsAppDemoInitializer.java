@@ -1,42 +1,56 @@
-package com.github.geekuniversity_java_215.cmsbackend.core;
+package com.github.geekuniversity_java_215.cmsbackend.cmsapplication;
 
+import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.entities.TestEntity;
+import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.repositories.TestRepository;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.ApiController;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Component
 @Slf4j
-public class CoreTestStartupRunner implements ApplicationRunner {
+public class CmsAppDemoInitializer implements ApplicationRunner {
 
     private final UserService userService;
     private final ClientService clientService;
     private final CourierService courierService;
-    private final AccountService accountService;
+    private final TestRepository testRepository;
+    private final MailService mailService;
     private final OrderService orderService;
 
-
     @Autowired
-    public CoreTestStartupRunner( UserService userService,
-                                 ClientService clientService, CourierService courierService, AccountService accountService,
+    public CmsAppDemoInitializer(UserService userService,
+                                 ClientService clientService,
+                                 CourierService courierService,
+                                 TestRepository testRepository,
+                                 MailService mailService,
                                  OrderService orderService) {
 
         this.userService = userService;
         this.clientService = clientService;
         this.courierService = courierService;
-        this.accountService = accountService;
+        this.testRepository = testRepository;
+        this.mailService = mailService;
         this.orderService = orderService;
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
 
-;
+        log.info("CmsAppDemoInitializer - add basic entities to DB");
+
+        testRepository.save(new TestEntity("Вася test"));
 
         Address from;
         Address to;

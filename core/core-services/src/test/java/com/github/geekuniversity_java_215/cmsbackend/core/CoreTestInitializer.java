@@ -1,54 +1,43 @@
-package com.github.geekuniversity_java_215.cmsbackend.cmsapplication;
+package com.github.geekuniversity_java_215.cmsbackend.core;
 
-import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.entities.TestEntity;
-import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.repositories.TestRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
-import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-@SuppressWarnings("OptionalGetWithoutIsPresent")
+/**
+ * Prepare database (insert data) before running any tests
+ */
 @Component
 @Slf4j
-public class CmsAppStartupRunner implements ApplicationRunner {
+public class CoreTestInitializer implements ApplicationRunner {
 
     private final UserService userService;
     private final ClientService clientService;
     private final CourierService courierService;
-    private final TestRepository testRepository;
-    private final MailService mailService;
+    private final AccountService accountService;
     private final OrderService orderService;
 
+
     @Autowired
-    public CmsAppStartupRunner(UserService userService,
-                               ClientService clientService,
-                               CourierService courierService,
-                               TestRepository testRepository,
-                               MailService mailService,
+    public CoreTestInitializer(UserService userService,
+                               ClientService clientService, CourierService courierService, AccountService accountService,
                                OrderService orderService) {
 
         this.userService = userService;
         this.clientService = clientService;
         this.courierService = courierService;
-        this.testRepository = testRepository;
-        this.mailService = mailService;
+        this.accountService = accountService;
         this.orderService = orderService;
     }
 
     @Override
-    public void run(ApplicationArguments args) {
-
-        testRepository.save(new TestEntity("Вася test"));
-        log.info("TestEntity saved");
+    public void run(ApplicationArguments args) throws Exception {
 
         Address from;
         Address to;

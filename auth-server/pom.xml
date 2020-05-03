@@ -14,18 +14,11 @@
     <artifactId>auth-server</artifactId>
 
     <dependencies>
-        <!--module util -->
-        <dependency>
-            <groupId>com.github.geekuniversity_java_215</groupId>
-            <artifactId>utils</artifactId>
-            <version>${app.version}</version>
-            <scope>compile</scope>
-        </dependency>
 
-        <!--module core -->
+        <!--module core/core-services -->
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>core-services</artifactId>
             <version>${app.version}</version>
             <scope>compile</scope>
         </dependency>
