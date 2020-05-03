@@ -8,6 +8,7 @@
         <artifactId>cms-backend</artifactId>
         <groupId>com.github.geekuniversity_java_215</groupId>
         <version>0.1</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>core-controllers</artifactId>
