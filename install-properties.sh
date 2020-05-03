@@ -23,21 +23,18 @@ do
   create_tests_dev ${var}
 done
 
+# core ------------------------------------------------------------------
 
-# cmsapp -----------------------------------------------------------
-fromPath=cmsapp/src/main/resources/
-FROM=${fromPath}application.properties
-TO=${fromPath}application-dev.properties
+# core-controllers
+fromPath=core/core-controllers/src/main/resources/
+FROM=${fromPath}core-controllers.properties
+TO=${fromPath}core-controllers-dev.properties
+cp -an $FROM $TO
 
-if [[ ! -f "$TO" ]]; then
-    cp -an $FROM $TO
-    sed -i 's/logback-spring.xml/logback-spring-dev.xml/g' $TO
-fi
-
-# core -----------------------------------------------------------
-fromPath=core/src/main/resources/
-FROM=${fromPath}core.properties
-TO=${fromPath}core-dev.properties
+# core-controllers
+fromPath=core/core-services/src/main/resources/
+FROM=${fromPath}core-services.properties
+TO=${fromPath}core-services-dev.properties
 cp -an $FROM $TO
 
 
@@ -69,7 +66,26 @@ if [[ ! -f "$FROM" ]]; then
 fi
 
 
+# cmsapp -----------------------------------------------------------
+fromPath=cmsapp/src/main/resources/
+FROM=${fromPath}application.properties
+TO=${fromPath}application-dev.properties
 
+if [[ ! -f "$TO" ]]; then
+    cp -an $FROM $TO
+    sed -i 's/logback-spring.xml/logback-spring-dev.xml/g' $TO
+fi
+
+
+# auth-server -----------------------------------------------------------
+fromPath=auth-server/src/main/resources/
+FROM=${fromPath}application.properties
+TO=${fromPath}application-dev.properties
+
+if [[ ! -f "$TO" ]]; then
+    cp -an $FROM $TO
+    sed -i 's/logback-spring.xml/logback-spring-dev.xml/g' $TO
+fi
 
 # payment -----------------------------------------------------------
 fromPath=payment/src/main/resources/
