@@ -1,10 +1,10 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.controller;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.config.aspect.ValidAuthenticationType;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.aop.ValidAuthenticationType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,6 @@ public class AdminController {
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured(UserRole.ADMIN)
 	public ResponseEntity<String> hello() {
-
         return  ResponseEntity.ok("Hello World");
 	}
 
@@ -40,21 +39,20 @@ public class AdminController {
     @PostMapping("/user/revoke_token")
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured(UserRole.ADMIN)
-    public ResponseEntity<String> revokeToken(@RequestBody String login) {
+    public ResponseEntity<String> revokeTokenByLogin(@RequestBody String login) {
 
-        HttpStatus status;
+        HttpStatus result;
 
         User user = userService.findByLogin(login);
 
         if (user == null) {
-            status = HttpStatus.NOT_FOUND;
+            result = HttpStatus.NOT_FOUND;
         }
         else {
-           tokenService.deleteByUser(user);
-            status = HttpStatus.OK;
+            tokenService.revokeRefreshToken(user.getRefreshTokenList());
+            result = HttpStatus.OK;
         }
-        
-        return new ResponseEntity<>(status);
+        return new ResponseEntity<>(result);
     }
 
 

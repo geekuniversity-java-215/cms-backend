@@ -2,9 +2,8 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.config.filter;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.RequestScopeBean;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,21 +20,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 
-@Component("customBasicAuthFilter")
-public class CustomBasicAuthFilter extends OncePerRequestFilter {
-
-    private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+//@Component("basicAuthRequestCustomFilter")
+@Component
+@Slf4j
+public class BasicAuthRequestFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
     private final RequestScopeBean requestScopeBean;
-
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomBasicAuthFilter(@Qualifier("CustomUserDetailsService")UserDetailsService userDetailsService,
-        RequestScopeBean requestScopeBean, PasswordEncoder passwordEncoder) {
+    public BasicAuthRequestFilter(@Qualifier("userDetailsCustomService")UserDetailsService userDetailsService,
+                                  RequestScopeBean requestScopeBean, PasswordEncoder passwordEncoder) {
 
         this.userDetailsService = userDetailsService;
         this.requestScopeBean = requestScopeBean;
@@ -43,13 +40,15 @@ public class CustomBasicAuthFilter extends OncePerRequestFilter {
     }
 
 
+    /**
+     * Implement BasicAuth manually
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws ServletException, IOException {
 
         // get header "Authorization"
         final String requestBasicHeader = request.getHeader("Authorization");
-
 
         // Parsing BasicAuth string
         if (requestBasicHeader != null &&
@@ -74,7 +73,7 @@ public class CustomBasicAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
             } catch (Exception e) {
-                log.info("Basic Auth string not valid: ", e);
+                log.info("BasicAuth string not valid", e);
             }
         }
 
@@ -82,6 +81,11 @@ public class CustomBasicAuthFilter extends OncePerRequestFilter {
     }
 
 
+    /**
+     * Load User details from DB, compare password hashes
+     * @param userName login
+     * @param password password
+     */
     private UsernamePasswordAuthenticationToken getAuthToken(String userName, String password) {
 
         UsernamePasswordAuthenticationToken result = null;

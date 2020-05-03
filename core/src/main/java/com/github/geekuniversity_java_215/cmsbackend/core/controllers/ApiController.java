@@ -7,6 +7,7 @@ import com.github.geekuniversity_java_215.cmsbackend.protocol.http.HttpResponse;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.JrpcException;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.request.JrpcRequestHeader;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.response.JrpcErrorCode;
+import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcMethodHandler;
@@ -20,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -90,7 +90,7 @@ public class ApiController {
             // Parsing jrpc header ------------------------------------------------------------------
 
             // Не поддерживаемая версия jrpc
-            if (StringUtils.isEmpty(StringUtils.trimWhitespace(version)) || !version.equals("2.0")) {
+            if (StringUtils.isBlank(version) || !version.equals("2.0")) {
                 throw new JrpcException("JRPC version not supported", JrpcErrorCode.INVALID_REQUEST);
             }
             // Мы не поддерживаем уведомления для сервера
@@ -98,7 +98,7 @@ public class ApiController {
                 throw new JrpcException("JRPC has no id specified", JrpcErrorCode.INVALID_REQUEST);
             }
             // метод не указан
-            if (StringUtils.isEmpty(StringUtils.trimWhitespace(method))  ) {
+            if (StringUtils.isBlank(method)  ) {
                 throw new JrpcException("No JRPC method specified", JrpcErrorCode.METHOD_NOT_FOUND);
             }
             // метод не найден

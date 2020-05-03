@@ -2,7 +2,6 @@ package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import lombok.*;
 
 import javax.persistence.*;

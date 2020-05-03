@@ -11,8 +11,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import com.github.geekuniversity_java_215.cmsbackend.utils.SecurityUtils;
 import io.jsonwebtoken.Claims;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,17 +28,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 
-import static com.github.geekuniversity_java_215.cmsbackend.authserver.config.SpringConfiguration.ISSUER;
+import static com.github.geekuniversity_java_215.cmsbackend.core.configuration.SpringConfiguration.ISSUER;
 
+//@Component("bearerRequestFilter")
 @Component
+@Slf4j
 public class BearerRequestFilter extends OncePerRequestFilter {
-
-    private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final UserDetailsService userDetailsService;
     private final JwtTokenService jwtTokenService;
@@ -47,7 +45,7 @@ public class BearerRequestFilter extends OncePerRequestFilter {
     private final RequestScopeBean requestScopeBean;
 
     @Autowired
-    public BearerRequestFilter(@Qualifier("CustomUserDetailsService")UserDetailsService userDetailsService,
+    public BearerRequestFilter(@Qualifier("userDetailsCustomService")UserDetailsService userDetailsService,
                                JwtTokenService jwtTokenService, TokenService tokenService, RequestScopeBean requestScopeBean) {
 
         this.userDetailsService = userDetailsService;
@@ -70,19 +68,18 @@ public class BearerRequestFilter extends OncePerRequestFilter {
             requestTokenHeader.startsWith("Bearer ")) {
 
             try {
-
                 String jwtToken = requestTokenHeader.substring(7);
 
                 // decode & validate token
                 Claims claims = jwtTokenService.decodeJWT(jwtToken);
-                Token token = null;
+                Token token;
 
                 // TOKEN issued by ME // не особо нужно
-                // TOKEN Is NOT EXPIRED
-                // TOKEN is PRESENT in my DB (NOT deleted/blacklisted)
+                // TOKEN Is NOT EXPIRED // походу уже проверено в Jwt...parseClaimsJws - ExpiredJwtException
+                // TOKEN is PRESENT in my DB (NOT deleted(by revoke/expiration)/blacklisted)
                 if (claims.getIssuer().equals(ISSUER) &&
-                    isTokenActive(claims) &&
-                    (token = findToken(claims))!=null) {
+                    tokenNotExpired(claims) &&
+                    (token = findTokenInDB(claims))!=null) {
 
                     UsernamePasswordAuthenticationToken authToken = getAuthToken(claims);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -98,12 +95,13 @@ public class BearerRequestFilter extends OncePerRequestFilter {
                     // save token
                     requestScopeBean.setToken(token);
 
+                    // configure Spring Security to manually set authentication
+
                     // After setting the Authentication in the context, we specify
                     // that the current user is authenticated.
                     // So it passes the Spring Security Configurations successfully.
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
-
             } catch (Exception e) {
                 log.info("JWT Token not valid: ", e);
             }
@@ -116,16 +114,20 @@ public class BearerRequestFilter extends OncePerRequestFilter {
     // ------------------------------------------------------------
 
 
-
-
-
-    private boolean isTokenActive(Claims claims) {
+    /**
+     * Check that JWT token not expired
+     */
+    private boolean tokenNotExpired(Claims claims) {
         return claims.getExpiration().toInstant().toEpochMilli() > Instant.now().toEpochMilli();
-
     }
 
 
-    private Token findToken(Claims claims) {
+    /**
+     * Find Token in database by its id
+     * @param claims
+     * @return AccessToken or RefreshToken
+     */
+    private Token findTokenInDB(Claims claims) {
 
         Token result = null;
 
@@ -142,8 +144,10 @@ public class BearerRequestFilter extends OncePerRequestFilter {
     }
 
 
-
-
+    /**
+     * Parse User JWT, load User details from DB
+     * @param claims token claims
+     */
     private UsernamePasswordAuthenticationToken getAuthToken(Claims claims) {
 
         UsernamePasswordAuthenticationToken result = null;
@@ -152,20 +156,24 @@ public class BearerRequestFilter extends OncePerRequestFilter {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
 
+        // If user not found in DB (userDetails ==null)
+        // will throw NotAuthorizedException later in doFilterInternal
         if (userDetails != null) {
 
             Collection<? extends GrantedAuthority> grantedAuthority = null;
 
+            // Для access_token возвращаем права(роли) пользователя из БД, какие ему назначены
             if (type == TokenType.ACCESS) {
                 // get User default authorities
                 grantedAuthority = userDetails.getAuthorities();
             }
+            // Для refresh_token возвращаем только роль REFRESH,
+            // никакими другими ресурсами(контроллерами) кроме обновления
+            // с этим токеном пользоваться нельзя.
             else if (type == TokenType.REFRESH) {
                 // Set ROLE_REFRESH only
                 grantedAuthority = SecurityUtils.rolesToGrantedAuthority(Collections.singletonList(UserRole.REFRESH));
             }
-
-            // configure Spring Security to manually set authentication
             result = new UsernamePasswordAuthenticationToken(userDetails, null, grantedAuthority);
         }
         return result;

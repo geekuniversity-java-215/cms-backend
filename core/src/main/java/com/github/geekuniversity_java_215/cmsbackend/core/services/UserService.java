@@ -1,9 +1,9 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRepository;
-import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
+import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +23,7 @@ public class UserService extends BaseRepoAccessService<User> {
 
     public User findByLogin(String login) {
         User result = null;
-        if (!Utils.isBlank(login)) {
+        if (!StringUtils.isBlank(login)) {
             result = userRepository.findOneByLogin(login).orElse(null);
         }
         return result;

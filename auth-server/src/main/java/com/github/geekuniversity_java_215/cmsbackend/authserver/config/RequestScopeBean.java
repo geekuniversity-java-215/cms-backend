@@ -3,6 +3,8 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.config;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -12,15 +14,22 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
 
+
+/**
+ * Store current user Principals, AuthType and JWT(used for Bearer authentication, if have any)
+ */
 // https://www.baeldung.com/spring-bean-scopes
 @Component
-@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_REQUEST,
+        proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RequestScopeBean {
 
+    @Getter
     private final HttpServletRequest request;
 
     private Token token;
 
+    @Getter @Setter
     private AuthType authType = AuthType.BASIC_AUTH;
 
     @Autowired
@@ -36,30 +45,16 @@ public class RequestScopeBean {
         this.token = token;
     }
 
-    public HttpServletRequest getRequest() {
-        return request;
-    }
-
-    public AuthType getAuthType() {return authType;}
-
-    public void setAuthType(AuthType authType) {
-        this.authType = authType;
-    }
-
-
-
     public AccessToken getAccessToken() {
-
         return getToken(AccessToken.class);
     }
 
     public RefreshToken getRefreshToken() {
-
         return getToken(RefreshToken.class);
     }
 
 
-    // ---------------------------------------------------------
+    // ============================================================================
 
     private <T extends Token> T getToken(Class<T> tokenClass) {
 

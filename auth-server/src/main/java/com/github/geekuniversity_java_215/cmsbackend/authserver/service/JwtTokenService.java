@@ -21,7 +21,7 @@ public class JwtTokenService implements Serializable {
 
 	private static final long serialVersionUID = -2550185165626007488L;
 
-	@Value("${app.jwt.secret}")
+	@Value("${jwt.secret}")
 	private String SECRET_KEY;
 
 

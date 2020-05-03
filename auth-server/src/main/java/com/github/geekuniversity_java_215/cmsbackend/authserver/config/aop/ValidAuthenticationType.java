@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.authserver.config.aspect;
+package com.github.geekuniversity_java_215.cmsbackend.authserver.config.aop;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
 

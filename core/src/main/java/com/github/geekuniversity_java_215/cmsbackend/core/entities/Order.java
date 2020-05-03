@@ -21,6 +21,7 @@ public class Order extends AbstractEntity {
     @JoinColumn(name="client_id")
     private Client client;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name="courier_id")
     private Courier courier;

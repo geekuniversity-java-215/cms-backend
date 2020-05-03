@@ -4,8 +4,6 @@ import lombok.experimental.UtilityClass;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -19,38 +17,6 @@ import static com.pivovarit.function.ThrowingRunnable.unchecked;
 @UtilityClass
 public class Utils {
 
-    /**
-     * Checks if a String is empty (""), null or whitespace only.
-     * <br>Like org.apache.commons.lang3.StringUtils.isBlank
-     */
-
-    public boolean isBlank(String s) {
-        return StringUtils.isEmpty(StringUtils.trimWhitespace(s));
-    }
-
-
-    public boolean isNullOrEmpty(Object object) {
-
-        return object == null || object.getClass() == String.class && ((String)object).trim().isEmpty();
-    }
-
-
-    public String getNullIfEmpty(String s) {
-
-        if (s != null && s.trim().isEmpty())
-            s = null;
-
-        return s;
-    }
-
-    public String getEmptyIfNull(String s) {
-
-        if (s == null)
-            s = "";
-
-        return s;
-    }
-
     public int boolToInt(boolean b) {
         return b ? 1 : 0;
     }
@@ -58,9 +24,6 @@ public class Utils {
     public String boolToStr(boolean b) {
         return b ? "1" : "0";
     }
-
-
-
 
     public Set<String> rolesToSet(Object authorities) {
         //noinspection unchecked

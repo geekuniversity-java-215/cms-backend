@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.authserver.config.aspect;
+package com.github.geekuniversity_java_215.cmsbackend.authserver.config.aop;
 
 
 import org.aspectj.lang.JoinPoint;
@@ -15,32 +15,35 @@ import java.util.Set;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.RequestScopeBean;
+import org.springframework.util.Assert;
 
 
 @Aspect
 @Component
 public class AuthenticationTypeAspect {
 
+    // Contains current user auth type (obtained in spring security servlet chain filter)
     private final RequestScopeBean requestScopeBean;
 
     public AuthenticationTypeAspect(RequestScopeBean requestScopeBean) {
         this.requestScopeBean = requestScopeBean;
     }
 
+
     /**
-     *
+     * Check auth type on method  - BasicAuth or Bearer
      * @param joinPoint
      */
     @Before("@annotation(ValidAuthenticationType)")
     public void validateAuthenticationType(JoinPoint joinPoint) {
 
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        MethodSignature signature = (MethodSignature)joinPoint.getSignature();
         Method method = signature.getMethod();
 
         ValidAuthenticationType foundAnnotation = AnnotationUtils.findAnnotation(method, ValidAuthenticationType.class);
 
+        Assert.notNull(foundAnnotation, "foundAnnotation == null");
         Set<AuthType> validAuthTypes = new HashSet<>(Arrays.asList(foundAnnotation.value()));
-
         AuthType currentAuthType = requestScopeBean.getAuthType();
 
         if (!validAuthTypes.contains(currentAuthType)) {

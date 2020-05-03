@@ -2,10 +2,10 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.controller;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.RequestScopeBean;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.config.aspect.ValidAuthenticationType;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.service.BlacklistTokenService;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.aop.ValidAuthenticationType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.BlackListResponse;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.OauthResponse;
@@ -15,13 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-// handmadezz oauzz v0.3
+// handmadezz oauzz serverz v0.3 - старые взгляды сквозь новые дыры
 
 
 @RestController
@@ -31,16 +30,13 @@ public class OauthController {
 
     private final TokenService tokenService;
     private final RequestScopeBean requestScopeBean;
-    private final BlacklistTokenService blacklistTokenService;
-
 
 
     public OauthController(TokenService tokenService,
-        RequestScopeBean requestScopeBean, BlacklistTokenService blacklistTokenService) {
+        RequestScopeBean requestScopeBean) {
 
         this.tokenService = tokenService;
         this.requestScopeBean = requestScopeBean;
-        this.blacklistTokenService = blacklistTokenService;
     }
 
 
@@ -48,24 +44,22 @@ public class OauthController {
 
     /**
      * Obtain new access and refresh tokens
-     * <br>Allow Basic Authorization only
+     * <br>Allowed Basic Authorization only
      */
-    @PostMapping(value = "/get")
+    @PostMapping(value = "/get") // post-get :)
     @ValidAuthenticationType(AuthType.BASIC_AUTH)
     @Secured({UserRole.USER, UserRole.ADMIN})
     public ResponseEntity<OauthResponse> getToken() {
 
         OauthResponse result;
-
         result = tokenService.issueTokens(getUsername(), null);
-
         return ResponseEntity.ok(result);
     }
 
 
     /**
      * Refresh tokens by refresh_token
-     * <br> Allow Bearer refresh_token Authorization only
+     * <br> Allow Bearer Authorization by refresh_token only
      */
     @PostMapping(value = "/refresh")
     @ValidAuthenticationType(AuthType.REFRESH_TOKEN)
@@ -83,20 +77,27 @@ public class OauthController {
     }
 
     /**
-     * Return blacklisted access_tokens
-     * <br> Allow Basic and Bearer access_token Authorization
-     * @param from from that index to last available (from is not token id)
+     * Return blacklisted access_token list
+     * <br> Allow Bearer access_token Authorization
+     * @param from from that index to last available
      * @return List of denied token id
      */
     @PostMapping(value = "/listblack")
-    @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
+    @ValidAuthenticationType({AuthType.ACCESS_TOKEN})
     @Secured({UserRole.RESOURCE, UserRole.ADMIN})
     public ResponseEntity<BlackListResponse> getBlackList(@Param("from") Long from) {
 
         BlackListResponse result = new BlackListResponse();
-
-        result.setList(blacklistTokenService.getFrom(from));
+        result.setList(tokenService.getBlacklisted(from));
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/test")
+    @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
+    @Secured({UserRole.USER, UserRole.ADMIN, UserRole.RESOURCE})
+    public ResponseEntity<String> hello() {
+        return  ResponseEntity.ok("WEB SARVAR VERSUS APPLICATION SARVAR GRRREET YOU!");
     }
 
 
@@ -106,7 +107,9 @@ public class OauthController {
     // get current user name
     private static String getUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails)principal;
+
+        UserDetailsCustom userDetails = (UserDetailsCustom)principal;
+        //UserDetails userDetails = (UserDetails)principal;
         return userDetails.getUsername();
     }
 

@@ -14,12 +14,10 @@ public class Scheduler {
     private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final TokenService tokenService;
-    private final BlacklistTokenService blacklistTokenService;
 
     @Autowired
-    public Scheduler(TokenService tokenService, BlacklistTokenService blacklistTokenService) {
+    public Scheduler(TokenService tokenService) {
         this.tokenService = tokenService;
-        this.blacklistTokenService = blacklistTokenService;
     }
 
 
@@ -28,10 +26,7 @@ public class Scheduler {
     private void vacuumTables() {
 
         log.info("Vacuuming tables ...");
-
         tokenService.vacuum();
-        blacklistTokenService.vacuum();
-
         log.info("Vacuuming tables done");
     }
 

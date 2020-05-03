@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.basic;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
 import java.math.BigDecimal;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;

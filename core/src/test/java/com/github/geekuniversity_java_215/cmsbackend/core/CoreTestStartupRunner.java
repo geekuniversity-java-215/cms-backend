@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CoreTestStartupRunner implements ApplicationRunner {
 
-    private final CoreEntitiesInitializer coreEntitiesInitializer;
     private final UserService userService;
     private final ClientService clientService;
     private final CourierService courierService;
@@ -23,10 +22,10 @@ public class CoreTestStartupRunner implements ApplicationRunner {
 
 
     @Autowired
-    public CoreTestStartupRunner(CoreEntitiesInitializer coreEntitiesInitializer, UserService userService,
+    public CoreTestStartupRunner( UserService userService,
                                  ClientService clientService, CourierService courierService, AccountService accountService,
                                  OrderService orderService) {
-        this.coreEntitiesInitializer = coreEntitiesInitializer;
+
         this.userService = userService;
         this.clientService = clientService;
         this.courierService = courierService;
@@ -37,7 +36,7 @@ public class CoreTestStartupRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        //coreEntitiesInitializer.run(null);
+;
 
         Address from;
         Address to;

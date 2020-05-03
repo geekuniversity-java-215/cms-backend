@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.config;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.config.filter.CustomBasicAuthFilter;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.filter.BasicAuthRequestFilter;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.config.filter.BearerRequestFilter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import org.slf4j.Logger;
@@ -41,7 +41,8 @@ public class MultipleWebSecurityConfig {
 
 
 
-    // Отключаем к хренам JwtRequestFilter, иначе spring boot автоматом запхнет его в filterChain (servlet filter chain)
+    // Отключаем к хренам BearerRequestFilter и BasicAuthFilterCustom,
+    // иначе spring boot автоматом запхнет их в filterChain (servlet filter chain)
     // https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-disable-registration-of-a-servlet-or-filter
     // (Этот фильтр должен работать только в springSecurityFilterChain)
     // Хотите проще(в аннотации самого фильтра отключить)? - нате
@@ -50,15 +51,15 @@ public class MultipleWebSecurityConfig {
     // Как робят фильтры в spring(security)
     // https://habr.com/ru/post/346628/
     @Bean
-    public FilterRegistrationBean<BearerRequestFilter> jwtRequestFilterRegistration(BearerRequestFilter filter) {
+    public FilterRegistrationBean<BearerRequestFilter> bearerRequestFilterRegistration(BearerRequestFilter filter) {
         FilterRegistrationBean<BearerRequestFilter> result = new FilterRegistrationBean<>(filter);
         result.setEnabled(false);
         return result;
     }
 
     @Bean
-    public FilterRegistrationBean<CustomBasicAuthFilter> customBasicFilterRegistration(CustomBasicAuthFilter filter) {
-        FilterRegistrationBean<CustomBasicAuthFilter> result = new FilterRegistrationBean<>(filter);
+    public FilterRegistrationBean<BasicAuthRequestFilter> basicAuthCustomFilterRegistration(BasicAuthRequestFilter filter) {
+        FilterRegistrationBean<BasicAuthRequestFilter> result = new FilterRegistrationBean<>(filter);
         result.setEnabled(false);
         return result;
     }
@@ -74,12 +75,12 @@ public class MultipleWebSecurityConfig {
     public static class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final BearerRequestFilter bearerRequestFilter;
-        private final CustomBasicAuthFilter customBasicAuthFilter;
+        private final BasicAuthRequestFilter basicAuthRequestFilter;
 
         @Autowired
-        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter, CustomBasicAuthFilter customBasicAuthFilter) {
+        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter, BasicAuthRequestFilter basicAuthRequestFilter) {
             this.bearerRequestFilter = bearerRequestFilter;
-            this.customBasicAuthFilter = customBasicAuthFilter;
+            this.basicAuthRequestFilter = basicAuthRequestFilter;
         }
 
         @Override
@@ -89,7 +90,10 @@ public class MultipleWebSecurityConfig {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
-                .addFilterAfter(customBasicAuthFilter, LogoutFilter.class);
+                .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+
+
+                //.addFilterAfter(bearerRequestFilter, LogoutFilter.class)
         }
     }
 
@@ -105,13 +109,13 @@ public class MultipleWebSecurityConfig {
     public static class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final BearerRequestFilter bearerRequestFilter;
-        private final CustomBasicAuthFilter customBasicAuthFilter;
+        private final BasicAuthRequestFilter basicAuthRequestFilter;
 
 
         @Autowired
-        public TokenWebSecurityConfig(BearerRequestFilter bearerRequestFilter, CustomBasicAuthFilter customBasicAuthFilter) {
+        public TokenWebSecurityConfig(BearerRequestFilter bearerRequestFilter, BasicAuthRequestFilter basicAuthRequestFilter) {
             this.bearerRequestFilter = bearerRequestFilter;
-            this.customBasicAuthFilter = customBasicAuthFilter;
+            this.basicAuthRequestFilter = basicAuthRequestFilter;
         }
 
         @Override
@@ -123,7 +127,7 @@ public class MultipleWebSecurityConfig {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
-                .addFilterAfter(customBasicAuthFilter, LogoutFilter.class);
+                .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
         }
 
     }

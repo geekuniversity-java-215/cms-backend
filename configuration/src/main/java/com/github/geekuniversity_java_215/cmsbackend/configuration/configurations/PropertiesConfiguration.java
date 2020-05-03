@@ -26,7 +26,8 @@ public class PropertiesConfiguration {
         "classpath:application.properties",
         "classpath:core.properties",
         "classpath:mail.properties",
-        "classpath:payment.properties"},
+        "classpath:payment.properties",
+        "authserver.properties"},
         ignoreResourceNotFound=true)
     static class DefaultProperties {}
 
@@ -36,7 +37,8 @@ public class PropertiesConfiguration {
         "classpath:application-${spring.profiles.active}.properties",
         "classpath:core-${spring.profiles.active}.properties",
         "classpath:mail-${spring.profiles.active}.properties",
-        "classpath:payment-${spring.profiles.active}.properties"},
+        "classpath:payment-${spring.profiles.active}.properties",
+        "classpath:authserver-${spring.profiles.active}.properties"},
         ignoreResourceNotFound=true)
     static class NonDefaultProperties {}
 }

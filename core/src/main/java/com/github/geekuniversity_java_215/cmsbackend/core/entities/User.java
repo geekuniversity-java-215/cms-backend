@@ -1,5 +1,6 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
+package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntityNoGen;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import lombok.*;
 
@@ -40,7 +41,7 @@ public class User extends AbstractEntityNoGen {
     private String password;
 
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<UserRole> roles = new HashSet<>();
 
     // Это список только refresh_token

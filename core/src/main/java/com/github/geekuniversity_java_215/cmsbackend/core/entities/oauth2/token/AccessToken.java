@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -22,5 +21,13 @@ public class AccessToken extends Token {
     public AccessToken(RefreshToken refreshToken, Instant expiredAt) {
         super(expiredAt);
         this.refreshToken = refreshToken;
+    }
+
+    @Override
+    public String toString() {
+        return "AccessToken{" +
+                "id=" + id +
+                ", expiredAt=" + expiredAt +
+                '}';
     }
 }

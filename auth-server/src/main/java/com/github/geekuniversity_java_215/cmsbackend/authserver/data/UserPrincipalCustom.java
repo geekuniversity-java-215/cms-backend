@@ -1,22 +1,20 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.data;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class UserPrincipalCustom implements UserDetails {
+public class UserPrincipalCustom implements UserDetailsCustom {
 
-    private User user;
+    private final User user;
 
     public UserPrincipalCustom(User user) {
         this.user = user;
     }
-
-
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
@@ -51,7 +49,7 @@ public class UserPrincipalCustom implements UserDetails {
         return user.getEnabled();
     }
 
+    // -------------------------------------------------------------
 
-
-
+    public User getUser() { return user; }
 }

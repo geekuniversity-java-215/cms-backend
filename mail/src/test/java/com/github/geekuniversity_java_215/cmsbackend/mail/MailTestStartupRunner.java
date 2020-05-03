@@ -2,8 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.mail;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRoleRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import org.springframework.stereotype.Service;

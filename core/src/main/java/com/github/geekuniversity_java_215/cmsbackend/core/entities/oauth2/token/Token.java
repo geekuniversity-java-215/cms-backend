@@ -1,25 +1,39 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
-@EqualsAndHashCode(callSuper = true)
 @MappedSuperclass
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
-public abstract class Token extends AbstractEntity {
+public abstract class Token {
+
+    @Id
+    @Column(name = "id")
+    @EqualsAndHashCode.Exclude
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
+
+    @Column(name = "created", updatable = false)
+    @CreationTimestamp
+    protected Instant created;
+
+    @Column(name = "updated")
+    @UpdateTimestamp
+    protected Instant updated;
 
     @Column(name = "expired_at", updatable = false)
+    @Getter
     protected Instant expiredAt;
 
     protected Token() {}
     public Token(Instant expiredAt) {
         this.expiredAt = expiredAt;
     }
+
 }

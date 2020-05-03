@@ -28,14 +28,17 @@ public class BlacklistTokenService {
      * Add access_token to blacklist
      * @param token AccessToken
      */
-    public void blacklist(AccessToken token) {
+    public void add(AccessToken token) {
         blacklistedTokenRepository.save(new BlacklistedToken(token.getId(), token.getExpiredAt()));
     }
 
     /**
      * Get all blacklisted tokens from position to now
+     * <br> Position from is Id in blacklisted_token table, not refresh_token id.
+     * <br> Just remember max Id from last query and use it in next query
+     * <br> to get new to you blacklisted access_tokens
      */
-    public Map<Long,Long> getFrom(Long from) {
+    public Map<Long,Long> getNew(Long from) {
        
        //ToDo: replace by projection ?
 

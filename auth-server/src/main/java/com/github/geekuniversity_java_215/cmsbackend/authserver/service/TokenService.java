@@ -1,62 +1,60 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
+import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.BlacklistedToken;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.BlacklistedTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.AccessTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.RefreshTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.invoke.MethodHandles;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.github.geekuniversity_java_215.cmsbackend.authserver.config.SpringConfiguration.ISSUER;
+import static com.github.geekuniversity_java_215.cmsbackend.core.configuration.SpringConfiguration.ISSUER;
 
 @Service
 @Transactional
+@Slf4j
 public class TokenService {
-
-    private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final JwtTokenService jwtTokenService;
     private final UserService userService;
     private final AccessTokenRepository accessTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final BlacklistTokenService blacklistTokenService;
+    private final BlacklistedTokenRepository blacklistedTokenRepository;
+
 
     @Autowired
     public TokenService(JwtTokenService jwtTokenService,
                         UserService userService,
                         AccessTokenRepository accessTokenRepository,
                         RefreshTokenRepository refreshTokenRepository,
-                        BlacklistTokenService blacklistTokenService) {
+                        BlacklistedTokenRepository blacklistedTokenRepository) {
 
         this.jwtTokenService = jwtTokenService;
         this.userService = userService;
         this.accessTokenRepository = accessTokenRepository;
         this.refreshTokenRepository = refreshTokenRepository;
-        this.blacklistTokenService = blacklistTokenService;
+        this.blacklistedTokenRepository = blacklistedTokenRepository;
     }
 
 
     /**
      * Create new token, delete previous(on refreshing)
      *
-     * @param login
+     * @param login login. Also maybe need to add @mail
      * @param refreshToken current refresh_token if available
      * @return
      */
@@ -74,7 +72,7 @@ public class TokenService {
         // find user
         User user = userService.findByLogin(login);
         if(user == null) {
-            throw new UsernameNotFoundException("User not exists: " + login);
+            throw new UsernameNotFoundException("User doesn't not exists: " + login);
         }
 
 
@@ -84,7 +82,7 @@ public class TokenService {
         Instant expiredAt = Instant.now().plusSeconds(ttl);
 
         refreshToken = new RefreshToken(user, expiredAt);
-        refreshTokenRepository.save(refreshToken);
+        refreshToken = refreshTokenRepository.save(refreshToken);
 
         Set<String> refreshRoles = new HashSet<>(Collections.singletonList(UserRole.REFRESH));
 
@@ -93,34 +91,26 @@ public class TokenService {
 
         // 2. Access Token ---------------------------------------------------------------------
 
+        ttl = TokenType.ACCESS.getTtl();
         expiredAt = Instant.now().plusSeconds(TokenType.ACCESS.getTtl());
         accessToken = new AccessToken(refreshToken, expiredAt);
         refreshToken.setAccessToken(accessToken);
-
         accessTokenRepository.save(accessToken);
+
 
         Set<String> roles =
                 user.getRoles().stream().map(UserRole::getName).collect(Collectors.toSet());
 
         accessTokenString = jwtTokenService.createJWT(
-                TokenType.ACCESS, accessToken.getId(), ISSUER, user.getLogin(), roles, TokenType.ACCESS.getTtl());
+                TokenType.ACCESS, accessToken.getId(), ISSUER, user.getLogin(), roles, ttl);
 
-
-
-        // Delete here deprecated access and refresh token --------------------------------------
-
+        // Delete here deprecated refresh_token and access_token, no blacklisting
         if (oldRefreshToken != null) {
-            AccessToken oldAccessToken = oldRefreshToken.getAccessToken();
-            if (oldAccessToken != null) {
-                blacklistTokenService.blacklist(oldAccessToken);
-            }
-            // will delete both token(old refresh and old access if has)
+            // will also delete access_token (FK CASCADE)
             delete(oldRefreshToken);
         }
         return new OauthResponse(accessTokenString, refreshTokenString);
     }
-
-
 
 
 
@@ -134,7 +124,6 @@ public class TokenService {
         return result;
     }
 
-
     public RefreshToken findRefreshToken(Long id) {
 
         RefreshToken result = null;
@@ -145,13 +134,69 @@ public class TokenService {
         return result;
     }
 
-    public void delete(Token token) {
+
+    /**
+     * Delete refresh_token and move access_token to blacklist
+     * @param refreshToken RefreshToken
+     */
+    public void revokeRefreshToken(RefreshToken refreshToken) {
+
+        AccessToken accessToken = refreshToken.getAccessToken();
+        if (accessToken != null) {
+            blacklistedTokenRepository.save(new BlacklistedToken(accessToken.getId(), accessToken.getExpiredAt()));
+        }
+        // will also delete access_token (FK CASCADE)
+        delete(refreshToken);
+    }
+
+
+    /**
+     * Delete refresh_tokens and move theirs access_tokens to blacklist
+     * @param tokenList RefreshTokenList
+     */
+    public void revokeRefreshToken(Collection<RefreshToken> tokenList) {
+
+        for (RefreshToken token : tokenList) {
+            revokeRefreshToken(token);
+        }
+    }
+
+
+    /**
+     * Get all blacklisted tokens from position to now
+     * <br> Position from is Id in blacklisted_token table, not refresh_token id.
+     * <br> Just remember max Id from last query and use it in next query
+     * <br> to get new to you blacklisted access_tokens
+     * @return Map.Entry<BlacklistTable id, refresh_token id>
+     */
+    public Map<Long,Long> getBlacklisted(Long from) {
+
+        //ToDo: replace by projection ?
+        return blacklistedTokenRepository.findByIdGreaterThanEqual(from).stream()
+                .collect(Collectors.toMap(BlacklistedToken::getId, BlacklistedToken::getTokenId));
+    }
+
+
+    public void vacuum() {
+        accessTokenRepository.vacuum();
+        refreshTokenRepository.vacuum();
+        blacklistedTokenRepository.vacuum();
+    }
+
+
+    // ===============================================================
+
+    /**
+     * Delete token without any blacklisting
+     * @param token token
+     */
+    private void delete(Token token) {
 
         try {
             if (token instanceof AccessToken) {
                 accessTokenRepository.delete((AccessToken) token);
             } else if (token instanceof RefreshToken) {
-                // will also delete access_token
+                // will also delete access_token due to FK CASCADE
                 refreshTokenRepository.delete((RefreshToken) token);
             }
         } catch (Exception e) {
@@ -159,18 +204,21 @@ public class TokenService {
         }
     }
 
-    public void deleteByUser(User user) {
-        refreshTokenRepository.deleteByUser(user);
-    }
 
 
-    public void vacuum() {
 
-        accessTokenRepository.vacuum();
-        refreshTokenRepository.vacuum();
 
-    }
+
+
+
+
+
 }
+
+
+//    public void deleteByUser(User user) {
+//        refreshTokenRepository.deleteByUser(user);
+//    }
 
 
 

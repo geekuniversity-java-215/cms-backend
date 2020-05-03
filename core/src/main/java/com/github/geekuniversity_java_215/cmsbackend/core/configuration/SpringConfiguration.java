@@ -16,6 +16,9 @@ import javax.validation.ValidatorFactory;
 @Configuration
 public class SpringConfiguration {
 
+    //ToDo Вынести в .properties
+    public static final String ISSUER = "authserver";
+
     @Bean
     public ObjectMapper objectMapper() {
 

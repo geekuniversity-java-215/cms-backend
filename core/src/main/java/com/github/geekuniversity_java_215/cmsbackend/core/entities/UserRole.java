@@ -1,25 +1,22 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.User;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
 @Table(name="uzer_role")
 public class UserRole extends AbstractEntity {
 
-    public static final String ADMIN = "ROLE_ADMIN";
-    public static final String USER = "ROLE_USER";
-    public static final String ANONYMOUS = "ROLE_ANONYMOUS";
-    public static final String RESOURCE = "ROLE_RESOURCE";
-    public static final String REFRESH = "ROLE_REFRESH";
+    public static final String ADMIN                  = "ROLE_ADMIN";
+    public static final String USER                   = "ROLE_USER";
+    public static final String ANONYMOUS              = "ROLE_ANONYMOUS";
+    public static final String RESOURCE               = "ROLE_RESOURCE";
+    public static final String REFRESH                = "ROLE_REFRESH";
+    public static final String CONFIRM_REGISTRATION   = "ROLE_CONFIRM_REGISTRATION";
 
     public final static List<String> ROLE_NAMES = new ArrayList<>();
 
@@ -29,6 +26,7 @@ public class UserRole extends AbstractEntity {
         ROLE_NAMES.add(ANONYMOUS);
         ROLE_NAMES.add(RESOURCE);
         ROLE_NAMES.add(REFRESH);
+        ROLE_NAMES.add(CONFIRM_REGISTRATION);
     }
 
     @Getter
@@ -38,13 +36,28 @@ public class UserRole extends AbstractEntity {
 
     @Getter
     @ManyToMany(mappedBy = "roles")
-    private Set<User> userList = new HashSet<>();
+    private final Set<User> userList = new HashSet<>();
 
 
     public UserRole() {}
     public UserRole(String name) {
         this.name = name;
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /*
@@ -101,5 +114,6 @@ public class UserRole extends AbstractEntity {
             return name;
         }
     }
-     */
-}
+    */
+
+
