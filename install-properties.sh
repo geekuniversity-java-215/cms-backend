@@ -62,11 +62,13 @@ if [[ ! -f "$FROM" ]]; then
     echo -e "mail.password=vasyapassword" >> $FROM
     
     cp -an $FROM $TO
+
+    # copy mail*.properties from folder above (if exists, suppress the error exit code and message)
+    # to not manually copy mail*.properties
+    cp ../cms-backend-properties/mail/mail*.properties mail/src/main/resources/ 2>/dev/null || :
 fi
 
-# copy mail*.properties from folder above (if exists, suppress the error exit code and message)
-# to not manually copy mail*.properties
-cp ../cms-backend-data/mail/mail*.properties mail/src/main/resources/ 2>/dev/null || :
+
 
 
 
