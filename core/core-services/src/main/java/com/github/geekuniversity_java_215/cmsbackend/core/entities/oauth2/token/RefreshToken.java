@@ -27,7 +27,7 @@ public class RefreshToken extends Token {
 
     protected RefreshToken() {}
 
-    public RefreshToken(User user, Instant expiredAt) {
+    public RefreshToken(@NotNull User user, @NotNull Instant expiredAt) {
         super(expiredAt);
         this.user = user;
     }

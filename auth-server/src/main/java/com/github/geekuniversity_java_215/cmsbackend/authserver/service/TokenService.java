@@ -22,7 +22,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.github.geekuniversity_java_215.cmsbackend.core.configuration.SpringConfiguration.ISSUER;
+import static com.github.geekuniversity_java_215.cmsbackend.core.configuration.CoreSpringConfiguration.ISSUER;
 
 @Service
 @Transactional
@@ -85,7 +85,7 @@ public class TokenService {
         Set<String> refreshRoles = new HashSet<>(Collections.singletonList(UserRole.REFRESH));
 
         refreshTokenString = jwtTokenService.createJWT(
-                TokenType.REFRESH, refreshToken.getId(), ISSUER, user.getLogin(), refreshRoles, ttl);
+                TokenType.REFRESH, refreshToken.getId().toString(), ISSUER, user.getLogin(), refreshRoles, ttl);
 
         // 2. Access Token ---------------------------------------------------------------------
 
@@ -100,7 +100,7 @@ public class TokenService {
                 user.getRoles().stream().map(UserRole::getName).collect(Collectors.toSet());
 
         accessTokenString = jwtTokenService.createJWT(
-                TokenType.ACCESS, accessToken.getId(), ISSUER, user.getLogin(), roles, ttl);
+                TokenType.ACCESS, accessToken.getId().toString(), ISSUER, user.getLogin(), roles, ttl);
 
         // Delete here deprecated refresh_token and access_token, no blacklisting
         if (oldRefreshToken != null) {

@@ -36,7 +36,7 @@ public class Order extends AbstractEntity {
     @PostLoad
     void fillCurrencyCode() {
         if (statusValue > 0) {
-            this.status = OrderStatus.idOf(statusValue);
+            this.status = OrderStatus.getById(statusValue);
         }
     }
 

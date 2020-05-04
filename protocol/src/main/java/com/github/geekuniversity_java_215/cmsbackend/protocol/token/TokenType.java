@@ -8,7 +8,8 @@ public enum TokenType {
 
 
     ACCESS("access_token", 3600),
-    REFRESH("refresh_token", 3600*24*30);
+    REFRESH("refresh_token", 3600*24*30),
+    CONFIRM("confirm", 3600*24);
 
     private static Map<String, TokenType> values = new HashMap<>();
 
@@ -18,7 +19,7 @@ public enum TokenType {
         }
     }
 
-    private long ttl;
+    private Long ttl;
     private String name;
 
 
@@ -38,7 +39,7 @@ public enum TokenType {
         return name;
     }
 
-    public static TokenType parseName(String name) {
+    public static TokenType getByName(String name) {
         return values.get(name);
     }
 

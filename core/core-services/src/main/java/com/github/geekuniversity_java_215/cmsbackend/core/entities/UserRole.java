@@ -17,6 +17,7 @@ public class UserRole extends AbstractEntity {
     public static final String RESOURCE               = "ROLE_RESOURCE";
     public static final String REFRESH                = "ROLE_REFRESH";
     public static final String REGISTRAR              = "ROLE_REGISTRAR";
+    public static final String CONFIRM_REGISTRATION   = "ROLE_CONFIRM_REGISTRATION";
 
     public final static List<String> ROLE_NAMES = new ArrayList<>();
 

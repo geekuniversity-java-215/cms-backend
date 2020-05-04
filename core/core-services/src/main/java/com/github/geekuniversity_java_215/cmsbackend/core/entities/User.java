@@ -36,7 +36,7 @@ public class User extends AbstractEntity {
 
     @NotNull
     @Column(name = "login")
-    private String login;
+    private String login;     // use email as login ??
 
     @NotNull
     @Column(name = "password") // bcrypt hash
@@ -65,7 +65,7 @@ public class User extends AbstractEntity {
 
     @NotNull
     @Column(name = "email")
-    private String email;
+    private String email;     // use email as login ??
 
     @NotNull
     @Column(name = "phone_number")

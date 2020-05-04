@@ -34,7 +34,7 @@ public enum OrderStatus {
 
     private final int id;
     
-    public static OrderStatus idOf(int id) {
+    public static OrderStatus getById(int id) {
 
         OrderStatus result = ENUM_MAP.get(id);
         if (result == null) {

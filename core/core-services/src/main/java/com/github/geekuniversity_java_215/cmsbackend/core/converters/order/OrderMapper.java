@@ -68,7 +68,7 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
         target.setClient(client);
         target.setCourier(courier);
 
-        target.setStatus(OrderStatus.idOf(source.getStatus()));
+        target.setStatus(OrderStatus.getById(source.getStatus()));
     }
 
 

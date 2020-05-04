@@ -1,17 +1,18 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.entities;
+package com.github.geekuniversity_java_215.cmsbackend.authserver.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntityNoGen;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 //@MappedSuperclass
@@ -28,6 +29,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper=true)
 public class UnconfirmedUser extends AbstractEntity {
 
+    //public static final Duration TTL = Duration.ofDays(1);
+
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "user_id_seq")
@@ -36,7 +39,7 @@ public class UnconfirmedUser extends AbstractEntity {
 
     @NotNull
     @Column(name = "login")
-    private String login;
+    private String login;  // use email as login ???
 
     @NotNull
     @Column(name = "password") // bcrypt hash
@@ -49,9 +52,9 @@ public class UnconfirmedUser extends AbstractEntity {
     @Column(name = "role_id")
     private Set<UserRole> roles = new HashSet<>();
 
-    // registration confirmation JWT
-    @NotNull
-    private String token;
+//    // registration confirmation JWT
+//    @NotNull
+//    private String token;
 
     @NotNull
     @Column(name = "first_name")
@@ -63,13 +66,19 @@ public class UnconfirmedUser extends AbstractEntity {
 
     @NotNull
     @Column(name = "email")
-    private String email;
+    private String email;      // use email as login ??
 
     @NotNull
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    protected UnconfirmedUser() {}
+    @Column(name = "expired_at", updatable = false)
+    @Getter
+    protected Instant expiredAt;
+
+    protected UnconfirmedUser() {
+        expiredAt = Instant.now().plus(Duration.ofSeconds(TokenType.CONFIRM.getTtl()));
+    }
 
     public UnconfirmedUser(@NotNull String firstName,
                            @NotNull String lastName,

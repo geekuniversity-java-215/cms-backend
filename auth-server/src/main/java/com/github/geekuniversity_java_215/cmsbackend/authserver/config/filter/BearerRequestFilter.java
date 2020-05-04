@@ -32,7 +32,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 
-import static com.github.geekuniversity_java_215.cmsbackend.core.configuration.SpringConfiguration.ISSUER;
+import static com.github.geekuniversity_java_215.cmsbackend.core.configuration.CoreSpringConfiguration.ISSUER;
 
 //@Component("bearerRequestFilter")
 @Component
@@ -57,7 +57,7 @@ public class BearerRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         // get header "Authorization"
         final String requestTokenHeader = request.getHeader("Authorization");
@@ -65,7 +65,7 @@ public class BearerRequestFilter extends OncePerRequestFilter {
 
         // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
         if (requestTokenHeader != null &&
-            requestTokenHeader.startsWith("Bearer ")) {
+                requestTokenHeader.startsWith("Bearer ")) {
 
             try {
                 String jwtToken = requestTokenHeader.substring(7);
@@ -74,12 +74,15 @@ public class BearerRequestFilter extends OncePerRequestFilter {
                 Claims claims = jwtTokenService.decodeJWT(jwtToken);
                 Token token;
 
-                // TOKEN issued by ME // не особо нужно
-                // TOKEN Is NOT EXPIRED // походу уже проверено в Jwt...parseClaimsJws - ExpiredJwtException
+                // TOKEN issued by ME // не особо нужно, т.к. используем SECRET_KEY
+                // TOKEN Is NOT EXPIRED // уже проверено в Jwt...parseClaimsJws - ExpiredJwtException
                 // TOKEN is PRESENT in my DB (NOT deleted(by revoke/expiration)/blacklisted)
-                if (claims.getIssuer().equals(ISSUER) &&
-                    tokenNotExpired(claims) &&
-                    (token = findTokenInDB(claims))!=null) {
+//                if (claims.getIssuer().equals(ISSUER) &&
+//                    tokenNotExpired(claims) &&
+//                    (token = findTokenInDB(claims))!=null) {
+
+                // TOKEN is PRESENT in my DB (NOT deleted(by revoke/expiration)/blacklisted)
+                if ((token = findTokenInDB(claims)) != null) {
 
                     UsernamePasswordAuthenticationToken authToken = getAuthToken(claims);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -131,7 +134,7 @@ public class BearerRequestFilter extends OncePerRequestFilter {
 
         Token result = null;
 
-        TokenType type = TokenType.parseName((String) claims.get("type"));
+        TokenType type = TokenType.getByName((String) claims.get("type"));
 
         Long tokenId = Long.valueOf(claims.getId());
 
@@ -152,7 +155,7 @@ public class BearerRequestFilter extends OncePerRequestFilter {
 
         UsernamePasswordAuthenticationToken result = null;
 
-        TokenType type = TokenType.parseName((String)claims.get("type"));
+        TokenType type = TokenType.getByName((String)claims.get("type"));
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
 

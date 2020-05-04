@@ -25,8 +25,11 @@ public class JwtTokenService implements Serializable {
 	private String SECRET_KEY;
 
 
+
+
+
 	public String createJWT(TokenType tokenType,
-                            Long id,
+                            String id,
                             String issuer,
                             String subject,
                             Set<String> roles,
@@ -52,7 +55,7 @@ public class JwtTokenService implements Serializable {
         //Let's set the JWT Claims
         JwtBuilder builder = Jwts.builder()
                 .setClaims(customClaims)
-                .setId(id.toString())
+                .setId(id)
                 .setIssuedAt(nowDate)
                 .setSubject(subject)
                 .setIssuer(issuer)
@@ -81,6 +84,17 @@ public class JwtTokenService implements Serializable {
                 .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
                 .parseClaimsJws(jwt).getBody();
     }
+
+
+//    public String createJWT(TokenType tokenType,
+//                            Long id,
+//                            String issuer,
+//                            String subject,
+//                            Set<String> roles,
+//                            long ttl) {
+//
+//        return createJWT(tokenType, id.toString(), issuer, subject, roles, ttl);
+//    }
 
 
     /*

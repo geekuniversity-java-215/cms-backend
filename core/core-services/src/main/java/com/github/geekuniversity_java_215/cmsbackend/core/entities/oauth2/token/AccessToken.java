@@ -3,6 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token
 import lombok.Getter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Entity
@@ -18,7 +19,7 @@ public class AccessToken extends Token {
     @Getter
     private RefreshToken refreshToken;
 
-    public AccessToken(RefreshToken refreshToken, Instant expiredAt) {
+    public AccessToken(@NotNull RefreshToken refreshToken, @NotNull Instant expiredAt) {
         super(expiredAt);
         this.refreshToken = refreshToken;
     }
