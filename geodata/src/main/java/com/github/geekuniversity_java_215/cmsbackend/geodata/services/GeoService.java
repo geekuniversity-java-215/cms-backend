@@ -9,6 +9,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
@@ -18,11 +19,13 @@ import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
 public class GeoService {
 
     // Это вынести в настройки resource/geodata.properties
-    private static final String ROUTE_URL = "http://router.project-osrm.org/route/v1/";
+    @Value("${geo.route.url}")
+    private static String ROUTE_URL;
 
     // https://nominatim.org/release-docs/develop/api/Search/
     // Это вынести в настройки resource/geodata.properties
-    private static final String CODE_URL = "https://nominatim.openstreetmap.org/search?q=100";
+    @Value("${geo.code.url}")
+    private static String CODE_URL;
 
     private final RestTemplate restTemplate = RestTemplateFactory.getRestTemplate(10000);
 
