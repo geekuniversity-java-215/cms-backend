@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
@@ -83,15 +84,30 @@ public class UnconfirmedUser extends AbstractEntity {
     public UnconfirmedUser(@NotNull String firstName,
                            @NotNull String lastName,
                            @NotNull String email,
-                           @NotNull String phoneNumber) {
+                           @NotNull String phoneNumber,
+                           @NotNull String login,
+                           @NotNull String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.login = login;
+        this.password = password;
     }
 
     protected void setId(Long id) {
         this.id = id;
+    }
+
+    public User toUser() {
+
+        return new User(
+                login,
+                password,
+                firstName,
+                lastName,
+                email,
+                phoneNumber);
     }
 
     @Override

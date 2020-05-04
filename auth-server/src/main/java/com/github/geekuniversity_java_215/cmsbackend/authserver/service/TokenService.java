@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.BlacklistedToken;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.BlacklistedTokenRepository;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UnconfirmedUserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.AccessTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.RefreshTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
@@ -34,6 +35,7 @@ public class TokenService {
     private final AccessTokenRepository accessTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final BlacklistedTokenRepository blacklistedTokenRepository;
+    private final UnconfirmedUserRepository unconfirmedUserRepository;
 
 
     @Autowired
@@ -41,13 +43,14 @@ public class TokenService {
                         UserService userService,
                         AccessTokenRepository accessTokenRepository,
                         RefreshTokenRepository refreshTokenRepository,
-                        BlacklistedTokenRepository blacklistedTokenRepository) {
+                        BlacklistedTokenRepository blacklistedTokenRepository, UnconfirmedUserRepository unconfirmedUserRepository) {
 
         this.jwtTokenService = jwtTokenService;
         this.userService = userService;
         this.accessTokenRepository = accessTokenRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.blacklistedTokenRepository = blacklistedTokenRepository;
+        this.unconfirmedUserRepository = unconfirmedUserRepository;
     }
 
 
@@ -179,6 +182,7 @@ public class TokenService {
         accessTokenRepository.vacuum();
         refreshTokenRepository.vacuum();
         blacklistedTokenRepository.vacuum();
+        unconfirmedUserRepository.vacuum();
     }
 
 

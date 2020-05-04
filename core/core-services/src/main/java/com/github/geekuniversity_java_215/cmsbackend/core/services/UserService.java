@@ -4,6 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepo
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,15 @@ public class UserService extends BaseRepoAccessService<User> {
             result = userRepository.findOneByLastNameAndFirstName(lastName, firstName);
         }
         return result;
+    }
+
+    /**
+     * Check if user already exists by login OR FullName OR email OR phoneNumber
+     * @param user
+     * @return
+     */
+    public boolean checkIfExists(User user) {
+        return userRepository.checkIfExists(user);
     }
 
 }

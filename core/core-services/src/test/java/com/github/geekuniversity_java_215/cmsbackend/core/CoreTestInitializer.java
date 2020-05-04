@@ -51,13 +51,15 @@ public class CoreTestInitializer implements ApplicationRunner {
         from = new Address("Москва", "Улица красных тюленей", 1, 2, 3);
         to = new Address("Мухосранск", "Западная", 2, 2, 5);
 
-        user = new User("Вася", "Пупкин", "vasya@mail.ru", "1122334455");
+        user = new User("vasya", "INVALID",
+                "Вася", "Пупкин", "vasya@mail.ru", "1122334455");
         userService.save(user);
 
         client = new Client(user, "CLIENT_DATA");
         clientService.save(client);
 
-        user = new User("Сема", "Пасечкин", "sema@mail.ru", "908796786543");
+        user = new User("sema", "INVALID",
+                "Сема", "Пасечкин", "sema@mail.ru", "908796786543");
         userService.save(user);
         courier = new Courier(user, "COURIER_DATA");
         courierService.save(courier);

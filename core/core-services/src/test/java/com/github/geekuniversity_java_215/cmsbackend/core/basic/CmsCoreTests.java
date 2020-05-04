@@ -60,7 +60,8 @@ class CmsCoreTests {
         // TESTING DB
 
         Account acc = new Account();
-        User user = new User("Залипов", "Вася", "vasya@mail.ru", "123");
+        User user = new User("vasya", "INVALID",
+                "Залипов", "Вася", "vasya@mail.ru", "123");
         user.setAccount(acc);
         userService.save(user);
         log.info("user id: {}", user.getId());
@@ -72,7 +73,8 @@ class CmsCoreTests {
                 .orElseThrow( () -> new UsernameNotFoundException(finalUser.getFullName() + " не найден"));
 
         acc = new Account();
-        user = new User("Семенов", "Семен", "semen@mail.ru", "456");
+        user = new User("sema", "INVALID",
+                "Семенов", "Семен", "semen@mail.ru", "456");
         user.setAccount(acc);
         userService.save(user);
         Client client = new Client(user, "КЛИЕНТ_DATA");

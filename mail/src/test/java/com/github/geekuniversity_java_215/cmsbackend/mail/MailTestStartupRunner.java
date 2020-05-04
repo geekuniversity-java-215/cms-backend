@@ -31,7 +31,8 @@ public class MailTestStartupRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
 
         Account account = new Account();
-        User user = new User("Пупкин", "Вася", "cmsbackendgeek@gmail.com","123");
+        User user = new User("vasya", "INVALID",
+                "Пупкин", "Вася", "cmsbackendgeek@gmail.com","123");
         user.setAccount(account);
         userService.save(user);
 

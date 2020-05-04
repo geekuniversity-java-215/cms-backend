@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Properties;
 
 @Configuration
-//уже все настройки включены в PropertiesConfiguration
+//уже все настройки включены в CorePropertiesConfiguration
 //@PropertySource("classpath:application.properties")
 public class MailConfig {
     private final String MAIL_TRANSPORT_PROTOCOL="smtp";

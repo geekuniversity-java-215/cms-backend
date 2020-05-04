@@ -9,7 +9,7 @@ public enum TokenType {
 
     ACCESS("access_token", 3600),
     REFRESH("refresh_token", 3600*24*30),
-    CONFIRM("confirm", 3600*24);
+    CONFIRM("confirm_token", 3600*24);
 
     private static Map<String, TokenType> values = new HashMap<>();
 

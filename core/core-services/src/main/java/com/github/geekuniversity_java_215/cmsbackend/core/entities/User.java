@@ -20,10 +20,10 @@ import java.util.Set;
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 
 @Table(
-    name = "uzer",
-    indexes = {@Index(name = "user_account_id_idx", columnList = "account_id"),
-               @Index(name = "user_first_name_last_name_unq", columnList = "last_name, first_name",unique = true)
-    })
+        name = "uzer",
+        indexes = {@Index(name = "user_account_id_idx", columnList = "account_id"),
+                @Index(name = "user_first_name_last_name_unq", columnList = "last_name, first_name",unique = true)
+        })
 @Data
 @EqualsAndHashCode(callSuper=true)
 public class User extends AbstractEntity {
@@ -90,18 +90,19 @@ public class User extends AbstractEntity {
 
     protected User() {}
 
-    public User(@NotNull String firstName,
+    public User(@NotNull String login,
+                @NotNull String password,
+                @NotNull String firstName,
                 @NotNull String lastName,
                 @NotNull String email,
                 @NotNull String phoneNumber) {
+
+        this.login = login;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-
-        // ToDo: ASAP EDC remove this
-        login = "123";
-        password = "456";
     }
 
     protected void setId(Long id) {
@@ -116,13 +117,13 @@ public class User extends AbstractEntity {
     @Override
     public String toString() {
         return "User{" +
-               "id=" + id +
-               ", firstName='" + firstName + '\'' +
-               ", lastName='" + lastName + '\'' +
-               ", email='" + email + '\'' +
-               ", phoneNumber='" + phoneNumber + '\'' +
-               ", account=" + account +
-               '}';
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", account=" + account +
+                '}';
     }
 
     @JsonIgnore

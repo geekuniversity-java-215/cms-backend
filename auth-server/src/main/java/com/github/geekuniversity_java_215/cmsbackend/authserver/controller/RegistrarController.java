@@ -14,6 +14,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,55 +32,57 @@ public class RegistrarController {
     private final UnconfirmedUserService unconfirmedUserService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService jwtTokenService;
+    private final Validator validator;
 
     public RegistrarController(UserService userService, UnconfirmedUserService unconfirmedUserService,
-                               PasswordEncoder passwordEncoder, JwtTokenService jwtTokenService) {
+                               PasswordEncoder passwordEncoder, JwtTokenService jwtTokenService,
+                               Validator validator) {
         this.userService = userService;
         this.unconfirmedUserService = unconfirmedUserService;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenService = jwtTokenService;
+        this.validator = validator;
     }
 
 
     @PostMapping("/new")
     @Secured({UserRole.REGISTRAR})
-    public ResponseEntity<String> add(@RequestBody UnconfirmedUser user) {
+    public ResponseEntity<String> add(@RequestBody UnconfirmedUser newUser) {
+
+
+
+        Set<ConstraintViolation<UnconfirmedUser>> violations = validator.validate(newUser);
+        if (violations.size() != 0) {
+            throw new ConstraintViolationException("User validation failed", violations);
+        }
 
         ResponseEntity<String> result = ResponseEntity.badRequest().body("Bad user");
 
-        //ToDo: validate user
+
 
         try {
-            // user already exists in User
-            // check email too ?
-            if (userService.findByLogin(user.getLogin()).isPresent()) {
+            // user already exists in User or in UnconfirmedUser
+            if (userService.checkIfExists(newUser.toUser()) ||
+                unconfirmedUserService.checkIfExists(newUser)) {
+
                 result = ResponseEntity.badRequest().body("User already exists");
                 return result;
             }
 
-
-            // user already exists in UnconfirmedUser
-            // check email too ?
-            if (unconfirmedUserService.findByLogin(user.getLogin()).isPresent()) {
-                result = ResponseEntity.badRequest().body("User already exists");
-                return result;
-            }
-
-
-            log.info("Adding new user: {}", user);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            log.info("Adding new user: {}", newUser);
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
             Set<String> userRoles = new HashSet<>(Collections.singletonList(UserRole.CONFIRM_REGISTRATION));
 
             String registrantToken = jwtTokenService.createJWT(
-                    TokenType.REFRESH,
-                    user.getLogin(),
-                    ISSUER,
-                    user.getLogin(),
-                    userRoles,
-                    TokenType.CONFIRM.getTtl());
+                TokenType.REFRESH,
+                newUser.getLogin(),
+                ISSUER,
+                newUser.getLogin(),
+                userRoles,
+                TokenType.CONFIRM.getTtl());
 
-            unconfirmedUserService.save(user);
+            unconfirmedUserService.save(newUser);
 
             //ToDo: send email to user to complete registration
 

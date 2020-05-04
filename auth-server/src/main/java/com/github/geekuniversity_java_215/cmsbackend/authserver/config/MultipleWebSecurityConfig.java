@@ -130,7 +130,7 @@ public class MultipleWebSecurityConfig {
 
 
     /**
-     * Registration of new user
+     * Registrar of new users
      * Authorisation: Basic
      */
     @Configuration
@@ -155,7 +155,7 @@ public class MultipleWebSecurityConfig {
 
 
     /**
-     * Registration confirmation
+     * Registration confirmation (link in @mail)
      * Authorisation: None
      */
     @Configuration

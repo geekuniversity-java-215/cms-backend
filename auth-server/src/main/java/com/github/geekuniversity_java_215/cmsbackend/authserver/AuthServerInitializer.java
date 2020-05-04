@@ -35,22 +35,21 @@ public class AuthServerInitializer implements ApplicationRunner {
 
     private void initUsers() {
 
-        User user = new User("Registrar", "Registrar", "registrar@mail.ru", "registrar");
-        user.setLogin("registrar");
-        user.setPassword("{bcrypt}$2y$10$C5kaSyYpioNZN8oL4NkWbOJiEG0JscafiQycLxQCfD8F6y/tjxtSm");//registrar
+        //registrar/registrar
+        User user = new User("registrar",
+                "{bcrypt}$2y$10$C5kaSyYpioNZN8oL4NkWbOJiEG0JscafiQycLxQCfD8F6y/tjxtSm",
+                "Registrar", "Registrar", "registrar@mail.ru", "registrar");
         user.getRoles().add(userRoleService.findByName(UserRole.REGISTRAR));
         userService.save(user);
         //log.info(objectMapper.valueToTree(user).toPrettyString());
 
-        user = new User("Вася", "Пупкин", "vasya@mail.ru", "1122334455");
-        user.setLogin("user");
-        user.setPassword("{bcrypt}$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6");//password
+        user = new User("user", "{bcrypt}$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
+                "Вася", "Пупкин", "vasya@mail.ru", "1122334455");
         user.getRoles().add(userRoleService.findByName(UserRole.USER));
         userService.save(user);
 
-        user = new User("Сема", "Пасечкин", "sema@mail.ru", "908796786543");
-        user.setLogin("admin");
-        user.setPassword("{bcrypt}$2y$10$3UKKfqyHoDe8MbVIkXr.UO8d76bJWisYP5DdC3EpSzro.JYzi38xu");//password
+        user = new User("sema","{bcrypt}$2y$10$3UKKfqyHoDe8MbVIkXr.UO8d76bJWisYP5DdC3EpSzro.JYzi38xu",
+                "Сема", "Пасечкин", "sema@mail.ru", "908796786543");
         user.getRoles().add(userRoleService.findByName(UserRole.ADMIN));
         userService.save(user);
     }

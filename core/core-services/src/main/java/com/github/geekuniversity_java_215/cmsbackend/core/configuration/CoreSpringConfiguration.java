@@ -33,7 +33,6 @@ public class CoreSpringConfiguration {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         //mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-
         //mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         //mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
         return mapper;

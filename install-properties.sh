@@ -1,8 +1,7 @@
 #!/bin/bash
 
-LIB_MODULES=(core/core-controllers core/core-services  mail payment utils)
-
-# Prepare test logging config for library modules ------------------------
+# Prepare dev src/test resources  in modules ----------------------------
+LIB_MODULES=(core/core-controllers core/core-services mail payment utils)
 
 # cp application.properties application-dev.properties in <module>/test/main/resources/
 # inside replace logback-spring.xml to logback-spring-dev.xml
@@ -23,6 +22,8 @@ do
   create_tests_dev ${var}
 done
 
+# Prepare dev src/main resources  in modules ----------------------------
+
 # core ------------------------------------------------------------------
 
 # core-controllers
@@ -31,15 +32,13 @@ FROM=${fromPath}core-controllers.properties
 TO=${fromPath}core-controllers-dev.properties
 cp -an $FROM $TO
 
-# core-controllers
+# core-services
 fromPath=core/core-services/src/main/resources/
 FROM=${fromPath}core-services.properties
 TO=${fromPath}core-services-dev.properties
 cp -an $FROM $TO
 
-
-# configuration -----------------------------------------------------------
-fromPath=configuration/src/main/resources/
+# core-services logback-spring.xml
 FROM=${fromPath}logback-spring.xml
 TO=${fromPath}logback-spring-dev.xml
 if [[ ! -f "$TO" ]]; then
@@ -65,6 +64,21 @@ if [[ ! -f "$FROM" ]]; then
     cp -an $FROM $TO
 fi
 
+# copy mail*.properties from folder above (if exists, suppress the error exit code and message)
+# to not manually copy mail*.properties
+cp ../cms-backend-data/mail/mail*.properties mail/src/main/resources/ 2>/dev/null || :
+
+
+
+# payment -----------------------------------------------------------
+fromPath=payment/src/main/resources/
+ # NOT IMPLEMENTED
+
+
+
+########################### APPLICATIONS ###########################
+
+
 
 # cmsapp -----------------------------------------------------------
 fromPath=cmsapp/src/main/resources/
@@ -87,9 +101,7 @@ if [[ ! -f "$TO" ]]; then
     sed -i 's/logback-spring.xml/logback-spring-dev.xml/g' $TO
 fi
 
-# payment -----------------------------------------------------------
-fromPath=payment/src/main/resources/
- # NOT IMPLEMENTED
+
 
 
 

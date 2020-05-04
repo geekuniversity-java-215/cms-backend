@@ -9,6 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @MultimoduleSpringBootApplication
 // Legacy versions Intellij Idea support
-@SpringBootApplication(scanBasePackages ="com.github.geekuniversity_java_215.cmsbackend")
+//@SpringBootApplication(scanBasePackages ="com.github.geekuniversity_java_215.cmsbackend")
 public class CoreTestApplication {
 }

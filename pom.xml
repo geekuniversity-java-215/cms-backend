@@ -23,11 +23,10 @@
         <module>utils</module>
         <module>mail</module>
         <module>protocol</module>
-        <module>configuration</module>
         <module>core/core-services</module>
+        <module>core/core-controllers</module>
         <module>payment</module>
         <module>geodata</module>
-        <module>core/core-controllers</module>
         <module>cmsapp</module>
         <module>auth-server</module>
 

@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UnconfirmedUserRepository;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,14 @@ public class UnconfirmedUserService extends BaseRepoAccessService<UnconfirmedUse
             result = unconfirmedUserRepository.findOneByLogin(login);
         }
         return result;
+    }
+
+    /**
+     * Check if user already exists by login OR FullName OR email OR phoneNumber
+     * @param user
+     * @return
+     */
+    public boolean checkIfExists(UnconfirmedUser newUser) {
+        return unconfirmedUserRepository.checkIfExists(newUser);
     }
 }
