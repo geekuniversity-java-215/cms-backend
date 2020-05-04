@@ -70,11 +70,9 @@ public class TokenService {
         //
         //
         // find user
-        User user = userService.findByLogin(login);
-        if(user == null) {
-            throw new UsernameNotFoundException("User doesn't not exists: " + login);
-        }
-
+        User user = userService.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException("User doesn't not exists: " + login));
+        
 
         // 1. Refresh Token -------------------------------------------------------------------
 

@@ -42,9 +42,8 @@ public class AdminController {
     public ResponseEntity<String> revokeTokenByLogin(@RequestBody String login) {
 
         HttpStatus result;
-
-        User user = userService.findByLogin(login);
-
+        User user = userService.findByLogin(login).orElse(null);
+        
         if (user == null) {
             result = HttpStatus.NOT_FOUND;
         }
@@ -54,11 +53,5 @@ public class AdminController {
         }
         return new ResponseEntity<>(result);
     }
-
-
-
-
-
-
 
 }

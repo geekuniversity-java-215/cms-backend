@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @Transactional
@@ -21,13 +23,25 @@ public class UserService extends BaseRepoAccessService<User> {
         this.userRepository = userRepository;
     }
 
-    public User findByLogin(String login) {
-        User result = null;
+    public Optional<User> findByLogin(String login) {
+        Optional<User> result = null;
         if (!StringUtils.isBlank(login)) {
-            result = userRepository.findOneByLogin(login).orElse(null);
+            result = userRepository.findOneByLogin(login);
         }
         return result;
+    }
 
+    /**
+     * Find User by LastNameFirstName
+     * @param fullName
+     * @return
+     */
+    public Optional<User> findByFullName(String lastName, String firstName) {
+        Optional<User> result = null;
+        if (!StringUtils.isBlank(lastName) && !StringUtils.isBlank(firstName)) {
+            result = userRepository.findOneByLastNameAndFirstName(lastName, firstName);
+        }
+        return result;
     }
 
 }

@@ -119,4 +119,8 @@ public class User extends AbstractEntityNoGen {
                ", account=" + account +
                '}';
     }
+
+    public String getFullName() {
+        return lastName + firstName;
+    }
 }

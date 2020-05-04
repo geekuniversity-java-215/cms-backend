@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
@@ -65,6 +66,10 @@ class CmsCoreTests {
         log.info("user id: {}", user.getId());
         Courier courier = new Courier(user, "КУРЬЕР_DATA");
         courierService.save(courier);
+
+        User finalUser = user;
+        userService.findByFullName(user.getLastName(), user.getFirstName())
+                .orElseThrow( () -> new UsernameNotFoundException(finalUser.getFullName() + " не найден"));
 
         acc = new Account();
         user = new User("Семенов", "Семен", "semen@mail.ru", "456");
