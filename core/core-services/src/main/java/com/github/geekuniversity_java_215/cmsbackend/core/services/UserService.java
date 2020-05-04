@@ -24,20 +24,22 @@ public class UserService extends BaseRepoAccessService<User> {
     }
 
     public Optional<User> findByLogin(String login) {
-        Optional<User> result = null;
+        Optional<User> result = Optional.empty();
         if (!StringUtils.isBlank(login)) {
             result = userRepository.findOneByLogin(login);
         }
         return result;
     }
 
+
     /**
      * Find User by LastNameFirstName
-     * @param fullName
+     * @param lastName
+     * @param firstName
      * @return
      */
     public Optional<User> findByFullName(String lastName, String firstName) {
-        Optional<User> result = null;
+        Optional<User> result = Optional.empty();
         if (!StringUtils.isBlank(lastName) && !StringUtils.isBlank(firstName)) {
             result = userRepository.findOneByLastNameAndFirstName(lastName, firstName);
         }

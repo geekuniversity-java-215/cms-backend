@@ -1,5 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
@@ -15,10 +17,12 @@ public class AuthServerInitializer implements ApplicationRunner {
 
     private final UserService userService;
     private final UserRoleService userRoleService;
+    private final ObjectMapper objectMapper;
 
-    public AuthServerInitializer(UserService userService, UserRoleService userRoleService) {
+    public AuthServerInitializer(UserService userService, UserRoleService userRoleService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.userRoleService = userRoleService;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -31,7 +35,14 @@ public class AuthServerInitializer implements ApplicationRunner {
 
     private void initUsers() {
 
-        User user = new User("Вася", "Пупкин", "vasya@mail.ru", "1122334455");
+        User user = new User("Registrar", "Registrar", "registrar@mail.ru", "registrar");
+        user.setLogin("registrar");
+        user.setPassword("{bcrypt}$2y$10$C5kaSyYpioNZN8oL4NkWbOJiEG0JscafiQycLxQCfD8F6y/tjxtSm");//registrar
+        user.getRoles().add(userRoleService.findByName(UserRole.REGISTRAR));
+        userService.save(user);
+        //log.info(objectMapper.valueToTree(user).toPrettyString());
+
+        user = new User("Вася", "Пупкин", "vasya@mail.ru", "1122334455");
         user.setLogin("user");
         user.setPassword("{bcrypt}$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6");//password
         user.getRoles().add(userRoleService.findByName(UserRole.USER));

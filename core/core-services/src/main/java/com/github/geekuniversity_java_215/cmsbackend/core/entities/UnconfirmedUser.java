@@ -1,11 +1,11 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntityNoGen;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
-import lombok.*;
-
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,13 +20,13 @@ import java.util.Set;
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 
 @Table(
-    name = "uzer",
-    indexes = {@Index(name = "user_account_id_idx", columnList = "account_id"),
-               @Index(name = "user_first_name_last_name_unq", columnList = "last_name, first_name",unique = true)
+    name = "unconfirmed_uzer",
+    indexes = {@Index(name = "unconfirmed_uzer_first_name_last_name_unq",
+            columnList = "last_name, first_name",unique = true)
     })
 @Data
 @EqualsAndHashCode(callSuper=true)
-public class User extends AbstractEntity {
+public class UnconfirmedUser extends AbstractEntity {
 
     @Id
     @Column(name = "id")
@@ -49,11 +49,9 @@ public class User extends AbstractEntity {
     @Column(name = "role_id")
     private Set<UserRole> roles = new HashSet<>();
 
-    // Это список только refresh_token
+    // registration confirmation JWT
     @NotNull
-    @OneToMany(mappedBy= "user", orphanRemoval = true, cascade = CascadeType.ALL)
-    @OrderBy("id ASC")
-    private List<RefreshToken> refreshTokenList = new ArrayList<>();
+    private String token;
 
     @NotNull
     @Column(name = "first_name")
@@ -71,46 +69,20 @@ public class User extends AbstractEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    protected UnconfirmedUser() {}
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
-
-
-    @OneToOne(mappedBy= "user", orphanRemoval = true)
-    @OrderBy("id ASC")
-    private Client client;
-
-    @OneToOne(mappedBy= "user", orphanRemoval = true)
-    @OrderBy("id ASC")
-    private Courier courier;
-
-
-
-
-    protected User() {}
-
-    public User(@NotNull String firstName,
-                @NotNull String lastName,
-                @NotNull String email,
-                @NotNull String phoneNumber) {
+    public UnconfirmedUser(@NotNull String firstName,
+                           @NotNull String lastName,
+                           @NotNull String email,
+                           @NotNull String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-
-        // ToDo: ASAP EDC remove this
-        login = "123";
-        password = "456";
     }
 
     protected void setId(Long id) {
         this.id = id;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-        account.setUser(this);
     }
 
     @Override
@@ -121,7 +93,6 @@ public class User extends AbstractEntity {
                ", lastName='" + lastName + '\'' +
                ", email='" + email + '\'' +
                ", phoneNumber='" + phoneNumber + '\'' +
-               ", account=" + account +
                '}';
     }
 

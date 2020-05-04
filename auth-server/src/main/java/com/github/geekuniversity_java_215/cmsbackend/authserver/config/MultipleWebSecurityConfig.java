@@ -102,7 +102,6 @@ public class MultipleWebSecurityConfig {
     /**
      * Token operations
      * Authorisation: Basic + Bearer
-     * <br> We like hand-made security!
      */
     @Configuration
     @Order(2)
@@ -121,13 +120,54 @@ public class MultipleWebSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-
-            //http.antMatcher("/oauzz/token**/**").authorizeRequests().anyRequest().authenticated()
             http.antMatcher("/oauzz/token/**").authorizeRequests().anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
                 .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+        }
+    }
+
+
+    /**
+     * Registration of new user
+     * Authorisation: Basic
+     */
+    @Configuration
+    @Order(3)
+    public static class RegisterNewUserSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        private final BasicAuthRequestFilter basicAuthRequestFilter;
+
+        public RegisterNewUserSecurityConfig(BasicAuthRequestFilter basicAuthRequestFilter) {
+            this.basicAuthRequestFilter = basicAuthRequestFilter;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+
+            http.antMatcher("/registration/new").authorizeRequests().anyRequest().authenticated()
+                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and().csrf().disable()
+                    .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+        }
+    }
+
+
+    /**
+     * Registration confirmation
+     * Authorisation: None
+     */
+    @Configuration
+    @Order(4)
+    public static class RegistrationConfirmationSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+
+            http.authorizeRequests().antMatchers("/registration/confirm").permitAll()
+                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and().csrf().disable();
         }
 
     }
