@@ -49,6 +49,7 @@ public class CoreInitializer implements ApplicationRunner {
         // Merge UserRole.Values to database
         log.debug("Update database");
 
+        log.debug("Merge roles");
         List<UserRole> roleList = userRoleService.findAll(null);
         Map<String, UserRole> roleMap =
                 roleList.stream().collect(Collectors.toMap(UserRole::getName, Function.identity()));

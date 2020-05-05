@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Prepare dev src/test resources  in modules ----------------------------
+# Prepare dev src/test resources in library modules ----------------------------
 LIB_MODULES=(core/core-controllers core/core-services mail payment utils)
+# This modules shouldn't contain @SpringBootApplication (except in tests)
 
 # cp application.properties application-dev.properties in <module>/test/main/resources/
 # inside replace logback-spring.xml to logback-spring-dev.xml
@@ -95,6 +96,18 @@ fi
 
 # auth-server -----------------------------------------------------------
 fromPath=auth-server/src/main/resources/
+FROM=${fromPath}application.properties
+TO=${fromPath}application-dev.properties
+
+if [[ ! -f "$TO" ]]; then
+    cp -an $FROM $TO
+    sed -i 's/logback-spring.xml/logback-spring-dev.xml/g' $TO
+fi
+
+
+
+# chat -----------------------------------------------------------
+fromPath=chat/src/main/resources/
 FROM=${fromPath}application.properties
 TO=${fromPath}application-dev.properties
 

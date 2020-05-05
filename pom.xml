@@ -30,6 +30,7 @@
         <module>cmsapp</module>
         <module>auth-server</module>
         <module>jrpc-client</module>
+        <module>chat</module>
     </modules>
 
 

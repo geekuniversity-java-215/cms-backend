@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class CmsAppTestStartupRunner implements ApplicationRunner {
+public class CmsTestInitializer implements ApplicationRunner {
 
     private final UserService userService;
     private final AccountService accountService;
 
     @Autowired
-    public CmsAppTestStartupRunner(UserService userService, AccountService accountService) {
+    public CmsTestInitializer(UserService userService, AccountService accountService) {
         this.userService = userService;
         this.accountService = accountService;
     }

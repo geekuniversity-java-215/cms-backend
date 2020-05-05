@@ -57,7 +57,7 @@ public class AccountService extends BaseRepoAccessService<Account> {
 
         // TESTING
         log.info("Усиленно работаем ...");
-        unchecked(() -> TimeUnit.SECONDS.sleep(2)).run();
+        unchecked(() -> TimeUnit.MILLISECONDS.sleep(500)).run();
 
         fieldSetter("balance", account, account.getBalance().add(amount));
         //propertySetter("setBalance", account, BigDecimal.class, account.getBalance().add(amount));

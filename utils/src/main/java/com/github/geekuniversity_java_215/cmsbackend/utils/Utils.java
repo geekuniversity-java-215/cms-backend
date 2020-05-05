@@ -37,7 +37,6 @@ public class Utils {
 
 
     public Set<GrantedAuthority> rolesToGrantedAuthority(Set<String> authorities) {
-        //noinspection unchecked
         return authorities
             .stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }
@@ -68,7 +67,7 @@ public class Utils {
      * @param pattern which class to find
      * @return field name
      */
-    public String getPatternClassFieldName(Class source, Class pattern) {
+    public String getPatternClassFieldName(Class<?> source, Class<?> pattern) {
 
         String result = null;
         
