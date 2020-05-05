@@ -19,17 +19,17 @@ import org.springframework.stereotype.Controller;
 import java.security.Principal;
 
 @Controller
-public class MessageController {
+public class ChatMessageController {
     private final SimpMessagingTemplate template;
     private final MessageService messageService;
     private final UserService userService;
     private final OrderService orderService;
 
     @Autowired
-    public MessageController(SimpMessagingTemplate template,
-                             MessageService messageService,
-                             UserService userService,
-                             OrderService orderService) {
+    public ChatMessageController(SimpMessagingTemplate template,
+                                 MessageService messageService,
+                                 UserService userService,
+                                 OrderService orderService) {
         this.template = template;
         this.messageService = messageService;
         this.userService = userService;

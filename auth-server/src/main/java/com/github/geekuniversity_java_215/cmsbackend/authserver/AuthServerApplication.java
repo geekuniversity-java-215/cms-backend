@@ -3,10 +3,12 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.configuration.MultimoduleSpringBootApplication;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @MultimoduleSpringBootApplication
-//@SpringBootApplication(scanBasePackages ="com.github.geekuniversity_java_215.cmsbackend") // legacy IDE support
+// Intellij Idea scanning Spring Configuration fix
+@SpringBootApplication(scanBasePackages ="com.github.geekuniversity_java_215.cmsbackend")
 public class AuthServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AuthServerApplication.class, args);
