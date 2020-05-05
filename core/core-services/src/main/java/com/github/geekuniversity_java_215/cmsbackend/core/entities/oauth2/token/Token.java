@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;

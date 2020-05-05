@@ -1,8 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.ClientRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import org.springframework.stereotype.Service;
 
 @Service

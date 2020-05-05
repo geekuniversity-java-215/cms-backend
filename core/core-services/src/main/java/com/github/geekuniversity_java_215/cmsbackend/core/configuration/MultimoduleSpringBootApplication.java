@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.configuration.configurations;
+package com.github.geekuniversity_java_215.cmsbackend.core.configuration;
 
 import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.RepositoryWithEntityManager;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

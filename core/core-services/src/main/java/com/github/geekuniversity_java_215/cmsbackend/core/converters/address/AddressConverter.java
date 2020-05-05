@@ -1,12 +1,9 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.converters.address;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractConverter;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.address.AddressDto;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.ParseException;
-
-import javax.validation.ValidationException;
 
 public class AddressConverter extends AbstractConverter<Address, AddressDto, Void> {
 

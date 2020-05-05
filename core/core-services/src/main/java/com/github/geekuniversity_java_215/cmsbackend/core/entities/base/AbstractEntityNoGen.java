@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;

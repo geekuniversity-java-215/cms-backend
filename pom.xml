@@ -29,7 +29,7 @@
         <module>geodata</module>
         <module>cmsapp</module>
         <module>auth-server</module>
-
+        <module>jrpc-client</module>
     </modules>
 
 

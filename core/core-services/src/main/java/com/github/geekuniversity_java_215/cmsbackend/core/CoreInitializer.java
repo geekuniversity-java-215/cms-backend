@@ -1,6 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.core;
 
 
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -11,8 +13,6 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 
 
 @Component
@@ -35,7 +35,7 @@ public class CoreInitializer implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         String port = environment.getProperty("local.server.port");
         if (!StringUtils.isEmpty(port)) {
-            log.info("WEB SARVAR VERSUS APPLICATION SARVAR RRRUN AT PORT: {}", port);
+            log.info("Embedded Tomcat run at port: {}", port);
         }
 
         log.debug("CoreInitializer started");

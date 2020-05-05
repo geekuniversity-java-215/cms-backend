@@ -1,9 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import lombok.extern.slf4j.Slf4j;

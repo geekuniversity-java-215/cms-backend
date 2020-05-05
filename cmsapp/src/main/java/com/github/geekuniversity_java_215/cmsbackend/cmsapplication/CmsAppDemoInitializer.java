@@ -1,16 +1,14 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication;
 
-import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.entities.TestEntity;
-import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.repositories.TestRepository;
-import com.github.geekuniversity_java_215.cmsbackend.core.controllers.ApiController;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
+import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.entities.TestEntity;
+import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.repositories.TestRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

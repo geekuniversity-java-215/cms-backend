@@ -1,10 +1,10 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.BlacklistedToken;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.BlacklistedTokenRepository;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UnconfirmedUserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.AccessTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.RefreshTokenRepository;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.BlacklistedToken;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UnconfirmedUserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;

@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
+import RefreshToken;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

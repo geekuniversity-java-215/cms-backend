@@ -1,8 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntityNoGen;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import lombok.*;
 

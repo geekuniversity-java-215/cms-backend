@@ -1,6 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.config.aop;
 
 
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.config.RequestScopeBean;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -13,8 +15,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.config.AuthType;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.config.RequestScopeBean;
 import org.springframework.util.Assert;
 
 

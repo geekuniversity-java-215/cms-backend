@@ -1,8 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.BlacklistedToken;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.BlacklistedTokenRepository;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
+import BlacklistedToken;
+import BlacklistedTokenRepository;
+import AccessToken;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

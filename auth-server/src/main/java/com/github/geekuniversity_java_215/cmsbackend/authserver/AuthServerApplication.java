@@ -1,9 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver;
 
 
-import com.github.geekuniversity_java_215.cmsbackend.configuration.configurations.MultimoduleSpringBootApplication;
+import com.github.geekuniversity_java_215.cmsbackend.core.configuration.MultimoduleSpringBootApplication;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @MultimoduleSpringBootApplication

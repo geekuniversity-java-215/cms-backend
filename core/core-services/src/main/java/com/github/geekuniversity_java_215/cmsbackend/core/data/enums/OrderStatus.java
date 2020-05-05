@@ -2,12 +2,9 @@ package com.github.geekuniversity_java_215.cmsbackend.core.data.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Objects;
 
 @AllArgsConstructor
 @Getter

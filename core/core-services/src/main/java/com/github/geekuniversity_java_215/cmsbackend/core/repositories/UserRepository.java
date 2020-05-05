@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.repositories;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.CustomRepository;
 import org.springframework.data.jpa.repository.Query;

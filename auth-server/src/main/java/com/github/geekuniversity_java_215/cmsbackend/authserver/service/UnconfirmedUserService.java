@@ -2,7 +2,6 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UnconfirmedUserRepository;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import org.springframework.stereotype.Service;

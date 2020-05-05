@@ -1,7 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.aop.LogExecutionTime;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
+import com.github.geekuniversity_java_215.cmsbackend.core.aop.LogExecutionTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

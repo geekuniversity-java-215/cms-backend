@@ -1,8 +1,10 @@
 package com.github.geekuniversity_java_215.cmsbackend.core;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
+import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.core.entities.*;
+import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.core.services.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

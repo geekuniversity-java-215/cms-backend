@@ -32,8 +32,6 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 
-import static com.github.geekuniversity_java_215.cmsbackend.core.configuration.CoreSpringConfiguration.ISSUER;
-
 //@Component("bearerRequestFilter")
 @Component
 @Slf4j
