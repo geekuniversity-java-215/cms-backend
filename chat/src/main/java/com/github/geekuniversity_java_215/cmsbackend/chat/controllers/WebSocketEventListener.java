@@ -37,7 +37,8 @@ public class WebSocketEventListener {
 
         Map<String, Object> attributes = headerAccessor.getSessionAttributes();
 
-        if (!attributes.containsKey("login") ||
+        if (attributes == null ||
+            !attributes.containsKey("login") ||
             !attributes.containsKey("order")) {
             throw new RuntimeException("Required headers 'username' || 'order' not found");
         }
