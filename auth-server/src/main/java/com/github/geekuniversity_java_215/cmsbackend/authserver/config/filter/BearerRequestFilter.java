@@ -28,7 +28,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -115,12 +114,12 @@ public class BearerRequestFilter extends OncePerRequestFilter {
     // ------------------------------------------------------------
 
 
-    /**
-     * Check that JWT token not expired
-     */
-    private boolean tokenNotExpired(Claims claims) {
-        return claims.getExpiration().toInstant().toEpochMilli() > Instant.now().toEpochMilli();
-    }
+//    /**
+//     * Check that JWT token not expired
+//     */
+//    private boolean tokenNotExpired(Claims claims) {
+//        return claims.getExpiration().toInstant().toEpochMilli() > Instant.now().toEpochMilli();
+//    }
 
 
     /**
@@ -146,7 +145,7 @@ public class BearerRequestFilter extends OncePerRequestFilter {
 
 
     /**
-     * Parse User JWT, load User details from DB
+     * Load User details from DB by token claims
      * @param claims token claims
      */
     private UsernamePasswordAuthenticationToken getAuthToken(Claims claims) {
