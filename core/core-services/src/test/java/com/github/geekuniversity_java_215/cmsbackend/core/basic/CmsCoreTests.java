@@ -3,7 +3,6 @@ package com.github.geekuniversity_java_215.cmsbackend.core.basic;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
-import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.core.services.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;

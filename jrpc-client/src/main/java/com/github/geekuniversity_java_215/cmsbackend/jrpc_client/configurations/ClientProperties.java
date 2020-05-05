@@ -1,10 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations;
 
-import jsonrpc.client.request.base.MyToken;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.TokenDto;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Max;
@@ -73,8 +70,8 @@ public class ClientProperties {
         private String clientId;
         private String clientSecret;
 
-        private MyToken accessToken = MyToken.EMPTY;
-        private MyToken refreshToken = MyToken.EMPTY;
+        private TokenDto accessToken = TokenDto.EMPTY;
+        private TokenDto refreshToken = TokenDto.EMPTY;
 
         public String getUsername() {
             return username;
@@ -110,19 +107,19 @@ public class ClientProperties {
             this.clientSecret = clientSecret;
         }
 
-        public MyToken getAccessToken() {
+        public TokenDto getAccessToken() {
             return accessToken;
         }
 
-        public void setAccessToken(MyToken accessToken) {
+        public void setAccessToken(TokenDto accessToken) {
             this.accessToken = accessToken;
         }
 
-        public MyToken getRefreshToken() {
+        public TokenDto getRefreshToken() {
             return refreshToken;
         }
 
-        public void setRefreshToken(MyToken refreshToken) {
+        public void setRefreshToken(TokenDto refreshToken) {
             this.refreshToken = refreshToken;
         }
 
