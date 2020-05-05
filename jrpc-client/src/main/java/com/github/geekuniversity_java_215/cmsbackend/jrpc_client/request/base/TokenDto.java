@@ -18,6 +18,7 @@ public class TokenDto {
     private TokenDto() {
         tokenString = null;
         claims = new DefaultClaims();
+        // новый токен уже заранее протухший
         claims.setExpiration(Date.from(Instant.EPOCH));
     }
 

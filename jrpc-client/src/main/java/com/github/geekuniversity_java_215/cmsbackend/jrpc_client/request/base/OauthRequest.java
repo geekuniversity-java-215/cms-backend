@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.invoke.MethodHandles;
@@ -34,9 +35,6 @@ public class OauthRequest {
     }
 
 
-
-
-
     private void obtainTokenAbstract(GrantType grantType) {
 
         ClientProperties.Credentials clientCredentials = clientProperties.getCredentials();
@@ -50,10 +48,9 @@ public class OauthRequest {
         );
 
 
-        RequestEntity requestEntity = null;
+        RequestEntity<Void> requestEntity = null;
+
         if (grantType == GrantType.PASSWORD) {
-
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
             headers.setBasicAuth(clientCredentials.getUsername(), clientCredentials.getPassword());
@@ -76,21 +73,24 @@ public class OauthRequest {
                 .build();
         }
 
-        assert requestEntity != null;
+        Assert.notNull(requestEntity, "requestEntity is null");
         ResponseEntity<OauthResponse> response = restTemplate.exchange(requestEntity, OauthResponse.class);
 
         OauthResponse oauthResponse = response.getBody();
 
-        clientCredentials.setAccessToken(new TokenDto(oauthResponse.getAccessToken()));
-        clientCredentials.setRefreshToken(new TokenDto(oauthResponse.getRefreshToken()));
+        if (oauthResponse != null) {
 
-        log.info("access_token: {}", clientCredentials.getAccessToken());
-        log.info("access_token expiration: {}", clientCredentials.getAccessToken().getExpiration());
-        log.info("refresh_token: {}", clientCredentials.getRefreshToken());
-        log.info("refresh_token expiration: {}", clientCredentials.getRefreshToken().getExpiration());
+            clientCredentials.setAccessToken(new TokenDto(oauthResponse.getAccessToken()));
+            clientCredentials.setRefreshToken(new TokenDto(oauthResponse.getRefreshToken()));
 
+            log.debug("access_token: {}", clientCredentials.getAccessToken());
+            log.debug("access_token expiration: {}", clientCredentials.getAccessToken().getExpiration());
+            log.debug("refresh_token: {}", clientCredentials.getRefreshToken());
+            log.debug("refresh_token expiration: {}", clientCredentials.getRefreshToken().getExpiration());
+        }
     }
 
+/*
 
     private boolean checkTokenApproval() {
 
@@ -139,27 +139,28 @@ public class OauthRequest {
         ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
         log.info("{}", response.getStatusCode());
     }
+*/
 
 
 
 
 
-    public void obtainToken() {
-        log.info("OAUTH GET TOKEN");
+    public void obtainTokens() {
+        log.debug("OAUTH GET TOKEN");
         obtainTokenAbstract(GrantType.PASSWORD);
     }
 
 
 
-    public void refreshToken() {
+    public void refreshTokens() {
         log.info("OAUTH REFRESH TOKEN");
 
-        // check that token is approved
-        if (!checkTokenApproval()) {
-            String s = "OAUTH REFRESH TOKEN NOT APPROVED";
-            log.error(s);
-            throw new RuntimeException(s);
-        }
+//        // check that token is approved
+//        if (!checkTokenApproval()) {
+//            String s = "OAUTH REFRESH TOKEN NOT APPROVED";
+//            log.error(s);
+//            throw new RuntimeException(s);
+//        }
 
         obtainTokenAbstract(GrantType.REFRESH);
     }
@@ -177,7 +178,8 @@ public class OauthRequest {
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(clientCredentials.getUsername(), clientCredentials.getPassword());
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        RequestEntity requestEntity = RequestEntity
+
+        RequestEntity<String> requestEntity = RequestEntity
             .post(URI.create(checkTokenURL))
             .headers(headers)
             .body("from=" + from);
@@ -195,30 +197,12 @@ public class OauthRequest {
 
         // Oauth2.0 authorization -------------------------------------------
 
-        // если устарел access_token или refresh_token
-        if (clientCredentials.getAccessToken().isRotten() ||
-            clientCredentials.getRefreshToken().isRotten()) {
-
-
-            // Если refresh_token не протух
-            if (!clientCredentials.getRefreshToken().isRotten()) {
-                // refresh refresh_token
-                // получим заодно новый access_token
-                refreshToken();
-            } else {
-
-                // get token (really get only reduced functionality 1 refresh token - waiting to token have been approved)
-                obtainToken();
-
-                // simulate approving this refresh token from "confidential client (maybe from mobile app)"
-                approve(clientCredentials.getRefreshToken().getId());
-
-                // then get fully functional access+refresh token pair with normal access level
-                refreshToken();
-            }
-
+        if (clientCredentials.getRefreshToken().isRotten()) {
+            obtainTokens();
         }
-
+        else if (clientCredentials.getAccessToken().isRotten()) {
+            refreshTokens();
+        }
     }
 
 }

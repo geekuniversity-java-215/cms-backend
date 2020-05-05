@@ -29,22 +29,13 @@ public abstract class AbstractRequest {
     private final static String API_VERSION = "1.0";
 
 
-    private ApplicationContext context;
-    private ClientProperties clientProperties;
-    private RestTemplate restTemplate;
-    private OauthRequest oauthRequest;
-
-
+    protected ClientProperties clientProperties;
+    protected RestTemplate restTemplate;
+    protected OauthRequest oauthRequest;
     protected ObjectMapper objectMapper;
-
-
 
     private String apiURL;
 
-    @Autowired
-    public void setContext(ApplicationContext context) {
-        this.context = context;
-    }
 
     @Autowired
     public void setClientProperties(ClientProperties clientProperties) {
@@ -65,6 +56,8 @@ public abstract class AbstractRequest {
     public void setOauthRequest(OauthRequest oauthRequest) {
         this.oauthRequest = oauthRequest;
     }
+
+
 
     @PostConstruct
     private void postConstruct() {
@@ -102,7 +95,7 @@ public abstract class AbstractRequest {
             throw new RuntimeException(e);
         }
 
-        log.info("REQUEST\n" + json);
+        log.debug("REQUEST\n" + json);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + clientCredentials.getAccessToken());
@@ -114,7 +107,7 @@ public abstract class AbstractRequest {
 
         ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
 
-        log.info("HTTP " + response.getStatusCode().toString() + "\n" + response.getBody());
+        log.debug("HTTP " + response.getStatusCode().toString() + "\n" + response.getBody());
         try {
             result = objectMapper.readTree(response.getBody()).get("result");
         } catch (JsonProcessingException e) {

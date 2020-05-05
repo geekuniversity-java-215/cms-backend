@@ -23,7 +23,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.github.geekuniversity_java_215.cmsbackend.core.configuration.CoreSpringConfiguration.ISSUER;
+import static com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpringConfiguration.ISSUER;
 
 @Service
 @Transactional
