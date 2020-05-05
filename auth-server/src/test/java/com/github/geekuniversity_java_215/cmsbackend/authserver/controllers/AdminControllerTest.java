@@ -1,4 +1,4 @@
-package java.controller;
+package com.github.geekuniversity_java_215.cmsbackend.authserver.controllers;
 
 import org.junit.jupiter.api.Test;
 
