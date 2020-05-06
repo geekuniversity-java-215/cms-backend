@@ -5,12 +5,15 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@PropertySource(value ="classpath:payment-${spring.profiles.active}.properties")
+
 @Slf4j
 public class PayPalService {
     private static String CLIENT_ID;

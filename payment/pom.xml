@@ -27,6 +27,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--module mail -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>mail</artifactId>
+            <version>0.1</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 
