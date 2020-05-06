@@ -1,15 +1,12 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.admin;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.ClientProperties;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.AbstractRequest;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.OauthRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 
@@ -19,13 +16,13 @@ public class AdminRequest extends AbstractRequest {
 
     protected <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass) {
 
-        ClientProperties.Credentials clientCredentials = clientProperties.getCredentials();
+        JrpcClientProperties.Account clientAccount = jrpcClientProperties.getAccount();
 
         // Oauth2.0 authorization -----------------
         oauthRequest.authorize();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + clientCredentials.getAccessToken());
+        headers.add("Authorization", "Bearer " + clientAccount.getAccessToken());
         //headers.setContentType(MediaType.APPLICATION_JSON);
 
         RequestEntity<K> requestEntity = RequestEntity
@@ -49,8 +46,8 @@ public class AdminRequest extends AbstractRequest {
         oauthRequest.authorize();
 
         String url = String.format("http://%1$s:%2$s/admin/user/revoke_token",
-            this.clientProperties.getAuthServer().getHostName(),
-            this.clientProperties.getAuthServer().getPort());
+            this.jrpcClientProperties.getAuthServer().getHostName(),
+            this.jrpcClientProperties.getAuthServer().getPort());
 
         //ObjectNode body = JsonNodeFactory.instance.objectNode();
         //body.put("user", userName);
@@ -59,17 +56,17 @@ public class AdminRequest extends AbstractRequest {
         log.info("{}", response.getStatusCode());
     }
 
-    public void test() {
+    public String test() {
 
         oauthRequest.authorize();
 
-        String url = String.format("http://%1$s:%2$s/admin/hello",
-            this.clientProperties.getAuthServer().getHostName(),
-            this.clientProperties.getAuthServer().getPort());
+        String url = String.format("http://%1$s:%2$s/admin/test",
+            this.jrpcClientProperties.getAuthServer().getHostName(),
+            this.jrpcClientProperties.getAuthServer().getPort());
 
         ResponseEntity<String> response = performRequest(url, null, String.class);
 
-        log.info("{}", response.toString() + "\n" + response.getBody());
+        return response.getBody();
     }
 
 }

@@ -20,6 +20,8 @@ public class AuthServerInitializer implements ApplicationRunner {
     private final UserRoleService userRoleService;
     private final ObjectMapper objectMapper;
 
+    private static boolean loaded = false;
+
     public AuthServerInitializer(UserService userService, UserRoleService userRoleService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.userRoleService = userRoleService;
@@ -28,6 +30,7 @@ public class AuthServerInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
         log.debug("AuthServerInitializer started");
         initUsers();
         log.debug("AuthServerInitializer finished");
@@ -36,35 +39,45 @@ public class AuthServerInitializer implements ApplicationRunner {
 
     private void initUsers() {
 
+        User user;
+
         // admin user  --------------------------------------------------
         // root/toor
-        User user = new User("root",
-            "{bcrypt}$2y$10$yvFUsJ1pZJd7WNrJ/A8hCO47Z1cNBHfMiduq4yioaEzuM1.QfSTUa",
-            "root", "root", "root@mail.ru", "root");
-        user.getRoles().add(userRoleService.findByName(UserRole.ADMIN));
-        userService.save(user);
+
+        if (!userService.findByLogin("root").isPresent()) {
+            user = new User("root",
+                "{bcrypt}$2y$10$yvFUsJ1pZJd7WNrJ/A8hCO47Z1cNBHfMiduq4yioaEzuM1.QfSTUa",
+                "root", "root", "root@mail.ru", "root");
+            user.getRoles().add(userRoleService.findByName(UserRole.ADMIN));
+            userService.save(user);
+        }
 
         // frontend user that register new users  ---------------------
         // registrar/registrar
-        user = new User("registrar",
+        if (!userService.findByLogin("registrar").isPresent()) {
+            user = new User("registrar",
                 "{bcrypt}$2y$10$C5kaSyYpioNZN8oL4NkWbOJiEG0JscafiQycLxQCfD8F6y/tjxtSm",
                 "Registrar", "Registrar", "registrar@mail.ru", "registrar");
-        user.getRoles().add(userRoleService.findByName(UserRole.REGISTRAR));
-        userService.save(user);
-        //log.info(objectMapper.valueToTree(user).toPrettyString());
+            user.getRoles().add(userRoleService.findByName(UserRole.REGISTRAR));
+            userService.save(user);
+        }
 
         // demo users --------------------------------------------------
 
         // vasya/password
-        user = new User("vasya", "{bcrypt}$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
+        if (!userService.findByLogin("vasya").isPresent()) {
+            user = new User("vasya", "{bcrypt}$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
                 "Вася", "Пупкин", "vasya@mail.ru", "1122334455");
-        user.getRoles().add(userRoleService.findByName(UserRole.USER));
-        userService.save(user);
+            user.getRoles().add(userRoleService.findByName(UserRole.USER));
+            userService.save(user);
+        }
 
         // sema/password
-        user = new User("sema","{bcrypt}$2y$10$3UKKfqyHoDe8MbVIkXr.UO8d76bJWisYP5DdC3EpSzro.JYzi38xu",
+        if (!userService.findByLogin("sema").isPresent()) {
+            user = new User("sema", "{bcrypt}$2y$10$3UKKfqyHoDe8MbVIkXr.UO8d76bJWisYP5DdC3EpSzro.JYzi38xu",
                 "Сема", "Пасечкин", "sema@mail.ru", "908796786543");
-        user.getRoles().add(userRoleService.findByName(UserRole.USER));
-        userService.save(user);
+            user.getRoles().add(userRoleService.findByName(UserRole.USER));
+            userService.save(user);
+        }
     }
 }

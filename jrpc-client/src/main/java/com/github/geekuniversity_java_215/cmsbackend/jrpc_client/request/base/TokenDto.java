@@ -10,10 +10,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class TokenDto {
 
-    public static final TokenDto EMPTY = new TokenDto();
-
     private final Claims claims;
     private final String tokenString;
+
+    public static TokenDto getNew() {
+        return new TokenDto();
+    }
 
     private TokenDto() {
         tokenString = null;

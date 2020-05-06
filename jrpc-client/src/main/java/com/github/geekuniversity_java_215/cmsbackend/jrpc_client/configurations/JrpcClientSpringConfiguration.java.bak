@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
 
 @Configuration
 //@ComponentScan("jsonrpc.protocol")
-public class SpringConfiguration {
+public class JrpcClientSpringConfiguration {
 
     //private final ClientProperties clientProperties;
 
@@ -19,20 +21,16 @@ public class SpringConfiguration {
 //    }
 
 
-    @Bean
-    public ObjectMapper objectMapper() {
-
-        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-        return mapper;
-    }
-
 //    @Bean
-//    public RestTemplate restTemplate() {
+//    public ObjectMapper objectMapper() {
 //
-//        return RestTemplateFactory.getRestTemplate(100000);
+//        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+//        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+//        return mapper;
 //    }
+
+
 
 
 //    @Bean

@@ -64,47 +64,12 @@ public class MultipleWebSecurityConfig {
         return result;
     }
 
-
-
-    /**
-     * Administration
-     * Authorisation: Basic + Bearer
-     */
-    @Configuration
-    @Order(1)
-    public static class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        private final BearerRequestFilter bearerRequestFilter;
-        private final BasicAuthRequestFilter basicAuthRequestFilter;
-
-        @Autowired
-        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter, BasicAuthRequestFilter basicAuthRequestFilter) {
-            this.bearerRequestFilter = bearerRequestFilter;
-            this.basicAuthRequestFilter = basicAuthRequestFilter;
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-
-            http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().csrf().disable()
-                .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
-                .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
-
-
-                //.addFilterAfter(bearerRequestFilter, LogoutFilter.class)
-        }
-    }
-
-
-
     /**
      * Token operations
      * Authorisation: Basic + Bearer
      */
     @Configuration
-    @Order(2)
+    @Order(1)
     public static class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final BearerRequestFilter bearerRequestFilter;
@@ -125,6 +90,36 @@ public class MultipleWebSecurityConfig {
                 .and().csrf().disable()
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
                 .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+        }
+    }
+
+
+
+    /**
+     * Administration
+     * Authorisation: Bearer
+     */
+    @Configuration
+    @Order(2)
+    public static class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        private final BearerRequestFilter bearerRequestFilter;
+        //private final BasicAuthRequestFilter basicAuthRequestFilter;
+
+        @Autowired
+        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter) {
+            this.bearerRequestFilter = bearerRequestFilter;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+
+            http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().csrf().disable()
+                .addFilterAfter(bearerRequestFilter, LogoutFilter.class);
+
+            //.addFilterAfter(bearerRequestFilter, LogoutFilter.class)
         }
     }
 

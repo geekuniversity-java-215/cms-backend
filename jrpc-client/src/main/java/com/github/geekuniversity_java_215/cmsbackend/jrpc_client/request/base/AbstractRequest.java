@@ -3,11 +3,10 @@ package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.ClientProperties;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.request.JrpcRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
-import java.lang.invoke.MethodHandles;
 import java.net.URI;
 
 @Component
@@ -25,21 +22,14 @@ import java.net.URI;
 @Slf4j
 public abstract class AbstractRequest {
 
-    //private final static String JRPC_VERSION = "2.0";
-    private final static String API_VERSION = "1.0";
-
-
-    protected ClientProperties clientProperties;
+    protected JrpcClientProperties jrpcClientProperties;
     protected RestTemplate restTemplate;
     protected OauthRequest oauthRequest;
     protected ObjectMapper objectMapper;
 
-    private String apiURL;
-
-
     @Autowired
-    public void setClientProperties(ClientProperties clientProperties) {
-        this.clientProperties = clientProperties;
+    public void setJrpcClientPropertiesDTO2(JrpcClientProperties jrpcClientPropertiesDTO2) {
+        this.jrpcClientProperties = jrpcClientPropertiesDTO2;
     }
 
     @Autowired
@@ -58,23 +48,13 @@ public abstract class AbstractRequest {
     }
 
 
-
-    @PostConstruct
-    private void postConstruct() {
-        apiURL = String.format("http://%1$s:%2$s/api/%3$s/",
-                this.clientProperties.getResourceServer().getHostName(),
-                this.clientProperties.getResourceServer().getPort(),
-                API_VERSION);
-
-    }
-
     // --------------------------------------------------------------------
 
 
 
     protected JsonNode performRequest(long id, String uri, Object params) {
 
-        ClientProperties.Credentials clientCredentials = clientProperties.getCredentials();
+        JrpcClientProperties.Account clientAccount = jrpcClientProperties.getAccount();
 
         // Oauth2.0 authorization
         oauthRequest.authorize();
@@ -98,10 +78,10 @@ public abstract class AbstractRequest {
         log.debug("REQUEST\n" + json);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + clientCredentials.getAccessToken());
+        headers.add("Authorization", "Bearer " + clientAccount.getAccessToken());
         headers.setContentType(MediaType.APPLICATION_JSON);
         RequestEntity<String> requestEntity = RequestEntity
-                .post(URI.create(apiURL))
+                .post(URI.create(jrpcClientProperties.getApiURL()))
                 .headers(headers)
                 .body(json);
 
