@@ -11,5 +11,23 @@
 
     <artifactId>payment</artifactId>
 
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.paypal.sdk/rest-api-sdk -->
+        <dependency>
+            <groupId>com.paypal.sdk</groupId>
+            <artifactId>rest-api-sdk</artifactId>
+            <version>1.14.0</version>
+        </dependency>
+
+        <!--module core -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>core</artifactId>
+            <version>${app.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+    </dependencies>
 
 </project>
