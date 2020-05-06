@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class PayPalAccount {
 
-    @Value("${paypal.clientId}")
+    @Value("${classpath:paypal.clientId}")
     private String clientId;
 
-    @Value("${paypal.clientSecret}")
+    @Value("${classpath:paypal.clientSecret}")
     private String clientSecret;
 
-    @Value("${paypal.mode}")
+    @Value("${classpath:paypal.mode}")
     private String mode;
 
 //    @Value("${server.port}")
