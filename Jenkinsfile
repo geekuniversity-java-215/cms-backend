@@ -48,9 +48,6 @@ pipeline {
                     unzip -o payment.resources.zip -d payment/src/main/resources/
                     rm payment.resources.zip
                 '''
-
-
-                http://31.210.208.189:10100/files/payment.resources.zip
             }
         }
 
