@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# bash escape tool
+# http://dwaves.de/tools/escape/
+
 # Prepare dev src/test resources in library modules ----------------------------
 LIB_MODULES=(core/core-controllers core/core-services mail payment utils)
 # This modules shouldn't contain @SpringBootApplication (except in tests)
@@ -75,7 +78,20 @@ fi
 
 # payment -----------------------------------------------------------
 fromPath=payment/src/main/resources/
- # NOT IMPLEMENTED
+FROM=${fromPath}payment.properties
+TO=${fromPath}payment-dev.properties
+
+if [[ ! -f "$FROM" ]]; then
+
+    echo -e "paypal.clientId=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" >> $FROM
+    echo -e "paypal.clientSecret=BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB" >> $FROM
+    echo -e "paypal.mode=sandbox" >> $FROM
+    cp -an $FROM $TO
+
+    # copy payment*.properties from folder above (if exists, suppress the error exit code and message)
+    # to not manually copy payment*.properties
+    cp ../cms-backend-properties/payment/payment*.properties payment/src/main/resources/ 2>/dev/null || :
+fi
 
 
 
