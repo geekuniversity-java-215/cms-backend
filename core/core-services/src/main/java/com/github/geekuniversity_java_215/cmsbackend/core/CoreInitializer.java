@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 
 @Component
-@Order(-1000)
+@Order(-40000)
 @Slf4j
 public class CoreInitializer implements ApplicationRunner {
 

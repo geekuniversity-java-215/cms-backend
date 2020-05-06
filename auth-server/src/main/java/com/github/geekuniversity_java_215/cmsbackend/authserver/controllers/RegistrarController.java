@@ -5,6 +5,7 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.service.JwtToken
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.UnconfirmedUserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.http.HttpResponse;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
@@ -49,24 +50,20 @@ public class RegistrarController {
     @Secured({UserRole.REGISTRAR})
     public ResponseEntity<String> add(@RequestBody UnconfirmedUser newUser) {
 
-
-
-        Set<ConstraintViolation<UnconfirmedUser>> violations = validator.validate(newUser);
-        if (violations.size() != 0) {
-            throw new ConstraintViolationException("User validation failed", violations);
-        }
-
-        ResponseEntity<String> result = ResponseEntity.badRequest().body("Bad user");
-
-
+        ResponseEntity<String> result; // ResponseEntity.badRequest().body("Bad user");
 
         try {
+
+            Set<ConstraintViolation<UnconfirmedUser>> violations = validator.validate(newUser);
+            if (violations.size() != 0) {
+                return ResponseEntity.badRequest().body("User validation failed:" +violations);
+            }
+
             // user already exists in User or in UnconfirmedUser
             if (userService.checkIfExists(newUser.toUser()) ||
                 unconfirmedUserService.checkIfExists(newUser)) {
 
-                result = ResponseEntity.badRequest().body("User already exists");
-                return result;
+                return ResponseEntity.badRequest().body("User already exists");
             }
 
             log.info("Adding new user: {}", newUser);
@@ -91,6 +88,8 @@ public class RegistrarController {
         }
         catch (Exception e) {
             log.error("Adding new user error", e);
+            result = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Server error: " + e.getMessage());
         }
         return result;
     }
@@ -99,7 +98,7 @@ public class RegistrarController {
     @GetMapping("/confirm")
     public ResponseEntity<String> confirm(@RequestParam("token") String token) {
 
-        ResponseEntity<String> result = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        ResponseEntity<String> result; //= ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         try {
 
             Claims claims = jwtTokenService.decodeJWT(token);
@@ -112,10 +111,10 @@ public class RegistrarController {
             // ToDo: redirect user to cms app front page
         }
         catch (Exception e) {
-            log.error("confirm error", e);
+            log.error("Adding new user error", e);
+            result = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Server error: " + e.getMessage());
         }
-
-
         return result;
     }
 

@@ -1,20 +1,16 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations;
 
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.ClientConfigurationMapper;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientPropertiesFile;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 import org.springframework.web.client.RestTemplate;
 import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
-
-import javax.annotation.PostConstruct;
 
 @Configuration
 @Slf4j
@@ -24,12 +20,22 @@ public class AuthServerTestSpringConfiguration {
     public static final String REGISTRAR ="registrarProperties";
     public static final String USER ="userProperties";
 
-    @Autowired
-    private ApplicationContext context;
 
-    @Autowired
-    @Qualifier("jrpcClientProperties")
-    private JrpcClientProperties defaultProperties;
+    private final JrpcClientProperties defaultProperties;
+    private final JrpcClientPropertiesFile defaultPropertiesFile;
+    private final ApplicationContext context;
+    private final ClientConfigurationMapper clientConfigurationMapper;
+
+    public AuthServerTestSpringConfiguration(JrpcClientProperties defaultProperties,
+                                             JrpcClientPropertiesFile defaultPropertiesFile,
+                                             ApplicationContext context,
+                                             ClientConfigurationMapper clientConfigurationMapper) {
+        this.defaultProperties = defaultProperties;
+        this.defaultPropertiesFile = defaultPropertiesFile;
+        this.context = context;
+        this.clientConfigurationMapper = clientConfigurationMapper;
+    }
+
 
     @Bean
     public RestTemplate restTemplate() {
@@ -38,21 +44,19 @@ public class AuthServerTestSpringConfiguration {
 
     // =========================================================================
 
-    @Bean("adminProperties")
+    @Bean(ADMIN)
     JrpcClientProperties adminProperties() {
-        JrpcClientProperties result = new JrpcClientProperties();
-        result.copyFrom(defaultProperties);
-        result.getCredentials().setUsername("root");
-        result.getCredentials().setPassword("toor");
+        JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
+        result.getAccount().setUsername("root");
+        result.getAccount().setPassword("toor");
         return result;
     }
 
-    @Bean(name = REGISTRAR)
+    @Bean(REGISTRAR)
     JrpcClientProperties registrarProperties() {
-        JrpcClientProperties result = new JrpcClientProperties();
-        result.copyFrom(defaultProperties);
-        result.getCredentials().setUsername("registrar");
-        result.getCredentials().setPassword("registrar");
+        JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
+        result.getAccount().setUsername("registrar");
+        result.getAccount().setPassword("registrar");
         return result;
     }
 
@@ -67,22 +71,15 @@ public class AuthServerTestSpringConfiguration {
 //    private JrpcClientProperties registrarProperties;
 
 
-
+    /**
+     * Копирует указанный бин в @Primary бин настроек клиента
+     * @param propertiesName имя бина настроек клиента
+     */
     public void switchJrpcClientProperties(String propertiesName) {
 
         JrpcClientProperties customProperties =
             context.getBean(propertiesName, JrpcClientProperties.class);
-        defaultProperties.copyFrom(customProperties);
 
-        log.info("current: {}", customProperties);
-        log.info("current: {}", defaultProperties);
-
-
-
-//        String userName = jrpcClientProperties.getCredentials().getUsername();
-//        String password = jrpcClientProperties.getCredentials().getPassword();
-//
-//        customProperties.getCredentials().setUsername(userName);
-//        customProperties.getCredentials().setPassword(password);
+        BeanUtils.copyProperties(customProperties, defaultProperties);
     }
 }

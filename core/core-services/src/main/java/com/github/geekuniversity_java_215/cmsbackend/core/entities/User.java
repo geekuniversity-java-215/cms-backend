@@ -43,7 +43,7 @@ public class User extends AbstractEntity {
 //    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 //    private Set<UserRole> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @Column(name = "role_id")
     private Set<UserRole> roles = new HashSet<>();
 

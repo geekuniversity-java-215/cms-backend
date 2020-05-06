@@ -31,8 +31,8 @@ public class AdminController {
     @PostMapping("/test")
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured(UserRole.ADMIN)
-	public ResponseEntity<String> hello() {
-        return  ResponseEntity.ok("Hello World");
+	public ResponseEntity<String> test() {
+        return  ResponseEntity.ok("Hello World test !");
 	}
 
 

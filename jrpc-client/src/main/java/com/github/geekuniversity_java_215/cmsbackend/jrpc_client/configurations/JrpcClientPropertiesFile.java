@@ -5,7 +5,6 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.*;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
@@ -15,11 +14,25 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 
-// DTO alike
-@Component
-@Primary
+/**
+ * Custom properties
+ * https://www.baeldung.com/configuration-properties-in-spring-boot
+ */
+//
+//@ContextConfiguration
+//@Configuration
+//@PropertySource("classpath:jrpc-client.properties")
+// Калечит исходные классы, заворачивая их в прокси, потом вся логика, построенная на .getClass()
+// и отладчик(просмотр значений) идет лесом
+
+//@ConfigurationProperties("jrpc-client${spring.profiles.active}.properties")
+//@Validated
+@Configuration
+@ConfigurationProperties
+@Validated
 @Data
-public class JrpcClientProperties implements Serializable {
+@SuppressWarnings("ConfigurationProperties")
+public class JrpcClientPropertiesFile implements Serializable {
 
     public static final String API_VERSION = "1.0";
 
@@ -30,23 +43,21 @@ public class JrpcClientProperties implements Serializable {
 
     private String apiURL;
 
-    public JrpcClientProperties(){
-        account = new Account();
-        authServer = new Server();
-        resourceServer = new Server();
-    }
-
-
-
     // =========================================================
 
+    @ConfigurationProperties
+    @Validated
     @Data
+    //@ConfigurationProperties(prefix = "resourceserver")
+
     public static class Account {
 
         @Length(max = 4, min = 1)
 //        private String authMethod;
 
+        @NotBlank
         private String username;
+        @NotBlank
         private String password;
 
         private String clientId;
@@ -62,21 +73,25 @@ public class JrpcClientProperties implements Serializable {
                 ", clientId='" + clientId + '\'' +
                 '}';
         }
-
-//        public void copyFrom(Account other) {
-//            username = other.username;
-//            password = other.password;
-//            clientId = other.clientId;
-//            clientSecret = other.clientSecret;
-//            // tokes do not touch
-//        }
     }
 
+    @ConfigurationProperties
+    @Validated
     @Data
+    //@ConfigurationProperties(prefix = "resourceserver")
     public static class Server {
 
+
+        @NotBlank
+        //@Value("${authServer.hostname}")
         private String hostName;
+
+        @Min(1025)
+        @Max(65536)
+        //@Value("${authServer.port}")
+        //@Value("3600")
         private int port;
+
         @Override
         public String toString() {
             return "Server{" +
@@ -84,11 +99,6 @@ public class JrpcClientProperties implements Serializable {
                 ", port=" + port +
                 '}';
         }
-//        public void copyFrom(Server other) {
-//            hostName = other.hostName;
-//            port = other.port;
-//        }
-
     }
 
     /**
@@ -100,16 +110,6 @@ public class JrpcClientProperties implements Serializable {
             this.resourceServer.port,
             API_VERSION);
     }
-
-//    public void copyFrom(JrpcClientProperties from) {
-//
-//        // SerializationUtils.clone BeanUtils.copyProperties not works or shallow copy
-//
-//        account.copyFrom(from.getAccount());
-//        authServer.copyFrom(from.getAuthServer());
-//        resourceServer.copyFrom(from.getResourceServer());
-//        build();
-//    }
 
     @PostConstruct
     private void postConstruct() {

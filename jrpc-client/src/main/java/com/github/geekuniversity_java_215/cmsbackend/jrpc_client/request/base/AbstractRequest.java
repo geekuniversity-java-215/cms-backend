@@ -54,7 +54,7 @@ public abstract class AbstractRequest {
 
     protected JsonNode performRequest(long id, String uri, Object params) {
 
-        JrpcClientProperties.Credentials clientCredentials = jrpcClientProperties.getCredentials();
+        JrpcClientProperties.Account clientAccount = jrpcClientProperties.getAccount();
 
         // Oauth2.0 authorization
         oauthRequest.authorize();
@@ -78,7 +78,7 @@ public abstract class AbstractRequest {
         log.debug("REQUEST\n" + json);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + clientCredentials.getAccessToken());
+        headers.add("Authorization", "Bearer " + clientAccount.getAccessToken());
         headers.setContentType(MediaType.APPLICATION_JSON);
         RequestEntity<String> requestEntity = RequestEntity
                 .post(URI.create(jrpcClientProperties.getApiURL()))

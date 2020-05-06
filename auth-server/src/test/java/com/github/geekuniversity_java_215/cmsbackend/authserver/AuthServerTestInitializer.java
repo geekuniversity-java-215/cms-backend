@@ -29,9 +29,8 @@ public class AuthServerTestInitializer implements ApplicationRunner {
             return;
         }
         loaded = true;
+
         AuthServerApplication.main(new String[]{});
-
-
     }
 }
 

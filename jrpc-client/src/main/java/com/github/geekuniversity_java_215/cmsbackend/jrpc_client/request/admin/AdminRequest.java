@@ -16,13 +16,13 @@ public class AdminRequest extends AbstractRequest {
 
     protected <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass) {
 
-        JrpcClientProperties.Credentials clientCredentials = jrpcClientProperties.getCredentials();
+        JrpcClientProperties.Account clientAccount = jrpcClientProperties.getAccount();
 
         // Oauth2.0 authorization -----------------
         oauthRequest.authorize();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + clientCredentials.getAccessToken());
+        headers.add("Authorization", "Bearer " + clientAccount.getAccessToken());
         //headers.setContentType(MediaType.APPLICATION_JSON);
 
         RequestEntity<K> requestEntity = RequestEntity
@@ -56,17 +56,17 @@ public class AdminRequest extends AbstractRequest {
         log.info("{}", response.getStatusCode());
     }
 
-    public String hellow() {
+    public String test() {
 
         oauthRequest.authorize();
 
-        String url = String.format("http://%1$s:%2$s/admin/hello",
+        String url = String.format("http://%1$s:%2$s/admin/test",
             this.jrpcClientProperties.getAuthServer().getHostName(),
             this.jrpcClientProperties.getAuthServer().getPort());
 
         ResponseEntity<String> response = performRequest(url, null, String.class);
 
-        return response.toString() + " " +  response.getBody();
+        return response.getBody();
     }
 
 }

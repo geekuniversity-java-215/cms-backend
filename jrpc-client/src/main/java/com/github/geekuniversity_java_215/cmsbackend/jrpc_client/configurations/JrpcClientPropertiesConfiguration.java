@@ -13,15 +13,13 @@ public class JrpcClientPropertiesConfiguration {
     @Configuration
     @Profile("default")
     @PropertySource(value = {
-        "classpath:jrpc-client.properties"},
-        ignoreResourceNotFound=false)
+        "classpath:jrpc-client.properties"})
     static class DefaultProperties {}
 
     @Configuration
     @Profile("!default")
     @PropertySource(value = {
-        "classpath:jrpc-client-${spring.profiles.active}.properties"},
-        ignoreResourceNotFound=false)
+        "classpath:jrpc-client-${spring.profiles.active}.properties"})
     static class NonDefaultProperties {}
 
 

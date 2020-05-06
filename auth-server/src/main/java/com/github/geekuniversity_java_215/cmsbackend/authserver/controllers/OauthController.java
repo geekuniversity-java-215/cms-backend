@@ -49,11 +49,17 @@ public class OauthController {
     @PostMapping(value = "/get") // post-get :)
     @ValidAuthenticationType(AuthType.BASIC_AUTH)
     @Secured({UserRole.USER, UserRole.ADMIN})
-    public ResponseEntity<OauthResponse> getToken() {
-
-        OauthResponse result;
-        result = tokenService.issueTokens(getUsername(), null);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> getToken() {
+        try {
+            OauthResponse result;
+            result = tokenService.issueTokens(getUsername(), null);
+            return ResponseEntity.ok(result);
+        }
+        catch (Exception e) {
+            log.error("Adding new user error", e);
+            return new ResponseEntity<>("Server error: " + e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -64,16 +70,23 @@ public class OauthController {
     @PostMapping(value = "/refresh")
     @ValidAuthenticationType(AuthType.REFRESH_TOKEN)
     @Secured(UserRole.REFRESH)
-    public ResponseEntity<OauthResponse> refreshToken() {
+    public ResponseEntity<?> refreshToken() {
 
-        OauthResponse result;
+        try {
 
-        RefreshToken refreshToken = requestScopeBean.getRefreshToken();
+            OauthResponse result;
+            RefreshToken refreshToken = requestScopeBean.getRefreshToken();
 
-        // Выдается пара токенов ACCESS + REFRESH
-        result = tokenService.issueTokens(getUsername(), refreshToken);
+            // Выдается пара токенов ACCESS + REFRESH
+            result = tokenService.issueTokens(getUsername(), refreshToken);
 
-        return ResponseEntity.ok(result);
+            return ResponseEntity.ok(result);
+        }
+        catch (Exception e) {
+            log.error("Adding new user error", e);
+            return new ResponseEntity<>("Server error: " + e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -85,11 +98,19 @@ public class OauthController {
     @PostMapping(value = "/listblack")
     @ValidAuthenticationType({AuthType.ACCESS_TOKEN})
     @Secured({UserRole.RESOURCE, UserRole.ADMIN})
-    public ResponseEntity<BlackListResponse> getBlackList(@Param("from") Long from) {
+    public ResponseEntity<?> getBlackList(@Param("from") Long from) {
 
-        BlackListResponse result = new BlackListResponse();
-        result.setList(tokenService.getBlacklisted(from));
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        try {
+
+            BlackListResponse result = new BlackListResponse();
+            result.setList(tokenService.getBlacklisted(from));
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            log.error("Adding new user error", e);
+            return new ResponseEntity<>("Server error: " + e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

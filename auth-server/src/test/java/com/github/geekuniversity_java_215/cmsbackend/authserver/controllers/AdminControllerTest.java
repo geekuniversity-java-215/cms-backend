@@ -25,11 +25,11 @@ class AdminControllerTest {
 //    }
 
     @Test
-    void hello() {
+    void test() {
 
         // Use here admin properties (principals and credentials)
         authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.ADMIN);
-        String response = adminRequest.hellow();
+        String response = adminRequest.test();
         log.info(response);
     }
 }
