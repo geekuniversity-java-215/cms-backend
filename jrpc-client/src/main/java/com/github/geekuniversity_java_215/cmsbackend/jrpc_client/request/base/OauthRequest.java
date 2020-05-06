@@ -1,32 +1,33 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base;
 
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.ClientProperties;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.BlackListResponse;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.GrantType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.invoke.MethodHandles;
 import java.net.URI;
 
 @Component
 @Scope("prototype")
+@Lazy
 @Slf4j
 public class OauthRequest {
 
     private RestTemplate restTemplate;
-    private ClientProperties clientProperties;
+    private JrpcClientProperties jrpcClientPropertiesDTO2;
 
 
     @Autowired
-    public void setClientProperties(ClientProperties clientProperties) {
-        this.clientProperties = clientProperties;
+    public void setJrpcClientPropertiesDTO2(JrpcClientProperties jrpcClientPropertiesDTO2) {
+        this.jrpcClientPropertiesDTO2 = jrpcClientPropertiesDTO2;
     }
 
     @Autowired
@@ -37,14 +38,14 @@ public class OauthRequest {
 
     private void obtainTokenAbstract(GrantType grantType) {
 
-        ClientProperties.Credentials clientCredentials = clientProperties.getCredentials();
+        JrpcClientProperties.Credentials clientCredentials = jrpcClientPropertiesDTO2.getCredentials();
 
         //String params = String.format("grant_type=%1$s", grantType.getValue());
 
         String getTokenURL = String.format("http://%1$s:%2$s/oauzz/token/%3$s",
-            this.clientProperties.getAuthServer().getHostName(),
-            this.clientProperties.getAuthServer().getPort(),
-            grantType == GrantType.PASSWORD ? "/get" : "/refresh"
+            this.jrpcClientPropertiesDTO2.getAuthServer().getHostName(),
+            this.jrpcClientPropertiesDTO2.getAuthServer().getPort(),
+            grantType == GrantType.PASSWORD ? "get" : "refresh"
         );
 
 
@@ -169,11 +170,11 @@ public class OauthRequest {
 
     public BlackListResponse getBlackList(Long from) {
 
-        ClientProperties.Credentials clientCredentials = clientProperties.getCredentials();
+        JrpcClientProperties.Credentials clientCredentials = jrpcClientPropertiesDTO2.getCredentials();
 
         String checkTokenURL = String.format("http://%1$s:%2$s/oauzz/token/listblack",
-            this.clientProperties.getAuthServer().getHostName(),
-            this.clientProperties.getAuthServer().getPort());
+            this.jrpcClientPropertiesDTO2.getAuthServer().getHostName(),
+            this.jrpcClientPropertiesDTO2.getAuthServer().getPort());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(clientCredentials.getUsername(), clientCredentials.getPassword());
@@ -193,7 +194,7 @@ public class OauthRequest {
 
 
     public void authorize() {
-        ClientProperties.Credentials clientCredentials = clientProperties.getCredentials();
+        JrpcClientProperties.Credentials clientCredentials = jrpcClientPropertiesDTO2.getCredentials();
 
         // Oauth2.0 authorization -------------------------------------------
 

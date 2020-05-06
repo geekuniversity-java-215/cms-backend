@@ -20,6 +20,8 @@ public class AuthServerInitializer implements ApplicationRunner {
     private final UserRoleService userRoleService;
     private final ObjectMapper objectMapper;
 
+    private static boolean loaded = false;
+
     public AuthServerInitializer(UserService userService, UserRoleService userRoleService, ObjectMapper objectMapper) {
         this.userService = userService;
         this.userRoleService = userRoleService;
@@ -28,9 +30,20 @@ public class AuthServerInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
+        // Из-за того, что в тестах запускается auth-server целиком,
+        // все ApplicationRunner вызываются по второму кругу
+        // kludge-o-matic
+        if (loaded) {
+            return;
+        }
+        loaded = true;
+
         log.debug("AuthServerInitializer started");
         initUsers();
         log.debug("AuthServerInitializer finished");
+
+
     }
 
 
