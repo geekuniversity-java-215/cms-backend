@@ -11,11 +11,10 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-//@PropertySource("classpath:application.properties")
 public class MailConfig {
-    private final String MAIL_TRANSPORT_PROTOCOL="smtp";
-    private final String MAIL_SMTP_AUTH="true";
-    private final String MAIL_SMTP_STARTTLS_ENABLE="true";
+    private final String MAIL_TRANSPORT_PROTOCOL = "smtp";
+    private final String MAIL_SMTP_AUTH = "true";
+    private final String MAIL_SMTP_STARTTLS_ENABLE = "true";
 
     @Value("${mail.username}")
     private String username;
@@ -28,6 +27,21 @@ public class MailConfig {
 
     @Value("${mail.port}")
     private Integer port;
+
+    @Value("${mail.transport.protocol}")
+    private String mailProtocol;
+
+    @Value("${mail.smtp.auth}")
+    private String mailAuth;
+
+    @Value("${mail.smtp.starttls.enable}")
+    private String mailSMTP;
+
+    @Value("${mail.debug}")
+    private String mailDebug;
+
+    @Value("${mail.from}")
+    private String mailFrom;
 
     private final Environment env;
 
@@ -42,19 +56,19 @@ public class MailConfig {
         mailSender.setHost(host);
         mailSender.setPort(port);
 
-
         mailSender.setUsername(username);
         mailSender.setPassword(password);
 
         boolean debugMail = env.getActiveProfiles().length > 0;
 
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", MAIL_TRANSPORT_PROTOCOL);
-        props.put("mail.smtp.auth", MAIL_SMTP_AUTH);
-        props.put("mail.smtp.starttls.enable", MAIL_SMTP_STARTTLS_ENABLE);
-        props.put("mail.debug", Boolean.toString(debugMail));
-        props.put("mail.from", username);
+        props.put(mailProtocol, MAIL_TRANSPORT_PROTOCOL);
+        props.put(mailAuth, MAIL_SMTP_AUTH);
+        props.put(mailSMTP, MAIL_SMTP_STARTTLS_ENABLE);
+        props.put(mailDebug, Boolean.toString(debugMail));
+        props.put(mailFrom, username);
 
         return mailSender;
     }
+
 }

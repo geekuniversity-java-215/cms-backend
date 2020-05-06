@@ -31,15 +31,12 @@ public class MailService {
         jobPool = new JobPool<>("SendMail",2, Duration.ofSeconds(60), null);
     }
 
-
-
     /**
      * Отправляет письмо об успешном платеже
      * @param user User
      * @param amount сумма платежа
      */
     public Promise<Void> sendPaymentSuccess(User user, BigDecimal amount) {
-
         log.trace("Отправляем письмо о успешно проведенном платеже");
         final String email = user.getEmail();
         final String subject = "Платеж успешно проведен";
@@ -64,7 +61,6 @@ public class MailService {
         return sendMessage(email, subject, body);
     }
 
-
     //ToDo: generateConfirmationUrl перенести в сервис авторизации
     /**
      * метод формирует url для подтверждения регистрации, перенести в сервис авторизации
@@ -86,7 +82,6 @@ public class MailService {
         return "https://natribu.org/";
     }
 
-
     /**
      * Send custom message
      * @param email sendTo email address
@@ -99,6 +94,13 @@ public class MailService {
         Promise<Void> result = null;
 
         MimeMessage message = javaMailSender.createMimeMessage();
+        /*
+        MimeMessageHelper всё-таки оставляю.
+        В доках указано именно такое использование
+        https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/mail/javamail/MimeMessageHelper.html
+        https://o7planning.org/ru/11145/spring-email-tutorial
+        MimeMessageHelper поддерживающий класс для создания сообщения MimeMessage
+         */
         MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
         try {
             helper.setTo(email);

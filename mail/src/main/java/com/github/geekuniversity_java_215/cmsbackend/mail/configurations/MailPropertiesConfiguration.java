@@ -34,4 +34,5 @@ public class MailPropertiesConfiguration {
         "classpath:mail-${spring.profiles.active}.properties"}
         /*ignoreResourceNotFound=true*/)
     static class NonDefaultProperties {}
+
 }
