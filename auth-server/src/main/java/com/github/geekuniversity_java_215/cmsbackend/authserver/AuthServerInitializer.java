@@ -43,7 +43,6 @@ public class AuthServerInitializer implements ApplicationRunner {
 
         // admin user  --------------------------------------------------
         // root/toor
-
         if (!userService.findByLogin("root").isPresent()) {
             user = new User("root",
                 "{bcrypt}$2y$10$yvFUsJ1pZJd7WNrJ/A8hCO47Z1cNBHfMiduq4yioaEzuM1.QfSTUa",
@@ -63,7 +62,6 @@ public class AuthServerInitializer implements ApplicationRunner {
         }
 
         // demo users --------------------------------------------------
-
         // vasya/password
         if (!userService.findByLogin("vasya").isPresent()) {
             user = new User("vasya", "{bcrypt}$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
