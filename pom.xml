@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -14,14 +14,19 @@
     <artifactId>cms-backend</artifactId>
     <version>0.1</version>
     <packaging>pom</packaging>
-    
+
     <name>cms-backend</name>
     <description>cms-backend project for Spring Boot</description>
 
 
     <modules>
+        <module>utils</module>
         <module>core</module>
         <module>protocol</module>
+        <module>mail</module>
+        <module>cmsapp</module>
+        <module>payment</module>
+        <module>configuration</module>
     </modules>
 
 
@@ -32,8 +37,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <org.projectlombok.version>1.18.12</org.projectlombok.version>
         <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
         <jrpc.protocol.version>0.1</jrpc.protocol.version>
+        <app.version>0.1</app.version>
     </properties>
 
 
@@ -49,12 +56,112 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-        
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+<!--            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>-->
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!--junit5-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${org.projectlombok.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+            <!--
+            IntelliJ does not pick up the processor if it is not in the dependencies.
+            There is already an open issue for IntelliJ see https://youtrack.jetbrains.com/issue/IDEA-150621
+            -->
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/net.tascalate/net.tascalate.concurrent -->
+        <dependency>
+            <groupId>net.tascalate</groupId>
+            <artifactId>net.tascalate.concurrent</artifactId>
+            <version>0.8.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.pivovarit/throwing-function -->
+        <dependency>
+            <groupId>com.pivovarit</groupId>
+            <artifactId>throwing-function</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+
+
+        <!-- ru.geekbrains.dreamworkerln.spring.utils -->
+        <!-- Read README.md to install this -->
+        <dependency>
+            <groupId>ru.geekbrains.dreamworkerln.spring</groupId>
+            <artifactId>dreamworkerln-common-utils</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+
+
     </dependencies>
-    
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <!--Если не указать зависимости (mapstruct и projectlombok) в annotationProcessorPaths-->
+                    <!--То не будет компилироваться-->
+                    <!--К lombok в Intellij Idea надо дополнительно ставить плагин -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${org.projectlombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

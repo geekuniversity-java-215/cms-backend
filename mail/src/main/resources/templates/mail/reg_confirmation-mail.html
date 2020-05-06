@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<div class="container">
+    <br>
+    <h1 th:text="${user}"></h1>
+    <p style="margin-bottom: 40px">Вы получили это письмо, так как при регистрации был указан Ваш адрес. Для завершения регистрации перейдите по ссылке ниже</p>
+
+    <a th:href="@{${reg_url}}" th:text="${user_confirm_mail}"></a>
+
+    <p>Благодарим за выбор нашей площадки</p>
+</div>
+</body>
+</html>
