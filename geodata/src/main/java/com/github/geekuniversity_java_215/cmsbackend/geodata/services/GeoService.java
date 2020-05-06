@@ -9,6 +9,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
 
@@ -37,6 +38,10 @@ public class GeoService {
 
         String fromPoint = restTemplate.getForObject(getGeocodeUrl(order.getFrom()), String.class);
         String toPoint = restTemplate.getForObject(getGeocodeUrl(order.getTo()), String.class);
+
+        //FixMe
+        Assert.isTrue(fromPoint != null, "fromPoint == null");
+        Assert.isTrue(toPoint != null, "fromPoint == null");
 
         String[] fromPoints = fromPoint.split("},");
         String[] toPoints = toPoint.split("},");

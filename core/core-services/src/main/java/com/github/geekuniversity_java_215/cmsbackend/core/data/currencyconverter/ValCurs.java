@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.entities.CurrencyConverter.pogo;
+package com.github.geekuniversity_java_215.cmsbackend.core.data.currencyconverter;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

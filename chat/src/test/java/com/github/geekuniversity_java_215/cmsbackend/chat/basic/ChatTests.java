@@ -20,7 +20,7 @@ import java.util.List;
 
 @SpringBootTest(classes = {ChatApplication.class})
 @Slf4j
-@SuppressWarnings({"ConstantConditions", "OptionalGetWithoutIsPresent"})
+@SuppressWarnings({"OptionalGetWithoutIsPresent"})
 public class ChatTests {
     @Autowired
     ApplicationContext context;

@@ -1,13 +1,15 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.entities.CurrencyConverter.pogo;
+package com.github.geekuniversity_java_215.cmsbackend.core.data.currencyconverter;
 
 import lombok.*;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 
 @ToString
 @EqualsAndHashCode
+@XmlRootElement(name = "Valute")
 public class Valute {
     @XmlAttribute(name = "ID")
     private String id;

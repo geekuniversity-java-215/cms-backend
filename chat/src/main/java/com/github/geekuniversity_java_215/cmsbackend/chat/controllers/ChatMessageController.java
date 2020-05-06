@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 
 import java.security.Principal;
 
@@ -60,6 +61,11 @@ public class ChatMessageController {
             .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
+
+        //FixMe
+        Assert.isTrue(headerAccessor!= null &&
+            headerAccessor.getSessionAttributes() != null , "headerAccessor == null || " +
+            "headerAccessor.getSessionAttributes == null");
 
         headerAccessor.getSessionAttributes().put("username", user.getFullName());
         headerAccessor.getSessionAttributes().put("order", orderId);

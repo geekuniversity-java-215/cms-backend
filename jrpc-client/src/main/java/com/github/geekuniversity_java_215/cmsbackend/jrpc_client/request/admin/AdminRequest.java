@@ -32,11 +32,9 @@ public class AdminRequest extends AbstractRequest {
 
         log.info("REQUEST\n" + requestEntity);
 
-        ResponseEntity<T> response = restTemplate.exchange(requestEntity, returnClass);
-
         //log.info("HTTP " + response.getStatusCode().toString() + "\n" + response.getBody());
 
-        return response;
+        return restTemplate.exchange(requestEntity, returnClass);
     }
 
 

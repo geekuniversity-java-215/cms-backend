@@ -31,7 +31,7 @@ public class UnconfirmedUserService extends BaseRepoAccessService<UnconfirmedUse
 
     /**
      * Check if user already exists by login OR FullName OR email OR phoneNumber
-     * @param user
+     * @param newUser
      * @return
      */
     public boolean checkIfExists(UnconfirmedUser newUser) {
