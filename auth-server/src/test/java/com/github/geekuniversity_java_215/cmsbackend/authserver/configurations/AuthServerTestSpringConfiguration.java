@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations;
 
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,11 +38,10 @@ public class AuthServerTestSpringConfiguration {
 
     // =========================================================================
 
-    @Bean(name = "adminProperties")
-    @Qualifier("adminProperties")
+    @Bean("adminProperties")
     JrpcClientProperties adminProperties() {
         JrpcClientProperties result = new JrpcClientProperties();
-        //BeanUtils.copyProperties(defaultProperties, result);
+        result.copyFrom(defaultProperties);
         result.getCredentials().setUsername("root");
         result.getCredentials().setPassword("toor");
         return result;
@@ -50,7 +50,7 @@ public class AuthServerTestSpringConfiguration {
     @Bean(name = REGISTRAR)
     JrpcClientProperties registrarProperties() {
         JrpcClientProperties result = new JrpcClientProperties();
-        //BeanUtils.copyProperties(defaultProperties, result);
+        result.copyFrom(defaultProperties);
         result.getCredentials().setUsername("registrar");
         result.getCredentials().setPassword("registrar");
         return result;
@@ -71,10 +71,10 @@ public class AuthServerTestSpringConfiguration {
     public void switchJrpcClientProperties(String propertiesName) {
 
         JrpcClientProperties customProperties =
-            context.getBean("adminProperties", JrpcClientProperties.class);
+            context.getBean(propertiesName, JrpcClientProperties.class);
+        defaultProperties.copyFrom(customProperties);
 
-        BeanUtils.copyProperties(customProperties, defaultProperties);
-        
+        log.info("current: {}", customProperties);
         log.info("current: {}", defaultProperties);
 
 

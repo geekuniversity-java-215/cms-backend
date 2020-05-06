@@ -25,24 +25,24 @@ public class JrpcClientPropertiesConfiguration {
     static class NonDefaultProperties {}
 
 
-    // =================================================================
-
-
-    private final JrpcClientPropertiesFile jrpcClientPropertiesFile;
-
-    public JrpcClientPropertiesConfiguration(JrpcClientPropertiesFile jrpcClientPropertiesFile) {
-        this.jrpcClientPropertiesFile = jrpcClientPropertiesFile;
-    }
-
-
-    // Create bean from JrpcClientPropertiesFile
-    // but this bean could be altered in runtime
-    // While bean with @ConfigurationProperties can't
-    @Bean
-    @Primary
-    JrpcClientProperties jrpcClientProperties() {
-        JrpcClientProperties result = new JrpcClientProperties();
-        result = SerializationUtils.clone(jrpcClientPropertiesFile);
-        return result;
-    }
+//    // =================================================================
+//
+//
+//    private final JrpcClientPropertiesFile jrpcClientPropertiesFile;
+//
+//    public JrpcClientPropertiesConfiguration(JrpcClientPropertiesFile jrpcClientPropertiesFile) {
+//        this.jrpcClientPropertiesFile = jrpcClientPropertiesFile;
+//    }
+//
+//
+//    // Create bean from JrpcClientPropertiesFile
+//    // but this bean could be altered in runtime
+//    // While bean with @ConfigurationProperties can't
+//    @Bean
+//    @Primary
+//    JrpcClientProperties jrpcClientProperties() {
+//        JrpcClientProperties result = new JrpcClientProperties();
+//        result = SerializationUtils.clone(jrpcClientPropertiesFile);
+//        return result;
+//    }
 }
