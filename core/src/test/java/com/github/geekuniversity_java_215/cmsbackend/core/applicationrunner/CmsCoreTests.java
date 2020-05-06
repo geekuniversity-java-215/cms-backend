@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -107,6 +108,7 @@ class CmsCoreTests {
         acc = accountService.findById(1L).get();
 
         log.info("баланс: {}", acc.getBalance());
+
     }
 
 }

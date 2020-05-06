@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core;
+package com.github.geekuniversity_java_215.cmsbackend.core.applicationrunner;
 
 import com.github.geekuniversity_java_215.cmsbackend.configuration.configurations.MultimoduleSpringBootApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
