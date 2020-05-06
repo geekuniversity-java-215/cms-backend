@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         MAIL_URL=credentials('mail_url')
+        PAYMENT_URL=credentials('payment_url')
         //AWS_SECRET_ACCESS_KEY=credentials('mail_password')
     }
         
