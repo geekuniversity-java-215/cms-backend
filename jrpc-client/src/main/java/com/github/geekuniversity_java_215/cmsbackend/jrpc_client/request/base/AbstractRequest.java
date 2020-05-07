@@ -1,16 +1,11 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.oauth.OauthRequest;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.request.JrpcRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -21,102 +16,43 @@ import java.net.URI;
 @Component
 @Scope("prototype")
 @Slf4j
-public abstract class AbstractRequest {
+public class AbstractRequest {
 
-    protected JrpcClientProperties jrpcClientProperties;
+    protected JrpcClientProperties clientProp;
     protected RestTemplate restTemplate;
-    protected OauthRequest oauthRequest;
-    protected ObjectMapper objectMapper;
 
     @Autowired
-    public void setJrpcClientPropertiesDTO2(JrpcClientProperties jrpcClientProperties) {
-        this.jrpcClientProperties = jrpcClientProperties;
+    protected void setClientProp(@Qualifier("jrpcClientProperties")JrpcClientProperties clientProp) {
+        this.clientProp = clientProp;
     }
-
     @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
+    protected void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    @Autowired
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
+    protected <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass, HttpHeaders headers) {
 
-    @Autowired
-    public void setOauthRequest(OauthRequest oauthRequest) {
-        this.oauthRequest = oauthRequest;
-    }
-
-
-    // --------------------------------------------------------------------
-
-    protected <K, T> ResponseEntity<T> performRequest(String uri,
-                                                      K body,
-                                                      Class<T> returnClass,
-                                                      HttpHeaders headers) {
-
-        JrpcClientProperties.Login clientLogin = jrpcClientProperties.getLogin();
-
-        // Oauth2.0 authorization -----------------
-        oauthRequest.authorize();
-
-        if(headers == null) {
-            headers = new HttpHeaders();
-        }
-        headers.add("Authorization", "Bearer " + clientLogin.getAccessToken());
+        headers = getHeaders(headers);
+        
+//        if(headers.containsKey(HttpHeaders.AUTHORIZATION) &&
+//            !headers.containsKey(HttpHeaders.CONTENT_TYPE)) {
+//            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        }
 
         RequestEntity<K> requestEntity = RequestEntity
             .post(URI.create(uri))
             .headers(headers)
             .body(body);
 
-        log.info("REQUEST\n" + requestEntity);
+        log.debug("REQUEST\n" + requestEntity);
+        ResponseEntity<T> result = restTemplate.exchange(requestEntity, returnClass);
+        log.debug("HTTP " + result.getStatusCode().toString() + "\n" + result.getBody());
 
-        //log.info("HTTP " + response.getStatusCode().toString() + "\n" + response.getBody());
-
-        return restTemplate.exchange(requestEntity, returnClass);
-    }
-
-
-
-    protected <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass) {
-        return performRequest(uri, body, returnClass, null);
-    }
-
-
-
-
-
-
-
-    protected JsonNode performJrpcRequest(long id, String uri, Object params) {
-
-        JsonNode result;
-        JrpcRequest jrpcRequest = new JrpcRequest();
-        jrpcRequest.setMethod(uri);
-        jrpcRequest.setId(id);
-        jrpcRequest.setParams(objectMapper.valueToTree(params));
-
-        String json;
-        try {
-            json = objectMapper.writeValueAsString(jrpcRequest);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        ResponseEntity<String> response = performRequest(uri, json, String.class, headers);
-
-        try {
-            result = objectMapper.readTree(response.getBody()).get("result");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
         return result;
     }
 
-
+    protected HttpHeaders getHeaders(HttpHeaders headers) {
+        return headers == null ? new HttpHeaders() : headers;
+    }
 
 }

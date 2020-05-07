@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.oauth;
+package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClaims;

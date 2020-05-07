@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations;
 
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.oauth.TokenDto;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.context.annotation.*;
