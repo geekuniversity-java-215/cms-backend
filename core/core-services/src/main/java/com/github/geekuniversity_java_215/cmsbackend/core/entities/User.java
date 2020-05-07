@@ -34,6 +34,7 @@ public class User extends AbstractEntity {
 
     @NotNull
     @Column(name = "login")
+    @Setter(AccessLevel.NONE)
     private String login;     // use email as login ??
 
     @NotNull
@@ -55,18 +56,21 @@ public class User extends AbstractEntity {
 
     @NotNull
     @Column(name = "first_name")
+    @Setter(AccessLevel.NONE)
     private String firstName;
 
     @NotNull
     @Column(name = "last_name")
+    @Setter(AccessLevel.NONE)
     private String lastName;
 
     @NotNull
     @Column(name = "email")
+    @Setter(AccessLevel.NONE)
     private String email;     // use email as login ??
 
     @NotNull
-    @Column(name = "phone_number")
+    @Column(name = "phone_number")  // may change ?
     private String phoneNumber;
 
 

@@ -51,5 +51,6 @@ public class UserPrincipalCustom implements UserDetailsCustom {
 
     // -------------------------------------------------------------
 
-    public User getUser() { return user; }
+    // Better don't do this - user fields  may change during request scope
+    // public User getUser() { return user; }
 }

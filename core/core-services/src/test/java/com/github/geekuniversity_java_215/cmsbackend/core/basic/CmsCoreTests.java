@@ -80,14 +80,9 @@ class CmsCoreTests {
         userService.save(user);
         Client client = new Client(user, "КЛИЕНТ_DATA");
         clientService.save(client);
-        
-
 
         acc = accountService.findById(2L).get();
         log.info("loaded: {} ok!", acc);
-
-
-
 
         Order o = new Order();
         o.setCourier(courier);
