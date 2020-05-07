@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 // Позволяет не указывать конкретный имена файлов
-// для @ConfigurationProperties в JrpcClientProperties.java
+// для @ConfigurationProperties
 // (так как у нас минимум два Spring профиля - default и dev)
 @Configuration
 public class CorePropertiesConfiguration {
