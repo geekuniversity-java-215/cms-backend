@@ -21,14 +21,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import java.lang.invoke.MethodHandles;
 
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-    prePostEnabled = true,
-    securedEnabled = true,
-    jsr250Enabled = true)
-
-
 public class MultipleWebSecurityConfig {
 
     private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
