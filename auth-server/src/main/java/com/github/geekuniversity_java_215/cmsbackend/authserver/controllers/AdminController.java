@@ -32,17 +32,17 @@ public class AdminController {
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured(UserRole.ADMIN)
 	public ResponseEntity<String> test() {
-        return  ResponseEntity.ok("Hello World test !");
+        return  ResponseEntity.ok("hello world");
 	}
 
 
     @PostMapping("/user/revoke_token")
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured(UserRole.ADMIN)
-    public ResponseEntity<String> revokeTokenByLogin(@RequestBody String login) {
+    public ResponseEntity<String> revokeTokenByUsername(@RequestBody String username) {
 
         HttpStatus result;
-        User user = userService.findByLogin(login).orElse(null);
+        User user = userService.findByUsername(username).orElse(null);
         
         if (user == null) {
             result = HttpStatus.NOT_FOUND;

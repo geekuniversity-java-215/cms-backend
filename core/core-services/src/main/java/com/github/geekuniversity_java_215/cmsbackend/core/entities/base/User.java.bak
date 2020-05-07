@@ -15,8 +15,8 @@ import java.util.List;
 public class User extends AbstractEntity {
 
     @NotNull
-    @Column(name = "login")
-    protected String login;
+    @Column(name = "username")
+    protected String username;
 
     @NotNull
     @Column(name = "password") // bcrypt hash

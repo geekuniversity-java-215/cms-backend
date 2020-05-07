@@ -27,7 +27,7 @@ public class UserPrincipalCustom implements UserDetailsCustom {
     }
 
     @Override
-    public String getUsername() {return user.getLogin();}
+    public String getUsername() {return user.getUsername();}
 
     @Override
     public boolean isEnabled() {

@@ -23,10 +23,10 @@ public class UserService extends BaseRepoAccessService<User> {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> findByUsername(String username) {
         Optional<User> result = Optional.empty();
-        if (!StringUtils.isBlank(login)) {
-            result = userRepository.findOneByLogin(login);
+        if (!StringUtils.isBlank(username)) {
+            result = userRepository.findOneByUsername(username);
         }
         return result;
     }
@@ -47,7 +47,7 @@ public class UserService extends BaseRepoAccessService<User> {
     }
 
     /**
-     * Check if user already exists by login OR FullName OR email OR phoneNumber
+     * Check if user already exists by username OR FullName OR email OR phoneNumber
      * @param user
      * @return
      */

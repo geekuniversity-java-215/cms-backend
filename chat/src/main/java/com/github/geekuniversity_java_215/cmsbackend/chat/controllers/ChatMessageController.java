@@ -42,7 +42,7 @@ public class ChatMessageController {
                             @DestinationVariable Long orderId,
                             Principal principal) {
 
-        User user = userService.findByLogin(principal.getName())
+        User user = userService.findByUsername(principal.getName())
             .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
@@ -57,7 +57,7 @@ public class ChatMessageController {
                         SimpMessageHeaderAccessor headerAccessor,
                         Principal principal) {
 
-        User user = userService.findByLogin(principal.getName())
+        User user = userService.findByUsername(principal.getName())
             .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));

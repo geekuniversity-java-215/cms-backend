@@ -33,9 +33,9 @@ public class User extends AbstractEntity {
     private Long id;
 
     @NotNull
-    @Column(name = "login")
+    @Column(name = "user_name")
     @Setter(AccessLevel.NONE)
-    private String login;     // use email as login ??
+    private String username;     // username is approved by dictionary.com //  use email as username ???
 
     @NotNull
     @Column(name = "password") // bcrypt hash
@@ -67,7 +67,7 @@ public class User extends AbstractEntity {
     @NotNull
     @Column(name = "email")
     @Setter(AccessLevel.NONE)
-    private String email;     // use email as login ??
+    private String email;     // use email as username ??
 
     @NotNull
     @Column(name = "phone_number")  // may change ?
@@ -88,18 +88,16 @@ public class User extends AbstractEntity {
     private Courier courier;
 
 
-
-
     protected User() {}
 
-    public User(@NotNull String login,
+    public User(@NotNull String username,
                 @NotNull String password,
                 @NotNull String firstName,
                 @NotNull String lastName,
                 @NotNull String email,
                 @NotNull String phoneNumber) {
 
-        this.login = login;
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;

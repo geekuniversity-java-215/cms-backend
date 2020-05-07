@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RefreshTokenRepository extends CustomRepository<RefreshToken, Long> {
 
-    void findAllByUserLogin(String login);
+    void findAllByUserUsername(String username);
 
 
 
@@ -20,6 +20,6 @@ public interface RefreshTokenRepository extends CustomRepository<RefreshToken, L
     @Query("DELETE FROM RefreshToken t WHERE t.expiredAt < CURRENT_TIMESTAMP")
     void vacuum();
 
-    void deleteByUserLogin(String login);
+    void deleteByUserUsername(String username);
     void deleteByUser(User user);
 }

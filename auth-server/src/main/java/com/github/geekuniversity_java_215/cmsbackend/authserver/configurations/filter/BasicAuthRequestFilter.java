@@ -62,10 +62,10 @@ public class BasicAuthRequestFilter extends OncePerRequestFilter {
                 String decodedAuth = new String(decodedBytes);
                 
                 String[] slitted = decodedAuth.split(":", 2);
-                String userName = slitted[0];
+                String username = slitted[0];
                 String password = slitted[1];
 
-                UsernamePasswordAuthenticationToken authToken = getAuthToken(userName, password);
+                UsernamePasswordAuthenticationToken authToken = getAuthToken(username, password);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 requestScopeBean.setAuthType(AuthType.BASIC_AUTH);
@@ -83,13 +83,13 @@ public class BasicAuthRequestFilter extends OncePerRequestFilter {
 
     /**
      * Load User details from DB, compare password hashes
-     * @param userName login
+     * @param username username
      * @param password password
      */
-    private UsernamePasswordAuthenticationToken getAuthToken(String userName, String password) {
+    private UsernamePasswordAuthenticationToken getAuthToken(String username, String password) {
 
         UsernamePasswordAuthenticationToken result = null;
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if (userDetails != null &&
             passwordEncoder.matches(password, userDetails.getPassword())) {

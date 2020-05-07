@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.oauth.OauthRequest;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.request.JrpcRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public abstract class AbstractRequest {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    public void setJrpcClientPropertiesDTO2(JrpcClientProperties jrpcClientPropertiesDTO2) {
-        this.jrpcClientProperties = jrpcClientPropertiesDTO2;
+    public void setJrpcClientPropertiesDTO2(JrpcClientProperties jrpcClientProperties) {
+        this.jrpcClientProperties = jrpcClientProperties;
     }
 
     @Autowired
@@ -50,19 +51,48 @@ public abstract class AbstractRequest {
 
     // --------------------------------------------------------------------
 
+    protected <K, T> ResponseEntity<T> performRequest(String uri,
+                                                      K body,
+                                                      Class<T> returnClass,
+                                                      HttpHeaders headers) {
 
+        JrpcClientProperties.Login clientLogin = jrpcClientProperties.getLogin();
 
-    protected JsonNode performRequest(long id, String uri, Object params) {
-
-        JrpcClientProperties.Account clientAccount = jrpcClientProperties.getAccount();
-
-        // Oauth2.0 authorization
+        // Oauth2.0 authorization -----------------
         oauthRequest.authorize();
 
+        if(headers == null) {
+            headers = new HttpHeaders();
+        }
+        headers.add("Authorization", "Bearer " + clientLogin.getAccessToken());
+
+        RequestEntity<K> requestEntity = RequestEntity
+            .post(URI.create(uri))
+            .headers(headers)
+            .body(body);
+
+        log.info("REQUEST\n" + requestEntity);
+
+        //log.info("HTTP " + response.getStatusCode().toString() + "\n" + response.getBody());
+
+        return restTemplate.exchange(requestEntity, returnClass);
+    }
+
+
+
+    protected <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass) {
+        return performRequest(uri, body, returnClass, null);
+    }
+
+
+
+
+
+
+
+    protected JsonNode performJrpcRequest(long id, String uri, Object params) {
 
         JsonNode result;
-
-        // JrpcRequest не был запихнут в @Bean //context.getBean(JrpcRequest.class); поэтому new()
         JrpcRequest jrpcRequest = new JrpcRequest();
         jrpcRequest.setMethod(uri);
         jrpcRequest.setId(id);
@@ -75,19 +105,10 @@ public abstract class AbstractRequest {
             throw new RuntimeException(e);
         }
 
-        log.debug("REQUEST\n" + json);
-
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + clientAccount.getAccessToken());
         headers.setContentType(MediaType.APPLICATION_JSON);
-        RequestEntity<String> requestEntity = RequestEntity
-                .post(URI.create(jrpcClientProperties.getApiURL()))
-                .headers(headers)
-                .body(json);
+        ResponseEntity<String> response = performRequest(uri, json, String.class, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
-
-        log.debug("HTTP " + response.getStatusCode().toString() + "\n" + response.getBody());
         try {
             result = objectMapper.readTree(response.getBody()).get("result");
         } catch (JsonProcessingException e) {
@@ -95,6 +116,7 @@ public abstract class AbstractRequest {
         }
         return result;
     }
+
 
 
 }

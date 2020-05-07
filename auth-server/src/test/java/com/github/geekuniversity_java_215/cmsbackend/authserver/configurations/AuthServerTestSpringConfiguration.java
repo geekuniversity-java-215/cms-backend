@@ -5,7 +5,6 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientPropertiesFile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,16 +46,16 @@ public class AuthServerTestSpringConfiguration {
     @Bean(ADMIN)
     JrpcClientProperties adminProperties() {
         JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
-        result.getAccount().setUsername("root");
-        result.getAccount().setPassword("toor");
+        result.getLogin().setUsername("root");
+        result.getLogin().setPassword("toor");
         return result;
     }
 
     @Bean(REGISTRAR)
     JrpcClientProperties registrarProperties() {
         JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
-        result.getAccount().setUsername("registrar");
-        result.getAccount().setPassword("registrar");
+        result.getLogin().setUsername("registrar");
+        result.getLogin().setPassword("registrar");
         return result;
     }
 

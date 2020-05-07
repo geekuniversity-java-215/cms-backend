@@ -12,12 +12,12 @@ import java.util.Optional;
 @Repository
 public interface UnconfirmedUserRepository extends CustomRepository<UnconfirmedUser, Long> {
 
-    Optional<UnconfirmedUser> findOneByLogin(String login);
+    Optional<UnconfirmedUser> findOneByUsername(String username);
     Optional<UnconfirmedUser> findOneByLastNameAndFirstName(String lastName, String firstName);
 
     @Query("FROM UnconfirmedUser u " +
             "WHERE " +
-            "u.login = :#{#user.login} OR " +
+            "u.username = :#{#user.username} OR " +
             "u.lastName = :#{#user.lastName} AND u.firstName = :#{#user.firstName} OR " +
             "u.email = :#{#user.email} OR " +
             "u.phoneNumber = :#{#user.phoneNumber}")

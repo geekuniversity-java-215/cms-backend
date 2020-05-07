@@ -21,16 +21,16 @@ public class UnconfirmedUserService extends BaseRepoAccessService<UnconfirmedUse
         this.unconfirmedUserRepository = unconfirmedUserRepository;
     }
 
-    public Optional<UnconfirmedUser> findByLogin(String login) {
+    public Optional<UnconfirmedUser> findByUsername(String username) {
         Optional<UnconfirmedUser> result = Optional.empty();
-        if (!StringUtils.isBlank(login)) {
-            result = unconfirmedUserRepository.findOneByLogin(login);
+        if (!StringUtils.isBlank(username)) {
+            result = unconfirmedUserRepository.findOneByUsername(username);
         }
         return result;
     }
 
     /**
-     * Check if user already exists by login OR FullName OR email OR phoneNumber
+     * Check if user already exists by username OR FullName OR email OR phoneNumber
      * @param newUser
      * @return
      */

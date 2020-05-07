@@ -20,10 +20,10 @@ public class UserDetailsCustomService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String login) {
+    public UserDetails loadUserByUsername(String username) {
 
-        User user = userRepository.findOneByLogin(login)
-                .orElseThrow(() -> new UsernameNotFoundException(login));
+        User user = userRepository.findOneByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
 
         return new UserPrincipalCustom(user);
     }

@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base;
+package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.oauth;
 
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.BlackListResponse;
@@ -45,14 +45,14 @@ public class OauthRequest {
 
     public BlackListResponse getBlackList(Long from) {
 
-        JrpcClientProperties.Account clientAccount = jrpcClientProperties.getAccount();
+        JrpcClientProperties.Login clientLogin = jrpcClientProperties.getLogin();
 
         String checkTokenURL = String.format("http://%1$s:%2$s/oauzz/token/listblack",
             jrpcClientProperties.getAuthServer().getHostName(),
             jrpcClientProperties.getAuthServer().getPort());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(clientAccount.getUsername(), clientAccount.getPassword());
+        headers.setBasicAuth(clientLogin.getUsername(), clientLogin.getPassword());
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         RequestEntity<String> requestEntity = RequestEntity
@@ -69,14 +69,14 @@ public class OauthRequest {
 
 
     public void authorize() {
-        JrpcClientProperties.Account clientAccount = jrpcClientProperties.getAccount();
+        JrpcClientProperties.Login clientLogin = jrpcClientProperties.getLogin();
 
         // Oauth2.0 authorization -------------------------------------------
 
-        if (clientAccount.getRefreshToken().isRotten()) {
+        if (clientLogin.getRefreshToken().isRotten()) {
             obtainTokens();
         }
-        else if (clientAccount.getAccessToken().isRotten()) {
+        else if (clientLogin.getAccessToken().isRotten()) {
             refreshTokens();
         }
     }
@@ -85,7 +85,7 @@ public class OauthRequest {
 
     private void obtainTokenAbstract(GrantType grantType) {
 
-        JrpcClientProperties.Account clientAccount = jrpcClientProperties.getAccount();
+        JrpcClientProperties.Login clientLogin = jrpcClientProperties.getLogin();
 
         //String params = String.format("grant_type=%1$s", grantType.getValue());
 
@@ -101,7 +101,7 @@ public class OauthRequest {
         if (grantType == GrantType.PASSWORD) {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            headers.setBasicAuth(clientAccount.getUsername(), clientAccount.getPassword());
+            headers.setBasicAuth(clientLogin.getUsername(), clientLogin.getPassword());
             requestEntity = RequestEntity
                 .post(URI.create(getTokenURL))
                 .headers(headers)
@@ -110,7 +110,7 @@ public class OauthRequest {
         }
         else if (grantType == GrantType.REFRESH) {
 
-            String authorization = "Bearer " + clientAccount.getRefreshToken();
+            String authorization = "Bearer " + clientLogin.getRefreshToken();
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", authorization);
@@ -128,13 +128,13 @@ public class OauthRequest {
 
         if (oauthResponse != null) {
 
-            clientAccount.setAccessToken(new TokenDto(oauthResponse.getAccessToken()));
-            clientAccount.setRefreshToken(new TokenDto(oauthResponse.getRefreshToken()));
+            clientLogin.setAccessToken(new TokenDto(oauthResponse.getAccessToken()));
+            clientLogin.setRefreshToken(new TokenDto(oauthResponse.getRefreshToken()));
 
-            log.debug("access_token: {}", clientAccount.getAccessToken());
-            log.debug("access_token expiration: {}", clientAccount.getAccessToken().getExpiration());
-            log.debug("refresh_token: {}", clientAccount.getRefreshToken());
-            log.debug("refresh_token expiration: {}", clientAccount.getRefreshToken().getExpiration());
+            log.debug("access_token: {}", clientLogin.getAccessToken());
+            log.debug("access_token expiration: {}", clientLogin.getAccessToken().getExpiration());
+            log.debug("refresh_token: {}", clientLogin.getRefreshToken());
+            log.debug("refresh_token expiration: {}", clientLogin.getRefreshToken().getExpiration());
         }
     }
 

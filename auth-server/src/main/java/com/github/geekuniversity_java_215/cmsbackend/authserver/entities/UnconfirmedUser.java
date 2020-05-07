@@ -39,8 +39,8 @@ public class UnconfirmedUser extends AbstractEntity {
     private Long id;
 
     @NotNull
-    @Column(name = "login")
-    private String login;  // use email as login ???
+    @Column(name = "user_name")
+    private String username;  // username is approved by dictionary.com //  use email as username ???
 
     @NotNull
     @Column(name = "password") // bcrypt hash
@@ -67,7 +67,7 @@ public class UnconfirmedUser extends AbstractEntity {
 
     @NotNull
     @Column(name = "email")
-    private String email;      // use email as login ??
+    private String email;      // use email as username ??
 
     @NotNull
     @Column(name = "phone_number")
@@ -85,13 +85,13 @@ public class UnconfirmedUser extends AbstractEntity {
                            @NotNull String lastName,
                            @NotNull String email,
                            @NotNull String phoneNumber,
-                           @NotNull String login,
+                           @NotNull String username,
                            @NotNull String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.login = login;
+        this.username = username;
         this.password = password;
     }
 
@@ -102,7 +102,7 @@ public class UnconfirmedUser extends AbstractEntity {
     public User toUser() {
 
         return new User(
-                login,
+                username,
                 password,
                 firstName,
                 lastName,

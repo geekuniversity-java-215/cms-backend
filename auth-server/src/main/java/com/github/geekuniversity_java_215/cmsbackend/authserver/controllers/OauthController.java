@@ -15,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 // handmadezz oauzz serverz v0.3 - старые взгляды сквозь новые дыры
@@ -46,7 +44,7 @@ public class OauthController {
      * Obtain new access and refresh tokens
      * <br>Allowed Basic Authorization only
      */
-    @PostMapping(value = "/get") // post-get :)
+    @PostMapping( value = "/get")
     @ValidAuthenticationType(AuthType.BASIC_AUTH)
     @Secured({UserRole.USER, UserRole.ADMIN})
     public ResponseEntity<?> getToken() {
@@ -57,7 +55,8 @@ public class OauthController {
         }
         catch (Exception e) {
             log.error("Adding new user error", e);
-            return new ResponseEntity<>("Server error: " + e.getMessage(),
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()
+                + ": " + e.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -84,7 +83,8 @@ public class OauthController {
         }
         catch (Exception e) {
             log.error("Adding new user error", e);
-            return new ResponseEntity<>("Server error: " + e.getMessage(),
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()
+                + ": " + e.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -108,7 +108,8 @@ public class OauthController {
         }
         catch (Exception e) {
             log.error("Adding new user error", e);
-            return new ResponseEntity<>("Server error: " + e.getMessage(),
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()
+                + ": " + e.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

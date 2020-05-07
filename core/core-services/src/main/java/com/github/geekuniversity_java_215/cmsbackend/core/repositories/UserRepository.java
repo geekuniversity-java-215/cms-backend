@@ -11,12 +11,12 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends CustomRepository<User, Long> {
 
-    Optional<User> findOneByLogin(String login);
+    Optional<User> findOneByUsername(String username);
     Optional<User> findOneByLastNameAndFirstName(String lastName, String firstName);
 
     @Query("FROM User u " +
             "WHERE " +
-            "u.login = :#{#user.login} OR " +
+            "u.username = :#{#user.username} OR " +
             "u.lastName = :#{#user.lastName} AND u.firstName = :#{#user.firstName} OR " +
             "u.email = :#{#user.email} OR " +
             "u.phoneNumber = :#{#user.phoneNumber}")

@@ -4,9 +4,12 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.AuthServerApplic
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthServerTestSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.admin.AdminRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 
 @SpringBootTest(classes = AuthServerApplication.class)
@@ -29,7 +32,9 @@ class AdminControllerTest {
 
         // Use here admin properties (principals and credentials)
         authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.ADMIN);
-        String response = adminRequest.test();
-        log.info(response);
+        ResponseEntity<String> response = adminRequest.test();
+        log.info(response.toString());
+        Assert.assertEquals("HttpStatus.status not 200", HttpStatus.OK, response.getStatusCode());
+        Assert.assertEquals("response body not 'hello world'", "hello world", response.getBody());
     }
 }

@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations;
 
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.TokenDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.oauth.TokenDto;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -36,7 +36,7 @@ public class JrpcClientPropertiesFile implements Serializable {
 
     public static final String API_VERSION = "1.0";
 
-    private Account account;
+    private Login login;
 
     private Server authServer;
     private Server resourceServer;
@@ -50,7 +50,7 @@ public class JrpcClientPropertiesFile implements Serializable {
     @Data
     //@ConfigurationProperties(prefix = "resourceserver")
 
-    public static class Account {
+    public static class Login {
 
         @Length(max = 4, min = 1)
 //        private String authMethod;

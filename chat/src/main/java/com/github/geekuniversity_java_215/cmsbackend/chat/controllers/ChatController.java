@@ -32,9 +32,9 @@ public class ChatController {
     @GetMapping("/{orderId}")
     public String beginChat(Principal principal, Model model, @PathVariable Long orderId) {
 
-        User user = userService.findByLogin(principal.getName())
+        User user = userService.findByUsername(principal.getName())
             .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
-        model.addAttribute("userName", user.getFullName());
+        model.addAttribute("username", user.getFullName());
         model.addAttribute("orderId", orderId);
         return "chat";
     }
@@ -42,7 +42,7 @@ public class ChatController {
     @GetMapping("/history/{orderId}")
     public String viewHisory(Principal principal, Model model, @PathVariable Long orderId) {
 
-        User user = userService.findByLogin(principal.getName())
+        User user = userService.findByUsername(principal.getName())
             .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));

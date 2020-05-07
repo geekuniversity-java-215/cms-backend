@@ -57,11 +57,11 @@ public class TokenService {
     /**
      * Create new token, delete previous(on refreshing)
      *
-     * @param login login. Also maybe need to add @mail
+     * @param username username. Also maybe need to add @mail
      * @param refreshToken current refresh_token if available
      * @return
      */
-    public OauthResponse issueTokens(String login, RefreshToken refreshToken) {
+    public OauthResponse issueTokens(String username, RefreshToken refreshToken) {
 
         //boolean doRefresh = refreshToken != null;
 
@@ -73,8 +73,8 @@ public class TokenService {
         //
         //
         // find user
-        User user = userService.findByLogin(login)
-                .orElseThrow(() -> new UsernameNotFoundException("User doesn't not exists: " + login));
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User doesn't not exists: " + username));
         
 
         // 1. Refresh Token -------------------------------------------------------------------
@@ -88,7 +88,7 @@ public class TokenService {
         Set<String> refreshRoles = new HashSet<>(Collections.singletonList(UserRole.REFRESH));
 
         refreshTokenString = jwtTokenService.createJWT(
-                TokenType.REFRESH, refreshToken.getId().toString(), ISSUER, user.getLogin(), refreshRoles, ttl);
+                TokenType.REFRESH, refreshToken.getId().toString(), ISSUER, user.getUsername(), refreshRoles, ttl);
 
         // 2. Access Token ---------------------------------------------------------------------
 
@@ -103,7 +103,7 @@ public class TokenService {
                 user.getRoles().stream().map(UserRole::getName).collect(Collectors.toSet());
 
         accessTokenString = jwtTokenService.createJWT(
-                TokenType.ACCESS, accessToken.getId().toString(), ISSUER, user.getLogin(), roles, ttl);
+                TokenType.ACCESS, accessToken.getId().toString(), ISSUER, user.getUsername(), roles, ttl);
 
         // Delete here deprecated refresh_token and access_token, no blacklisting
         if (oldRefreshToken != null) {

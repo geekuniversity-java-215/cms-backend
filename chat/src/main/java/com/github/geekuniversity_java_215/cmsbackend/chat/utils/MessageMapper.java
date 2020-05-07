@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public interface MessageMapper {
     MessageMapper MAPPER = Mappers.getMapper(MessageMapper.class);
 
-    @Mapping(target = "userName", expression = "java(message.getUser().getFullName())")
+    @Mapping(target = "username", expression = "java(message.getUser().getFullName())")
     @Mapping(target = "orderId", source = "message.order.id")
 //    @Mapping(target = "time", source = "java(new SimpleDateFormat(\"HH:mm\").format(message.getCreated()))")
     ChatMessageDto toChatMessageDto(ChatMessage message);   //fromChatMessage

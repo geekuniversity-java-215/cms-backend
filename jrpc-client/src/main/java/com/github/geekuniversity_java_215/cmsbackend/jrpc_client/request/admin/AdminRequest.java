@@ -14,31 +14,7 @@ import java.net.URI;
 @Slf4j
 public class AdminRequest extends AbstractRequest {
 
-    protected <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass) {
-
-        JrpcClientProperties.Account clientAccount = jrpcClientProperties.getAccount();
-
-        // Oauth2.0 authorization -----------------
-        oauthRequest.authorize();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + clientAccount.getAccessToken());
-        //headers.setContentType(MediaType.APPLICATION_JSON);
-
-        RequestEntity<K> requestEntity = RequestEntity
-            .post(URI.create(uri))
-            .headers(headers)
-            .body(body);
-
-        log.info("REQUEST\n" + requestEntity);
-
-        //log.info("HTTP " + response.getStatusCode().toString() + "\n" + response.getBody());
-
-        return restTemplate.exchange(requestEntity, returnClass);
-    }
-
-
-    public void revokeToken(String userName) {
+    public void revokeToken(String username) {
 
         // Oauth2.0 authorization
         oauthRequest.authorize();
@@ -47,14 +23,12 @@ public class AdminRequest extends AbstractRequest {
             this.jrpcClientProperties.getAuthServer().getHostName(),
             this.jrpcClientProperties.getAuthServer().getPort());
 
-        //ObjectNode body = JsonNodeFactory.instance.objectNode();
-        //body.put("user", userName);
-        ResponseEntity<Void> response = performRequest(url, userName, Void.class);
+        ResponseEntity<Void> response = performRequest(url, username, Void.class);
 
         log.info("{}", response.getStatusCode());
     }
 
-    public String test() {
+    public ResponseEntity<String> test() {
 
         oauthRequest.authorize();
 
@@ -62,9 +36,7 @@ public class AdminRequest extends AbstractRequest {
             this.jrpcClientProperties.getAuthServer().getHostName(),
             this.jrpcClientProperties.getAuthServer().getPort());
 
-        ResponseEntity<String> response = performRequest(url, null, String.class);
-
-        return response.getBody();
+        return performRequest(url, null, String.class);
     }
 
 }
