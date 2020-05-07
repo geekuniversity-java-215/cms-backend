@@ -12,8 +12,10 @@ mvn -DskipTests clean install
 У кого не установлен ключ RSA для ssh и не установлен maven  
 ```
 git clone https://github.com/dreamworkerln/utils.git
+cd utils
+mvnw -DskipTests clean install
 ```
-Далее открываем проект utils в Intellij Idea  
+Либо открываем проект utils в Intellij Idea  
 View -> Tool Windows -> Maven Projects
 ``` 
 Maven Projects -> Profiles
@@ -53,8 +55,8 @@ git checkout -b dev_имясвоейветки
 ```
 <br>
 
-3\. Для своего кода берем unit-тесты из core-services
-(За основу брать уже сделанные для модуля core, не забываем подключить .properties -
+3\. Делаем unit-тесты.
+(За основу брать уже сделанные для модуля core-services, не забываем подключить .properties -
 см CorePropertiesConfiguration.java)
 <br> 
  
