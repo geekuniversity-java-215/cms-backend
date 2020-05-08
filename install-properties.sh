@@ -4,7 +4,7 @@
 # http://dwaves.de/tools/escape/
 
 # Prepare dev src/test resources in library modules ----------------------------
-LIB_MODULES=(core/core-controllers core/core-services mail payment utils)
+LIB_MODULES=(core/core-controllers core/core-services mail payment utils geodata)
 # This modules shouldn't contain @SpringBootApplication (except in tests)
 
 # cp application.properties application-dev.properties in <module>/test/main/resources/
@@ -25,6 +25,10 @@ for var in "${LIB_MODULES[@]}"
 do
   create_tests_dev ${var}
 done
+
+
+
+
 
 # Prepare dev src/main resources  in modules ----------------------------
 
@@ -94,12 +98,20 @@ if [[ ! -f "$FROM" ]]; then
 fi
 
 
+# geodata -----------------------------------------------------------
+fromPath=geodata/src/main/resources/
+FROM=${fromPath}geodata.properties
+TO=${fromPath}geodata-dev.properties
+cp -an $FROM $TO
 
-########################### APPLICATIONS ###########################
 
 
+#####################################################################
+########################### APPLICATIONS ############################
+#####################################################################
 
-# cmsapp -----------------------------------------------------------
+
+# cmsapp ------------------------------------------------------------
 fromPath=cmsapp/src/main/resources/
 FROM=${fromPath}application.properties
 TO=${fromPath}application-dev.properties
