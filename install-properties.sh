@@ -110,6 +110,7 @@ cp -an $FROM $TO
 ########################### APPLICATIONS ###########################
 
 
+# cp application.properties to application-dev.properties
 
 # cmsapp -----------------------------------------------------------
 fromPath=cmsapp/src/main/resources/

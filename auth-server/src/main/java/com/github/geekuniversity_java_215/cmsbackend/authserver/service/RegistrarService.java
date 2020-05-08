@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -76,7 +79,7 @@ public class RegistrarService {
             newUser.getUsername(),
             confirmationRole);
 
-        mailService.generateConfirmationUrl()
+        mailService.sendRegistrationConfirmation()
 
 
 
@@ -98,6 +101,20 @@ public class RegistrarService {
         // ToDo: redirect user to cms app front page
 
     }
+
+
+    // ==========================================================================
+//
+//
+//    //ToDo: generateConfirmationUrl перенести в сервис авторизации
+//    /**
+//     * метод формирует url для подтверждения регистрации, перенести в сервис авторизации
+//     */
+//    private String generateConfirmationUrl() {
+//        // ToDo: Move url to core.data.constants, include host and port vars from application.properties
+//        //return "http://localhost:8080/app/registration/confirmation/" + token;
+//        return "https://natribu.org/";
+//    }
 }
 
 

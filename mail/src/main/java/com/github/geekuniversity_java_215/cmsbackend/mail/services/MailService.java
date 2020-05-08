@@ -64,29 +64,6 @@ public class MailService {
         return sendMessage(email, subject, body);
     }
 
-
-    //ToDo: generateConfirmationUrl перенести в сервис авторизации
-    /**
-     * метод формирует url для подтверждения регистрации, перенести в сервис авторизации
-     */
-    public String generateConfirmationUrl(User user) {
-        String token = new BigInteger(130, new SecureRandom()).toString(32);
-
-        // ToDo: сгенерированный url является ключом. необходимо сохранить для пользователя,
-        // чтобы потом провести проверки для завершения регистрации
-        // Токен должен протухать через некоторое время - хранить в отдельной таблице registrationToken,
-        // запускать @Scheduled чтобы прибивать пользователей, которые не подтвердили регистрацию
-        // и их записи в табле registrationToken
-
-
-        // Add token to cache
-
-        // ToDo: Move url to core.data.constants, include host and port vars from application.properties
-        //return "http://localhost:8189/app/registration/confirmation/" + token;
-        return "https://natribu.org/";
-    }
-
-
     /**
      * Send custom message
      * @param email sendTo email address
