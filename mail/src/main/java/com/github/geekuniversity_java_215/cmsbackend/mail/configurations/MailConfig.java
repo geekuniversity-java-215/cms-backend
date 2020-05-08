@@ -14,7 +14,7 @@ import java.util.Properties;
 public class MailConfig {
     private final String MAIL_TRANSPORT_PROTOCOL = "mail.transport.protocol";
     private final String MAIL_SMTP_AUTH = "mail.smtp.auth";
-    private final String MAIL_SMTP_STARTLS_ENABLE = "mail.smtp.startls.enable";
+    private final String MAIL_SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
     private final String MAIL_DEBUG = "mail.debug";
     private final String MAIL_FROM = "mail.from";
 
@@ -37,8 +37,8 @@ public class MailConfig {
     @Value("${mail.smtp.auth}")
     private String mailSmtpAuth;
 
-    @Value("${mail.smtp.startls.enable}")
-    private String mailStarTlsEnable;
+    @Value("${mail.smtp.starttls.enable}")
+    private String mailStartTlsEnable;
 
     private final Environment env;
 
@@ -61,7 +61,7 @@ public class MailConfig {
         Properties props = mailSender.getJavaMailProperties();
         props.put(MAIL_TRANSPORT_PROTOCOL, mailTransportProtocol);
         props.put(MAIL_SMTP_AUTH, mailSmtpAuth);
-        props.put(MAIL_SMTP_STARTLS_ENABLE, mailStarTlsEnable);
+        props.put(MAIL_SMTP_STARTTLS_ENABLE, mailStartTlsEnable);
         props.put(MAIL_DEBUG, Boolean.toString(debugMail));
         props.put(MAIL_FROM, username);
 

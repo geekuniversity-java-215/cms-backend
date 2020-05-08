@@ -75,16 +75,19 @@ public class UnconfirmedUser extends AbstractEntity {
     @Getter
     protected Instant expiredAt;
 
-    public UnconfirmedUser() {
+    protected UnconfirmedUser() {
         expiredAt = Instant.now().plus(Duration.ofSeconds(TokenType.CONFIRM.getTtl()));
     }
 
-    public UnconfirmedUser(@NotNull String firstName,
+
+    public UnconfirmedUser(@NotNull String username,
+                           @NotNull String password,
+                           @NotNull String firstName,
                            @NotNull String lastName,
                            @NotNull String email,
-                           @NotNull String phoneNumber,
-                           @NotNull String username,
-                           @NotNull String password) {
+                           @NotNull String phoneNumber) {
+        super();
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

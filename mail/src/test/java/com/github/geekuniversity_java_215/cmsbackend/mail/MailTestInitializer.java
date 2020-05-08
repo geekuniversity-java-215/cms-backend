@@ -15,13 +15,13 @@ import java.math.BigDecimal;
 
 @Component
 @Slf4j
-public class MailTestStartupRunner implements ApplicationRunner {
+public class MailTestInitializer implements ApplicationRunner {
 
     private final UserService userService;
     private final AccountService accountService;
 
     @Autowired
-    public MailTestStartupRunner(UserService userService, AccountService accountService) {
+    public MailTestInitializer(UserService userService, AccountService accountService) {
         this.userService = userService;
         this.accountService = accountService;
     }

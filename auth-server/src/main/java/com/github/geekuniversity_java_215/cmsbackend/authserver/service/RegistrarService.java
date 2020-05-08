@@ -1,8 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.properties.AuthServerConfig;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,20 +25,22 @@ import static com.github.geekuniversity_java_215.cmsbackend.core.configurations.
 @Slf4j
 public class RegistrarService {
 
+
+    private final AuthServerConfig authServerConfig;
     private final UserService userService;
     private final UserRoleService userRoleService;
-
     private final UnconfirmedUserService unconfirmedUserService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService jwtTokenService;
     private final MailService mailService;
     private final Validator validator;
 
-    public RegistrarService(UserService userService,
+    public RegistrarService(AuthServerConfig authServerConfig, UserService userService,
                             UserRoleService userRoleService, UnconfirmedUserService unconfirmedUserService,
                             PasswordEncoder passwordEncoder,
                             JwtTokenService jwtTokenService,
                             MailService mailService, Validator validator) {
+        this.authServerConfig = authServerConfig;
         this.userService = userService;
         this.userRoleService = userRoleService;
         this.unconfirmedUserService = unconfirmedUserService;
@@ -79,11 +79,7 @@ public class RegistrarService {
             newUser.getUsername(),
             confirmationRole);
 
-        mailService.sendRegistrationConfirmation()
-
-
-
-
+        mailService.sendRegistrationConfirmation(newUser, authServerConfig.getConfirmationUrl());
         // ToDo: send email to user to complete registration
 
         return registrantToken;

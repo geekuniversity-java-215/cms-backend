@@ -4,7 +4,6 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.AuthServerApplic
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthServerTestSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.UnconfirmedUserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.confirm.ConfirmRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.RegistrarRequest;
@@ -15,10 +14,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.security.UnrecoverableEntryException;
 
 @SpringBootTest(classes = AuthServerApplication.class)
 @Slf4j

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @NoArgsConstructor
 public class UnconfirmedUserDto {
@@ -16,8 +18,13 @@ public class UnconfirmedUserDto {
     private String phoneNumber;
 
 
-    public UnconfirmedUserDto(String username, String password, String firstName, String lastName, String email, String phoneNumber) {
-        this.id = id;
+    public UnconfirmedUserDto(@NotNull String username,
+                              @NotNull String password,
+                              @NotNull String firstName,
+                              @NotNull String lastName,
+                              @NotNull String email,
+                              @NotNull String phoneNumber) {
+
         this.username = username;
         this.password = password;
         this.firstName = firstName;

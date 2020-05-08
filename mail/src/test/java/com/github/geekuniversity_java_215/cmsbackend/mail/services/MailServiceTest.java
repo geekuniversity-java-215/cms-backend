@@ -1,7 +1,9 @@
 package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.user.UnconfirmedUserDto;
 import lombok.extern.slf4j.Slf4j;
 import net.tascalate.concurrent.Promise;
 import org.junit.jupiter.api.Test;
@@ -26,11 +28,11 @@ class MailServiceTest {
 
     @Test
     void userSendRegConfirmation() throws ExecutionException, InterruptedException {
-        User user = userService.findById(1L).get();
-        String tokenURL = mailService.generateConfirmationUrl(user);
+        UnconfirmedUser user = new UnconfirmedUser("newuser",
+            "newuser_password", "cmsbackendgeek@gmail.com", "Новый", "newuser@mail.ru", "932494356678");
 
         // отправляем письмо самому себе
-        Promise<Void> promise = mailService.sendRegistrationConfirmation(user, tokenURL);
+        Promise<Void> promise = mailService.sendRegistrationConfirmation(user, "https://natribu.org/ru/");
         promise.get();
         log.info("Message send");
     }

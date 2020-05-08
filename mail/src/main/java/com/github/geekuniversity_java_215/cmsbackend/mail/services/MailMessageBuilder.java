@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 
 
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class MailMessageBuilder {
 
     
     //на вход buildRegConfirmationEmail необходимо передавать сущность Клиента, который регистрируется
-    public String buildRegistrationConfirmationEmail(User user, String url) {
+    public String buildRegistrationConfirmationEmail(UnconfirmedUser user, String url) {
         Context context = new Context();
         context.setVariable("user", user.getLastName() + " " + user.getFirstName());
 

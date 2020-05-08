@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.utils.JobPool;
 import lombok.extern.slf4j.Slf4j;
@@ -53,9 +54,8 @@ public class MailService {
      * @param confirmationUrl сслка для завершения регистрации
      * @return
      */
-    public Promise<Void> sendRegistrationConfirmation(User user, String confirmationUrl) {
+    public Promise<Void> sendRegistrationConfirmation(UnconfirmedUser user, String confirmationUrl) {
 
-        //ToDo: нужно убедиться, что формируется нормальный url из сервиса авторизации
         log.trace("Отправляем письмо о успешной регистрации");
         final String email = user.getEmail();
         final String subject = "Завершение регистрации";
