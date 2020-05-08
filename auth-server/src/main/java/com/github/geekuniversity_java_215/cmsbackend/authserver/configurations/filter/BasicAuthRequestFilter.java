@@ -2,14 +2,19 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.RequestScopeBean;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.AuthorizationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -60,7 +65,7 @@ public class BasicAuthRequestFilter extends OncePerRequestFilter {
 
                 byte[] decodedBytes = Base64.decodeBase64(basicAuth);
                 String decodedAuth = new String(decodedBytes);
-                
+
                 String[] slitted = decodedAuth.split(":", 2);
                 String username = slitted[0];
                 String password = slitted[1];
@@ -74,6 +79,7 @@ public class BasicAuthRequestFilter extends OncePerRequestFilter {
 
             } catch (Exception e) {
                 log.info("BasicAuth string not valid", e);
+                // User will stay Anonymous
             }
         }
 
@@ -82,20 +88,30 @@ public class BasicAuthRequestFilter extends OncePerRequestFilter {
 
 
     /**
-     * Load User details from DB, compare password hashes
+     *  Cook spring security.authentication token
+     * <br>Load User details from DB, compare password hashes
      * @param username username
      * @param password password
+     * @throws RuntimeException user not found, password not valid
      */
     private UsernamePasswordAuthenticationToken getAuthToken(String username, String password) {
 
         UsernamePasswordAuthenticationToken result = null;
+
+        // Find user
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if (userDetails == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
 
-        if (userDetails != null &&
-            passwordEncoder.matches(password, userDetails.getPassword())) {
-
+        // Check password
+        if (passwordEncoder.matches(password, userDetails.getPassword())) {
             result = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         }
+        else {
+            throw new BadCredentialsException("Password not valid");
+        }
+
         return result;
     }
 

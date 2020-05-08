@@ -39,15 +39,13 @@ public class OauthRequest extends AbstractRequest {
 
         HttpHeaders headers = new HttpHeaders();
         if (grantType == GrantType.PASSWORD) {
-            headers.setBasicAuth(clientProp.getLogin().getUsername(),
-                clientProp.getLogin().getPassword());
+            headers.setBasicAuth(clientProp.getLogin().getUsername(), clientProp.getLogin().getPassword());
         }
         else if (grantType == GrantType.REFRESH) {
             headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + clientProp.getLogin().getRefreshToken());
         }
 
-        ResponseEntity<OauthResponse> response =
-            performRequest(getTokenURL, Void.class, OauthResponse.class, headers);
+        ResponseEntity<OauthResponse> response = performRequest(getTokenURL, Void.class, OauthResponse.class, headers);
         OauthResponse oauthResponse = response.getBody();
 
         if (oauthResponse != null) {

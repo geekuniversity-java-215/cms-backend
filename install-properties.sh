@@ -4,7 +4,9 @@
 # http://dwaves.de/tools/escape/
 
 # Prepare dev src/test resources in library modules ----------------------------
-LIB_MODULES=(core/core-controllers core/core-services mail payment utils geodata)
+
+LIB_MODULES=(core/core-controllers core/core-services mail payment utils jrpc-client geodata)
+
 # This modules shouldn't contain @SpringBootApplication (except in tests)
 
 # cp application.properties application-dev.properties in <module>/test/main/resources/
@@ -98,6 +100,13 @@ if [[ ! -f "$FROM" ]]; then
 fi
 
 
+# jrpc-client ---------------------------------------------------------
+fromPath=jrpc-client/src/main/resources/
+FROM=${fromPath}jrpc-client.properties
+TO=${fromPath}jrpc-client-dev.properties
+cp -an $FROM $TO
+
+
 # geodata -----------------------------------------------------------
 fromPath=geodata/src/main/resources/
 FROM=${fromPath}geodata.properties
@@ -106,10 +115,18 @@ cp -an $FROM $TO
 
 
 
+
+
+
+
+
+
+
 #####################################################################
 ########################### APPLICATIONS ############################
 #####################################################################
 
+# cp application.properties to application-dev.properties
 
 # cmsapp ------------------------------------------------------------
 fromPath=cmsapp/src/main/resources/

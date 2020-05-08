@@ -59,11 +59,7 @@ public abstract class AbstractRequestWithOauth extends AbstractRequest {
 
 
     public <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass) {
-
-        oauthRequest.authorize();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + clientProp.getLogin().getAccessToken());
-        return performRequest(uri, body, returnClass, headers);
+        return performRequest(uri, body, returnClass, null);
     }
 
 }

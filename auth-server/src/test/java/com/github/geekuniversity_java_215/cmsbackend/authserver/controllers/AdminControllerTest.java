@@ -32,6 +32,7 @@ class AdminControllerTest {
 
         // Use here admin properties (principals and credentials)
         authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.ADMIN);
+
         ResponseEntity<String> response = adminRequest.test();
         log.info(response.toString());
         Assert.assertEquals("HttpStatus.status not 200", HttpStatus.OK, response.getStatusCode());

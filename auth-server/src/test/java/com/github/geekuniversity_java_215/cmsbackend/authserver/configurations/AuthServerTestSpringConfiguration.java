@@ -18,6 +18,7 @@ public class AuthServerTestSpringConfiguration {
     public static final String ADMIN ="adminProperties";
     public static final String REGISTRAR ="registrarProperties";
     public static final String USER ="userProperties";
+    public static final String ANONYMOUS ="userProperties";
 
 
     private final JrpcClientProperties defaultProperties;
@@ -55,7 +56,15 @@ public class AuthServerTestSpringConfiguration {
     JrpcClientProperties registrarProperties() {
         JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
         result.getLogin().setUsername("registrar");
-        result.getLogin().setPassword("registrar");
+        result.getLogin().setPassword("registrar_password");
+        return result;
+    }
+
+    @Bean(ANONYMOUS)
+    JrpcClientProperties anonymousProperties() {
+        JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
+        result.getLogin().setUsername("anonymous");
+        result.getLogin().setPassword("anonymous");
         return result;
     }
 

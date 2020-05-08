@@ -51,6 +51,12 @@ public class AbstractRequest {
         return result;
     }
 
+    protected <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass) {
+        return performRequest(uri, body, returnClass, null);
+    }
+
+    // ==================================================================================
+
     protected HttpHeaders getHeaders(HttpHeaders headers) {
         return headers == null ? new HttpHeaders() : headers;
     }

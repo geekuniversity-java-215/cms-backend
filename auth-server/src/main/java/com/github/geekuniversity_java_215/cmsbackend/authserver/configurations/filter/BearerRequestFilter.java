@@ -4,21 +4,25 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.A
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.RequestScopeBean;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.JwtTokenService;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import com.github.geekuniversity_java_215.cmsbackend.utils.SecurityUtils;
+import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -54,56 +58,48 @@ public class BearerRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
 
         // get header "Authorization"
         final String requestTokenHeader = request.getHeader("Authorization");
 
 
         // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
-        if (requestTokenHeader != null &&
-                requestTokenHeader.startsWith("Bearer ")) {
-
+        if (!StringUtils.isBlank(requestTokenHeader) &&
+            requestTokenHeader.startsWith("Bearer ")) {
             try {
                 String jwtToken = requestTokenHeader.substring(7);
 
-                // decode & validate token
+                // decode & validate token, will throw exception if token not valid
                 Claims claims = jwtTokenService.decodeJWT(jwtToken);
-                Token token;
-
-                // TOKEN issued by ME // не особо нужно, т.к. используем SECRET_KEY
-                // TOKEN Is NOT EXPIRED // уже проверено в Jwt...parseClaimsJws - ExpiredJwtException
-                // TOKEN is PRESENT in my DB (NOT deleted(by revoke/expiration)/blacklisted)
-//                if (claims.getIssuer().equals(ISSUER) &&
-//                    tokenNotExpired(claims) &&
-//                    (token = findTokenInDB(claims))!=null) {
 
                 // TOKEN is PRESENT in my DB (NOT deleted(by revoke/expiration)/blacklisted)
-                if ((token = findTokenInDB(claims)) != null) {
+                Token token = getTokenByIdFromClaims(claims);
 
-                    UsernamePasswordAuthenticationToken authToken = getAuthToken(claims);
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                UsernamePasswordAuthenticationToken authToken = getAuthToken(claims);
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                    // save auth type
-                    if (token instanceof AccessToken) {
-                        requestScopeBean.setAuthType(AuthType.ACCESS_TOKEN);
-                    }
-                    else if (token instanceof RefreshToken) {
-                        requestScopeBean.setAuthType(AuthType.REFRESH_TOKEN);
-                    }
-
-                    // save token
-                    requestScopeBean.setToken(token);
-
-                    // configure Spring Security to manually set authentication
-
-                    // After setting the Authentication in the context, we specify
-                    // that the current user is authenticated.
-                    // So it passes the Spring Security Configurations successfully.
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                // save auth type
+                if (token instanceof AccessToken) {
+                    requestScopeBean.setAuthType(AuthType.ACCESS_TOKEN);
                 }
+                else if (token instanceof RefreshToken) {
+                    requestScopeBean.setAuthType(AuthType.REFRESH_TOKEN);
+                }
+
+                // save token
+                requestScopeBean.setToken(token);
+
+                // configure Spring Security to manually set authentication
+
+                // After setting the Authentication in the context, we specify
+                // that the current user is authenticated.
+                // So it passes the Spring Security Configurations successfully.
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+
             } catch (Exception e) {
                 log.info("JWT Token not valid: ", e);
+                // User will stay Anonymous
             }
 
         }
@@ -126,56 +122,77 @@ public class BearerRequestFilter extends OncePerRequestFilter {
      * Find Token in database by its id
      * @param claims
      * @return AccessToken or RefreshToken
+     * @throws RuntimeException claims not valid, token not found
      */
-    private Token findTokenInDB(Claims claims) {
+    private Token getTokenByIdFromClaims(Claims claims) {
 
         Token result = null;
 
+        // get token id
+        long tokenId;
+        try {
+            tokenId = Long.parseLong(claims.getId());
+        }
+        catch (NumberFormatException e) {
+            throw new BadCredentialsException("Token id not found");
+        }
+        if (tokenId >= 0) {
+            throw new BadCredentialsException("Token id == 0");
+        }
+
+        // get token by tokenId
         TokenType type = TokenType.getByName((String) claims.get("type"));
-
-        Long tokenId = Long.valueOf(claims.getId());
-
+        if (type == null) {
+            throw new BadCredentialsException("Token type unknown");
+        }
         if (type == TokenType.ACCESS) {
             result = tokenService.findAccessToken(tokenId);
         } else if (type == TokenType.REFRESH) {
             result = tokenService.findRefreshToken(tokenId);
         }
+        if (result == null) {
+            throw new AuthenticationCredentialsNotFoundException("Token not found");
+        }
+
         return result;
     }
 
 
     /**
-     * Load User details from DB by token claims
+     * Cook spring security.authentication token
+     * <br> Load User details from DB by token claims
      * @param claims token claims
+     * @throws RuntimeException user not found, token type not allowed
      */
     private UsernamePasswordAuthenticationToken getAuthToken(Claims claims) {
 
         UsernamePasswordAuthenticationToken result = null;
 
-        TokenType type = TokenType.getByName((String)claims.get("type"));
-
+        // load user from DB
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
-
-        // If user not found in DB (userDetails ==null)
-        // will throw NotAuthorizedException later in doFilterInternal
-        if (userDetails != null) {
-
-            Collection<? extends GrantedAuthority> grantedAuthority = null;
-
-            // Для access_token возвращаем права(роли) пользователя из БД, какие ему назначены
-            if (type == TokenType.ACCESS) {
-                // get User default authorities
-                grantedAuthority = userDetails.getAuthorities();
-            }
-            // Для refresh_token возвращаем только роль REFRESH,
-            // никакими другими ресурсами(контроллерами) кроме обновления
-            // с этим токеном пользоваться нельзя.
-            else if (type == TokenType.REFRESH) {
-                // Set ROLE_REFRESH only
-                grantedAuthority = SecurityUtils.rolesToGrantedAuthority(Collections.singletonList(UserRole.REFRESH));
-            }
-            result = new UsernamePasswordAuthenticationToken(userDetails, null, grantedAuthority);
+        if (userDetails == null) {
+            throw new UsernameNotFoundException("User not found");
         }
+
+        // Готовим user grantedAuthorities
+        TokenType type = TokenType.getByName((String)claims.get("type"));
+        Collection<? extends GrantedAuthority> grantedAuthorities;
+
+        // Для access_token возвращаем права(роли) пользователя из БД, какие ему назначены
+        if (type == TokenType.ACCESS) {
+            grantedAuthorities = userDetails.getAuthorities();
+        }
+        // Для refresh_token возвращаем только роль REFRESH,никакими другими ресурсами(контроллерами) кроме обновления
+        // с этим токеном пользоваться нельзя
+        else if (type == TokenType.REFRESH) {
+            grantedAuthorities = SecurityUtils.rolesToGrantedAuthority(Collections.singletonList(UserRole.REFRESH));
+        }
+        else {
+            throw new BadCredentialsException("Token type " + type + " not allowed");
+        }
+
+        result = new UsernamePasswordAuthenticationToken(userDetails, null, grantedAuthorities);
+
         return result;
     }
 
