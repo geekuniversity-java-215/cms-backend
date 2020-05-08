@@ -11,11 +11,13 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-//@PropertySource("classpath:application.properties")
 public class MailConfig {
-    private final String MAIL_TRANSPORT_PROTOCOL="smtp";
-    private final String MAIL_SMTP_AUTH="true";
-    private final String MAIL_SMTP_STARTTLS_ENABLE="true";
+    private final String MAIL_TRANSPORT_PROTOCOL = "mail.transport.protocol";
+    private final String MAIL_SMTP_AUTH = "mail.smtp.auth";
+    private final String MAIL_SMTP_STARTLS_ENABLE = "mail.smtp.startls.enable";
+    private final String MAIL_DEBUG = "mail.debug";
+    private final String MAIL_FROM = "mail.from";
+
 
     @Value("${mail.username}")
     private String username;
@@ -28,6 +30,15 @@ public class MailConfig {
 
     @Value("${mail.port}")
     private Integer port;
+
+    @Value("${mail.transport.protocol}")
+    private String mailTransportProtocol;
+
+    @Value("${mail.smtp.auth}")
+    private String mailSmtpAuth;
+
+    @Value("${mail.smtp.startls.enable}")
+    private String mailStarTlsEnable;
 
     private final Environment env;
 
@@ -42,18 +53,17 @@ public class MailConfig {
         mailSender.setHost(host);
         mailSender.setPort(port);
 
-
         mailSender.setUsername(username);
         mailSender.setPassword(password);
 
         boolean debugMail = env.getActiveProfiles().length > 0;
 
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", MAIL_TRANSPORT_PROTOCOL);
-        props.put("mail.smtp.auth", MAIL_SMTP_AUTH);
-        props.put("mail.smtp.starttls.enable", MAIL_SMTP_STARTTLS_ENABLE);
-        props.put("mail.debug", Boolean.toString(debugMail));
-        props.put("mail.from", username);
+        props.put(MAIL_TRANSPORT_PROTOCOL, mailTransportProtocol);
+        props.put(MAIL_SMTP_AUTH, mailSmtpAuth);
+        props.put(MAIL_SMTP_STARTLS_ENABLE, mailStarTlsEnable);
+        props.put(MAIL_DEBUG, Boolean.toString(debugMail));
+        props.put(MAIL_FROM, username);
 
         return mailSender;
     }

@@ -15,12 +15,11 @@ public class MailMessageBuilder {
     private TemplateEngine templateEngine;
 
     @Autowired
-    public void setTemplateEngine(TemplateEngine templateEngine) {
+    private MailMessageBuilder(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 
-
-    String buildPaymentSuccess(User user, BigDecimal amount ) {
+    public String buildPaymentSuccess(User user, BigDecimal amount ) {
         Context context = new Context();
         context.setVariable("sender", user.getFirstName());
         context.setVariable("amount",amount);
@@ -29,8 +28,8 @@ public class MailMessageBuilder {
     }
 
     
-    //todo на вход buildRegConfirmationEmail необходимо передавать сущность Клиента, который регистрируется
-    String buildRegistrationConfirmationEmail(User user, String url) {
+    //на вход buildRegConfirmationEmail необходимо передавать сущность Клиента, который регистрируется
+    public String buildRegistrationConfirmationEmail(User user, String url) {
         Context context = new Context();
         context.setVariable("user", user.getLastName() + " " + user.getFirstName());
 
