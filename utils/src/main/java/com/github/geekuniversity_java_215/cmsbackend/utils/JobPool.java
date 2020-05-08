@@ -24,7 +24,7 @@ public class JobPool<T> {
 
 
     // On job done handler
-    private Consumer<T> callback;
+    private final Consumer<T> callback;
 
     public JobPool(String poolName, Integer poolSize, Duration timeout, Consumer<T> callback) {
 

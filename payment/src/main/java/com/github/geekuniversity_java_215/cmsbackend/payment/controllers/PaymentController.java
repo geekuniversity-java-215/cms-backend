@@ -55,7 +55,7 @@ public class PaymentController {
                           @RequestParam(name = "PayerID") String payerId,
                           Model model) throws PayPalRESTException {
 
-        String result="";
+        String result;
         result=payPalService.executePayment(paymentId,payerId);
 
         model.addAttribute("result",result);

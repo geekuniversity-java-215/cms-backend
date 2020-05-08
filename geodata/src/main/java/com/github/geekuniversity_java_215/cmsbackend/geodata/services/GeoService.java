@@ -42,7 +42,7 @@ public class GeoService {
         String primaryPointFrom = fromPoints[0].substring(1) + "}";
         String primaryPointTo = toPoints[0].substring(1) + "}";
 
-        JsonNode nodeFrom = null, nodeTo = null;
+        JsonNode nodeFrom, nodeTo;
 
         nodeFrom = mapper.readTree(primaryPointFrom);
         nodeTo = mapper.readTree(primaryPointTo);

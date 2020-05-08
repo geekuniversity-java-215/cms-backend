@@ -125,7 +125,7 @@ public class Utils {
      * @param paramType setter param type
      * @param value new value
      */
-    public void propertySetter(String setterName, final Object o, Class paramType, final Object value) {
+    public void propertySetter(String setterName, final Object o, Class<?> paramType, final Object value) {
 
         unchecked(() -> {
             Class<?> clazz = o.getClass();

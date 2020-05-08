@@ -1,7 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.utils;
 
 import lombok.experimental.UtilityClass;
-import org.springframework.lang.Nullable;
 
 /**
  * Extends org.springframework.util.StringUtils to apache.commons.lang3.StringUtils.isBlank

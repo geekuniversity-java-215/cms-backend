@@ -66,10 +66,10 @@ public class TokenService {
         //boolean doRefresh = refreshToken != null;
 
         RefreshToken oldRefreshToken = refreshToken;
-        AccessToken accessToken = null;
+        AccessToken accessToken;
         //
-        String accessTokenString = null;
-        String refreshTokenString = null;
+        String accessTokenString;
+        String refreshTokenString;
         //
         //
         // find user
