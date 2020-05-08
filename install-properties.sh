@@ -59,7 +59,7 @@ done
 
 # core-services ------------------------------------------------------------
 # logback-spring.xml
-fromPath=core/core-controllers/src/main/resources/
+fromPath=core/core-services/src/main/resources/
 FROM=${fromPath}logback-spring.xml
 TO=${fromPath}logback-spring-dev.xml
 if [[ ! -f "$TO" ]]; then
