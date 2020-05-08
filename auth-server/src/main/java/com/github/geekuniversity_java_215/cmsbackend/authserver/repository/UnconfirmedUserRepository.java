@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.repository;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.UnconfirmedUser;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.CustomRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,13 +16,17 @@ public interface UnconfirmedUserRepository extends CustomRepository<UnconfirmedU
     Optional<UnconfirmedUser> findOneByUsername(String username);
     Optional<UnconfirmedUser> findOneByLastNameAndFirstName(String lastName, String firstName);
 
-    @Query("FROM UnconfirmedUser u " +
-            "WHERE " +
-            "u.username = :#{#user.username} OR " +
-            "u.lastName = :#{#user.lastName} AND u.firstName = :#{#user.firstName} OR " +
-            "u.email = :#{#user.email} OR " +
-            "u.phoneNumber = :#{#user.phoneNumber}")
-    boolean checkIfExists(@Param("user")UnconfirmedUser user);
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END " +
+        "FROM UnconfirmedUser u " +
+        "WHERE " +
+        "lower(u.username) = :#{#user.username.toLowerCase()} OR " +
+        "lower(u.lastName) = :#{#user.lastName.toLowerCase()} AND u.firstName = :#{#user.firstName} OR " +
+        "lower(u.email) = :#{#user.email.toLowerCase()} OR " +
+        "u.phoneNumber = :#{#user.phoneNumber}")
+    boolean checkIfExists(@Param("user") UnconfirmedUser user);
+
+
+
 
     @Modifying
     @Query("DELETE FROM UnconfirmedUser u WHERE u.expiredAt < CURRENT_TIMESTAMP")

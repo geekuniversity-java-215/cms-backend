@@ -1,14 +1,17 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.entities;
+package com.github.geekuniversity_java_215.cmsbackend.core.entities.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;
 
+
 @Entity
 @Table(name="uzer_role")
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class UserRole extends AbstractEntity {
 
     public static final String ADMIN                  = "ROLE_ADMIN";
@@ -44,7 +47,6 @@ public class UserRole extends AbstractEntity {
 //    private final Set<User> userList = new HashSet<>();
 
 
-    public UserRole() {}
     public UserRole(String name) {
         this.name = name;
     }

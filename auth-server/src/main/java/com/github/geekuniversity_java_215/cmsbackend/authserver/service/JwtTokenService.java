@@ -19,21 +19,20 @@ import java.util.Set;
 @Component
 public class JwtTokenService implements Serializable {
 
-	private static final long serialVersionUID = -2550185165626007488L;
+    private static final long serialVersionUID = -2550185165626007488L;
 
-	@Value("${jwt.secret}")
-	private String SECRET_KEY;
-
-
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
 
 
-	public String createJWT(TokenType tokenType,
+
+
+    public String createJWT(TokenType tokenType,
                             String id,
                             String issuer,
                             String subject,
-                            Set<String> roles,
-                            long ttl) {
+                            Set<String> roles) {
 
         //String id = Long.toString(idSeq.getAndIncrement());
 
@@ -54,19 +53,18 @@ public class JwtTokenService implements Serializable {
 
         //Let's set the JWT Claims
         JwtBuilder builder = Jwts.builder()
-                .setClaims(customClaims)
-                .setId(id)
-                .setIssuedAt(nowDate)
-                .setSubject(subject)
-                .setIssuer(issuer)
-                .signWith(signatureAlgorithm, DatatypeConverter.parseBase64Binary(SECRET_KEY));
+            .setClaims(customClaims)
+            .setId(id)
+            .setIssuedAt(nowDate)
+            .setSubject(subject)
+            .setIssuer(issuer)
+            .signWith(signatureAlgorithm, DatatypeConverter.parseBase64Binary(SECRET_KEY));
 
-        //if it has been specified, let's add the expiration
-        if (ttl > 0) {
-            long expired = epoch + ttl;
-            Date exp = new Date(expired * 1000);
-            builder.setExpiration(exp);
-        }
+
+        long expired = epoch + tokenType.getTtl();
+        Date exp = new Date(expired * 1000);
+        builder.setExpiration(exp);
+
 
         //Builds the JWT and serializes it to a compact, URL-safe string
         return builder.compact();
@@ -81,8 +79,8 @@ public class JwtTokenService implements Serializable {
     public Claims decodeJWT(String jwt) {
 
         return Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
-                .parseClaimsJws(jwt).getBody();
+            .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+            .parseClaimsJws(jwt).getBody();
     }
 
 

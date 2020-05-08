@@ -1,8 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.chat;
 
-import com.github.geekuniversity_java_215.cmsbackend.chat.services.MessageService;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

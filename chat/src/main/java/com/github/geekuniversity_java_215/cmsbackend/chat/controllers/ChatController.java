@@ -4,7 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.chat.entities.ChatMessage;
 import com.github.geekuniversity_java_215.cmsbackend.chat.services.MessageService;
 import com.github.geekuniversity_java_215.cmsbackend.chat.utils.MessageMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

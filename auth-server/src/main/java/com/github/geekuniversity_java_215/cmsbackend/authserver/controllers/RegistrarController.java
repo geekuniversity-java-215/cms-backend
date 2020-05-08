@@ -1,10 +1,9 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.controllers;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.UnconfirmedUser;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.RegistrarService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
-import io.jsonwebtoken.Claims;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

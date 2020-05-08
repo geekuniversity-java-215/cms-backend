@@ -3,7 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.chat.services;
 import com.github.geekuniversity_java_215.cmsbackend.chat.entities.ChatMessage;
 import com.github.geekuniversity_java_215.cmsbackend.chat.repositories.MessageRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

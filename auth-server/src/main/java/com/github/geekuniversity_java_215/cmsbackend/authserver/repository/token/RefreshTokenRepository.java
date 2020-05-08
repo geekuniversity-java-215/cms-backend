@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.CustomRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -1,5 +1,8 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.entities;
+package com.github.geekuniversity_java_215.cmsbackend.core.entities.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import lombok.*;
@@ -14,9 +17,7 @@ import java.util.Set;
 
 //@MappedSuperclass
 @Entity
-//@AttributeOverride(name="id", column = )
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-
 @Table(
         name = "uzer",
         indexes = {@Index(name = "user_account_id_idx", columnList = "account_id"),

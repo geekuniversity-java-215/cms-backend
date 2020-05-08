@@ -1,8 +1,6 @@
-package com.github.geekuniversity_java_215.cmsbackend.authserver.entities;
+package com.github.geekuniversity_java_215.cmsbackend.core.entities.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import lombok.Data;
@@ -77,7 +75,7 @@ public class UnconfirmedUser extends AbstractEntity {
     @Getter
     protected Instant expiredAt;
 
-    protected UnconfirmedUser() {
+    public UnconfirmedUser() {
         expiredAt = Instant.now().plus(Duration.ofSeconds(TokenType.CONFIRM.getTtl()));
     }
 
