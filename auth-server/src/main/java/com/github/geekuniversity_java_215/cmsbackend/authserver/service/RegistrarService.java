@@ -3,6 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.properties.AuthServerConfig;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
@@ -10,18 +11,24 @@ import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
+import java.net.URI;
+import java.net.URL;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpringConfiguration.ISSUER;
+import static com.pivovarit.function.ThrowingSupplier.unchecked;
 
 @Service
+@Transactional
 @Slf4j
 public class RegistrarService {
 
@@ -50,7 +57,7 @@ public class RegistrarService {
         this.validator = validator;
     }
 
-    public String add(UnconfirmedUser newUser) {
+    public String registrate(UnconfirmedUser newUser) {
 
         Set<ConstraintViolation<UnconfirmedUser>> violations = validator.validate(newUser);
         if (violations.size() != 0) {
@@ -79,38 +86,35 @@ public class RegistrarService {
             newUser.getUsername(),
             confirmationRole);
 
-        mailService.sendRegistrationConfirmation(newUser, authServerConfig.getConfirmationUrl());
-        // ToDo: send email to user to complete registration
+        URI url = unchecked(() -> new URI(authServerConfig.getConfirmationUrl() + "?token=" + registrantToken)).get();
+
+        mailService.sendRegistrationConfirmation(newUser, url);
 
         return registrantToken;
     }
 
+
     public void confirm(String token) {
 
+        // will throw exception if token not valid
         Claims claims = jwtTokenService.decodeJWT(token);
+
         String username = claims.getSubject();
+        UnconfirmedUser unconfirmedUser = unconfirmedUserService.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
 
-        // JwtException
+        User user = unconfirmedUser.toUser();
 
-        // ToDo: move UnconfirmedUser to User
 
-        // ToDo: redirect user to cms app front page
+        // Set user roles to USER
+        user.getRoles().clear();
+        user.getRoles().add(userRoleService.findByName(UserRole.USER));
+        // save user
+        userService.save(user);
 
+        // remove unconfirmedUser
+        unconfirmedUserService.delete(unconfirmedUser);
     }
-
-
-    // ==========================================================================
-//
-//
-//    //ToDo: generateConfirmationUrl перенести в сервис авторизации
-//    /**
-//     * метод формирует url для подтверждения регистрации, перенести в сервис авторизации
-//     */
-//    private String generateConfirmationUrl() {
-//        // ToDo: Move url to core.data.constants, include host and port vars from application.properties
-//        //return "http://localhost:8080/app/registration/confirmation/" + token;
-//        return "https://natribu.org/";
-//    }
 }
 
 

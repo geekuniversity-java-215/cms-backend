@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class RegistrarRequest extends AbstractRequest {
 
-    public ResponseEntity<String> add(UnconfirmedUserDto newUser) {
+    public ResponseEntity<String> registrate(UnconfirmedUserDto newUser) {
 
         String url = String.format("http://%1$s:%2$s/registration/new",
             this.clientProp.getAuthServer().getHostName(),

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.xml.bind.JAXBContext;
@@ -23,6 +24,7 @@ import java.util.Objects;
 //  перенести CBR_URL в .properties
 
 @Service
+@Transactional
 @Slf4j
 public class CurrencyImportService {
     final private static String CBR_URL = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=";

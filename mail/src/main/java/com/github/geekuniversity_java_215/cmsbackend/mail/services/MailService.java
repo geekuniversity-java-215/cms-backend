@@ -14,6 +14,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URI;
 import java.security.SecureRandom;
 import java.time.Duration;
 
@@ -54,7 +55,7 @@ public class MailService {
      * @param confirmationUrl сслка для завершения регистрации
      * @return
      */
-    public Promise<Void> sendRegistrationConfirmation(UnconfirmedUser user, String confirmationUrl) {
+    public Promise<Void> sendRegistrationConfirmation(UnconfirmedUser user, URI confirmationUrl) {
 
         log.trace("Отправляем письмо о успешной регистрации");
         final String email = user.getEmail();

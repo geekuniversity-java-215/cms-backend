@@ -5,6 +5,7 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.A
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.admin.AdminRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 @SpringBootTest(classes = AuthServerApplication.class)
 @Slf4j
 class AdminControllerTest {
-
 
     @Autowired
     AdminRequest adminRequest;

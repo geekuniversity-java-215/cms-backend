@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 //@MappedSuperclass
 @Entity
@@ -102,13 +103,19 @@ public class UnconfirmedUser extends AbstractEntity {
 
     public User toUser() {
 
-        return new User(
+        User result = new User(
                 username,
                 password,
                 firstName,
                 lastName,
                 email,
                 phoneNumber);
+
+        // clone set of roles, roles stay same
+        //Set<UserRole> userRoles = new HashSet<>(getRoles());
+        //result.setRoles(userRoles);
+
+        return result;
     }
 
     @Override

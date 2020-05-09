@@ -136,8 +136,8 @@ public class BearerRequestFilter extends OncePerRequestFilter {
         catch (NumberFormatException e) {
             throw new BadCredentialsException("Token id not found");
         }
-        if (tokenId >= 0) {
-            throw new BadCredentialsException("Token id == 0");
+        if (tokenId <= 0) {
+            throw new BadCredentialsException("Token id <= 0");
         }
 
         // get token by tokenId

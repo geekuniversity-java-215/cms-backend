@@ -56,7 +56,8 @@ public class MailConfig {
         mailSender.setUsername(username);
         mailSender.setPassword(password);
 
-        boolean debugMail = env.getActiveProfiles().length > 0;
+        boolean debugMail = env.getActiveProfiles().length > 0 &&
+            !env.getActiveProfiles()[0].equals("default");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put(MAIL_TRANSPORT_PROTOCOL, mailTransportProtocol);

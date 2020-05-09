@@ -31,6 +31,7 @@ public class UserRole extends AbstractEntity {
         ROLE_NAMES.add(RESOURCE);
         ROLE_NAMES.add(REFRESH);
         ROLE_NAMES.add(REGISTRAR);
+        ROLE_NAMES.add(CONFIRM_REGISTRATION);
     }
 
     @Getter

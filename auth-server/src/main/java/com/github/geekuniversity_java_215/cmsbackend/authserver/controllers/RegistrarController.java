@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.controllers;
 
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.properties.AuthServerConfig;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.RegistrarService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
@@ -21,9 +23,11 @@ import java.net.URI;
 public class RegistrarController {
 
     private final RegistrarService registrarService;
+    private final AuthServerConfig authServerConfig;
 
-    public RegistrarController(RegistrarService registrarService) {
+    public RegistrarController(RegistrarService registrarService, AuthServerConfig authServerConfig) {
         this.registrarService = registrarService;
+        this.authServerConfig = authServerConfig;
     }
 
 
@@ -34,7 +38,7 @@ public class RegistrarController {
         ResponseEntity<?> result; // ResponseEntity.badRequest().body("Bad user");
 
         try {
-            String registrantToken = registrarService.add(newUser);
+            String registrantToken = registrarService.registrate(newUser);
             // toDo: remove returning registrantToken after DEBUG
             result = ResponseEntity.ok(registrantToken);
         }
@@ -64,11 +68,16 @@ public class RegistrarController {
 
             // отправляем пользователя на login page фронта
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create("https://natribu.org/ru/"));
+            headers.setLocation(URI.create(authServerConfig.getRedirectUrl()));
             result = new ResponseEntity<>(headers, HttpStatus.FOUND);
         }
         catch (JwtException e) {
             result = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        catch(UsernameNotFoundException e) {
+
+            result = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Registration request not found / already registered ?");
         }
         catch (Exception e) {
             log.error("Confirm new user error", e);

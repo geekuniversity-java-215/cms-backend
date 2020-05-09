@@ -4,6 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.AuthServerApplic
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthServerTestSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.UnconfirmedUserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.confirm.ConfirmRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.RegistrarRequest;
@@ -11,6 +12,7 @@ import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.user.Unconfirm
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +23,7 @@ import org.springframework.http.ResponseEntity;
 public class UserRegistrationLifeCycleTest {
 
     @Autowired
-    AuthServerTestSpringConfiguration authServerTestSpringConfiguration;
+    private AuthServerTestSpringConfiguration authServerTestSpringConfiguration;
     @Autowired
     private RegistrarRequest registrarRequest;
     @Autowired
@@ -40,9 +42,9 @@ public class UserRegistrationLifeCycleTest {
         authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.REGISTRAR);
 
         UnconfirmedUserDto newUserDto = new UnconfirmedUserDto("newuser",
-            "newuser_password", "Пользователь", "Новый", "newuser@mail.ru", "932494356678");
+            "newuser_password", "Пользователь", "Новый", "cmsbackendgeek@gmail.com", "932494356678");
 
-        ResponseEntity<String> registrarResponse = registrarRequest.add(newUserDto);
+        ResponseEntity<String> registrarResponse = registrarRequest.registrate(newUserDto);
 
         String confirmToken = registrarResponse.getBody();
 
@@ -56,18 +58,16 @@ public class UserRegistrationLifeCycleTest {
 
         Assert.assertEquals("Returned wrong UnconfirmedUser", "newuser", newUser.getUsername());
 
-
         // 2. Confirm new user
         authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.ANONYMOUS);
 
-        ResponseEntity<Void> confirmResponse = confirmRequest.confirm(confirmToken);
+        //ResponseEntity<Void> confirmResponse =
+        confirmRequest.confirm(confirmToken);
 
-        //ToDo: enable this
+        User user = UserService.findByUsername("newuser")
+            .orElseThrow(() -> new RuntimeException("New UnconfirmedUser not persisted"));
 
-//        User user = UserService.findByUsername("newuser")
-//            .orElseThrow(() -> new RuntimeException("New UnconfirmedUser not persisted"));
-//
-//        Assert.assertEquals("Returned wrong User", "newuser", user.getUsername());
+        Assert.assertEquals("Returned wrong User", "newuser", user.getUsername());
 
     }
 }

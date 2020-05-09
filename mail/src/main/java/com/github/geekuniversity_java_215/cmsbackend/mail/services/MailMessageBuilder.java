@@ -9,6 +9,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.math.BigDecimal;
+import java.net.URI;
 
 
 @Service
@@ -30,11 +31,11 @@ public class MailMessageBuilder {
 
     
     //на вход buildRegConfirmationEmail необходимо передавать сущность Клиента, который регистрируется
-    public String buildRegistrationConfirmationEmail(UnconfirmedUser user, String url) {
+    public String buildRegistrationConfirmationEmail(UnconfirmedUser user, URI url) {
         Context context = new Context();
         context.setVariable("user", user.getLastName() + " " + user.getFirstName());
 
-        context.setVariable("reg_url", url);
+        context.setVariable("reg_url", url.toString());
         context.setVariable("user_confirm_mail", "Завершить регистрацию");
         return templateEngine.process("mail/reg_confirmation-mail", context);
     }

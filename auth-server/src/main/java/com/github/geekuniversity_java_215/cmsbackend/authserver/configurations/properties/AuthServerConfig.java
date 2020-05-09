@@ -17,4 +17,8 @@ public class AuthServerConfig {
 
     @Value("${auth-server.confirmation.url}")
     private String confirmationUrl;
+
+
+    @Value("${auth-server.confirmation-redirect.url}")
+    private String redirectUrl;
 }
