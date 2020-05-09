@@ -89,7 +89,7 @@ public class BearerRequestResourceFilter extends OncePerRequestFilter {
 
         UsernamePasswordAuthenticationToken result;
 
-        TokenType type = null;
+        TokenType type;
         try {
             type = TokenType.getByName((String)claims.get("type"));
         }
@@ -103,7 +103,6 @@ public class BearerRequestResourceFilter extends OncePerRequestFilter {
         // load user from DB
         User user = userService.findByUsername(claims.getSubject())
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
 
         if(user.getRoles().size() == 0) {
             throw new InsufficientAuthenticationException("User without roles");
