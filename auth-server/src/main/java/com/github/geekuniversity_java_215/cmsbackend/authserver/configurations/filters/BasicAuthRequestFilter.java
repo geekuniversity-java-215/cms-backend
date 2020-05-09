@@ -1,16 +1,13 @@
-package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filter;
+package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.RequestScopeBean;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

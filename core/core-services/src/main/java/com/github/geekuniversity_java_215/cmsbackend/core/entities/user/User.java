@@ -7,7 +7,6 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.Abstract
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import lombok.*;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filter.BasicAuthRequestFilter;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filter.BearerRequestFilter;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BasicAuthRequestFilter;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BearerRequestFilter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

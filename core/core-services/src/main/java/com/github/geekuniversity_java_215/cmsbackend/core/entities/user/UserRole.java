@@ -2,9 +2,12 @@ package com.github.geekuniversity_java_215.cmsbackend.core.entities.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -34,8 +37,6 @@ public class UserRole extends AbstractEntity {
         ROLE_NAMES.add(CONFIRM_REGISTRATION);
     }
 
-    @Getter
-    @Setter
     @Column(unique=true)
     private String name;
 
@@ -50,6 +51,10 @@ public class UserRole extends AbstractEntity {
 
     public UserRole(String name) {
         this.name = name;
+    }
+
+    public static Set<GrantedAuthority> rolesToGrantedAuthority(Set<UserRole> roles) {
+        return  roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
     }
 }
 

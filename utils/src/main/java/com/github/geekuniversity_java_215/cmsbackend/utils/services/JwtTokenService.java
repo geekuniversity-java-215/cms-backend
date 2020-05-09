@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.utils.services.security;
+package com.github.geekuniversity_java_215.cmsbackend.utils.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import io.jsonwebtoken.Claims;
@@ -30,8 +30,6 @@ public class JwtTokenService implements Serializable {
                             String issuer,
                             String subject,
                             Set<String> roles) {
-
-        //String id = Long.toString(idSeq.getAndIncrement());
 
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;

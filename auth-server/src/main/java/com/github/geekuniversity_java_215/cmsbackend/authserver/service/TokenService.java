@@ -13,7 +13,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
-import com.github.geekuniversity_java_215.cmsbackend.utils.services.security.JwtTokenService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.services.JwtTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
