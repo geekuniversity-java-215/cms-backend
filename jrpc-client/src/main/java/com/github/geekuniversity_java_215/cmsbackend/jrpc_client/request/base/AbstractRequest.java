@@ -44,9 +44,9 @@ public class AbstractRequest {
         headers = getHeaders(headers);
         RequestEntity<K> requestEntity = RequestEntity.method(httpMethod, URI.create(uri)).headers(headers).body(body);
 
-        log.debug("REQUEST\n" + requestEntity);
+        log.debug("REQUEST : " + requestEntity);
         ResponseEntity<T> result = restTemplate.exchange(requestEntity, returnClass);
-        log.debug("HTTP " + result.getStatusCode().toString() + " " + result.getBody());
+        log.debug("RESPONSE: HTTP " + result.getStatusCode().toString() + " " + result.getBody());
 
         return result;
     }

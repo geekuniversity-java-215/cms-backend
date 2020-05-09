@@ -2,7 +2,6 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.RequestScopeBean;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.service.JwtTokenService;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
@@ -11,6 +10,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import com.github.geekuniversity_java_215.cmsbackend.utils.SecurityUtils;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
+import com.github.geekuniversity_java_215.cmsbackend.utils.services.security.JwtTokenService;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -119,7 +119,7 @@ public class OauthController {
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured({UserRole.USER, UserRole.ADMIN, UserRole.RESOURCE})
     public ResponseEntity<String> hello() {
-        return  ResponseEntity.ok("WEB SARVAR VERSUS APPLICATION SARVAR GRRREET YOU!");
+        return  ResponseEntity.ok("SERVLET CONTAINER GRRREET YOU!");
     }
 
 

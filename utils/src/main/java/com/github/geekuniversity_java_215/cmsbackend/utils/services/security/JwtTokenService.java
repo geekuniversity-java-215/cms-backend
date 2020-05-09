@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
+package com.github.geekuniversity_java_215.cmsbackend.utils.services.security;
 
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
 import io.jsonwebtoken.Claims;
@@ -21,12 +21,9 @@ public class JwtTokenService implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    @Value("${jwt.secret}")
+    // "jwt.secret" property should be declared in module/app properties that use this module
+    @Value("${jwt.secret:empty}")
     private String SECRET_KEY;
-
-
-
-
 
     public String createJWT(TokenType tokenType,
                             String id,
