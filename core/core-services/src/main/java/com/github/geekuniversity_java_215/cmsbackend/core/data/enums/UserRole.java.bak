@@ -1,0 +1,43 @@
+package com.github.geekuniversity_java_215.cmsbackend.core.data.enums;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Getter
+@RequiredArgsConstructor
+public enum UserRole {
+
+    ADMIN(0),
+    USER(1),
+    ANONYMOUS(2),
+    RESOURCE(3),
+    REFRESH(4);
+
+
+    private final static Map<Integer, UserRole> ENUM_MAP = new HashMap<>();
+
+    static {
+        for(UserRole item : UserRole.values()) {
+            if (ENUM_MAP.containsKey(item.id)){
+                throw new RuntimeException("UserRole duplicate id");
+            }
+            ENUM_MAP.put(item.id, item);
+        }
+    }
+
+    private final int id;
+    private final String name = this.toString();
+
+    public static UserRole idOf(int id) {
+
+        UserRole result = ENUM_MAP.get(id);
+        if (result == null) {
+            throw new IllegalArgumentException("UserRole - no matching constant for [" + id + "]");
+        }
+        return result;
+    }
+}

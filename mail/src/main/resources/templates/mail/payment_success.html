@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<div class="container">
+    <br>
+    <h1 th:text="'Зачислен платеж на сумм '+${amount}"></h1>
+    <p style="margin-bottom: 40px">Ваш платеж успешно зачислен на счет.</p>
+    <table style="border-collapse: collapse;">
+        <caption style="font-weight: bold; margin-bottom: 20px">Состав заказа</caption>
+        <thead>
+        <tr style="background-color: #bee5eb;">
+            <th style="padding: 20px; text-align: center;">Отправитель:</th>
+            <th style="padding: 20px; text-align: center;">Сумма:</th>
+            <th style="padding: 20px; text-align: center;">Текущий баланс:</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td style="border-top: 1px solid #dee2e6; padding: 20px; text-align: center;"
+                th:text="${sender}"/>
+            <td style="border-top: 1px solid #dee2e6; padding: 20px; text-align: center;"
+                th:text="${amount}"/>
+            <td style="border-top: 1px solid #dee2e6; padding: 20px; text-align: center;"
+                th:text="${balance}"/>
+        </tr>
+        </tbody>
+    </table>
+
+    <p>Благодарим за выбор нашей площадки</p>
+</div>
+</body>
+</html>

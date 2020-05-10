@@ -1,0 +1,32 @@
+package com.github.geekuniversity_java_215.cmsbackend.core.entities.base;
+
+import RefreshToken;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@EqualsAndHashCode(callSuper=true)
+@MappedSuperclass
+public class User extends AbstractEntity {
+
+    @NotNull
+    @Column(name = "login")
+    protected String login;
+
+    @NotNull
+    @Column(name = "password") // bcrypt hash
+    protected String password;
+
+
+    // Это список только refresh_token
+    @NotNull
+    @OneToMany(mappedBy= "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OrderBy("id ASC")
+    private List<RefreshToken> refreshTokens = new ArrayList<>();
+
+}

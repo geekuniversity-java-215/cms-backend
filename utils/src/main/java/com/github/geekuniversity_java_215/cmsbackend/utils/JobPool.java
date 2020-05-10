@@ -7,6 +7,7 @@ import net.tascalate.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
 import java.time.Duration;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -53,7 +54,9 @@ public class JobPool<T> {
     }
 
 
-    public Promise add(Runnable runnable) {
+    public Promise<Void> add(Runnable runnable) {
+
+        log.trace(poolName + " adding job {}", runnable);
 
         return CompletableTask
             .runAsync(runnable, threadPool)
@@ -66,29 +69,35 @@ public class JobPool<T> {
 
                 if (throwable != null) {
                     log.error(poolName + " error: " + throwable);
-                    t = null;
+                    throw new CompletionException(throwable);
                 }
-                log.trace(poolName + " handle result: " + t);
-                return t;
-            })
-            // Оповещаем о завершении задачи
-            .thenAcceptAsync(
-                t -> {
-                    if (callback != null) {
-                        log.trace(poolName + " callback");
-                        callback.accept(null);
-                    }
 
+                log.trace(poolName + " handle result: " + t);
+
+                // Оповещаем о завершении задачи
+                if (callback != null) {
+                    log.trace(poolName + " callback");
+                    callback.accept(null);
                 }
-            )
-            // обрабатываем ошибки, возникшие в ходе оповещения о завершении задачи
-            .handleAsync((aVoid, throwable) -> {
-                if (throwable != null) {
-                    // Ловим ошибки в вызове callback.accept(t)
-                    log.error(poolName + " error: failed in callback():" + throwable);
-                }
-                return null;
+                return t;
             });
+//            // Оповещаем о завершении задачи
+//            .thenAcceptAsync(
+//                t -> {
+//                    if (callback != null) {
+//                        log.trace(poolName + " callback");
+//                        callback.accept(null);
+//                    }
+//                }
+//            );
+//            // обрабатываем ошибки, возникшие в ходе оповещения о завершении задачи
+//            .handleAsync((aVoid, throwable) -> {
+//                if (throwable != null) {
+//                    // Ловим ошибки в вызове callback.accept(t)
+//                    log.error(poolName + " error: failed in callback():" + throwable);
+//                }
+//                return null;
+//            });
     }
 
 
@@ -105,28 +114,46 @@ public class JobPool<T> {
 
                 if (throwable != null) {
                     log.error(poolName + " error:" + throwable);
-                    t = null;
+                    throw new CompletionException(throwable);
                 }
+
                 log.trace(poolName + " handle result: " + t);
+
+                // Оповещаем о завершении задачи
+                if (callback != null) {
+                    log.trace(poolName + " callback");
+                    callback.accept(t);
+                }
                 return t;
-            })
-            // Оповещаем о завершении задачи
-            .thenAcceptAsync(
-                t -> {
-                    if (callback != null) {
-                        log.trace(poolName + " callback");
-                        callback.accept(t);
-                    }
-                }
-            )
-            // обрабатываем ошибки, возникшие в ходе оповещения о завершении задачи
-            .handleAsync((aVoid, throwable) -> {
-                if (throwable != null) {
-                    // Ловим ошибки в вызове callback.accept(t)
-                    log.error(poolName + " error: failed in callback():" + throwable);
-                }
-                return null;
             });
+//            .thenApply(
+//                t -> {
+//                    if (callback != null) {
+//                        log.trace(poolName + " callback");
+//                        callback.accept(t);
+//                    }
+//                    return t;
+//                }
+//            );
+
+//            // Оповещаем о завершении задачи
+//            .thenAcceptAsync(
+//                t -> {
+//                    if (callback != null) {
+//                        log.trace(poolName + " callback");
+//                        callback.accept(t);
+//                    }
+//                }
+//            );
+
+//            // обрабатываем ошибки, возникшие в ходе оповещения о завершении задачи
+//            .handleAsync((t, throwable) -> {
+//                if (throwable != null) {
+//                    // Ловим ошибки в вызове callback.accept(t)
+//                    log.error(poolName + " error: failed in callback():" + throwable);
+//                }
+//                return t;
+//            });
     }
 
     public void shutdown() throws InterruptedException {

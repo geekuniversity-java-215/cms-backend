@@ -20,9 +20,16 @@
 
 
     <modules>
-        <module>core</module>
-        <module>protocol</module>
         <module>utils</module>
+        <module>mail</module>
+        <module>protocol</module>
+        <module>core/core-services</module>
+        <module>core/core-controllers</module>
+        <module>payment</module>
+        <module>geodata</module>
+        <module>cmsapp</module>
+        <module>auth-server</module>
+        <module>jrpc-client</module>
         <module>chat</module>
     </modules>
 
@@ -36,7 +43,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <org.projectlombok.version>1.18.12</org.projectlombok.version>
         <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
+        <io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
         <jrpc.protocol.version>0.1</jrpc.protocol.version>
+
+        <app.version>0.1</app.version>
     </properties>
 
 
@@ -101,6 +111,13 @@
             IntelliJ does not pick up the processor if it is not in the dependencies.
             There is already an open issue for IntelliJ see https://youtrack.jetbrains.com/issue/IDEA-150621
             -->
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${io.jsonwebtoken.version}</version>
         </dependency>
 
 

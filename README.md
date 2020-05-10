@@ -18,7 +18,7 @@ View -> Tool Windows -> Maven Projects
 ``` 
 Maven Projects -> Profiles
 ```    
-чекаем intellij-javadoc-fix  
+чекаем intellij-javadoc-fix (Для Intellij Idea 2019.3 и выше не надо) 
 
 Далее 
 ```   
@@ -28,7 +28,7 @@ utils -> Lifecycle -> install
 
 
 ### 2. Setup postgres
-Read  database/readme.txt 
+Read  infrastructure/database/readme.txt 
 
 
 ### 3. Setup profiles
@@ -36,7 +36,43 @@ Read  database/readme.txt
 ```
 ./install-properties.sh
 ```
-On windows 10 in powershell  
+В windows 10 в PowerShell  
 ```
 sh install-properties.sh
 ```
+
+### 2. git workflow
+
+1\. Основная ветка разработки - dev  
+
+2\. Для своего кода делаем отдельную ветку, ответвляясь от dev  
+
+```
+git checkout dev
+git checkout -b dev_имясвоейветки
+```
+
+3\. Для своего кода делаем unit-тесты
+(За основу брать уже сделанные для модуля core) 
+ 
+4\. Перед тем, как делать pull request запускаем тесты.
+```
+mvn test
+```
+У кого не установлен maven запускаем test  
+View -> Tool Windows -> Maven Projects
+```   
+cms-backend -> Lifecycle -> test
+``` 
+5\. Если упали свои или чужие тесты - исправляем свой код, 
+который что-то сломал.
+
+6\. Отправляем свою ветку в репозиторий.
+
+7\. Идем в jenkins, смотрим результаты сборки по вашему коммиту.
+Если сборка провалилась, см пункт 4. 
+
+
+6\. После того, как код принят и слит с dev, удаляем свою ветку локально
+(на удаленном репозитории удалять свою ветку не надо), 
+возвращаясь к пункту 1\. 
