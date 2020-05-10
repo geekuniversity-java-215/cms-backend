@@ -52,8 +52,8 @@ public class UserRegistrationLifeCycleTest {
             defaultProperties.getLogin().getPassword(),"Пользователь","Новый",
             "cmsbackendgeek@gmail.com","932494356678");
 
-        // Use here registrar login
-        authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.REGISTRAR);
+        // Use here anonymous login
+        authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.ANONYMOUS);
 
         ResponseEntity<String> registrarResponse = registrarRequest.registrate(newUserDto);
 
@@ -62,7 +62,6 @@ public class UserRegistrationLifeCycleTest {
         Assert.assertFalse("confirmToken is empty",  StringUtils.isBlank(confirmToken));
 
         log.info("confirmToken: {}", confirmToken);
-
 
         UnconfirmedUser newUser = unconfirmedUserService.findByUsername("newuser")
             .orElseThrow(() -> new RuntimeException("New UnconfirmedUser not persisted"));

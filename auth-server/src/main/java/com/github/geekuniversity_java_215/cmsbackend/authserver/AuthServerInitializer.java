@@ -51,15 +51,15 @@ public class AuthServerInitializer implements ApplicationRunner {
             userService.save(user);
         }
 
-        // frontend user that register new users  ---------------------
-        // registrar/registrar_password
-        if (!userService.findByUsername("registrar").isPresent()) {
-            user = new User("registrar",
-                "{bcrypt}$2y$10$hEAtx1Hu3cBCb46umeGvUeH1PmyJI4pxDRTsUixto67JSH5W4VI4W",
-                "Registrar", "Registrar", "registrar@mail.ru", "registrar");
-            user.getRoles().add(userRoleService.findByName(UserRole.REGISTRAR));
-            userService.save(user);
-        }
+//        // frontend user that register new users  ---------------------
+//        // registrar/registrar_password
+//        if (!userService.findByUsername("registrar").isPresent()) {
+//            user = new User("registrar",
+//                "{bcrypt}$2y$10$hEAtx1Hu3cBCb46umeGvUeH1PmyJI4pxDRTsUixto67JSH5W4VI4W",
+//                "Registrar", "Registrar", "registrar@mail.ru", "registrar");
+//            user.getRoles().add(userRoleService.findByName(UserRole.REGISTRAR));
+//            userService.save(user);
+//        }
 
         // demo users --------------------------------------------------
 

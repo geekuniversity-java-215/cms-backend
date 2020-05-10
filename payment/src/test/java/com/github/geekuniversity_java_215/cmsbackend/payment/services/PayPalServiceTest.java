@@ -42,7 +42,7 @@ class PayPalServiceTest {
 
     @Test
     void getPaymentDetails() {
-        log.info("Мир Труд Май");
+        //log.info("Мир Труд Май");
     }
 
     @Test

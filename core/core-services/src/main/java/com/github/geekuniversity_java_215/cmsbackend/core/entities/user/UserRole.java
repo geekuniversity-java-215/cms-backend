@@ -22,7 +22,7 @@ public class UserRole extends AbstractEntity {
     public static final String ANONYMOUS              = "ROLE_ANONYMOUS";
     public static final String RESOURCE               = "ROLE_RESOURCE";
     public static final String REFRESH                = "ROLE_REFRESH";
-    public static final String REGISTRAR              = "ROLE_REGISTRAR";
+    //public static final String REGISTRAR              = "ROLE_REGISTRAR";
     public static final String CONFIRM_REGISTRATION   = "ROLE_CONFIRM_REGISTRATION";
 
     public final static List<String> ROLE_NAMES = new ArrayList<>();
@@ -33,7 +33,7 @@ public class UserRole extends AbstractEntity {
         ROLE_NAMES.add(ANONYMOUS);
         ROLE_NAMES.add(RESOURCE);
         ROLE_NAMES.add(REFRESH);
-        ROLE_NAMES.add(REGISTRAR);
+        //ROLE_NAMES.add(REGISTRAR);
         ROLE_NAMES.add(CONFIRM_REGISTRATION);
     }
 

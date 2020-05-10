@@ -116,43 +116,43 @@ public class MultipleWebSecurityConfig {
     }
 
 
+//    /**
+//     * Registrar of new users
+//     * Authorisation: Basic
+//     */
+//    @Configuration
+//    @Order(3)
+//    public static class RegisterNewUserSecurityConfig extends WebSecurityConfigurerAdapter {
+//
+//        private final BasicAuthRequestFilter basicAuthRequestFilter;
+//
+//        public RegisterNewUserSecurityConfig(BasicAuthRequestFilter basicAuthRequestFilter) {
+//            this.basicAuthRequestFilter = basicAuthRequestFilter;
+//        }
+//
+//        @Override
+//        protected void configure(HttpSecurity http) throws Exception {
+//
+//            http.antMatcher("/registration/new").authorizeRequests().anyRequest().authenticated()
+//                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                    .and().csrf().disable()
+//                    .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+//        }
+//    }
+
+
     /**
-     * Registrar of new users
-     * Authorisation: Basic
-     */
-    @Configuration
-    @Order(3)
-    public static class RegisterNewUserSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        private final BasicAuthRequestFilter basicAuthRequestFilter;
-
-        public RegisterNewUserSecurityConfig(BasicAuthRequestFilter basicAuthRequestFilter) {
-            this.basicAuthRequestFilter = basicAuthRequestFilter;
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-
-            http.antMatcher("/registration/new").authorizeRequests().anyRequest().authenticated()
-                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and().csrf().disable()
-                    .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
-        }
-    }
-
-
-    /**
-     * Registration confirmation (link in @mail)
+     * Registrar of new users, registration confirmation
      * Authorisation: None
      */
     @Configuration
-    @Order(4)
+    @Order(3)
     public static class RegistrationConfirmationSecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.authorizeRequests().antMatchers("/registration/confirm").permitAll()
+            http.authorizeRequests().antMatchers("/registration/add", "/registration/confirm").permitAll()
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and().csrf().disable();
         }

@@ -32,7 +32,7 @@ public class RegistrarController {
 
 
     @PostMapping("/new")
-    @Secured({UserRole.REGISTRAR})
+    //@Secured({UserRole.REGISTRAR})
     public ResponseEntity<?> add(@RequestBody UnconfirmedUser newUser) {
 
         ResponseEntity<?> result; // ResponseEntity.badRequest().body("Bad user");

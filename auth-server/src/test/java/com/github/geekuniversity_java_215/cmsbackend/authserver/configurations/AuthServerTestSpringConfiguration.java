@@ -53,13 +53,13 @@ public class AuthServerTestSpringConfiguration {
         return result;
     }
 
-    @Bean(REGISTRAR)
-    JrpcClientProperties registrarProperties() {
-        JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
-        result.getLogin().setUsername("registrar");
-        result.getLogin().setPassword("registrar_password");
-        return result;
-    }
+//    @Bean(REGISTRAR)
+//    JrpcClientProperties registrarProperties() {
+//        JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
+//        result.getLogin().setUsername("registrar");
+//        result.getLogin().setPassword("registrar_password");
+//        return result;
+//    }
 
     @Bean(ANONYMOUS)
     JrpcClientProperties anonymousProperties() {
