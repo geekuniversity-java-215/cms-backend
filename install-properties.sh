@@ -83,7 +83,7 @@ if [[ ! -f "$FROM" ]]; then
     echo -e "mail.port=587" >> $FROM
     echo -e "mail.transport.protocol=smtp" >> $FROM
     echo -e "mail.smtp.auth=true" >> $FROM
-    echo -e "mail.smtp.startls.enable=true" >> $FROM
+    echo -e "mail.smtp.starttls.enable=true" >> $FROM
 
     cp -an $FROM $TO
 
