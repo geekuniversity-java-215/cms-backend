@@ -1,7 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.geodata.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.Transport;
@@ -10,12 +9,14 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
 
 @Service
 @Slf4j
+@Configuration
 public class GeoService {
 
     // Это вынести в настройки resource/geodata.properties
@@ -39,7 +40,8 @@ public class GeoService {
 
     public String getRoute(Order order) throws JsonProcessingException {
 
-        String fromPoint = restTemplate.getForObject(getGeocodeUrl(order.getFrom()), String.class);
+        String fromPoint = getGeocodeUrl(order.getFrom());
+        fromPoint = restTemplate.getForObject(fromPoint, String.class);
         String toPoint = restTemplate.getForObject(getGeocodeUrl(order.getTo()), String.class);
 
         String[] fromPoints = fromPoint.split("},");
@@ -66,7 +68,7 @@ public class GeoService {
         return restTemplate.getForObject(route, String.class);
     }
 
-    private static String getRouteUrl(Order order, Transport transport){
+    private static String getRouteUrl(Order order, Transport transport) {
 
         StringBuilder url = new StringBuilder();
         url.append(ROUTE_URL).append(transport).append("/");
@@ -75,7 +77,7 @@ public class GeoService {
         return url.toString();
     }
 
-    private static String getGeocodeUrl(Address address){
+    private static String getGeocodeUrl(Address address) {
         return CODE_URL + address.addressFormatToRequest() + "&format=json";
     }
 

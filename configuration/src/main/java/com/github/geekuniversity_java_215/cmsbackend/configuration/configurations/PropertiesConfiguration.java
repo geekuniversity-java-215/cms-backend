@@ -26,6 +26,7 @@ public class PropertiesConfiguration {
         "classpath:application.properties",
         "classpath:core.properties",
         "classpath:mail.properties",
+        "classpath:geodata.properties",
         "classpath:payment.properties"},
         ignoreResourceNotFound=true)
     static class DefaultProperties {}
