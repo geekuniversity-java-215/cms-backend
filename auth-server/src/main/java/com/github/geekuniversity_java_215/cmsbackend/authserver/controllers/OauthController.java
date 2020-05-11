@@ -4,7 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.A
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.RequestScopeBean;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.aop.ValidAuthenticationType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.BlackListResponse;
@@ -15,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 // handmadezz oauzz serverz v0.3 - старые взгляды сквозь новые дыры
@@ -46,14 +44,21 @@ public class OauthController {
      * Obtain new access and refresh tokens
      * <br>Allowed Basic Authorization only
      */
-    @PostMapping(value = "/get") // post-get :)
+    @PostMapping( value = "/get")
     @ValidAuthenticationType(AuthType.BASIC_AUTH)
     @Secured({UserRole.USER, UserRole.ADMIN})
-    public ResponseEntity<OauthResponse> getToken() {
-
-        OauthResponse result;
-        result = tokenService.issueTokens(getUsername(), null);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> getToken() {
+        try {
+            OauthResponse result;
+            result = tokenService.issueTokens(getUsername(), null);
+            return ResponseEntity.ok(result);
+        }
+        catch (Exception e) {
+            log.error("Adding new user error", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()
+                + ": " + e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -64,16 +69,24 @@ public class OauthController {
     @PostMapping(value = "/refresh")
     @ValidAuthenticationType(AuthType.REFRESH_TOKEN)
     @Secured(UserRole.REFRESH)
-    public ResponseEntity<OauthResponse> refreshToken() {
+    public ResponseEntity<?> refreshToken() {
 
-        OauthResponse result;
+        try {
 
-        RefreshToken refreshToken = requestScopeBean.getRefreshToken();
+            OauthResponse result;
+            RefreshToken refreshToken = requestScopeBean.getRefreshToken();
 
-        // Выдается пара токенов ACCESS + REFRESH
-        result = tokenService.issueTokens(getUsername(), refreshToken);
+            // Выдается пара токенов ACCESS + REFRESH
+            result = tokenService.issueTokens(getUsername(), refreshToken);
 
-        return ResponseEntity.ok(result);
+            return ResponseEntity.ok(result);
+        }
+        catch (Exception e) {
+            log.error("Adding new user error", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()
+                + ": " + e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -85,11 +98,20 @@ public class OauthController {
     @PostMapping(value = "/listblack")
     @ValidAuthenticationType({AuthType.ACCESS_TOKEN})
     @Secured({UserRole.RESOURCE, UserRole.ADMIN})
-    public ResponseEntity<BlackListResponse> getBlackList(@Param("from") Long from) {
+    public ResponseEntity<?> getBlackList(@Param("from") Long from) {
 
-        BlackListResponse result = new BlackListResponse();
-        result.setList(tokenService.getBlacklisted(from));
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        try {
+
+            BlackListResponse result = new BlackListResponse();
+            result.setList(tokenService.getBlacklisted(from));
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            log.error("Adding new user error", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()
+                + ": " + e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -97,7 +119,7 @@ public class OauthController {
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured({UserRole.USER, UserRole.ADMIN, UserRole.RESOURCE})
     public ResponseEntity<String> hello() {
-        return  ResponseEntity.ok("WEB SARVAR VERSUS APPLICATION SARVAR GRRREET YOU!");
+        return  ResponseEntity.ok("SERVLET CONTAINER GRRREET YOU!");
     }
 
 

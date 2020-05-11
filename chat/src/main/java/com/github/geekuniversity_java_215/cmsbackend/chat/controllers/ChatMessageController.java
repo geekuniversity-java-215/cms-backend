@@ -5,7 +5,7 @@ import com.github.geekuniversity_java_215.cmsbackend.chat.protocol.ChatMessageDt
 import com.github.geekuniversity_java_215.cmsbackend.chat.services.MessageService;
 import com.github.geekuniversity_java_215.cmsbackend.chat.utils.MessageMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 
 import java.security.Principal;
 
@@ -41,7 +42,7 @@ public class ChatMessageController {
                             @DestinationVariable Long orderId,
                             Principal principal) {
 
-        User user = userService.findByLogin(principal.getName())
+        User user = userService.findByUsername(principal.getName())
             .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
@@ -56,10 +57,15 @@ public class ChatMessageController {
                         SimpMessageHeaderAccessor headerAccessor,
                         Principal principal) {
 
-        User user = userService.findByLogin(principal.getName())
+        User user = userService.findByUsername(principal.getName())
             .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
+
+        //FixMe
+        Assert.isTrue(headerAccessor!= null &&
+            headerAccessor.getSessionAttributes() != null , "headerAccessor == null || " +
+            "headerAccessor.getSessionAttributes == null");
 
         headerAccessor.getSessionAttributes().put("username", user.getFullName());
         headerAccessor.getSessionAttributes().put("order", orderId);

@@ -1,0 +1,81 @@
+package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations;
+
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.oauth.TokenDto;
+import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
+
+import javax.annotation.PostConstruct;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
+@Data
+public class JrpcClientProperties {
+
+    public static final String API_VERSION = "1.0";
+
+    private Credentials credentials;
+
+    private Server authServer;
+
+    private Server resourceServer;
+
+    private String apiURL;
+
+    public JrpcClientProperties() {
+        credentials = this.new Credentials();
+        authServer = this.new Server();
+        resourceServer = this.new Server();
+    }
+
+    // =========================================================
+
+    @Data
+    public class Credentials {
+
+        private String username;
+        private String password;
+        private String clientId;
+        private String clientSecret;
+
+        private TokenDto accessToken = TokenDto.EMPTY;
+        private TokenDto refreshToken = TokenDto.EMPTY;
+
+        @Override
+        public String toString() {
+            return "Credentials{" +
+                "username='" + username + '\'' +
+                ", clientId='" + clientId + '\'' +
+                '}';
+        }
+    }
+
+    @Data
+    public class Server {
+
+        private String hostName;
+        private int port;
+        @Override
+        public String toString() {
+            return "Server{" +
+                "hostName='" + hostName + '\'' +
+                ", port=" + port +
+                '}';
+        }
+    }
+    
+    public void build() {
+        apiURL = String.format("http://%1$s:%2$s/api/%3$s/",
+            this.resourceServer.hostName,
+            this.resourceServer.port,
+            API_VERSION);
+    }
+}
+
+
+

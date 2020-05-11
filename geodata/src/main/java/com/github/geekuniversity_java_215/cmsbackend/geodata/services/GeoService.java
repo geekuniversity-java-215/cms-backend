@@ -3,12 +3,13 @@ package com.github.geekuniversity_java_215.cmsbackend.geodata.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.Transport;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.geodata.configurations.GeodataConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
 
@@ -16,19 +17,13 @@ import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
 @Slf4j
 public class GeoService {
 
-    // Это вынести в настройки resource/geodata.properties
-    private static final String ROUTE_URL = "http://router.project-osrm.org/route/v1/";
-
-    // https://nominatim.org/release-docs/develop/api/Search/
-    // Это вынести в настройки resource/geodata.properties
-    private static final String CODE_URL = "https://nominatim.openstreetmap.org/search?q=100";
-
     private final RestTemplate restTemplate = RestTemplateFactory.getRestTemplate(10000);
-
+    private final GeodataConfiguration geoConf;
     private final ObjectMapper mapper;
 
     @Autowired
-    public GeoService(ObjectMapper mapper) {
+    public GeoService(GeodataConfiguration geoConf, ObjectMapper mapper) {
+        this.geoConf = geoConf;
         this.mapper = mapper;
     }
 
@@ -38,12 +33,16 @@ public class GeoService {
         String fromPoint = restTemplate.getForObject(getGeocodeUrl(order.getFrom()), String.class);
         String toPoint = restTemplate.getForObject(getGeocodeUrl(order.getTo()), String.class);
 
+        //FixMe
+        Assert.isTrue(fromPoint != null, "fromPoint == null");
+        Assert.isTrue(toPoint != null, "fromPoint == null");
+
         String[] fromPoints = fromPoint.split("},");
         String[] toPoints = toPoint.split("},");
         String primaryPointFrom = fromPoints[0].substring(1) + "}";
         String primaryPointTo = toPoints[0].substring(1) + "}";
 
-        JsonNode nodeFrom = null, nodeTo = null;
+        JsonNode nodeFrom, nodeTo;
 
         nodeFrom = mapper.readTree(primaryPointFrom);
         nodeTo = mapper.readTree(primaryPointTo);
@@ -58,21 +57,23 @@ public class GeoService {
         order.getTo().setLongitude(lonTo);
         order.getTo().setLatitude(latTo);
 
-        String route = getRouteUrl(order, Transport.DRIVING);
+        String route = getRouteUrl(order);
         return restTemplate.getForObject(route, String.class);
     }
 
-    private static String getRouteUrl(Order order, Transport transport){
+    // ==================================================================
+
+    private String getRouteUrl(Order order){
 
         StringBuilder url = new StringBuilder();
-        url.append(ROUTE_URL).append(transport).append("/");
+        url.append(geoConf.getRouteUrl()).append(geoConf.getTransportType()).append("/");
         url.append(order.getFrom().getLongitude()).append(",").append(order.getFrom().getLatitude()).append(";");
         url.append(order.getTo().getLongitude()).append(",").append(order.getTo().getLatitude());
         return url.toString();
     }
 
-    private static String getGeocodeUrl(Address address){
-        return CODE_URL + address.addressFormatToRequest() + "&format=json";
+    private String getGeocodeUrl(Address address){
+        return geoConf.getReverseGeocodeUrl() + address.addressFormatToRequest() + "&format=json";
     }
 
 }

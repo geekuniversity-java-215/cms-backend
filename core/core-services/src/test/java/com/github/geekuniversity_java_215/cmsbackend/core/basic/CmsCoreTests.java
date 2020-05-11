@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.basic;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
@@ -80,14 +79,9 @@ class CmsCoreTests {
         userService.save(user);
         Client client = new Client(user, "КЛИЕНТ_DATA");
         clientService.save(client);
-        
-
 
         acc = accountService.findById(2L).get();
         log.info("loaded: {} ok!", acc);
-
-
-
 
         Order o = new Order();
         o.setCourier(courier);

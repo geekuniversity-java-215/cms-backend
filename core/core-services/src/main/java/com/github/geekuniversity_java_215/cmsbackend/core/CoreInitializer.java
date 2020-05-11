@@ -1,7 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core;
 
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 
 @Component
-@Order(-1000)
+@Order(-40000)
 @Slf4j
 public class CoreInitializer implements ApplicationRunner {
 

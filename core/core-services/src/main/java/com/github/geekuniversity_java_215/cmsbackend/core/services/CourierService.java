@@ -4,8 +4,10 @@ import com.github.geekuniversity_java_215.cmsbackend.core.repositories.CourierRe
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class CourierService extends BaseRepoAccessService<Courier> {
 
     private final CourierRepository courierRepository;

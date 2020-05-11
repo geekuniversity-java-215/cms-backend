@@ -3,8 +3,8 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.controllers;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.aop.ValidAuthenticationType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,18 +31,18 @@ public class AdminController {
     @PostMapping("/test")
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured(UserRole.ADMIN)
-	public ResponseEntity<String> hello() {
-        return  ResponseEntity.ok("Hello World");
+	public ResponseEntity<String> test() {
+        return  ResponseEntity.ok("hello world");
 	}
 
 
     @PostMapping("/user/revoke_token")
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured(UserRole.ADMIN)
-    public ResponseEntity<String> revokeTokenByLogin(@RequestBody String login) {
+    public ResponseEntity<String> revokeTokenByUsername(@RequestBody String username) {
 
         HttpStatus result;
-        User user = userService.findByLogin(login).orElse(null);
+        User user = userService.findByUsername(username).orElse(null);
         
         if (user == null) {
             result = HttpStatus.NOT_FOUND;

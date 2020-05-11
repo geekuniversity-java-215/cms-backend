@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 public class SecurityUtils {
 
     public Set<GrantedAuthority> rolesToGrantedAuthority(Set<String> authorities) {
-        //noinspection unchecked
         return authorities
                 .stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }

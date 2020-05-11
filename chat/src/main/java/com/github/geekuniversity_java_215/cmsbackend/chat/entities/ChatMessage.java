@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.chat.entities;
 
 import com.github.geekuniversity_java_215.cmsbackend.chat.protocol.MessageType;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -2,10 +2,12 @@ package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRoleRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserRoleService extends BaseRepoAccessService<UserRole> {
 
     private final UserRoleRepository userRoleRepository;

@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.UnconfirmedUser;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UnconfirmedUserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
@@ -21,17 +21,17 @@ public class UnconfirmedUserService extends BaseRepoAccessService<UnconfirmedUse
         this.unconfirmedUserRepository = unconfirmedUserRepository;
     }
 
-    public Optional<UnconfirmedUser> findByLogin(String login) {
+    public Optional<UnconfirmedUser> findByUsername(String username) {
         Optional<UnconfirmedUser> result = Optional.empty();
-        if (!StringUtils.isBlank(login)) {
-            result = unconfirmedUserRepository.findOneByLogin(login);
+        if (!StringUtils.isBlank(username)) {
+            result = unconfirmedUserRepository.findOneByUsername(username);
         }
         return result;
     }
 
     /**
-     * Check if user already exists by login OR FullName OR email OR phoneNumber
-     * @param user
+     * Check if user already exists by username OR FullName OR email OR phoneNumber
+     * @param newUser
      * @return
      */
     public boolean checkIfExists(UnconfirmedUser newUser) {

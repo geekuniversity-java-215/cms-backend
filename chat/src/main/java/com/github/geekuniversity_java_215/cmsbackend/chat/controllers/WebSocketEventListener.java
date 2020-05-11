@@ -38,7 +38,7 @@ public class WebSocketEventListener {
         Map<String, Object> attributes = headerAccessor.getSessionAttributes();
 
         if (attributes == null ||
-            !attributes.containsKey("login") ||
+            !attributes.containsKey("username") ||
             !attributes.containsKey("order")) {
             throw new RuntimeException("Required headers 'username' || 'order' not found");
         }
@@ -50,7 +50,7 @@ public class WebSocketEventListener {
             log.info("User Disconnected : " + username);
 
             ChatMessageDto messageDto = new ChatMessageDto();
-            messageDto.setUserName(username);
+            messageDto.setUsername(username);
             messageDto.setType(MessageType.LEAVE);
             messageDto.setOrderId(orderId);
 

@@ -42,5 +42,8 @@ mail-dev.properties
 payment.properties
 payment-dev.properties
 application-dev.properties
+jrpc-client-dev.properties
+auth-server-dev.properties
+geodata-dev.properties
 logback-spring-dev.xml
 

@@ -4,10 +4,12 @@ import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCod
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.CurrencyConverterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
 @Service
+@Transactional
 public class CurrencyConverterService {
 
     private CurrencyConverterRepository currencyConverterRepository;

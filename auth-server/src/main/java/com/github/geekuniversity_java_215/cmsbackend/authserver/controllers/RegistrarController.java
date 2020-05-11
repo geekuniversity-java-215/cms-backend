@@ -1,121 +1,89 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.controllers;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.UnconfirmedUser;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.service.JwtTokenService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.service.UnconfirmedUserService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
-import io.jsonwebtoken.Claims;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.properties.AuthServerConfig;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.service.RegistrarService;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import static com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpringConfiguration.ISSUER;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/registration/")
 @Slf4j
 public class RegistrarController {
 
-    private final UserService userService;
-    private final UnconfirmedUserService unconfirmedUserService;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtTokenService jwtTokenService;
-    private final Validator validator;
+    private final RegistrarService registrarService;
+    private final AuthServerConfig authServerConfig;
 
-    public RegistrarController(UserService userService, UnconfirmedUserService unconfirmedUserService,
-                               PasswordEncoder passwordEncoder, JwtTokenService jwtTokenService,
-                               Validator validator) {
-        this.userService = userService;
-        this.unconfirmedUserService = unconfirmedUserService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenService = jwtTokenService;
-        this.validator = validator;
+    public RegistrarController(RegistrarService registrarService, AuthServerConfig authServerConfig) {
+        this.registrarService = registrarService;
+        this.authServerConfig = authServerConfig;
     }
 
 
     @PostMapping("/new")
-    @Secured({UserRole.REGISTRAR})
-    public ResponseEntity<String> add(@RequestBody UnconfirmedUser newUser) {
+    //@Secured({UserRole.REGISTRAR})
+    public ResponseEntity<?> add(@RequestBody UnconfirmedUser newUser) {
 
-
-
-        Set<ConstraintViolation<UnconfirmedUser>> violations = validator.validate(newUser);
-        if (violations.size() != 0) {
-            throw new ConstraintViolationException("User validation failed", violations);
-        }
-
-        ResponseEntity<String> result = ResponseEntity.badRequest().body("Bad user");
-
-
+        ResponseEntity<?> result; // ResponseEntity.badRequest().body("Bad user");
 
         try {
-            // user already exists in User or in UnconfirmedUser
-            if (userService.checkIfExists(newUser.toUser()) ||
-                unconfirmedUserService.checkIfExists(newUser)) {
-
-                result = ResponseEntity.badRequest().body("User already exists");
-                return result;
-            }
-
-            log.info("Adding new user: {}", newUser);
-            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-
-            Set<String> userRoles = new HashSet<>(Collections.singletonList(UserRole.CONFIRM_REGISTRATION));
-
-            String registrantToken = jwtTokenService.createJWT(
-                TokenType.REFRESH,
-                newUser.getLogin(),
-                ISSUER,
-                newUser.getLogin(),
-                userRoles,
-                TokenType.CONFIRM.getTtl());
-
-            unconfirmedUserService.save(newUser);
-
-            //ToDo: send email to user to complete registration
-
+            String registrantToken = registrarService.registrate(newUser);
             // toDo: remove returning registrantToken after DEBUG
             result = ResponseEntity.ok(registrantToken);
         }
+        catch (ConstraintViolationException e) {
+            log.error("User validation error", e);
+            String message = "User validation error: " + e.getConstraintViolations().toString();
+            result = ResponseEntity.badRequest().body(message);
+        }
+        catch(UserAlreadyExistsException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
         catch (Exception e) {
             log.error("Adding new user error", e);
+            result = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase() + e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return result;
     }
 
 
     @GetMapping("/confirm")
-    public ResponseEntity<String> confirm(@RequestParam("token") String token) {
+    public ResponseEntity<?> confirm(@RequestParam("token") String token) {
 
-        ResponseEntity<String> result = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        ResponseEntity<?> result; //= ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         try {
+            registrarService.confirm(token);
 
-            Claims claims = jwtTokenService.decodeJWT(token);
-            String login = claims.getSubject();
-            result = ResponseEntity.ok("Registration successful");
-            // JwtException
+            // отправляем пользователя на login page фронта
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create(authServerConfig.getRedirectUrl()));
+            result = new ResponseEntity<>(headers, HttpStatus.FOUND);
+        }
+        catch (JwtException e) {
+            result = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        catch(UsernameNotFoundException e) {
 
-            // ToDo: move UnconfirmedUser to User
-
-            // ToDo: redirect user to cms app front page
+            result = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Registration request not found / already registered ?");
         }
         catch (Exception e) {
-            log.error("confirm error", e);
+            log.error("Confirm new user error", e);
+            result = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase() + ": " +  e.getMessage());
         }
-
-
         return result;
     }
 

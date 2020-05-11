@@ -1,12 +1,13 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.entities.CurrencyConverter.sevices;
+package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.data.currencyconverter.ValCurs;
+import com.github.geekuniversity_java_215.cmsbackend.core.data.currencyconverter.Valute;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.CurrencyConverter.pogo.ValCurs;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.CurrencyConverter.pogo.Valute;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.xml.bind.JAXBContext;
@@ -23,6 +24,7 @@ import java.util.Objects;
 //  перенести CBR_URL в .properties
 
 @Service
+@Transactional
 @Slf4j
 public class CurrencyImportService {
     final private static String CBR_URL = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=";
@@ -46,9 +48,8 @@ public class CurrencyImportService {
             JAXBContext jaxbContext = JAXBContext.newInstance(ValCurs.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            ValCurs curs = (ValCurs) jaxbUnmarshaller.unmarshal(url1);
 
-            return curs;
+            return (ValCurs) jaxbUnmarshaller.unmarshal(url1);
         } catch (Exception e) {
             // swallowing exception
             log.error("CurrencyImportService.requestValCurs failed:", e);
@@ -65,6 +66,7 @@ public class CurrencyImportService {
         if (Objects.isNull(curs)){
             throw  new IllegalArgumentException("not course on date" + date);
         }
+
 
         Valute[] valArray = curs.valutes.toArray(new Valute[0]);
 

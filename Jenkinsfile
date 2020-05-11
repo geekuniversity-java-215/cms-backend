@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         MAIL_URL=credentials('mail_url')
+        PAYMENT_URL=credentials('payment_url')
         //AWS_SECRET_ACCESS_KEY=credentials('mail_password')
     }
         
@@ -31,12 +32,22 @@ pipeline {
                 sh 'git clean -fdx -e /dependencies'
                 sh './install-properties.sh'
 
+                // mail credentials
                 sh '''
                     set -x
                     pwd
                     wget "$MAIL_URL" -O mail.resources.zip
                     unzip -o mail.resources.zip -d mail/src/main/resources/
                     rm mail.resources.zip
+                '''
+
+                // payment credentials
+                sh '''
+                    set -x
+                    pwd
+                    wget "$PAYMENT_URL" -O payment.resources.zip
+                    unzip -o payment.resources.zip -d payment/src/main/resources/
+                    rm payment.resources.zip
                 '''
             }
         }

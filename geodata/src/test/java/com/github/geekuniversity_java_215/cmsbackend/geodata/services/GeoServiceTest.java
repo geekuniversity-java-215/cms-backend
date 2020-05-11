@@ -17,18 +17,20 @@ class GeoServiceTest {
     private GeoService geoService;
 
 
-    @Disabled // Походу osrm в дауне
     @Test
     void getRoute() throws JsonProcessingException {
 
         Address from = new Address("Санкт-Петербург", "Кондратьевский", 70, 2, 0);
-        Address to = new Address("Москва", "Красная площадь", 1, 0, 0);
+        Address to = new Address("Москва", "Порядковый переулок", 21, 0, 0);
 
         Order order = new Order();
         order.setFrom(from);
         order.setTo(to);
 
+        // Если не упало по CONNECTION_REFUSED или 404 то уже хорошо.
         String result = geoService.getRoute(order);
+
+        //ToDo: доделать валидацию теста
         log.info(result);
     }
 }

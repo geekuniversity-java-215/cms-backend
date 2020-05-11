@@ -30,6 +30,16 @@
             <version>${app.version}</version>
             <scope>compile</scope>
         </dependency>
+
+        <!--module protocol -->
+       <!-- for test purposes -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>jrpc-client</artifactId>
+            <version>0.1</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 

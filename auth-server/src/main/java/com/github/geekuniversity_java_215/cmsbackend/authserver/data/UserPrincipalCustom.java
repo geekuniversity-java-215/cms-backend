@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.data;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,7 +27,7 @@ public class UserPrincipalCustom implements UserDetailsCustom {
     }
 
     @Override
-    public String getUsername() {return user.getLogin();}
+    public String getUsername() {return user.getUsername();}
 
     @Override
     public boolean isEnabled() {
@@ -51,5 +51,6 @@ public class UserPrincipalCustom implements UserDetailsCustom {
 
     // -------------------------------------------------------------
 
-    public User getUser() { return user; }
+    // Better don't do this - user fields  may change during request scope
+    // public User getUser() { return user; }
 }

@@ -4,6 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.Reposito
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import java.lang.annotation.*;
 
@@ -17,5 +18,9 @@ import java.lang.annotation.*;
 @EnableJpaRepositories(basePackages = "com.github.geekuniversity_java_215.cmsbackend",
                        repositoryBaseClass = RepositoryWithEntityManager.class)
 @EntityScan(basePackages = {"com.github.geekuniversity_java_215.cmsbackend"})
+@EnableGlobalMethodSecurity(
+    prePostEnabled = true,
+    securedEnabled = true,
+    jsr250Enabled = true)
 public @interface MultimoduleSpringBootApplication {
 }

@@ -3,7 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.services;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +23,10 @@ public class UserService extends BaseRepoAccessService<User> {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> findByUsername(String username) {
         Optional<User> result = Optional.empty();
-        if (!StringUtils.isBlank(login)) {
-            result = userRepository.findOneByLogin(login);
+        if (!StringUtils.isBlank(username)) {
+            result = userRepository.findOneByUsername(username);
         }
         return result;
     }
@@ -47,7 +47,7 @@ public class UserService extends BaseRepoAccessService<User> {
     }
 
     /**
-     * Check if user already exists by login OR FullName OR email OR phoneNumber
+     * Check if user already exists by username OR FullName OR email OR phoneNumber
      * @param user
      * @return
      */

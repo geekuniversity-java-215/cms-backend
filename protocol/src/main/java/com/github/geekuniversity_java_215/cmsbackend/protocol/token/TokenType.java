@@ -11,7 +11,7 @@ public enum TokenType {
     REFRESH("refresh_token", 3600*24*30),
     CONFIRM("confirm_token", 3600*24);
 
-    private static Map<String, TokenType> values = new HashMap<>();
+    private static final Map<String, TokenType> values = new HashMap<>();
 
     static {
         for (TokenType t :TokenType.values()) {
@@ -40,6 +40,10 @@ public enum TokenType {
     }
 
     public static TokenType getByName(String name) {
+
+        if (!values.containsKey(name)) {
+            throw new IllegalArgumentException("Token by name " + name + "not found");
+        }
         return values.get(name);
     }
 

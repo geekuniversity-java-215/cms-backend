@@ -1,120 +1,75 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.ClientProperties;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.request.JrpcRequest;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
-import java.lang.invoke.MethodHandles;
 import java.net.URI;
 
 @Component
 @Scope("prototype")
 @Slf4j
-public abstract class AbstractRequest {
+public class AbstractRequest {
 
-    //private final static String JRPC_VERSION = "2.0";
-    private final static String API_VERSION = "1.0";
-
-
-    protected ClientProperties clientProperties;
+    protected JrpcClientProperties clientProp;
     protected RestTemplate restTemplate;
-    protected OauthRequest oauthRequest;
-    protected ObjectMapper objectMapper;
-
-    private String apiURL;
-
 
     @Autowired
-    public void setClientProperties(ClientProperties clientProperties) {
-        this.clientProperties = clientProperties;
+    protected void setClientProp(@Qualifier("jrpcClientProperties")JrpcClientProperties clientProp) {
+        this.clientProp = clientProp;
     }
-
     @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
+    protected void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    @Autowired
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
+    protected <K, T> ResponseEntity<T> performRequest(String uri,
+                                                      K body,
+                                                      Class<T> returnClass,
+                                                      HttpHeaders headers,
+                                                      HttpMethod httpMethod) {
 
-    @Autowired
-    public void setOauthRequest(OauthRequest oauthRequest) {
-        this.oauthRequest = oauthRequest;
-    }
+        headers = getHeaders(headers);
+        RequestEntity<K> requestEntity = RequestEntity.method(httpMethod, URI.create(uri)).headers(headers).body(body);
 
+        log.debug("REQUEST : " + requestEntity);
+        ResponseEntity<T> result = restTemplate.exchange(requestEntity, returnClass);
+        log.debug("RESPONSE: HTTP " + result.getStatusCode().toString() + " " + result.getBody());
 
-
-    @PostConstruct
-    private void postConstruct() {
-        apiURL = String.format("http://%1$s:%2$s/api/%3$s/",
-                this.clientProperties.getResourceServer().getHostName(),
-                this.clientProperties.getResourceServer().getPort(),
-                API_VERSION);
-
-    }
-
-    // --------------------------------------------------------------------
-
-
-
-    protected JsonNode performRequest(long id, String uri, Object params) {
-
-        ClientProperties.Credentials clientCredentials = clientProperties.getCredentials();
-
-        // Oauth2.0 authorization
-        oauthRequest.authorize();
-
-
-        JsonNode result;
-
-        // JrpcRequest не был запихнут в @Bean //context.getBean(JrpcRequest.class); поэтому new()
-        JrpcRequest jrpcRequest = new JrpcRequest();
-        jrpcRequest.setMethod(uri);
-        jrpcRequest.setId(id);
-        jrpcRequest.setParams(objectMapper.valueToTree(params));
-
-        String json;
-        try {
-            json = objectMapper.writeValueAsString(jrpcRequest);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        log.debug("REQUEST\n" + json);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + clientCredentials.getAccessToken());
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        RequestEntity<String> requestEntity = RequestEntity
-                .post(URI.create(apiURL))
-                .headers(headers)
-                .body(json);
-
-        ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
-
-        log.debug("HTTP " + response.getStatusCode().toString() + "\n" + response.getBody());
-        try {
-            result = objectMapper.readTree(response.getBody()).get("result");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
         return result;
     }
 
+    protected <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass, HttpHeaders headers) {
+        return performRequest(uri, body, returnClass, headers, HttpMethod.POST);
+    }
+
+    protected <K, T> ResponseEntity<T> performRequest(String uri, K body, Class<T> returnClass) {
+        return performRequest(uri, body, returnClass, null, HttpMethod.POST);
+    }
+
+    // ==================================================================================
+
+    protected HttpHeaders getHeaders(HttpHeaders headers) {
+        return headers == null ? new HttpHeaders() : headers;
+    }
 
 }
+
+
+
+//        if(headers.containsKey(HttpHeaders.AUTHORIZATION) &&
+//            !headers.containsKey(HttpHeaders.CONTENT_TYPE)) {
+//            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        }

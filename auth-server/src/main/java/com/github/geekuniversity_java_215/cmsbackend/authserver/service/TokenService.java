@@ -5,14 +5,15 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.RefreshTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.BlacklistedToken;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UnconfirmedUserRepository;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.http.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
+import com.github.geekuniversity_java_215.cmsbackend.utils.services.JwtTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -57,30 +58,29 @@ public class TokenService {
     /**
      * Create new token, delete previous(on refreshing)
      *
-     * @param login login. Also maybe need to add @mail
+     * @param username username. Also maybe need to add @mail
      * @param refreshToken current refresh_token if available
      * @return
      */
-    public OauthResponse issueTokens(String login, RefreshToken refreshToken) {
+    public OauthResponse issueTokens(String username, RefreshToken refreshToken) {
 
         //boolean doRefresh = refreshToken != null;
 
         RefreshToken oldRefreshToken = refreshToken;
-        AccessToken accessToken = null;
+        AccessToken accessToken;
         //
-        String accessTokenString = null;
-        String refreshTokenString = null;
+        String accessTokenString;
+        String refreshTokenString;
         //
         //
         // find user
-        User user = userService.findByLogin(login)
-                .orElseThrow(() -> new UsernameNotFoundException("User doesn't not exists: " + login));
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User doesn't not exists: " + username));
         
 
         // 1. Refresh Token -------------------------------------------------------------------
-
-        long ttl = TokenType.REFRESH.getTtl();
-        Instant expiredAt = Instant.now().plusSeconds(ttl);
+        TokenType tokenType = TokenType.REFRESH;
+        Instant expiredAt = Instant.now().plusSeconds(tokenType.getTtl());
 
         refreshToken = new RefreshToken(user, expiredAt);
         refreshToken = refreshTokenRepository.save(refreshToken);
@@ -88,12 +88,12 @@ public class TokenService {
         Set<String> refreshRoles = new HashSet<>(Collections.singletonList(UserRole.REFRESH));
 
         refreshTokenString = jwtTokenService.createJWT(
-                TokenType.REFRESH, refreshToken.getId().toString(), ISSUER, user.getLogin(), refreshRoles, ttl);
+            tokenType, refreshToken.getId().toString(), ISSUER, user.getUsername(), refreshRoles);
 
         // 2. Access Token ---------------------------------------------------------------------
 
-        ttl = TokenType.ACCESS.getTtl();
-        expiredAt = Instant.now().plusSeconds(TokenType.ACCESS.getTtl());
+        tokenType = TokenType.ACCESS;
+        expiredAt = Instant.now().plusSeconds(tokenType.getTtl());
         accessToken = new AccessToken(refreshToken, expiredAt);
         refreshToken.setAccessToken(accessToken);
         accessTokenRepository.save(accessToken);
@@ -103,7 +103,7 @@ public class TokenService {
                 user.getRoles().stream().map(UserRole::getName).collect(Collectors.toSet());
 
         accessTokenString = jwtTokenService.createJWT(
-                TokenType.ACCESS, accessToken.getId().toString(), ISSUER, user.getLogin(), roles, ttl);
+            tokenType, accessToken.getId().toString(), ISSUER, user.getUsername(), roles);
 
         // Delete here deprecated refresh_token and access_token, no blacklisting
         if (oldRefreshToken != null) {

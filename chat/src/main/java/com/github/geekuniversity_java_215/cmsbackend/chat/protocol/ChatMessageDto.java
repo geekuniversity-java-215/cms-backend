@@ -9,7 +9,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 public class ChatMessageDto implements Serializable {
-    private String userName;
+    private String username;
     private String content;
     private MessageType type;
     private Long orderId;

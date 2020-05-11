@@ -4,8 +4,10 @@ import com.github.geekuniversity_java_215.cmsbackend.core.repositories.ClientRep
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ClientService extends BaseRepoAccessService<Client> {
 
     private final ClientRepository clientRepository;

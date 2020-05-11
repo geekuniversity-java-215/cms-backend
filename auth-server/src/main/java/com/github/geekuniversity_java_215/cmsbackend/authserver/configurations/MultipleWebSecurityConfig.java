@@ -1,8 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filter.BasicAuthRequestFilter;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filter.BearerRequestFilter;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BasicAuthRequestFilter;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BearerRequestFilter;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,14 +20,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import java.lang.invoke.MethodHandles;
 
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-    prePostEnabled = true,
-    securedEnabled = true,
-    jsr250Enabled = true)
-
-
 public class MultipleWebSecurityConfig {
 
     private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -64,47 +56,12 @@ public class MultipleWebSecurityConfig {
         return result;
     }
 
-
-
-    /**
-     * Administration
-     * Authorisation: Basic + Bearer
-     */
-    @Configuration
-    @Order(1)
-    public static class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        private final BearerRequestFilter bearerRequestFilter;
-        private final BasicAuthRequestFilter basicAuthRequestFilter;
-
-        @Autowired
-        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter, BasicAuthRequestFilter basicAuthRequestFilter) {
-            this.bearerRequestFilter = bearerRequestFilter;
-            this.basicAuthRequestFilter = basicAuthRequestFilter;
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-
-            http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().csrf().disable()
-                .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
-                .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
-
-
-                //.addFilterAfter(bearerRequestFilter, LogoutFilter.class)
-        }
-    }
-
-
-
     /**
      * Token operations
      * Authorisation: Basic + Bearer
      */
     @Configuration
-    @Order(2)
+    @Order(1)
     public static class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final BearerRequestFilter bearerRequestFilter;
@@ -129,43 +86,73 @@ public class MultipleWebSecurityConfig {
     }
 
 
+
     /**
-     * Registrar of new users
-     * Authorisation: Basic
+     * Administration
+     * Authorisation: Bearer
      */
     @Configuration
-    @Order(3)
-    public static class RegisterNewUserSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Order(2)
+    public static class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        private final BasicAuthRequestFilter basicAuthRequestFilter;
+        private final BearerRequestFilter bearerRequestFilter;
+        //private final BasicAuthRequestFilter basicAuthRequestFilter;
 
-        public RegisterNewUserSecurityConfig(BasicAuthRequestFilter basicAuthRequestFilter) {
-            this.basicAuthRequestFilter = basicAuthRequestFilter;
+        @Autowired
+        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter) {
+            this.bearerRequestFilter = bearerRequestFilter;
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.antMatcher("/registration/new").authorizeRequests().anyRequest().authenticated()
-                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and().csrf().disable()
-                    .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+            http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().csrf().disable()
+                .addFilterAfter(bearerRequestFilter, LogoutFilter.class);
+
+            //.addFilterAfter(bearerRequestFilter, LogoutFilter.class)
         }
     }
 
 
+//    /**
+//     * Registrar of new users
+//     * Authorisation: Basic
+//     */
+//    @Configuration
+//    @Order(3)
+//    public static class RegisterNewUserSecurityConfig extends WebSecurityConfigurerAdapter {
+//
+//        private final BasicAuthRequestFilter basicAuthRequestFilter;
+//
+//        public RegisterNewUserSecurityConfig(BasicAuthRequestFilter basicAuthRequestFilter) {
+//            this.basicAuthRequestFilter = basicAuthRequestFilter;
+//        }
+//
+//        @Override
+//        protected void configure(HttpSecurity http) throws Exception {
+//
+//            http.antMatcher("/registration/new").authorizeRequests().anyRequest().authenticated()
+//                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                    .and().csrf().disable()
+//                    .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+//        }
+//    }
+
+
     /**
-     * Registration confirmation (link in @mail)
+     * Registrar of new users, registration confirmation
      * Authorisation: None
      */
     @Configuration
-    @Order(4)
+    @Order(3)
     public static class RegistrationConfirmationSecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.authorizeRequests().antMatchers("/registration/confirm").permitAll()
+            http.authorizeRequests().antMatchers("/registration/add", "/registration/confirm").permitAll()
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and().csrf().disable();
         }
