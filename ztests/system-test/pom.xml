@@ -1,0 +1,44 @@
+<?xmjrpc-client.propertiesl version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cms-backend</artifactId>
+        <groupId>com.github.geekuniversity_java_215</groupId>
+        <version>0.1</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.geekuniversity_java_215.tests</groupId>
+    <artifactId>system-test</artifactId>
+    <description>Subsystem tests</description>
+
+    <dependencies>
+        <!--module protocol -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>protocol</artifactId>
+            <version>0.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--module jrpc-client -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>jrpc-client</artifactId>
+            <version>0.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--module utils -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>utils</artifactId>
+            <version>0.1</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -33,13 +33,13 @@
             <scope>runtime</scope>
         </dependency>
 
-<!--        &lt;!&ndash;module configuration &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.github.geekuniversity_java_215</groupId>-->
-<!--            <artifactId>configuration</artifactId>-->
-<!--            <version>${app.version}</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
+        <!--module configuration -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>configuration</artifactId>
+            <version>${app.version}</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!--module protocol -->
         <dependency>

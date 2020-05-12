@@ -1,20 +1,14 @@
-package com.github.geekuniversity_java_215.cmsbackend.authserver.lifecycle;
+package com.github.geekuniversity_java_215.cmsbackend.tests.system_test.lifecycle;
 
-import com.github.geekuniversity_java_215.cmsbackend.authserver.AuthServerApplication;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthServerTestSpringConfiguration;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.service.UnconfirmedUserService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.confirm.ConfirmRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.oauth.OauthTestRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.RegistrarRequest;
 import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.user.UnconfirmedUserDto;
+import com.github.geekuniversity_java_215.cmsbackend.tests.system_test.configurations.SystemTestSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +17,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Disabled
-@SpringBootTest(classes = AuthServerApplication.class)
+@SpringBootTest
 @Slf4j
 public class UserRegistrationLifeCycleTest {
 
     @Autowired
-    private AuthServerTestSpringConfiguration authServerTestSpringConfiguration;
+    private SystemTestSpringConfiguration userConfig;
     @Autowired
     private RegistrarRequest registrarRequest;
     @Autowired
     private ConfirmRequest confirmRequest;
-    @Autowired
-    private UnconfirmedUserService unconfirmedUserService;
-    @Autowired
-    private UserService UserService;
     @Autowired
     private OauthTestRequest oauthTestRequest;
 
@@ -48,14 +38,14 @@ public class UserRegistrationLifeCycleTest {
 
         // 1. Register new user
 
-        authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.NEW_USER);
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.NEW_USER);
 
         UnconfirmedUserDto newUserDto = new UnconfirmedUserDto(defaultProperties.getLogin().getUsername(),
             defaultProperties.getLogin().getPassword(),"Пользователь","Новый",
             "cmsbackendgeek@gmail.com","932494356678");
 
         // Use here anonymous login
-        authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.ANONYMOUS);
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ANONYMOUS);
 
         ResponseEntity<String> registrarResponse = registrarRequest.registrate(newUserDto);
 
@@ -65,23 +55,12 @@ public class UserRegistrationLifeCycleTest {
 
         log.info("confirmToken: {}", confirmToken);
 
-        UnconfirmedUser newUser = unconfirmedUserService.findByUsername("newuser")
-            .orElseThrow(() -> new RuntimeException("New UnconfirmedUser not persisted"));
-
-        Assert.assertEquals("Returned wrong UnconfirmedUser", "newuser", newUser.getUsername());
-
         // 2. Confirm new user
-        authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.ANONYMOUS);
-
-        //ResponseEntity<Void> confirmResponse =
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ANONYMOUS);
         confirmRequest.confirm(confirmToken);
 
-        User user = UserService.findByUsername("newuser")
-            .orElseThrow(() -> new RuntimeException("New UnconfirmedUser not persisted"));
-
-        Assert.assertEquals("Returned wrong User", "newuser", user.getUsername());
-
-        authServerTestSpringConfiguration.switchJrpcClientProperties(AuthServerTestSpringConfiguration.NEW_USER);
+        // 3. Perform requests by ne user
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.NEW_USER);
 
         ResponseEntity<String> oauthTestResponse = oauthTestRequest.test();
         log.info(oauthTestResponse.toString());
