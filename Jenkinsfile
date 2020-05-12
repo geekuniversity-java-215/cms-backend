@@ -70,6 +70,7 @@ pipeline {
                     . ./ztests/scripts/0-config_params.sh
                     echo "==========================="
                     echo $H2PARAMS
+                    echo "==========================="
                     ./ztests/scripts/1-unit-tests.sh
                 '''
             }

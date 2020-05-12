@@ -1,5 +1,9 @@
 #!/bin/sh
 
+
+echo "*******************************"
+echo $H2PARAMS
+echo "*******************************"
 # subsystem tests
 mvn -DskipTests package
 
