@@ -7,10 +7,10 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
+import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
+import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.services.JwtTokenService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.SecurityUtils;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
-import com.github.geekuniversity_java_215.cmsbackend.utils.services.JwtTokenService;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +79,7 @@ public class BearerRequestFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authToken = getAuthToken(claims);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                // save auth type
+                // save claims data to requestScope bean
                 if (token instanceof AccessToken) {
                     requestScopeBean.setAuthType(AuthType.ACCESS_TOKEN);
                 }
@@ -87,7 +87,6 @@ public class BearerRequestFilter extends OncePerRequestFilter {
                     requestScopeBean.setAuthType(AuthType.REFRESH_TOKEN);
                 }
 
-                // save token
                 requestScopeBean.setToken(token);
 
                 // configure Spring Security to manually set authentication

@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.entities.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
+import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

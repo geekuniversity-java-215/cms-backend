@@ -1,0 +1,45 @@
+<?xmjrpc-client.propertiesl version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>cms-backend</artifactId>
+        <groupId>com.github.geekuniversity_java_215</groupId>
+        <version>0.1</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+
+    <artifactId>jrpc-client</artifactId>
+    <description>Jrpc client library. Allow perform requests (obtaining oauth tokens is included)</description>
+
+    <dependencies>
+        <!--module jrpc-protocol -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>jrpc-protocol</artifactId>
+            <version>${app.version}</version>
+            <scope>compile</scope>            
+        </dependency>
+
+        <!--module oauth-utils -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>oauth-utils</artifactId>
+            <version>0.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--module oauth-protocol -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>oauth-protocol</artifactId>
+            <version>0.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+    </dependencies>
+
+</project>

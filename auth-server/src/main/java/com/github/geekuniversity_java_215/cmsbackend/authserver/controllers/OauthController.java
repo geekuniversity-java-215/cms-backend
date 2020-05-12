@@ -7,8 +7,8 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenSer
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.http.BlackListResponse;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.http.OauthResponse;
+import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.OauthResponse;
+import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.BlackListResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;

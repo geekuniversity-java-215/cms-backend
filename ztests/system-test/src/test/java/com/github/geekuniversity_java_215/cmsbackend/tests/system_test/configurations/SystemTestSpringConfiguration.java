@@ -6,6 +6,7 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,7 @@ public class SystemTestSpringConfiguration {
     private final ApplicationContext context;
     private final ClientConfigurationMapper clientConfigurationMapper;
 
-    public SystemTestSpringConfiguration(JrpcClientProperties defaultProperties,
+    public SystemTestSpringConfiguration(@Qualifier("jrpcClientProperties") JrpcClientProperties defaultProperties,
                                          JrpcClientPropertiesFile defaultPropertiesFile,
                                          ApplicationContext context,
                                          ClientConfigurationMapper clientConfigurationMapper) {

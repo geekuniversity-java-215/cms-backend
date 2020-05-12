@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services.base;
 
-import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.CustomRepository;
+import com.github.geekuniversity_java_215.cmsbackend.core.repositories.CustomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

@@ -22,16 +22,21 @@
     <modules>
         <module>configuration</module>
         <module>utils</module>
+        <module>jrpc/jrpc-protocol</module>
+        <module>jrpc/jrpc-controller</module>
+        <module>jrpc/jrpc-client</module>
+        <module>jrpc/jrpc-utils</module>
+        <module>oauth/oauth-protocol</module>
+        <module>oauth/oauth-utils</module>
         <module>mail</module>
-        <module>protocol</module>
-        <module>core/core-services</module>
-        <module>core/core-controllers</module>
         <module>payment</module>
         <module>geodata</module>
+        <module>core/core-services</module>
+        <module>core/core-controllers</module>
         <module>cmsapp</module>
         <module>auth-server</module>
-        <module>jrpc-client</module>
         <module>chat</module>
+        <module>ztests/system-test</module>
     </modules>
 
 

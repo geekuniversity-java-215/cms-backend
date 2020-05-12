@@ -1,8 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.converters.order;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractConverter;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.order.OrderDto;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

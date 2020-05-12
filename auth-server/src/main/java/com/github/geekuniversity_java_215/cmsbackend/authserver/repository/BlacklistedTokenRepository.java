@@ -1,7 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.repository;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.BlacklistedToken;
-import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.CustomRepository;
+import com.github.geekuniversity_java_215.cmsbackend.core.repositories.CustomRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

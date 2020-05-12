@@ -4,7 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.confirm.ConfirmRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.oauth.OauthTestRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.RegistrarRequest;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.user.UnconfirmedUserDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UnconfirmedUserDto;
 import com.github.geekuniversity_java_215.cmsbackend.tests.system_test.configurations.SystemTestSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -47,25 +47,29 @@ public class UserRegistrationLifeCycleTest {
         // Use here anonymous login
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ANONYMOUS);
 
+        log.info("1. Registering new user: {}", defaultProperties);
         ResponseEntity<String> registrarResponse = registrarRequest.registrate(newUserDto);
 
         String confirmToken = registrarResponse.getBody();
 
         Assert.assertFalse("confirmToken is empty",  StringUtils.isBlank(confirmToken));
 
-        log.info("confirmToken: {}", confirmToken);
+        log.info("2. Got confirmation token: {}", confirmToken);
 
         // 2. Confirm new user
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ANONYMOUS);
-        confirmRequest.confirm(confirmToken);
+
+        ResponseEntity<Void> confirmResponse = confirmRequest.confirm(confirmToken);
+        log.info("3. Confirm new user result: {}", confirmResponse.getStatusCode());
 
         // 3. Perform requests by ne user
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.NEW_USER);
-
         ResponseEntity<String> oauthTestResponse = oauthTestRequest.test();
-        log.info(oauthTestResponse.toString());
         Assert.assertEquals("HttpStatus.status not 200", HttpStatus.OK, oauthTestResponse.getStatusCode());
         Assert.assertEquals("response body not expected", "SERVLET CONTAINER GRRREET YOU!",
             oauthTestResponse.getBody());
+
+        log.info("4. Called auth-server.oauth.test:");
+        log.info(oauthTestResponse.getBody());
     }
 }

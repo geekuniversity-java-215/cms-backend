@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.configurations;
 
-import com.github.geekuniversity_java_215.cmsbackend.utils.repositories.RepositoryWithEntityManager;
+import com.github.geekuniversity_java_215.cmsbackend.core.repositories.RepositoryWithEntityManager;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

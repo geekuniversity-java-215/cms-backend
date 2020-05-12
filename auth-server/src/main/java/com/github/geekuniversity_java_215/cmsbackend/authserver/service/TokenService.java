@@ -1,5 +1,15 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
+import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.OauthResponse;
+import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.BlacklistedTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.AccessTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.RefreshTokenRepository;
@@ -11,18 +21,8 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.http.OauthResponse;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
-import com.github.geekuniversity_java_215.cmsbackend.utils.services.JwtTokenService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.services.JwtTokenService;
 
-import java.time.Instant;
-import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpringConfiguration.ISSUER;
 

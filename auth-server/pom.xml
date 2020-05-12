@@ -31,7 +31,15 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--module protocol -->
+        <!--module oauth-protocol -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>oauth-protocol</artifactId>
+            <version>0.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+       <!--module jrpc-client -->
        <!-- for test purposes -->
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>

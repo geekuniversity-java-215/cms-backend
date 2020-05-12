@@ -8,8 +8,8 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.token.TokenType;
-import com.github.geekuniversity_java_215.cmsbackend.utils.services.JwtTokenService;
+import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
+import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.services.JwtTokenService;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
