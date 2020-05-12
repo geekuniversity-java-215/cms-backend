@@ -60,15 +60,15 @@ pipeline {
 
         stage('tests') {
             steps {
-                sh 'source ztests/scripts/0-config_params.sh'
-                sh 'ztests/scripts/1-unit-tests.sh'
+                sh '. ./ztests/scripts/0-config_params.sh'
+                sh './ztests/scripts/1-unit-tests.sh'
             }
         }
 
         stage('system tests') {
             steps {
-                sh 'source ztests/scripts/0-config_params.sh'
-                sh 'ztests/scripts/2-system-tests.sh'
+                sh '. ./ztests/scripts/0-config_params.sh'
+                sh './ztests/scripts/2-system-tests.sh'
             }
         }
     }
