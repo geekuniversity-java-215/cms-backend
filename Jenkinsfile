@@ -10,7 +10,7 @@ pipeline {
     environment {
         MAIL_URL=credentials('mail_url')
         PAYMENT_URL=credentials('payment_url')
-        //AWS_SECRET_ACCESS_KEY=credentials('mail_password')
+        H2PARAMS="-Dspring.datasource.url=jdbc:h2:mem:testdb -Dspring.datasource.driverClassName=org.h2.Driver -Dspring.datasource.username=sa -Dspring.datasource.password=password -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect"
     }
         
     stages {
