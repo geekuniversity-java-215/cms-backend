@@ -10,7 +10,7 @@ pipeline {
     environment {
         MAIL_URL=credentials('mail_url')
         PAYMENT_URL=credentials('payment_url')
-        H2PARAMS="-Dspring.datasource.url=jdbc:h2:mem:testdb -Dspring.datasource.driverClassName=org.h2.Driver -Dspring.datasource.username=sa -Dspring.datasource.password=password -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect"
+        //H2PARAMS="-Dspring.datasource.url=jdbc:h2:mem:testdb -Dspring.datasource.driverClassName=org.h2.Driver -Dspring.datasource.username=sa -Dspring.datasource.password=password -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect"
     }
         
     stages {
@@ -67,7 +67,7 @@ pipeline {
         stage('tests') {
             steps {
                 sh '''
-                    source ./ztests/scripts/0-config_params.sh
+                    . ./ztests/scripts/0-config_params.sh
                     echo "==========================="
                     echo $H2PARAMS
                     echo "==========================="
@@ -79,7 +79,7 @@ pipeline {
         stage('system tests') {
             steps {
                 sh '''
-                    source ./ztests/scripts/0-config_params.sh
+                    . ./ztests/scripts/0-config_params.sh
                     ./ztests/scripts/2-system-tests.sh
                 '''
             }
