@@ -68,6 +68,7 @@ pipeline {
             steps {
                 sh '''
                     . ./ztests/scripts/0-config_params.sh
+                    echo $
                     ./ztests/scripts/1-unit-tests.sh
                 '''
             }

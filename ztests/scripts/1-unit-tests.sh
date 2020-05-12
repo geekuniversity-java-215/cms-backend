@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-mvn clean test $PARAMS
+mvn $H2PARAMS clean test
