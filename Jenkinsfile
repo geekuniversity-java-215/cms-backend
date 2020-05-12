@@ -67,7 +67,7 @@ pipeline {
         stage('tests') {
             steps {
                 sh '''
-                    . ./ztests/scripts/0-config_params.sh
+                    source ./ztests/scripts/0-config_params.sh
                     echo "==========================="
                     echo $H2PARAMS
                     echo "==========================="
@@ -79,7 +79,7 @@ pipeline {
         stage('system tests') {
             steps {
                 sh '''
-                    . ./ztests/scripts/0-config_params.sh
+                    source ./ztests/scripts/0-config_params.sh
                     ./ztests/scripts/2-system-tests.sh
                 '''
             }
