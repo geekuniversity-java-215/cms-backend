@@ -54,13 +54,21 @@ pipeline {
 
         stage('build') {
             steps {
-                sh 'mvn compile'
+                sh 'mvn clean compile'
             }
         }
 
-        stage('test') {
+        stage('tests') {
             steps {
-                sh 'mvn clean test -Dspring.datasource.url=jdbc:h2:mem:testdb -Dspring.datasource.driverClassName=org.h2.Driver -Dspring.datasource.username=sa -Dspring.datasource.password=password -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect'
+                sh 'source ztests/scripts/0-config_params.sh'
+                sh 'ztests/scripts/1-unit-tests.sh'
+            }
+        }
+
+        stage('system tests') {
+            steps {
+                sh 'source ztests/scripts/0-config_params.sh'
+                sh 'ztests/scripts/2-system-tests.sh'
             }
         }
     }

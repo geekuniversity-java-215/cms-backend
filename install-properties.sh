@@ -9,7 +9,9 @@
 ##########################################################################################
 
 # lib modules
-LIB_MODULES=(core/core-controllers core/core-services mail payment utils jrpc-client geodata)
+LIB_MODULES=(core/core-controllers core/core-services \
+    mail payment utils geodata \
+    ztests/system-test)
 
 # application modules
 APPLICATION_MODULES=(auth-server cmsapp chat)

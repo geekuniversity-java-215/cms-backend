@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
 
-@Disabled
 @Configuration
 @Slf4j
 public class SystemTestSpringConfiguration {
