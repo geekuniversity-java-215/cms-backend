@@ -13,10 +13,9 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.net.URI;
-import java.security.SecureRandom;
 import java.time.Duration;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,23 +28,18 @@ public class MailService {
     public MailService(JavaMailSender javaMailSender, MailMessageBuilder messageBuilder) {
         this.javaMailSender = javaMailSender;
         this.messageBuilder = messageBuilder;
-
         jobPool = new JobPool<>("SendMail",2, Duration.ofSeconds(60), null);
     }
-
-
 
     /**
      * Отправляет письмо об успешном платеже
      * @param user User
      * @param amount сумма платежа
      */
-    public Promise<Void> sendPaymentSuccess(User user, BigDecimal amount) {
-
-        log.trace("Отправляем письмо о успешно проведенном платеже");
-        final String email = user.getEmail();
+    public Promise<Void> sendPaymentSuccess(Optional<User> user, BigDecimal amount) {
+        final String email = user.get().getEmail();
         final String subject = "Платеж успешно проведен";
-        final String body = messageBuilder.buildPaymentSuccess(user,amount);
+        final String body = messageBuilder.buildPaymentSuccess(user.get(),amount);
         return sendMessage(email, subject, body);
     }
 
@@ -56,8 +50,6 @@ public class MailService {
      * @return
      */
     public Promise<Void> sendRegistrationConfirmation(UnconfirmedUser user, URI confirmationUrl) {
-
-        log.trace("Отправляем письмо о успешной регистрации");
         final String email = user.getEmail();
         final String subject = "Завершение регистрации";
         final String body = messageBuilder.buildRegistrationConfirmationEmail(user, confirmationUrl);

@@ -3,7 +3,6 @@ package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.user.UnconfirmedUserDto;
 import lombok.extern.slf4j.Slf4j;
 import net.tascalate.concurrent.Promise;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import static com.pivovarit.function.ThrowingSupplier.unchecked;
@@ -47,7 +47,7 @@ class MailServiceTest {
     void sendPaymentSuccess() throws ExecutionException, InterruptedException {
 
         // отправляем письмо об успешном зачислении платежа
-        User user = userService.findById(1L).get();
+        Optional<User> user = Optional.of(userService.findById(1L).get());
         Promise<Void> promise=mailService.sendPaymentSuccess(user, BigDecimal.valueOf(1337));
         promise.get();
         log.info("sendPaymentSuccess success");
