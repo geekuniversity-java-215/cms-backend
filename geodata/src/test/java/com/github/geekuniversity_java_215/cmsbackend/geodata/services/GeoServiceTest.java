@@ -1,10 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.geodata.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,19 +16,20 @@ class GeoServiceTest {
 
 
     @Test
-    void getRoute() throws JsonProcessingException {
+    void getRoute() {
 
         Address from = new Address("Санкт-Петербург", "Кондратьевский", 70, 2, 0);
-        Address to = new Address("Москва", "Порядковый переулок", 21, 0, 0);
+        Address to = new Address("Санкт-Петербург", "Краснопутиловская", 121, 0, 0);
 
         Order order = new Order();
         order.setFrom(from);
         order.setTo(to);
 
         // Если не упало по CONNECTION_REFUSED или 404 то уже хорошо.
-        String result = geoService.getRoute(order);
+        double distance = geoService.getRoute(order);
+
 
         //ToDo: доделать валидацию теста
-        log.info(result);
+        log.info(distance + "");
     }
 }
