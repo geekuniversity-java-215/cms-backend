@@ -3,7 +3,6 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,9 +26,6 @@ class PayPalServiceTest {
         this.payPalService = payPalService;
     }
 
-
-
-    @Disabled // ToDo: TEST FAILED, fix it
     @Test
     void authorizePayment() {
 
@@ -48,4 +44,5 @@ class PayPalServiceTest {
     @Test
     void executePayment() {
     }
+
 }
