@@ -31,7 +31,6 @@ public class Utils {
     }
 
     public Set<String> grantedAuthorityToSet(Collection<? extends GrantedAuthority> authorities) {
-
         return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
     }
 
