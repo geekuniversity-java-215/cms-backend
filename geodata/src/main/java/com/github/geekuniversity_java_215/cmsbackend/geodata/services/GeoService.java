@@ -34,7 +34,6 @@ public class GeoService {
         String fromPoint = restTemplate.getForObject(getGeocodeUrl(order.getFrom()), String.class);
         String toPoint = restTemplate.getForObject(getGeocodeUrl(order.getTo()), String.class);
 
-        //FixMe
         Assert.isTrue(fromPoint != null, "fromPoint == null");
         Assert.isTrue(toPoint != null, "fromPoint == null");
 

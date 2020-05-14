@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.properties.AuthServerConfig;
+import com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
@@ -24,7 +25,6 @@ import java.net.URI;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpringConfiguration.ISSUER;
 import static com.pivovarit.function.ThrowingSupplier.unchecked;
 
 @Service
@@ -32,7 +32,7 @@ import static com.pivovarit.function.ThrowingSupplier.unchecked;
 @Slf4j
 public class RegistrarService {
 
-
+    private final CoreSpringConfiguration coreSpringConfiguration;
     private final AuthServerConfig authServerConfig;
     private final UserService userService;
     private final UserRoleService userRoleService;
@@ -42,11 +42,12 @@ public class RegistrarService {
     private final MailService mailService;
     private final Validator validator;
 
-    public RegistrarService(AuthServerConfig authServerConfig, UserService userService,
+    public RegistrarService(CoreSpringConfiguration coreSpringConfiguration, AuthServerConfig authServerConfig, UserService userService,
                             UserRoleService userRoleService, UnconfirmedUserService unconfirmedUserService,
                             PasswordEncoder passwordEncoder,
                             JwtTokenService jwtTokenService,
                             MailService mailService, Validator validator) {
+        this.coreSpringConfiguration = coreSpringConfiguration;
         this.authServerConfig = authServerConfig;
         this.userService = userService;
         this.userRoleService = userRoleService;
@@ -82,7 +83,7 @@ public class RegistrarService {
         String registrantToken = jwtTokenService.createJWT(
             TokenType.CONFIRM,
             newUser.getUsername(),
-            ISSUER,
+            coreSpringConfiguration.getISSUER(),
             newUser.getUsername(),
             confirmationRole);
 

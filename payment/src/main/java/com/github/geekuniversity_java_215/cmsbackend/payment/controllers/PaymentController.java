@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Optional;
 
+import static com.github.geekuniversity_java_215.cmsbackend.payment.data.constants.PaymentPropNames.*;
+
 
 @Controller
 @RequestMapping("/paypal")
@@ -40,7 +42,7 @@ public class PaymentController {
      */
 
 
-    @PostMapping("/payment")
+    @PostMapping(CONTROLLER_EXECUTE_PAYMENT_PATH)
     private String executePayment(@RequestBody String amount, Principal principal) throws PayPalRESTException {
         Optional<User> user = userService.findByUsername(principal.getName());
         String approvalLink = payPalService.authorizePayment(String.valueOf(user.get().getId()), Integer.valueOf(amount));
@@ -54,7 +56,7 @@ public class PaymentController {
     #PayerID - кто оплачивал
     #result - подтверждение платежа
      */
-    @GetMapping("/success/{clientId}")
+    @GetMapping(CONTROLLER_SUCCESS_PATH)
     public String success(@RequestParam(name = "paymentId") String paymentId,
                           @RequestParam(name = "PayerID") String payerId,
                           @PathVariable Long clientId,

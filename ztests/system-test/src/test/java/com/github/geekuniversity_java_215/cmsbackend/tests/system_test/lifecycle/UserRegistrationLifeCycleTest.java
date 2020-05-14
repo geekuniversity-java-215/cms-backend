@@ -17,7 +17,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@Order(2)
 @SpringBootTest
 @Slf4j
 public class UserRegistrationLifeCycleTest {

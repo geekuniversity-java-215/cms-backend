@@ -62,7 +62,6 @@ public class ChatMessageController {
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
 
-        //FixMe
         Assert.isTrue(headerAccessor!= null &&
             headerAccessor.getSessionAttributes() != null , "headerAccessor == null || " +
             "headerAccessor.getSessionAttributes == null");

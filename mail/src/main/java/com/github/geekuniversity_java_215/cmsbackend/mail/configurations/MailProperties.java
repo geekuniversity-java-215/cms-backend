@@ -11,7 +11,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-public class MailConfig {
+public class MailProperties {
     private final String MAIL_TRANSPORT_PROTOCOL = "mail.transport.protocol";
     private final String MAIL_SMTP_AUTH = "mail.smtp.auth";
     private final String MAIL_SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
@@ -43,7 +43,7 @@ public class MailConfig {
     private final Environment env;
 
     @Autowired
-    public MailConfig(Environment env) {
+    public MailProperties(Environment env) {
         this.env = env;
     }
 

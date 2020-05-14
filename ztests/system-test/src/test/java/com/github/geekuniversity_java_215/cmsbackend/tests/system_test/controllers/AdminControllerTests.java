@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
-@Order(1)
 @Slf4j
 @SpringBootTest
 class AdminControllerTests {
