@@ -4,6 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.data.constants.CorePro
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
+import com.github.geekuniversity_java_215.cmsbackend.core.utils.EnvStringBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
 import com.github.geekuniversity_java_215.cmsbackend.payment.configurations.PayPalAccount;
 import com.github.geekuniversity_java_215.cmsbackend.payment.data.constants.PaymentPropNames;
@@ -18,17 +19,16 @@ import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pivovarit.function.ThrowingSupplier.unchecked;
+import static com.github.geekuniversity_java_215.cmsbackend.payment.data.constants.PaymentPropNames.*;
 
 @Service
 @Slf4j
 public class PayPalService {
 
-    private final Environment environment;
+    private final EnvStringBuilder envStringBuilder;
     private final PayPalAccount payPalAccount;
     private final MailService mailService;
     private final AccountService accountService;
@@ -38,8 +38,11 @@ public class PayPalService {
 
 
     @Autowired
-    public PayPalService(Environment environment, PayPalAccount payPalAccount, MailService mailService, AccountService accountService){
-        this.environment = environment;
+    public PayPalService(EnvStringBuilder envStringBuilder,
+                         PayPalAccount payPalAccount,
+                         MailService mailService,
+                         AccountService accountService){
+        this.envStringBuilder = envStringBuilder;
         this.payPalAccount = payPalAccount;
         this.mailService = mailService;
         this.accountService=accountService;
@@ -97,26 +100,9 @@ public class PayPalService {
         return redirectUrls;
     }
 
-    //FixMe вынести приседания с path в ядро.
+
     private String buildStringURLS() {
-
-        String protocol = environment.getProperty(CorePropNames.SERVER_PROTOCOL);
-        String host = environment.getProperty(CorePropNames.SERVER_HOST);
-        String portString = environment.getProperty(CorePropNames.SERVER_PORT);
-
-        Assert.notNull(protocol, "protocol == null");
-        Assert.notNull(portString, "port == null");
-
-        int port = Integer.parseInt(portString);
-        String path = environment.getProperty(CorePropNames.SERVER_SERVLET_CONTEXT_PATH);
-        if (path!= null && path.length() > 0) {
-            path = path.replaceAll("/$", "");
-        }
-        path += PaymentPropNames.CONTROLLER_EXECUTE_PAYMENT_PATH;
-        String finalPath = path;
-        URL url =  unchecked(() -> new URL(protocol, host, port, finalPath)).get();
-        
-        return url.toString();
+        return envStringBuilder.buildURL(CONTROLLER_EXECUTE_PAYMENT_PATH);
     }
 
     /*
@@ -132,7 +118,7 @@ public class PayPalService {
     private Transaction getTransaction(String clientId, Integer tax) {
         Transaction transaction = new Transaction();
         transaction.setAmount(getAmount(tax));
-        transaction.setDescription("Пополнение счета клиентом id=" + clientId + " на сумму " + tax);
+        transaction.setDescription("Пополнение счета клиентом id = " + clientId + " на сумму " + tax);
         return transaction;
     }
 

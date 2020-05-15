@@ -36,7 +36,7 @@
         <module>cmsapp</module>
         <module>auth-server</module>
         <module>chat</module>
-	<module>cost-calculation</module>
+        <module>cost-calculation</module>
         <module>ztests/system-test</module>
     </modules>
 
