@@ -4,6 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.f
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BearerRequestFilter;
 import com.github.geekuniversity_java_215.cmsbackend.core.configurations.filters.CorsAllowAllFilter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
-import java.lang.invoke.MethodHandles;
 
-@Configuration
+
+
+@Slf4j
 @EnableWebSecurity
 public class MultipleWebSecurityConfig {
-
-    private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -74,20 +73,6 @@ public class MultipleWebSecurityConfig {
     @Order(1)
     public static class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//        @Bean
-//        public CorsConfigurationSource corsConfigurationSource() {
-//            CorsConfiguration configuration = new CorsConfiguration();
-//            configuration.setAllowedOrigins(Collections.singletonList("*"));
-//            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-//            configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-//            configuration.setExposedHeaders(Collections.singletonList("x-auth-token"));
-//            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//            source.registerCorsConfiguration("/**", configuration);
-//            return source;
-//        }
-
-
-
         private final BearerRequestFilter bearerRequestFilter;
         private final BasicAuthRequestFilter basicAuthRequestFilter;
         private final CorsAllowAllFilter corsAllowAllFilter;
@@ -105,11 +90,11 @@ public class MultipleWebSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http
+            http.cors().and()
                 .antMatcher("/oauzz/token/**").authorizeRequests().anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
-                .addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class)
+                //.addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class)
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
                 .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
                 
