@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BasicAuthRequestFilter;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BearerRequestFilter;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.CustomCorsFilter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +17,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import java.lang.invoke.MethodHandles;
 
+@Configuration
 @EnableWebSecurity
 public class MultipleWebSecurityConfig {
 
@@ -56,6 +59,13 @@ public class MultipleWebSecurityConfig {
         return result;
     }
 
+    @Bean
+    public FilterRegistrationBean<CustomCorsFilter> corsCustomFilterRegistration(CustomCorsFilter filter) {
+        FilterRegistrationBean<CustomCorsFilter> result = new FilterRegistrationBean<>(filter);
+        result.setEnabled(false);
+        return result;
+    }
+
     /**
      * Token operations
      * Authorisation: Basic + Bearer
@@ -64,24 +74,42 @@ public class MultipleWebSecurityConfig {
     @Order(1)
     public static class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+//        @Bean
+//        public CorsConfigurationSource corsConfigurationSource() {
+//            CorsConfiguration configuration = new CorsConfiguration();
+//            configuration.setAllowedOrigins(Collections.singletonList("*"));
+//            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+//            configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+//            configuration.setExposedHeaders(Collections.singletonList("x-auth-token"));
+//            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//            source.registerCorsConfiguration("/**", configuration);
+//            return source;
+//        }
+
+
+
         private final BearerRequestFilter bearerRequestFilter;
         private final BasicAuthRequestFilter basicAuthRequestFilter;
+        private final CustomCorsFilter customCorsFilter;
 
 
         @Autowired
-        public TokenWebSecurityConfig(BearerRequestFilter bearerRequestFilter, BasicAuthRequestFilter basicAuthRequestFilter) {
+        public TokenWebSecurityConfig(BearerRequestFilter bearerRequestFilter, BasicAuthRequestFilter basicAuthRequestFilter, CustomCorsFilter customCorsFilter) {
             this.bearerRequestFilter = bearerRequestFilter;
             this.basicAuthRequestFilter = basicAuthRequestFilter;
+            this.customCorsFilter = customCorsFilter;
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.antMatcher("/oauzz/token/**").authorizeRequests().anyRequest().authenticated()
+            http/*.cors().and()*/
+                .antMatcher("/oauzz/token/**").authorizeRequests().anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
-                .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+                .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class)
+                .addFilterBefore(customCorsFilter, ChannelProcessingFilter.class);
         }
     }
 
@@ -106,7 +134,8 @@ public class MultipleWebSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
+            http/*.cors().and()*/
+                .antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class);
@@ -152,9 +181,10 @@ public class MultipleWebSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.authorizeRequests().antMatchers("/registration/add", "/registration/confirm").permitAll()
-                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and().csrf().disable();
+            http/*.cors().and()*/
+                .authorizeRequests().antMatchers("/registration/add", "/registration/confirm").permitAll()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().csrf().disable();
         }
 
     }
