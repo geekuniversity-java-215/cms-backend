@@ -18,9 +18,10 @@ public class ExchangeRate extends AbstractEntity {
     private CurrencyCode currencyCode;
 
     @Column(name = "date")
+    @Temporal(TemporalType.DATE)
     private Date date;
 
-    @Column(name = "value")
+    @Column(name = "value", precision=19, scale=4)
     private BigDecimal value;
 
     // Enum mapping
