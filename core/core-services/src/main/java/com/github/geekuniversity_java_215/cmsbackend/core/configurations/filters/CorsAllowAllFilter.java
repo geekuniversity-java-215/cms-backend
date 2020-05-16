@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters;
+package com.github.geekuniversity_java_215.cmsbackend.core.configurations.filters;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CustomCorsFilter extends OncePerRequestFilter {
+public class CorsAllowAllFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.configurations.filtres;
+package com.github.geekuniversity_java_215.cmsbackend.core.configurations.filters;
 
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;

@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BasicAuthRequestFilter;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BearerRequestFilter;
-import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.CustomCorsFilter;
+import com.github.geekuniversity_java_215.cmsbackend.core.configurations.filters.CorsAllowAllFilter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,8 +60,8 @@ public class MultipleWebSecurityConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<CustomCorsFilter> corsCustomFilterRegistration(CustomCorsFilter filter) {
-        FilterRegistrationBean<CustomCorsFilter> result = new FilterRegistrationBean<>(filter);
+    public FilterRegistrationBean<CorsAllowAllFilter> corsAllowAllFilterRegistration(CorsAllowAllFilter filter) {
+        FilterRegistrationBean<CorsAllowAllFilter> result = new FilterRegistrationBean<>(filter);
         result.setEnabled(false);
         return result;
     }
@@ -90,26 +90,29 @@ public class MultipleWebSecurityConfig {
 
         private final BearerRequestFilter bearerRequestFilter;
         private final BasicAuthRequestFilter basicAuthRequestFilter;
-        private final CustomCorsFilter customCorsFilter;
+        private final CorsAllowAllFilter corsAllowAllFilter;
 
 
         @Autowired
-        public TokenWebSecurityConfig(BearerRequestFilter bearerRequestFilter, BasicAuthRequestFilter basicAuthRequestFilter, CustomCorsFilter customCorsFilter) {
+        public TokenWebSecurityConfig(BearerRequestFilter bearerRequestFilter,
+                                      BasicAuthRequestFilter basicAuthRequestFilter,
+                                      CorsAllowAllFilter corsAllowAllFilter) {
             this.bearerRequestFilter = bearerRequestFilter;
             this.basicAuthRequestFilter = basicAuthRequestFilter;
-            this.customCorsFilter = customCorsFilter;
+            this.corsAllowAllFilter = corsAllowAllFilter;
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http/*.cors().and()*/
+            http
                 .antMatcher("/oauzz/token/**").authorizeRequests().anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
+                .addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class)
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
-                .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class)
-                .addFilterBefore(customCorsFilter, ChannelProcessingFilter.class);
+                .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+                
         }
     }
 
@@ -124,20 +127,23 @@ public class MultipleWebSecurityConfig {
     public static class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final BearerRequestFilter bearerRequestFilter;
-        //private final BasicAuthRequestFilter basicAuthRequestFilter;
+        private final CorsAllowAllFilter corsAllowAllFilter;
 
         @Autowired
-        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter) {
+        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter,
+                                      CorsAllowAllFilter corsAllowAllFilter) {
             this.bearerRequestFilter = bearerRequestFilter;
+            this.corsAllowAllFilter = corsAllowAllFilter;
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http/*.cors().and()*/
+            http
                 .antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
+                .addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class)
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class);
 
             //.addFilterAfter(bearerRequestFilter, LogoutFilter.class)
@@ -178,18 +184,27 @@ public class MultipleWebSecurityConfig {
     @Order(3)
     public static class RegistrationConfirmationSecurityConfig extends WebSecurityConfigurerAdapter {
 
+        private final CorsAllowAllFilter corsAllowAllFilter;
+
+        public RegistrationConfirmationSecurityConfig(CorsAllowAllFilter corsAllowAllFilter) {
+            this.corsAllowAllFilter = corsAllowAllFilter;
+        }
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http/*.cors().and()*/
+            http
                 .authorizeRequests().antMatchers("/registration/add", "/registration/confirm").permitAll()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().csrf().disable();
+                .and().csrf().disable()
+                .addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class);
         }
 
     }
 
 }
+
+// ==========================================================================================================
 
 //    @Autowired
 //    private final ApplicationContext context;
