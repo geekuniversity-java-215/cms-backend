@@ -1,10 +1,8 @@
-package com.github.geekuniversity_java_215.cmsbackend.cost_calculation.entity;
+package com.github.geekuniversity_java_215.cmsbackend.cost_calculation.data;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 
-@Component
 @Data
 public class TempOrder {
 

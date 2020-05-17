@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.cost_calculation.controller;
 
-import com.github.geekuniversity_java_215.cmsbackend.cost_calculation.entity.*;
+import com.github.geekuniversity_java_215.cmsbackend.cost_calculation.data.*;
 import com.github.geekuniversity_java_215.cmsbackend.cost_calculation.service.CostCalculationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
