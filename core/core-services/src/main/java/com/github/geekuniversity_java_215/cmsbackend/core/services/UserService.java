@@ -4,7 +4,9 @@ import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRepos
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
+import com.github.geekuniversity_java_215.cmsbackend.utils.interfaces.AuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +17,14 @@ import java.util.Optional;
 @Transactional
 public class UserService extends BaseRepoAccessService<User> {
 
+    private final AuthenticationFacade authenticationFacade;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(AuthenticationFacade authenticationFacade,
+                       UserRepository userRepository) {
         super(userRepository);
+        this.authenticationFacade = authenticationFacade;
         this.userRepository = userRepository;
     }
 
@@ -28,6 +33,15 @@ public class UserService extends BaseRepoAccessService<User> {
         if (!StringUtils.isBlank(username)) {
             result = userRepository.findOneByUsername(username);
         }
+        return result;
+    }
+
+
+    public User getCurrentAuthenticatedUser() throws UsernameNotFoundException {
+        User result;
+        String username = authenticationFacade.getAuthentication().getName();
+        result = userRepository.findOneByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
         return result;
     }
 

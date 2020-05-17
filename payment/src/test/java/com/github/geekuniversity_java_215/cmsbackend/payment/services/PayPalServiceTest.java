@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 
+import java.math.BigDecimal;
 import java.net.InetAddress;
 
 @SpringBootTest
@@ -37,13 +38,8 @@ class PayPalServiceTest {
     }
 
     @Test
-    @SneakyThrows
-    void authorizePayment() {
-        try {
-            payPalService.authorizePayment(clientId,tax);
-        } catch (PayPalRESTException e) {
-            e.printStackTrace();
-        }
+    void authorizePayment() throws PayPalRESTException {
+        payPalService.authorizePayment(clientId, BigDecimal.valueOf(13.51));
     }
 
     @Test

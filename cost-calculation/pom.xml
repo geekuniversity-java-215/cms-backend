@@ -14,7 +14,7 @@
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
             <artifactId>core-services</artifactId>
-            <version>0.1</version>
+            <version>${app.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

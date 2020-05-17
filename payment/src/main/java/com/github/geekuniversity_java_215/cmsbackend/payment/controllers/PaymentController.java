@@ -1,34 +1,37 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcController;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethod;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.payment.PaymentConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.payment.services.PayPalService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.interfaces.AuthenticationFacade;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.Optional;
-
-import static com.github.geekuniversity_java_215.cmsbackend.payment.data.constants.PaymentPropNames.*;
+import java.math.BigDecimal;
 
 
-@Controller
-@RequestMapping("/paypal")
+@JrpcController(HandlerName.payment.path)
 @Slf4j
 public class PaymentController {
 
     private final PayPalService payPalService;
     private final UserService userService;
+    private final PaymentConverter paymentConverter;
 
     @Autowired
-    public PaymentController(PayPalService payPalService, UserService userService) {
+    public PaymentController(PayPalService payPalService,
+                             UserService userService,
+                             PaymentConverter paymentConverter) {
         this.payPalService = payPalService;
         this.userService = userService;
+        this.paymentConverter = paymentConverter;
     }
 
     /*
@@ -42,43 +45,19 @@ public class PaymentController {
      */
 
 
-    @PostMapping(CONTROLLER_EXECUTE_PAYMENT_PATH)
-    private String executePayment(@RequestBody String amount, Principal principal) throws PayPalRESTException {
-        Optional<User> user = userService.findByUsername(principal.getName());
-        String approvalLink = payPalService.authorizePayment(String.valueOf(user.get().getId()), Integer.valueOf(amount));
-        log.info("Ответ запрос на authorize_payment=" + approvalLink);
-        return "redirect:" + approvalLink;
+    @JrpcMethod(HandlerName.payment.execute)
+    private JsonNode execute(JsonNode params) throws PayPalRESTException {
+
+        User user = userService.getCurrentAuthenticatedUser();
+
+        BigDecimal amount = paymentConverter.getAmount(params);
+
+        String approvalLink = payPalService.authorizePayment(
+            String.valueOf(user.getId()),
+            amount);
+
+        log.info("Ответ запрос на authorize_payment == " + approvalLink);
+
+        return paymentConverter.toJson(approvalLink);
     }
-
-    /*
-    Отрабатывается успешное подтверждение перевода с кошелька клиента на базовый кошелек CMS
-    #paymentId - ID платежа
-    #PayerID - кто оплачивал
-    #result - подтверждение платежа
-     */
-    @GetMapping(CONTROLLER_SUCCESS_PATH)
-    public String success(@RequestParam(name = "paymentId") String paymentId,
-                          @RequestParam(name = "PayerID") String payerId,
-                          @PathVariable Long clientId,
-                          Model model,
-                          Principal principal) throws PayPalRESTException {
-        User user = userService.findByUsername(principal.getName())
-            .orElseThrow(() -> new UsernameNotFoundException("User " + principal.getName() + " not found"));
-
-        if (user.getId().equals(clientId)) {
-            String result = "";
-            log.info("payerId:" + payerId);
-            log.info("paymentId:" + paymentId);
-            result = payPalService.executePayment(paymentId, payerId, user);
-            log.info("result: " + result);
-            model.addAttribute("result", result);
-        }
-        else{
-            log.info("id авторизованного пользователя не совпадает с id инициатора платежа. id авторизованного="+user.getId()+". Платеж инициировал id="+clientId);
-            model.addAttribute("result", "id авторизованного пользователя не совпадает с id инициатора платежа");
-        }
-        //todo здесь нужен возврат на страницу, подтверждающую что платеж выполнен. paypal_result это заглушка
-        return "paypal_result";
-    }
-
 }

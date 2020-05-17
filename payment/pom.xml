@@ -20,6 +20,14 @@
             <version>1.14.0</version>
         </dependency>
 
+        <!--module core/core-controllers -->
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>core-controllers</artifactId>
+            <version>${app.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!--module core/core-services -->
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>

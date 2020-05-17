@@ -22,6 +22,10 @@ public class HandlerName {
     //geodata specific
     private static final String getRoute = "getRoute";
 
+    // payment specific
+    private static final String execute = "execute";
+
+
     public static class calculator {
         public static final String path = "calculator.actions";
 
@@ -35,6 +39,13 @@ public class HandlerName {
         public static final String path = "cmsapp.core.order";
 
         public static final String findById = HandlerName.findById;
+    }
+
+
+    public static class payment {
+        public static final String path = "cmsapp.payment";
+
+        public static final String execute = HandlerName.execute;
     }
 
 //    public static class geodata {
