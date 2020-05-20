@@ -93,7 +93,6 @@ public class PayPalMassPaymentsService {
         massPayRequestItemTypeList.add(item1);
     }
 
-
     private Map<String,String> configurationMap() {
         final Map<String, String> configurationMap = new HashMap<>();
         configurationMap.put("mode", payPalAccount.getMode());
