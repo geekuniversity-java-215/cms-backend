@@ -13,7 +13,7 @@ class PayPalServiceTest {
 
     private static String clientId;
     private static Integer tax;
-    private final PayPalService payPalService;
+    private final PayPalGetPaymentService payPalGetPaymentService;
 
     @BeforeAll
     public static void beforeAll() {
@@ -22,15 +22,15 @@ class PayPalServiceTest {
     }
 
     @Autowired
-    public PayPalServiceTest(PayPalService payPalService) {
-        this.payPalService = payPalService;
+    public PayPalServiceTest(PayPalGetPaymentService payPalGetPaymentService) {
+        this.payPalGetPaymentService = payPalGetPaymentService;
     }
 
     @Test
     void authorizePayment() {
 
         try {
-            payPalService.authorizePayment(clientId,tax);
+            payPalGetPaymentService.authorizePayment(clientId,tax);
         } catch (PayPalRESTException e) {
             e.printStackTrace();
         }

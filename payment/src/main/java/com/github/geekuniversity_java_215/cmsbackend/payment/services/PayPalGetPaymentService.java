@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class PayPalService {
+public class PayPalGetPaymentService {
 
     @Value("${server.port}")
     private String serverPort;
@@ -36,7 +36,7 @@ public class PayPalService {
     private final AccountService accountService;
 
     @Autowired
-    public PayPalService(PayPalAccount payPalAccount, MailService mailService,AccountService accountService){
+    public PayPalGetPaymentService(PayPalAccount payPalAccount, MailService mailService, AccountService accountService){
         this.payPalAccount = payPalAccount;
         this.mailService = mailService;
         this.accountService=accountService;

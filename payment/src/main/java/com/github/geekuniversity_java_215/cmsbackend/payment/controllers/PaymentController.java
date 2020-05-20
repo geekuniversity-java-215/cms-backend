@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.controllers;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
-import com.github.geekuniversity_java_215.cmsbackend.payment.services.PayPalService;
+import com.github.geekuniversity_java_215.cmsbackend.payment.services.PayPalGetPaymentService;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ import java.util.Optional;
 @Slf4j
 public class PaymentController {
 
-    private final PayPalService payPalService;
+    private final PayPalGetPaymentService payPalGetPaymentService;
     private final UserService userService;
 
     @Autowired
-    public PaymentController(PayPalService payPalService, UserService userService) {
-        this.payPalService = payPalService;
+    public PaymentController(PayPalGetPaymentService payPalGetPaymentService, UserService userService) {
+        this.payPalGetPaymentService = payPalGetPaymentService;
         this.userService = userService;
     }
 
@@ -42,7 +42,7 @@ public class PaymentController {
     @PostMapping("/payment")
     private String executePayment(@RequestBody String amount, Principal principal) throws PayPalRESTException {
         Optional<User> user = userService.findByUsername(principal.getName());
-        String approvalLink = payPalService.authorizePayment(String.valueOf(user.get().getId()), Integer.valueOf(amount));
+        String approvalLink = payPalGetPaymentService.authorizePayment(String.valueOf(user.get().getId()), Integer.valueOf(amount));
         log.info("Ответ запрос на authorize_payment=" + approvalLink);
         return "redirect:" + approvalLink;
     }
@@ -64,7 +64,7 @@ public class PaymentController {
             String result = "";
             log.info("payerId:" + payerId);
             log.info("paymentId:" + paymentId);
-            result = payPalService.executePayment(paymentId, payerId, user);
+            result = payPalGetPaymentService.executePayment(paymentId, payerId, user);
             log.info("result: " + result);
             model.addAttribute("result", result);
         }else{
