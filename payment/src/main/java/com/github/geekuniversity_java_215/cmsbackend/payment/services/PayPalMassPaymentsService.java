@@ -28,6 +28,9 @@ public class PayPalMassPaymentsService {
     public PayPalMassPaymentsService(PayPalAccount payPalAccount) {
         this.payPalAccount = payPalAccount;
     }
+    //todo создать сущность(журнал) вывода средств RequestForFunds с атрибутами(userId,amount,currencyCodeType,date_create,date_success).
+    //todo создать контроллер, который в автоматическом режиме 3 раза в неделю будет проверять RequestForFunds на наличие неввыполненных заявок
+    // и передавать их списков в doMassPayments, до 250 шт в одной пачке
 
     public String doMassPayment(String userMail,String amount, String currencyCodeType) {
         MassPayReq massPayReq = new MassPayReq();
@@ -101,4 +104,5 @@ public class PayPalMassPaymentsService {
         configurationMap.put("acct1.Signature", payPalAccount.getSignature());
         return configurationMap;
     }
+
 }
