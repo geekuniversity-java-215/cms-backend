@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.entities;
+package com.github.geekuniversity_java_215.cmsbackend.payment.entities;
 
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
@@ -18,7 +18,7 @@ import java.sql.Date;
 @Table(name = "request_for_funds")
 @Data
 @EqualsAndHashCode(callSuper=true)
-public class RequestForFunds extends AbstractEntity {
+public class Transaction extends AbstractEntity {
 
     @NotNull
     @OneToOne
@@ -33,14 +33,14 @@ public class RequestForFunds extends AbstractEntity {
 
     @NotNull
     private String currencyCodeType;
-    
+
     @NotNull
     private Date dateCreate;
 
     @NotNull
     private Date dateSuccess;
 
-    protected RequestForFunds() {}
+    protected Transaction() {}
 
     @Override
     public String toString() {

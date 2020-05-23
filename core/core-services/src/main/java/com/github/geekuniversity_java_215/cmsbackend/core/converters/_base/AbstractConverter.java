@@ -93,11 +93,6 @@ public abstract class AbstractConverter<E,D,S> {
 
     // -------------------------------------------------------------------------------------------------
 
-
-
-
-
-
     // Json => Dto => Entity
     public E toEntity(JsonNode params)  {
         try {
@@ -135,16 +130,3 @@ public abstract class AbstractConverter<E,D,S> {
         }
     }
 
-//  Not Implemented
-/*
-    // check SpecDto validity
-    private void validateSpecDto(E specDto) {
-        Set<ConstraintViolation<S>> violations = validator.validate(specDto);
-        if (violations.size() != 0) {
-            throw new ConstraintViolationException("Entity validation failed", violations);
-        }
-
-    }
-    */
-
-}
