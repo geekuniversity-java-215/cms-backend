@@ -5,18 +5,37 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import static com.github.geekuniversity_java_215.cmsbackend.core.data.constants.CorePropNames.SERVER_SERVLET_CONTEXT_PATH;
+
 @Configuration
 public class CoreSpringConfiguration {
 
-    //ToDo Вынести в .properties
-    public static final String ISSUER = "authserver";
+
+    private final Environment environment;
+
+    @Value("auth-server.issuer")
+    @Getter(AccessLevel.PUBLIC)
+    private String ISSUER;
+
+    @Autowired
+    public CoreSpringConfiguration(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     public ObjectMapper objectMapper() {

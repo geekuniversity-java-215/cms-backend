@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.dto._base.HandlerName;
-import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcController;
-import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcMethod;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcController;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethod;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @JrpcController(HandlerName.order.path)

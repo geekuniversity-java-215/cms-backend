@@ -2,52 +2,58 @@ package com.github.geekuniversity_java_215.cmsbackend.core.converters.order;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.dto.order.OrderDto;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 // При пересборке предупреждение пропадает ?
 //@SuppressWarnings({"SpringJavaAutowiredMembersInspection"})
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
-        uses = {InstantMapper.class, AddressMapper.class})
-// ProductMapper.class, ProductItemMapper.class, OrderItemMapper.class
+        uses = {InstantMapper.class, AddressMapper.class,
+            ClientMapper.class, CourierMapper.class})
+
 public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 
 //    @Autowired
 //    OrderService orderService;
 
-    //ToDo: move client & courier to ClientMapper and CourierMapper
-
-    @Autowired
-    ClientService clientService;
-
-    @Autowired
-    CourierService courierService;
 
     //@Mapping(source = "client", target = "client", qualifiedByName = "toClientDto")
     //@Mapping(source = "manager", target = "manager", qualifiedByName = "toManagerDto")
 
 
 
-    @Mapping(source = "client.id", target = "clientId")
-    @Mapping(source = "courier.id", target = "courierId")
+
+
     @Mapping(source = "status.id", target = "status")
+//    @Mapping(source = "client", target = "clientDto")
+//    @Mapping(source = "courier", target = "courierDto")
     public abstract OrderDto toDto(Order order);
 
-    @Mapping(target = "client", ignore = true)
-    @Mapping(target = "courier", ignore = true)
+    //@Mapping(target = "client", ignore = true)
+    //@Mapping(target = "courier", ignore = true)
 
-    @Mapping(target = "status", ignore = true)
+    //@Mapping(target = "status", ignore = true)
+    //@Mapping(target = "statusValue", ignore = true)
     @Mapping(target = "statusValue", ignore = true)
     public abstract Order toEntity(OrderDto orderDto);
+
+
+    public OrderStatus toOrderStatus(int orderStatus) {
+        return OrderStatus.getById(orderStatus);
+    }
+
 
     /**
      * Custom conversion logic, need to further setup
@@ -55,20 +61,16 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
      * @param target Entity
      */
     @AfterMapping
-    void afterMapping(OrderDto source, @MappingTarget Order target) {
+    private void afterMapping(OrderDto source, @MappingTarget Order target) {
 
         // map entity id
         idMap(source, target);
 
         // Manual mapping
-        Client client = clientService.findById(source.getClientId())
-                .orElseThrow(() -> new RuntimeException("Client not found"));
-        Courier courier = courierService.findById(source.getCourierId())
-                .orElseThrow(() -> new RuntimeException("Courier not found"));
-        target.setClient(client);
-        target.setCourier(courier);
 
-        target.setStatus(OrderStatus.getById(source.getStatus()));
+        //target.setClient(client);
+        //target.setCourier(courier);
+        //target.setStatus(OrderStatus.getById(source.getStatus()));
     }
 
 

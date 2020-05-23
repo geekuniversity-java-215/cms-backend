@@ -7,9 +7,12 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.geodata.configurations.GeodataConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
 
@@ -19,51 +22,50 @@ public class GeoService {
 
     private final RestTemplate restTemplate = RestTemplateFactory.getRestTemplate(10000);
     private final GeodataConfiguration geoConf;
-    private final ObjectMapper mapper;
 
     @Autowired
-    public GeoService(GeodataConfiguration geoConf, ObjectMapper mapper) {
+    public GeoService(GeodataConfiguration geoConf) {
         this.geoConf = geoConf;
-        this.mapper = mapper;
     }
 
 
-    public String getRoute(Order order) throws JsonProcessingException {
+    public double getRoute(Order order) {
 
         String fromPoint = restTemplate.getForObject(getGeocodeUrl(order.getFrom()), String.class);
         String toPoint = restTemplate.getForObject(getGeocodeUrl(order.getTo()), String.class);
 
-        //FixMe
         Assert.isTrue(fromPoint != null, "fromPoint == null");
         Assert.isTrue(toPoint != null, "fromPoint == null");
 
-        String[] fromPoints = fromPoint.split("},");
-        String[] toPoints = toPoint.split("},");
-        String primaryPointFrom = fromPoints[0].substring(1) + "}";
-        String primaryPointTo = toPoints[0].substring(1) + "}";
+        JSONArray jsonArrayFrom = new JSONArray(fromPoint);
+        String fromLongitude = jsonArrayFrom.getJSONObject(0).getString("lon");
+        String fromLatitude = jsonArrayFrom.getJSONObject(0).getString("lat");
 
-        JsonNode nodeFrom, nodeTo;
+        JSONArray jsonArrayTo = new JSONArray(toPoint);
+        String toLongitude = jsonArrayTo.getJSONObject(0).getString("lon");
+        String toLatitude = jsonArrayTo.getJSONObject(0).getString("lat");
 
-        nodeFrom = mapper.readTree(primaryPointFrom);
-        nodeTo = mapper.readTree(primaryPointTo);
-
-        String latFrom = nodeFrom.get("lat").asText();
-        String lonFrom = nodeFrom.get("lon").asText();
-        String latTo = nodeTo.get("lat").asText();
-        String lonTo = nodeTo.get("lon").asText();
-
-        order.getFrom().setLongitude(lonFrom);
-        order.getFrom().setLatitude(latFrom);
-        order.getTo().setLongitude(lonTo);
-        order.getTo().setLatitude(latTo);
+        order.getFrom().setLongitude(fromLongitude);
+        order.getFrom().setLatitude(fromLatitude);
+        order.getTo().setLongitude(toLongitude);
+        order.getTo().setLatitude(toLatitude);
 
         String route = getRouteUrl(order);
-        return restTemplate.getForObject(route, String.class);
+        double distance = 0;
+        try {
+            route = restTemplate.getForObject(route, String.class);
+            JSONObject jsonRoute = new JSONObject(route);
+            JSONArray jsonArrayRoute = jsonRoute.getJSONArray("routes");
+            distance = jsonArrayRoute.getJSONObject(0).getDouble("distance");
+        } catch (HttpClientErrorException.NotFound e) {
+            log.error("route not found");
+        }
+        return distance;
     }
 
     // ==================================================================
 
-    private String getRouteUrl(Order order){
+    private String getRouteUrl(Order order) {
 
         StringBuilder url = new StringBuilder();
         url.append(geoConf.getRouteUrl()).append(geoConf.getTransportType()).append("/");
@@ -72,7 +74,7 @@ public class GeoService {
         return url.toString();
     }
 
-    private String getGeocodeUrl(Address address){
+    private String getGeocodeUrl(Address address) {
         return geoConf.getReverseGeocodeUrl() + address.addressFormatToRequest() + "&format=json";
     }
 

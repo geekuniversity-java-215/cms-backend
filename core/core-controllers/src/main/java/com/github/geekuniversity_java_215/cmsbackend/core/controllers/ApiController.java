@@ -3,14 +3,10 @@ package com.github.geekuniversity_java_215.cmsbackend.core.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.http.HttpResponse;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.JrpcException;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.request.JrpcRequestHeader;
-import com.github.geekuniversity_java_215.cmsbackend.protocol.jrpc.response.JrpcErrorCode;
-import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
-import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcController;
-import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcMethod;
-import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.jrpc.JrpcMethodHandler;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_controller.HttpResponseFactory;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.JrpcException;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.request.JrpcRequestHeader;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.response.JrpcErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.BeansException;
@@ -25,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
@@ -34,7 +29,12 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.github.geekuniversity_java_215.cmsbackend.utils.controllers.HttpResponseFactory;
+import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcController;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethod;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethodHandler;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_controller.HttpResponse;
+
 
 
 @RestController

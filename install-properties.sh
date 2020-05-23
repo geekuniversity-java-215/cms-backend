@@ -9,7 +9,9 @@
 ##########################################################################################
 
 # lib modules
-LIB_MODULES=(core/core-controllers core/core-services mail payment utils jrpc-client geodata)
+LIB_MODULES=(core/core-controllers core/core-services \
+    mail payment utils geodata \
+    ztests/system-test)
 
 # application modules
 APPLICATION_MODULES=(auth-server cmsapp chat)
@@ -57,9 +59,9 @@ done
 # located in <module_name>/src/main/resources/
 ##########################################################################################
 
-# core-services ------------------------------------------------------------
+# configuration ------------------------------------------------------------
 # logback-spring.xml
-fromPath=core/core-services/src/main/resources/
+fromPath=configuration/src/main/resources/
 FROM=${fromPath}logback-spring.xml
 TO=${fromPath}logback-spring-dev.xml
 if [[ ! -f "$TO" ]]; then

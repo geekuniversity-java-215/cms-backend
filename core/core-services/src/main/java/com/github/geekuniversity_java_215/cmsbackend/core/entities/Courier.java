@@ -29,8 +29,7 @@ public class Courier extends AbstractEntity {
     private String courierSpecificData;
 
 
-    protected Courier() {}
-
+    public Courier() {}
     public Courier(@NotNull User user, String courierSpecificData) {
         this.user = user;
         this.courierSpecificData = courierSpecificData;

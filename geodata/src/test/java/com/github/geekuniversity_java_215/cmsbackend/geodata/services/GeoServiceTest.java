@@ -18,7 +18,7 @@ class GeoServiceTest {
 
 
     @Test
-    void getRoute() throws JsonProcessingException {
+    void getRoute() {
 
         Address from = new Address("Санкт-Петербург", "Кондратьевский", 70, 2, 0);
         Address to = new Address("Москва", "Порядковый переулок", 21, 0, 0);
@@ -28,9 +28,10 @@ class GeoServiceTest {
         order.setTo(to);
 
         // Если не упало по CONNECTION_REFUSED или 404 то уже хорошо.
-        String result = geoService.getRoute(order);
+        double distance = geoService.getRoute(order);
+
 
         //ToDo: доделать валидацию теста
-        log.info(result);
+        log.info("{}", distance);
     }
 }

@@ -16,8 +16,16 @@
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
             <artifactId>core-services</artifactId>
-            <version>0.1</version>
+            <version>${app.version}</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20190722</version>
+        </dependency>
+
     </dependencies>
 </project>

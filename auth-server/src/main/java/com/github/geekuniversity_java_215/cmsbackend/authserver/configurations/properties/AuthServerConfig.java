@@ -1,24 +1,47 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.properties;
 
-import lombok.Data;
+import com.github.geekuniversity_java_215.cmsbackend.core.utils.EnvStringBuilder;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.util.Assert;
 
-import java.util.Properties;
+import javax.annotation.PostConstruct;
+import java.net.URL;
+
+import static com.github.geekuniversity_java_215.cmsbackend.authserver.data.constants.AuthServerPropNames.*;
+import static com.github.geekuniversity_java_215.cmsbackend.core.data.constants.CorePropNames.*;
+import static com.pivovarit.function.ThrowingSupplier.unchecked;
 
 @Configuration
-@Data
+@Getter
 public class AuthServerConfig {
 
-    @Value("${auth-server.confirmation.url}")
+    private final EnvStringBuilder envStringbuilder;
+
+    @Value("${" + AUTHSERVER_CONFIRMATION_PATH + "}")
+    @Getter(AccessLevel.NONE)
+    private String confirmationPath;
+
+
+    @Value("${" + AUTHSERVER_CONFIRMATION_REDIRECT_URL + "}")
+    private String redirectUrl;
+
+
     private String confirmationUrl;
 
 
-    @Value("${auth-server.confirmation-redirect.url}")
-    private String redirectUrl;
+
+    @Autowired
+    public AuthServerConfig(EnvStringBuilder envStringbuilder) {
+        this.envStringbuilder = envStringbuilder;
+    }
+
+    @PostConstruct
+    private void postConstruct() {
+        confirmationUrl  =
+            envStringbuilder.buildURL(envStringbuilder.getProperty(AUTHSERVER_CONFIRMATION_PATH));
+    }
 }

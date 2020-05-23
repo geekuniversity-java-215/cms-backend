@@ -2,7 +2,9 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BasicAuthRequestFilter;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BearerRequestFilter;
+import com.github.geekuniversity_java_215.cmsbackend.core.configurations.filters.CorsAllowAllFilter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +18,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
-import java.lang.invoke.MethodHandles;
 
+
+
+@Slf4j
 @EnableWebSecurity
 public class MultipleWebSecurityConfig {
-
-    private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,6 +58,13 @@ public class MultipleWebSecurityConfig {
         return result;
     }
 
+    @Bean
+    public FilterRegistrationBean<CorsAllowAllFilter> corsAllowAllFilterRegistration(CorsAllowAllFilter filter) {
+        FilterRegistrationBean<CorsAllowAllFilter> result = new FilterRegistrationBean<>(filter);
+        result.setEnabled(false);
+        return result;
+    }
+
     /**
      * Token operations
      * Authorisation: Basic + Bearer
@@ -66,22 +75,29 @@ public class MultipleWebSecurityConfig {
 
         private final BearerRequestFilter bearerRequestFilter;
         private final BasicAuthRequestFilter basicAuthRequestFilter;
+        private final CorsAllowAllFilter corsAllowAllFilter;
 
 
         @Autowired
-        public TokenWebSecurityConfig(BearerRequestFilter bearerRequestFilter, BasicAuthRequestFilter basicAuthRequestFilter) {
+        public TokenWebSecurityConfig(BearerRequestFilter bearerRequestFilter,
+                                      BasicAuthRequestFilter basicAuthRequestFilter,
+                                      CorsAllowAllFilter corsAllowAllFilter) {
             this.bearerRequestFilter = bearerRequestFilter;
             this.basicAuthRequestFilter = basicAuthRequestFilter;
+            this.corsAllowAllFilter = corsAllowAllFilter;
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.antMatcher("/oauzz/token/**").authorizeRequests().anyRequest().authenticated()
+            http.cors().and()
+                .antMatcher("/oauzz/token/**").authorizeRequests().anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
+                //.addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class)
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
                 .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
+                
         }
     }
 
@@ -96,19 +112,23 @@ public class MultipleWebSecurityConfig {
     public static class AdminWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final BearerRequestFilter bearerRequestFilter;
-        //private final BasicAuthRequestFilter basicAuthRequestFilter;
+        private final CorsAllowAllFilter corsAllowAllFilter;
 
         @Autowired
-        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter) {
+        public AdminWebSecurityConfig(BearerRequestFilter bearerRequestFilter,
+                                      CorsAllowAllFilter corsAllowAllFilter) {
             this.bearerRequestFilter = bearerRequestFilter;
+            this.corsAllowAllFilter = corsAllowAllFilter;
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
+            http
+                .antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
+                .addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class)
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class);
 
             //.addFilterAfter(bearerRequestFilter, LogoutFilter.class)
@@ -149,17 +169,27 @@ public class MultipleWebSecurityConfig {
     @Order(3)
     public static class RegistrationConfirmationSecurityConfig extends WebSecurityConfigurerAdapter {
 
+        private final CorsAllowAllFilter corsAllowAllFilter;
+
+        public RegistrationConfirmationSecurityConfig(CorsAllowAllFilter corsAllowAllFilter) {
+            this.corsAllowAllFilter = corsAllowAllFilter;
+        }
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.authorizeRequests().antMatchers("/registration/add", "/registration/confirm").permitAll()
-                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and().csrf().disable();
+            http
+                .authorizeRequests().antMatchers("/registration/add", "/registration/confirm").permitAll()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().csrf().disable()
+                .addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class);
         }
 
     }
 
 }
+
+// ==========================================================================================================
 
 //    @Autowired
 //    private final ApplicationContext context;

@@ -79,7 +79,8 @@ public class MailService {
         }
 
         try {
-            result = jobPool.add(() -> javaMailSender.send(message));
+            // DISABLED DUE TO GOOGLE QUOTA BAN
+            //result = jobPool.add(() -> javaMailSender.send(message));
         }
         catch (Exception e) {
             log.error("JobPool " + jobPool.getPoolName() + " error:", e);

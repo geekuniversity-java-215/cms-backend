@@ -1,0 +1,17 @@
+package com.github.geekuniversity_java_215.cmsbackend.payment.configurations;
+
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@Data
+public class ServerProperties {
+
+    @Value("${local.server.port}")
+    private String serverPort;
+
+    @Value("${server.hostname:localhost}")
+    private String serverHostName;
+}

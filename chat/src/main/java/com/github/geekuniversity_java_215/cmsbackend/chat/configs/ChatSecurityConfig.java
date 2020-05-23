@@ -1,13 +1,12 @@
 package com.github.geekuniversity_java_215.cmsbackend.chat.configs;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.configurations.filtres.BearerRequestResourceFilter;
+import com.github.geekuniversity_java_215.cmsbackend.core.configurations.filters.BearerRequestResourceFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @EnableWebSecurity
 public class ChatSecurityConfig extends WebSecurityConfigurerAdapter {
