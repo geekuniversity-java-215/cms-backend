@@ -45,12 +45,17 @@ public class UnconfirmedUser extends AbstractEntity {
     @Column(name = "password") // bcrypt hash
     private String password;
 
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @Column(name = "role_id")
+    @JoinTable(name = "unconfirmed_roles")
+    private Set<UserRole> roles = new HashSet<>();
+
 //    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 //    private Set<UserRole> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @Column(name = "role_id")
-    private Set<UserRole> roles = new HashSet<>();
+//    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+//    @Column(name = "role_id")
+//    private Set<UserRole> roles = new HashSet<>();
 
 //    // registration confirmation JWT
 //    @NotNull
