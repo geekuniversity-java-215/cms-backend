@@ -6,6 +6,8 @@ import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 public abstract class AbstractMapper<E ,D> {
 
     /**
@@ -20,4 +22,8 @@ public abstract class AbstractMapper<E ,D> {
     public abstract E toEntity(D dto);
 
     public abstract D toDto(E entity);
+
+    public abstract List<D> toDtoList(List<E> entityList);
+
+    public abstract List<E> toEntityList(List<D> dtoList);
 }

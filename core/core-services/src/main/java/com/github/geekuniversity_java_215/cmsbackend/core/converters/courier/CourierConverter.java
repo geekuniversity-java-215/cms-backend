@@ -1,11 +1,9 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.converters.client;
+package com.github.geekuniversity_java_215.cmsbackend.core.converters.courier;
 
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractConverter;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
-import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CourierConverter extends AbstractConverter<Courier, CourierDto, Void> {

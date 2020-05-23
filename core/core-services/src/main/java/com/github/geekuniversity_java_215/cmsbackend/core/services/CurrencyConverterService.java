@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Transactional
 public class CurrencyConverterService {
 
-    private CurrencyConverterRepository currencyConverterRepository;
+    private final CurrencyConverterRepository currencyConverterRepository;
 
     @Autowired
     public CurrencyConverterService(CurrencyConverterRepository currencyConverterRepository) {
