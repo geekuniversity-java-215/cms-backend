@@ -28,7 +28,7 @@ public class Client extends AbstractEntity {
     // stub
     private String clientSpecificData;
 
-    protected Client() {}
+    public Client() {}
 
     public Client(@NotNull User user, String clientSpecificData) {
         this.user = user;
