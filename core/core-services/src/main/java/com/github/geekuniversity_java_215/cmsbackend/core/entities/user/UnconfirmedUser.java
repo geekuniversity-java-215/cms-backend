@@ -47,7 +47,7 @@ public class UnconfirmedUser extends AbstractEntity {
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @Column(name = "role_id")
-    @JoinTable(name = "unconfirmed_user_roles")
+    @JoinTable(name = "unconfirmed_uzer_roles")
     private Set<UserRole> roles = new HashSet<>();
 
 //    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
