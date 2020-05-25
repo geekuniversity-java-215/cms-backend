@@ -50,14 +50,14 @@ public class TransactionConverter extends AbstractConverter<Transaction, Transac
         return result;
     }
 
-    // Entity => Json
+    // Entity => JsonNode
     public JsonNode toJson(Transaction transaction){  //(Object o) {
         log.info("Entity => Json");
 
-        JsonNode node;
-        node= mapper.valueToTree(transaction);
+        TransactionDto transactionDto;
+        transactionDto= transactionMapper.toDto(transaction);
         try {
-            return node;//objectMapper.valueToTree(o);
+            return transactionDto ;//objectMapper.valueToTree(o);
         }
         catch (Exception e) {
             throw new ParseException(0, "toJson convert error", e);
@@ -65,10 +65,4 @@ public class TransactionConverter extends AbstractConverter<Transaction, Transac
     }
 
 
-    @Override
-    protected void validate(Transaction transaction) {
-        super.validate(transaction);
-
-        // ... custom validation
-    }
 }
