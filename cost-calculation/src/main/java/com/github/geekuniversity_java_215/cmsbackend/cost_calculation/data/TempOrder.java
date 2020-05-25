@@ -8,5 +8,4 @@ public class TempOrder {
 
     private int distance;
     private double weight;
-    private boolean urgency;
 }

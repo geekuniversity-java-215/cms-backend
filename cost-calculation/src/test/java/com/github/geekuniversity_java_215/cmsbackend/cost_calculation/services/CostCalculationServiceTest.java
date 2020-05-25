@@ -1,18 +1,18 @@
 package com.github.geekuniversity_java_215.cmsbackend.cost_calculation.services;
 
-import com.github.geekuniversity_java_215.cmsbackend.cost_calculation.data.TempCost;
 import com.github.geekuniversity_java_215.cmsbackend.cost_calculation.service.CostCalculationService;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import java.util.List;
 
 @SpringBootTest
 @Slf4j
 public class CostCalculationServiceTest {
     private static int distance;
     private static double weight;
-    private static boolean urgency;
 
     @Autowired
     private CostCalculationService costCalculationService;
@@ -21,12 +21,11 @@ public class CostCalculationServiceTest {
     public static void setUp(){
         distance = 10;
         weight = 9.0;
-        urgency = true;
     }
 
     @Test
     public void calculateCostShipping(){
-        TempCost tempCostActualy = costCalculationService.calculateCostShipping(distance,weight,urgency);
+        List<Double> listCost = costCalculationService.calculateCostShipping(distance,weight);
         log.info("cost shipping calculated successfully");
     }
 
