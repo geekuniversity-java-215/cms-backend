@@ -6,13 +6,11 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "request_for_funds")
@@ -20,8 +18,7 @@ import java.sql.Date;
 @EqualsAndHashCode(callSuper=true)
 public class Transaction extends AbstractEntity {
 
-    @NotNull
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id")
     private User user;
 
@@ -37,16 +34,30 @@ public class Transaction extends AbstractEntity {
     @NotNull
     private Date dateCreate;
 
-    @NotNull
     private Date dateSuccess;
 
-    protected Transaction() {}
+    public Transaction(){
+    }
+
+    public Transaction(User user, String typeOperation, BigDecimal amount, String currencyCodeType) {
+        this.user=user;
+        this.typeOperation=typeOperation;
+        this.amount=amount;
+        this.currencyCodeType=currencyCodeType;
+        this.dateCreate=new java.sql.Date(Calendar.getInstance().getTime().getTime());// (Date) new java.util.Date();
+
+        //временная заглушка. dateSuccess должен заполняться, когда транзакция отработана
+        this.dateSuccess=new java.sql.Date(Calendar.getInstance().getTime().getTime());// (Date) new java.util.Date();
+    }
 
     @Override
     public String toString() {
-        return "Client{" +
+        return "User{" +
                 "id=" + id +
-                ", user=" + user +
+                ", userId=" + user.getId() +
+                ", amount=" + amount +
+                ", typeOperation=" + typeOperation+
                 '}';
     }
+
 }

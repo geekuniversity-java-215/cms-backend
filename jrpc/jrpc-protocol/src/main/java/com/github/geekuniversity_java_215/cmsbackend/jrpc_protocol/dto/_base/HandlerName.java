@@ -22,8 +22,13 @@ public class HandlerName {
     //geodata specific
     private static final String getRoute = "getRoute";
 
-    //payment MassPayments
+    //payment
     public static final String requestForFunds="requestForFunds";
+
+    public static class payment {
+        public static final String path_payment="cms.payment";
+        public static final String requestForFunds=HandlerName.requestForFunds;
+    }
 
     public static class calculator {
         public static final String path = "calculator.actions";

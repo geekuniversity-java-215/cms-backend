@@ -2,9 +2,11 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractConverter;
 import com.github.geekuniversity_java_215.cmsbackend.payment.dto.TransactionDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.Transaction;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Component;
@@ -12,35 +14,56 @@ import org.springframework.stereotype.Component;
 import javax.validation.ValidationException;
 
 @Component
+@Slf4j
 public class TransactionConverter extends AbstractConverter<Transaction, TransactionDto, Void> {
+    private final TransactionMapper transactionMapper;
+    private ObjectMapper mapper;
 
     @Autowired
-    public TransactionConverter(TransactionMapper transactionMapper) {
-        this.entityMapper = transactionMapper;
+    public TransactionConverter(TransactionMapper transactionMapper, ObjectMapper mapper) {
+        this.transactionMapper = transactionMapper;
 
         this.entityClass = Transaction.class;
         this.dtoClass = TransactionDto.class;
         this.specClass = Void.class;
+        this.mapper=mapper;
     }
-    // Json => Long
-    public Long getAmount(JsonNode params) {
 
-        Long result;
+      public String[] parseDouble(JsonNode params) {
+        String[] result;
 
-        // parsing request
         try {
-            result = objectMapper.treeToValue(params, Long.class);
-
+            result = objectMapper.treeToValue(params, String[].class);
             // validate
-            if (result == null || result < 0) {
-                throw new ValidationException("Id validation failed");
+            if (result == null || result.length != 2) {
+                throw new ValidationException("Wrong arguments count");
             }
-        }
-        catch (JsonProcessingException e) {
-            throw new ParseException(0, "Id parse error", e);
+
+            for (int i = 0; i < 2; i++) {
+                if (result[i] == null ) {
+                    throw new ValidationException(i + "st argument validation failed");
+                }
+            }
+        } catch (JsonProcessingException e) {
+            throw new ParseException(0, "params parse error", e);
         }
         return result;
     }
+
+    // Entity => Json
+    public JsonNode toJson(Transaction transaction){  //(Object o) {
+        log.info("Entity => Json");
+
+        JsonNode node;
+        node= mapper.valueToTree(transaction);
+        try {
+            return node;//objectMapper.valueToTree(o);
+        }
+        catch (Exception e) {
+            throw new ParseException(0, "toJson convert error", e);
+        }
+    }
+
 
     @Override
     protected void validate(Transaction transaction) {
