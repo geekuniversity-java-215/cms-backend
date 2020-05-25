@@ -29,6 +29,11 @@ public class OrderController {
         this.converter = converter;
     }
 
+    /**
+     * Get Order by id
+     * @param params Long id
+     * @return
+     */
     @JrpcMethod(HandlerName.order.findById)
     public JsonNode findById(JsonNode params) {
 
@@ -38,6 +43,11 @@ public class OrderController {
     }
 
 
+    /**
+     * Get List<Order> by idList
+     * @param params List<Long> idList
+     * @return
+     */
     @JrpcMethod(HandlerName.order.findAllById)
     public JsonNode findAllById(JsonNode params) {
 
@@ -46,6 +56,11 @@ public class OrderController {
         return converter.toDtoListJson(list);
     }
 
+    /**
+     * Get order by Specification
+     * @param params OrderSpecDto
+     * @return
+     */
     @JrpcMethod(HandlerName.order.findAll)
     public JsonNode findAll(JsonNode params) {
 
@@ -57,6 +72,15 @@ public class OrderController {
     //
     //  Return first ProductSpecDto.limit elements
     //
+
+    /***
+     * Get first limit elements by OrderSpecDto (with ~pagination)
+     * <br> So, for example you got first 10 Orders, ordered by price.
+     * Then set filter price greater than price in 10 Order and ask (next) 10 Orders and so on
+     * Until you got no moar orderz
+     * @param params
+     * @return
+     */
     @JrpcMethod(HandlerName.order.findFirst)
     public JsonNode findFirst(JsonNode params) {
 
@@ -68,6 +92,11 @@ public class OrderController {
     }
 
 
+    /**
+     * Save Order(insert new or update existing)
+     * @param params Order
+     * @return
+     */
     @JrpcMethod(HandlerName.order.save)
     public JsonNode save(JsonNode params) {
 
@@ -75,7 +104,13 @@ public class OrderController {
         order = orderService.save(order);
         return converter.toIdJson(order);
     }
+    
 
+    /**
+     * Delete Order
+     * @param params
+     * @return
+     */
     @JrpcMethod(HandlerName.order.delete)
     public JsonNode delete(JsonNode params) {
         

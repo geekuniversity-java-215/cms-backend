@@ -21,12 +21,10 @@ public class OrderSpecDto {
     // null - без верхней границы по цене
     private BigDecimal priceMax;
 
-    // Если пустой список - то поиск будет осуществляться по всем категориям
-    @NotNull
-    private List<Long> categoryList = new ArrayList<>();
+//    // Если пустой список - то поиск будет осуществляться по всем категориям
+//    @NotNull
+//    private List<Long> categoryList = new ArrayList<>();
 
-    // null - выдать сразу все товары, иначе по сколько отдавать
+    // null - выдать сразу все заказы, иначе по сколько отдавать
     private Integer limit;
-
-    // это недо-pagination, полноценной нету
 }
