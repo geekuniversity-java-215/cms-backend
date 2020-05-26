@@ -1,8 +1,9 @@
-package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers;
+package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.order;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethod;
@@ -13,18 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.List;
 import java.util.Optional;
 
-@JrpcController(HandlerName.order.path)
-public class OrderController {
+@JrpcController(HandlerName.order_manager.path)
+@Secured(UserRole.MANAGER)
+public class OrderManagerController {
 
     private final OrderService orderService;
     private final OrderConverter converter;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderConverter converter) {
+    public OrderManagerController(OrderService orderService, OrderConverter converter) {
         this.orderService = orderService;
         this.converter = converter;
     }
@@ -34,7 +37,7 @@ public class OrderController {
      * @param params Long id
      * @return
      */
-    @JrpcMethod(HandlerName.order.findById)
+    @JrpcMethod(HandlerName.order_manager.findById)
     public JsonNode findById(JsonNode params) {
 
         Long id = converter.getId(params);
@@ -48,7 +51,7 @@ public class OrderController {
      * @param params List<Long> idList
      * @return
      */
-    @JrpcMethod(HandlerName.order.findAllById)
+    @JrpcMethod(HandlerName.order_manager.findAllById)
     public JsonNode findAllById(JsonNode params) {
 
         List<Long> idList = converter.getIdList(params);
@@ -61,7 +64,7 @@ public class OrderController {
      * @param params OrderSpecDto
      * @return
      */
-    @JrpcMethod(HandlerName.order.findAll)
+    @JrpcMethod(HandlerName.order_manager.findAll)
     public JsonNode findAll(JsonNode params) {
 
         Optional<OrderSpecDto> specDto = converter.toSpecDto(params);
@@ -81,7 +84,7 @@ public class OrderController {
      * @param params
      * @return
      */
-    @JrpcMethod(HandlerName.order.findFirst)
+    @JrpcMethod(HandlerName.order_manager.findFirst)
     public JsonNode findFirst(JsonNode params) {
 
         Optional<OrderSpecDto> specDto = converter.toSpecDto(params);
@@ -97,7 +100,7 @@ public class OrderController {
      * @param params Order
      * @return
      */
-    @JrpcMethod(HandlerName.order.save)
+    @JrpcMethod(HandlerName.order_manager.save)
     public JsonNode save(JsonNode params) {
 
         Order order = converter.toEntity(params);
@@ -111,12 +114,14 @@ public class OrderController {
      * @param params
      * @return
      */
-    @JrpcMethod(HandlerName.order.delete)
+    @JrpcMethod(HandlerName.order_manager.delete)
     public JsonNode delete(JsonNode params) {
         
         Order order = converter.toEntity(params);
         orderService.delete(order);
         return null;
     }
+
+    // COURIER specific ===============================================
 
 }

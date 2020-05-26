@@ -31,8 +31,8 @@ public class HandlerName {
         public static final String div = HandlerName.div;
     }
 
-    public static class order {
-        public static final String path = "cmsapp.core.order";
+    public static class order_manager {
+        public static final String path = "cmsapp.core.order.manager";
 
         public static final String findById = HandlerName.findById;
         public static final String findAllById = HandlerName.findAllById;
@@ -42,6 +42,31 @@ public class HandlerName {
         public static final String delete = HandlerName.delete;
 
     }
+
+    public static class order_courier {
+        public static final String path = "cmsapp.core.order.courier";
+
+        public static final String findById = HandlerName.findById;
+        public static final String findAllById = HandlerName.findAllById;
+        public static final String findAll = HandlerName.findAll;
+        public static final String findFirst = HandlerName.findFirst;
+        public static final String save = HandlerName.save;
+        public static final String delete = HandlerName.delete;
+
+    }
+
+    public static class order_client {
+        public static final String path = "cmsapp.core.order.client";
+
+        public static final String findById = HandlerName.findById;
+        public static final String findAllById = HandlerName.findAllById;
+        public static final String findAll = HandlerName.findAll;
+        public static final String findFirst = HandlerName.findFirst;
+        public static final String save = HandlerName.save;
+        public static final String delete = HandlerName.delete;
+
+    }
+
 
 //    public static class geodata {
 //        public static final String path = "geodata";

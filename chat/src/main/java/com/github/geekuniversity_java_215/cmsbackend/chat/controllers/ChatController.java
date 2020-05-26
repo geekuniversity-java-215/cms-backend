@@ -8,6 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,20 +31,22 @@ public class ChatController {
     }
 
     @GetMapping("/{orderId}")
-    public String beginChat(Principal principal, Model model, @PathVariable Long orderId) {
+    public String beginChat(Model model, @PathVariable Long orderId) {
 
-        User user = userService.findByUsername(principal.getName())
-            .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
+        User user = userService.getCurrentUser()
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+
         model.addAttribute("username", user.getFullName());
         model.addAttribute("orderId", orderId);
         return "chat";
     }
 
     @GetMapping("/history/{orderId}")
-    public String viewHisory(Principal principal, Model model, @PathVariable Long orderId) {
+    public String viewHistory(Model model, @PathVariable Long orderId) {
 
-        User user = userService.findByUsername(principal.getName())
-            .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
+        User user = userService.getCurrentUser()
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
 

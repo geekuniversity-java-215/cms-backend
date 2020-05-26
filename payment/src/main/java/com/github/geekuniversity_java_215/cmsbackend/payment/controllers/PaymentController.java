@@ -43,9 +43,10 @@ public class PaymentController {
 
 
     @PostMapping(CONTROLLER_EXECUTE_PAYMENT_PATH)
-    private String executePayment(@RequestBody String amount, Principal principal) throws PayPalRESTException {
-        Optional<User> user = userService.findByUsername(principal.getName());
-        String approvalLink = payPalService.authorizePayment(String.valueOf(user.get().getId()), Integer.valueOf(amount));
+    private String executePayment(@RequestBody String amount) throws PayPalRESTException {
+        User user = userService.getCurrentUser()
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+        String approvalLink = payPalService.authorizePayment(String.valueOf(user.getId()), Integer.valueOf(amount));
         log.info("Ответ запрос на authorize_payment=" + approvalLink);
         return "redirect:" + approvalLink;
     }
@@ -60,10 +61,10 @@ public class PaymentController {
     public String success(@RequestParam(name = "paymentId") String paymentId,
                           @RequestParam(name = "PayerID") String payerId,
                           @PathVariable Long clientId,
-                          Model model,
-                          Principal principal) throws PayPalRESTException {
-        User user = userService.findByUsername(principal.getName())
-            .orElseThrow(() -> new UsernameNotFoundException("User " + principal.getName() + " not found"));
+                          Model model) throws PayPalRESTException {
+
+        User user = userService.getCurrentUser()
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
 
         if (user.getId().equals(clientId)) {
             String result = "";

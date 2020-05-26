@@ -7,6 +7,7 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenSer
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.BlackListResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,7 @@ public class OauthController {
     public ResponseEntity<?> getToken() {
         try {
             OauthResponse result;
-            result = tokenService.issueTokens(getUsername(), null);
+            result = tokenService.issueTokens(UserService.getUsername(), null);
             return ResponseEntity.ok(result);
         }
         catch (Exception e) {
@@ -77,7 +78,7 @@ public class OauthController {
             RefreshToken refreshToken = requestScopeBean.getRefreshToken();
 
             // Выдается пара токенов ACCESS + REFRESH
-            result = tokenService.issueTokens(getUsername(), refreshToken);
+            result = tokenService.issueTokens(UserService.getUsername(), refreshToken);
 
             return ResponseEntity.ok(result);
         }
@@ -126,14 +127,14 @@ public class OauthController {
     // ==============================================================================
 
 
-    // get current user name
-    private static String getUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        UserDetailsCustom userDetails = (UserDetailsCustom)principal;
-        //UserDetails userDetails = (UserDetails)principal;
-        return userDetails.getUsername();
-    }
+//    // get current user name
+//    private static String getUsername() {
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        UserDetailsCustom userDetails = (UserDetailsCustom)principal;
+//        //UserDetails userDetails = (UserDetails)principal;
+//        return userDetails.getUsername();
+//    }
 
 }
 

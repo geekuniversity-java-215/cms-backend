@@ -69,8 +69,11 @@ public class User extends AbstractEntity {
     @Setter(AccessLevel.NONE)
     private String email;     // use email as username ??
 
+    @Column(name = "paypal_email")
+    private String payPalEmail;     // Paypal withdrawal mailbox
+
     @NotNull
-    @Column(name = "phone_number")  // may change ?
+    @Column(name = "phone_number")  // may change or not?
     private String phoneNumber;
 
 

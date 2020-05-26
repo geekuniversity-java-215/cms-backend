@@ -14,6 +14,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 
@@ -39,11 +40,11 @@ public class ChatMessageController {
 
     @MessageMapping("/chat.sendMessage/{orderId}")
     public void sendMessage(@Payload ChatMessageDto messageLite,
-                            @DestinationVariable Long orderId,
-                            Principal principal) {
+                            @DestinationVariable Long orderId) {
 
-        User user = userService.findByUsername(principal.getName())
-            .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
+        User user = userService.getCurrentUser()
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
 
@@ -54,11 +55,11 @@ public class ChatMessageController {
     @MessageMapping("/chat.addUser/{orderId}")
     public void addUser(@Payload ChatMessageDto messageLite,
                         @DestinationVariable Long orderId,
-                        SimpMessageHeaderAccessor headerAccessor,
-                        Principal principal) {
+                        SimpMessageHeaderAccessor headerAccessor) {
 
-        User user = userService.findByUsername(principal.getName())
-            .orElseThrow(() -> new RuntimeException("User " + principal.getName() + " not found"));
+        User user = userService.getCurrentUser()
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
 
