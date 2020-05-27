@@ -19,7 +19,7 @@ import org.springframework.security.access.annotation.Secured;
 import java.util.List;
 import java.util.Optional;
 
-@JrpcController(HandlerName.order_manager.path)
+@JrpcController(HandlerName.order.manager.path)
 @Secured(UserRole.MANAGER)
 public class OrderManagerController {
 
@@ -37,7 +37,7 @@ public class OrderManagerController {
      * @param params Long id
      * @return
      */
-    @JrpcMethod(HandlerName.order_manager.findById)
+    @JrpcMethod(HandlerName.order.manager.findById)
     public JsonNode findById(JsonNode params) {
 
         Long id = converter.getId(params);
@@ -51,7 +51,7 @@ public class OrderManagerController {
      * @param params List<Long> idList
      * @return
      */
-    @JrpcMethod(HandlerName.order_manager.findAllById)
+    @JrpcMethod(HandlerName.order.manager.findAllById)
     public JsonNode findAllById(JsonNode params) {
 
         List<Long> idList = converter.getIdList(params);
@@ -64,7 +64,7 @@ public class OrderManagerController {
      * @param params OrderSpecDto
      * @return
      */
-    @JrpcMethod(HandlerName.order_manager.findAll)
+    @JrpcMethod(HandlerName.order.manager.findAll)
     public JsonNode findAll(JsonNode params) {
 
         Optional<OrderSpecDto> specDto = converter.toSpecDto(params);
@@ -84,7 +84,7 @@ public class OrderManagerController {
      * @param params
      * @return
      */
-    @JrpcMethod(HandlerName.order_manager.findFirst)
+    @JrpcMethod(HandlerName.order.manager.findFirst)
     public JsonNode findFirst(JsonNode params) {
 
         Optional<OrderSpecDto> specDto = converter.toSpecDto(params);
@@ -100,7 +100,7 @@ public class OrderManagerController {
      * @param params Order
      * @return
      */
-    @JrpcMethod(HandlerName.order_manager.save)
+    @JrpcMethod(HandlerName.order.manager.save)
     public JsonNode save(JsonNode params) {
 
         Order order = converter.toEntity(params);
@@ -114,14 +114,11 @@ public class OrderManagerController {
      * @param params
      * @return
      */
-    @JrpcMethod(HandlerName.order_manager.delete)
+    @JrpcMethod(HandlerName.order.manager.delete)
     public JsonNode delete(JsonNode params) {
         
         Order order = converter.toEntity(params);
         orderService.delete(order);
         return null;
     }
-
-    // COURIER specific ===============================================
-
 }

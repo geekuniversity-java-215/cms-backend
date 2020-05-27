@@ -91,7 +91,7 @@ public class User extends AbstractEntity {
     private Courier courier;
 
 
-    protected User() {}
+    public User() {}
 
     public User(@NotNull String username,
                 @NotNull String password,

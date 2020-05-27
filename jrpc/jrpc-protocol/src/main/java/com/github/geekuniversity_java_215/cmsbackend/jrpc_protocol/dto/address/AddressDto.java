@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class AddressDto extends AbstractDto {
 
-    protected Long id;
     private String city;
     private String street;
     private Integer house;

@@ -1,7 +1,7 @@
-package com.github.geekuniversity_java_215.cmsbackend.tests.system_test.lifecycle;
+package com.github.geekuniversity_java_215.cmsbackend.tests.system_test.lifecycle.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.confirm.ConfirmRequest;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.ConfirmRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.oauth.OauthTestRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.RegistrarRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UnconfirmedUserDto;
@@ -9,11 +9,9 @@ import com.github.geekuniversity_java_215.cmsbackend.tests.system_test.configura
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -62,7 +60,7 @@ public class UserRegistrationLifeCycleTest {
         ResponseEntity<Void> confirmResponse = confirmRequest.confirm(confirmToken);
         log.info("3. Confirm new user result: {}", confirmResponse.getStatusCode());
 
-        // 3. Perform requests by ne user
+        // 3. Perform requests by the user
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.NEW_USER);
         ResponseEntity<String> oauthTestResponse = oauthTestRequest.test();
         Assert.assertEquals("HttpStatus.status not 200", HttpStatus.OK, oauthTestResponse.getStatusCode());

@@ -1,14 +1,16 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user;
 
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class UserRoleDto  {
+public class UserRoleDto extends AbstractDto {
 
     //public static final String REGISTRAR              = "ROLE_REGISTRAR";
     public static final String ADMIN                  = "ROLE_ADMIN";
@@ -18,7 +20,7 @@ public class UserRoleDto  {
     public static final String REFRESH                = "ROLE_REFRESH";
     public static final String CONFIRM_REGISTRATION   = "ROLE_CONFIRM_REGISTRATION";
 
-    public static final String CLIENT   = "ROLE_CLIENT";
+    public static final String CLIENT    = "ROLE_CLIENT";
     public static final String COURIER   = "ROLE_COURIER";
     public static final String MANAGER   = "ROLE_MANAGER";
 
@@ -34,13 +36,12 @@ public class UserRoleDto  {
         ROLE_NAMES.add(CLIENT);
         ROLE_NAMES.add(COURIER);
         ROLE_NAMES.add(MANAGER);
-
-
     }
 
     @Setter(AccessLevel.NONE)
     private String name;
 
+    public UserRoleDto() {}
     public UserRoleDto(String name) {
         this.name = name;
     }

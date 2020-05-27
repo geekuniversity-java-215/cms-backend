@@ -24,6 +24,14 @@
 
     <dependencies>
 
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>commons-beanutils</groupId>-->
+<!--            <artifactId>commons-beanutils</artifactId>-->
+<!--            <version>1.9.4</version>-->
+<!--        </dependency>-->
+
+
         <!--module configuration -->
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
@@ -55,6 +63,7 @@
             <version>${app.version}</version>
             <scope>compile</scope>
         </dependency>
+
 
     </dependencies>
 

@@ -1,80 +1,30 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.specifications.order;
+package com.github.geekuniversity_java_215.cmsbackend.core.specifications.user;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserSpecDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
-import static com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto.OrderBy.*;
 
 @SuppressWarnings("ConstantConditions")
 @Slf4j
-public class OrderSpecBuilder {
+public class UserSpecBuilder {
 
-    public static Specification<Order> build(OrderSpecDto orderSpecDto) {
+    public static Specification<User> build(UserSpecDto userSpecDto) {
 
-        if (orderSpecDto == null) {
+        if (userSpecDto == null) {
             return null;
         }
 
-        Specification<Order> specA = Specification.where(null);
 
-        OrderSpecDto s = orderSpecDto;
+
+        Specification<User> specA = Specification.where(null);
+
+        UserSpecDto s = userSpecDto;
 
         final String idName = "id";
-        final String priceName = "price";
         final String courier = "courier";
         final String client = "client";
         //final String categoryName = "category";
-
-
-        // BETWEEN
-        if (s.getPriceMin() != null && s.getPriceMax() != null) {
-
-//                specA = specA
-//                    .and((root, query, builder) -> builder.lessThan(root.get(priceName), p.getPriceMax()))
-//                    .and((root, query, builder) -> builder.greaterThanOrEqualTo(root.get(priceName), p.getPriceMin()));
-
-            specA = specA.and(
-                (root, query, builder) -> builder.between(root.get(priceName), s.getPriceMin(), s.getPriceMax()));
-
-
-//                specA = specA.and(
-//                        (root, query, builder) -> {
-//                            return builder.between(root.get(priceName), p.getPriceMin(), p.getPriceMax());
-//                        });
-        }
-
-        // PRICE LESS THAN MAX
-        if (s.getPriceMin() == null && s.getPriceMax() != null) {
-
-            specA = specA.and(
-                (root, query, builder) -> {
-                    //query.orderBy(builder.desc(root.get(priceName)));
-                    return builder.lessThanOrEqualTo(root.get(priceName), s.getPriceMax());
-                });
-        }
-
-        // PRICE GREATER THAN MIN
-        if (s.getPriceMin() != null && s.getPriceMax() == null) {
-
-            specA = specA.and(
-                (root, query, builder) -> {
-                    //query.orderBy(builder.desc(root.get(priceName)));
-                    return builder.greaterThanOrEqualTo(root.get(priceName), s.getPriceMin());
-                });
-        }
-
-
-//        // IN CATEGORY
-//        if (s.getCategoryList().size() > 0) {
-//
-//            specA = specA.and(
-//                (root, query, builder) -> {
-//
-//                    return builder.in(root.get(categoryName).get("id")).value(p.getCategoryList());
-//                    //return builder.in(root.get("category.id")).value(p.getCategoryList());
-//                });
-//        }
 
         // FILTER BY COURIER
         if (s.getCourier() != null) {
@@ -100,7 +50,7 @@ public class OrderSpecBuilder {
 
 
         // DEFAULT SORT  BY ID ASC
-        if(s.getPriceOrderBy() == null) {
+        //if(s.getPriceOrderBy() == null) {
 
             specA = specA.and(
                 (root, query, builder) -> {
@@ -109,34 +59,7 @@ public class OrderSpecBuilder {
                     return null;
                 });
 
-        }
-
-
-        // SORT BY PRICE
-        if(s.getPriceOrderBy() != null) {
-
-            specA = specA.and(
-                (root, query, builder) -> {
-                    switch (s.getPriceOrderBy()){
-                        case ASC:
-                            query.orderBy(builder.asc(root.get(priceName)));
-                            break;
-                        case DESC:
-                            query.orderBy(builder.desc(root.get(priceName)));
-                            break;
-                    }
-                    // not good to return null but ...
-                    return null;
-                });
-        }
-
-
-
-
-
-
-
-
+        //}
 
         return specA;
     }

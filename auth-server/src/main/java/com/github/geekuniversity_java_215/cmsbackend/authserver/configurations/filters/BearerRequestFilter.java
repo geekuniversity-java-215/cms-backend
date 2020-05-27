@@ -170,7 +170,7 @@ public class BearerRequestFilter extends OncePerRequestFilter {
         // load user from DB
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
         if (userDetails == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("User subject " + claims.getSubject() + " not found");
         }
 
         // Готовим user grantedAuthorities

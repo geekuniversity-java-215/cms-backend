@@ -8,19 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.pivovarit.function.ThrowingFunction.unchecked;
 
+@Component
 public class AbstractJrpcRequest extends AbstractRequestWithOauth {
 
-    protected ObjectMapper objectMapper;
+    private static AtomicLong id = new AtomicLong(1);
 
+    protected ObjectMapper objectMapper;
     @Autowired
     protected void setObjectMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+    }
+
+    public static long nextId() {
+        return id.getAndIncrement();
     }
 
     protected JsonNode performJrpcRequest(long id, String uri, Object params) {

@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.confirm;
+package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar;
 
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.AbstractRequest;
 import lombok.extern.slf4j.Slf4j;
