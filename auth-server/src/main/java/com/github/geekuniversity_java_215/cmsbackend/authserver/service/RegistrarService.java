@@ -104,8 +104,9 @@ public class RegistrarService {
         UnconfirmedUser unconfirmedUser = unconfirmedUserService.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
 
-        User user = unconfirmedUser.toUser();
 
+        //ToDo: move this to transactional service
+        User user = unconfirmedUser.toUser();
 
         // Set user roles to USER
         user.getRoles().clear();

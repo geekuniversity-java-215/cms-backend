@@ -5,6 +5,7 @@ import javax.persistence.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Entity
 @Table(name = "exchange_rate")
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ExchangeRate extends AbstractEntity {
 
     @Column(name = "currency_code")

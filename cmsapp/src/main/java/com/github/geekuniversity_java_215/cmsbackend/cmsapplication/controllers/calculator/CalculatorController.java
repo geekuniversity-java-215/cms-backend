@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers;
+package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.calculator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

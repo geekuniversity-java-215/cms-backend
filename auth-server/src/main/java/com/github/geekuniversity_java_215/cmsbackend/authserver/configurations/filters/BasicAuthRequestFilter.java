@@ -98,7 +98,7 @@ public class BasicAuthRequestFilter extends OncePerRequestFilter {
         // Find user
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (userDetails == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("User " + username + " not found");
         }
 
         // Check password

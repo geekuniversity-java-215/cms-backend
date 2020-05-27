@@ -1,10 +1,12 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +55,30 @@ public class UserService extends BaseRepoAccessService<User> {
      */
     public boolean checkIfExists(User user) {
         return userRepository.checkIfExists(user);
+    }
+
+
+
+
+    /**
+     * Get current authenticated user userName
+     * @return User
+     */
+    public static String getUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        UserDetailsCustom userDetails = (UserDetailsCustom)principal;
+        //UserDetails userDetails = (UserDetails)principal;
+        return userDetails.getUsername();
+    }
+
+
+    /**
+     * Get current authenticated user
+     * @return User
+     */
+    public Optional<User> getCurrentUser() {
+        return findByUsername(getUsername());
     }
 
 }

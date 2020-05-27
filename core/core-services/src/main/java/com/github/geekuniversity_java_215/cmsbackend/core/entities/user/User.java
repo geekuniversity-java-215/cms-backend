@@ -26,11 +26,11 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper=true)
 public class User extends AbstractEntity {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "user_id_seq")
-    @EqualsAndHashCode.Exclude
-    private Long id;
+//    @Id
+//    @Column(name = "id")
+//    @GeneratedValue(generator = "user_id_seq")
+//    @EqualsAndHashCode.Exclude
+//    private Long id;
 
     @NotNull
     @Column(name = "user_name")
@@ -69,8 +69,11 @@ public class User extends AbstractEntity {
     @Setter(AccessLevel.NONE)
     private String email;     // use email as username ??
 
+    @Column(name = "paypal_email")
+    private String payPalEmail;     // Paypal withdrawal mailbox
+
     @NotNull
-    @Column(name = "phone_number")  // may change ?
+    @Column(name = "phone_number")  // may change or not?
     private String phoneNumber;
 
 
@@ -88,7 +91,7 @@ public class User extends AbstractEntity {
     private Courier courier;
 
 
-    protected User() {}
+    public User() {}
 
     public User(@NotNull String username,
                 @NotNull String password,
@@ -105,13 +108,16 @@ public class User extends AbstractEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    protected void setId(Long id) {
-        this.id = id;
-    }
+//    protected void setId(Long id) {
+//        this.id = id;
+//    }
 
     public void setAccount(Account account) {
-        this.account = account;
-        account.setUser(this);
+
+        if (account != null) {
+            this.account = account;
+            account.setUser(this);
+        }
     }
 
     @Override

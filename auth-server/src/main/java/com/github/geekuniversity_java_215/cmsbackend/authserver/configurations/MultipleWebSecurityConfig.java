@@ -94,7 +94,7 @@ public class MultipleWebSecurityConfig {
                 .antMatcher("/oauzz/token/**").authorizeRequests().anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
-                //.addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class)
+                .addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class)
                 .addFilterAfter(bearerRequestFilter, LogoutFilter.class)
                 .addFilterAfter(basicAuthRequestFilter, LogoutFilter.class);
                 

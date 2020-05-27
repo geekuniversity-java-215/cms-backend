@@ -46,48 +46,9 @@ public class CmsInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
 
-        log.info("CmsAppDemoInitializer - add basic entities to DB");
+        //log.info("CmsAppDemoInitializer - add basic entities to DB");
 
         testRepository.save(new TestEntity("Вася test"));
-
-        Address from;
-        Address to;
-        Order order;
-
-        User user;
-        Client client;
-        Courier courier;
-
-        // Prepare database here
-
-        try {
-            from = new Address("Москва", "Улица красных тюленей", 1, 2, 3);
-            to = new Address("Мухосранск", "Западная", 2, 2, 5);
-
-            user = new User("vasya1", "INVALID",
-                "Вася1", "Пупкин1", "vasya1@mail.ru", "112232344551");
-            userService.save(user);
-
-            client = new Client(user, "CLIENT_DATA");
-            clientService.save(client);
-
-            user = new User("sema1", "INVALID",
-                "Сема1", "Пасечкин", "sema1@mail.ru", "9087967865431");
-            userService.save(user);
-            courier = new Courier(user, "COURIER_DATA");
-            courierService.save(courier);
-
-            order = new Order();
-            order.setFrom(from);
-            order.setTo(to);
-            order.setStatus(OrderStatus.DONE);
-            order.setCourier(courier);
-            order.setClient(client);
-            orderService.save(order);
-        }
-        catch (Exception ignore){
-            log.info("ну и хрен с ним, это пока отладка");
-        }
     }
 }
 

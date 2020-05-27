@@ -18,10 +18,14 @@ import ru.geekbrains.dreamworkerln.spring.utils.rest.RestTemplateFactory;
 public class SystemTestSpringConfiguration {
 
     public static final String ADMIN ="adminProperties";
-    public static final String REGISTRAR ="registrarProperties";
-    public static final String USER ="userProperties";
-    public static final String ANONYMOUS ="userProperties";
+    //public static final String REGISTRAR ="registrarProperties";
+    //public static final String USER ="userProperties";
+    public static final String ANONYMOUS ="anonymousProperties";
     public static final String NEW_USER ="newUserProperties";
+
+    public static final String CLIENT ="clientProperties";
+    public static final String COURIER ="courierProperties";
+
 
 
     private final JrpcClientProperties defaultProperties;
@@ -70,6 +74,24 @@ public class SystemTestSpringConfiguration {
         result.getLogin().setPassword("newuser_password");
         return result;
     }
+
+    @Bean(CLIENT)
+    JrpcClientProperties clientProperties() {
+        JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
+        result.getLogin().setUsername("client");
+        result.getLogin().setPassword("client_password");
+        return result;
+    }
+
+    @Bean(COURIER)
+    JrpcClientProperties courierProperties() {
+        JrpcClientProperties result = clientConfigurationMapper.toProperties(defaultPropertiesFile);
+        result.getLogin().setUsername("courier");
+        result.getLogin().setPassword("courier_password");
+        return result;
+    }
+
+    // ----------------------------------------------------
 
     /**
      * Копирует указанный бин в @Primary бин настроек клиента

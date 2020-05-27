@@ -106,7 +106,7 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
             throw e;
         }
         catch (Exception e) {
-            throw new ParseException(0, "Dto parse error", e);
+            throw new ParseException(0, "toEntity parse error", e);
         }
     }
 
@@ -118,7 +118,19 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
             return objectMapper.valueToTree(dto);
         }
         catch (Exception e) {
-            throw new ParseException(0, "ToDtoJson convert error", e);
+            throw new ParseException(0, "toDtoJson convert error", e);
+        }
+    }
+
+
+    // EntityList => Dto => Json
+    public JsonNode toDtoListJson(List<E> entityList) {
+        try {
+            List<D> dtoList = entityMapper.toDtoList(entityList);
+            return objectMapper.valueToTree(dtoList);
+        }
+        catch (Exception e) {
+            throw new ParseException(0, "toDtoListJson convert error", e);
         }
     }
 
@@ -135,9 +147,29 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
             throw e;
         }
         catch (Exception e) {
-            throw new ParseException(0, "To Dto convert error", e);
+            throw new ParseException(0, "toSpecDto convert error", e);
         }
     }
+
+
+
+//    // (Spec)Json => Dto (Specifications have no Entities)
+//    public S toSpecDto(JsonNode params) {
+//
+//        try {
+//            S result = objectMapper.treeToValue(params, specClass);
+//            if(result != null) {
+//                validateSpecDto(result);
+//            }
+//            return result;
+//        }
+//        catch (ValidationException e) {
+//            throw e;
+//        }
+//        catch (Exception e) {
+//            throw new ParseException(0, "toSpecDto convert error", e);
+//        }
+//    }
 
 
 
@@ -159,7 +191,7 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
     private void validateSpecDto(S specDto) {
         Set<ConstraintViolation<S>> violations = validator.validate(specDto);
         if (violations.size() != 0) {
-            throw new ConstraintViolationException("Entity validation failed", violations);
+            throw new ConstraintViolationException("Specification validation failed", violations);
         }
 
     }

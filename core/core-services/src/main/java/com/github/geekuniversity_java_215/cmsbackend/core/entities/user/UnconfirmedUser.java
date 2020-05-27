@@ -31,12 +31,6 @@ public class UnconfirmedUser extends AbstractEntity {
 
     //public static final Duration TTL = Duration.ofDays(1);
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "user_id_seq")
-    @EqualsAndHashCode.Exclude
-    private Long id;
-
     @NotNull
     @Column(name = "user_name")
     private String username;  // username is approved by dictionary.com //  use email as username ???
@@ -45,12 +39,17 @@ public class UnconfirmedUser extends AbstractEntity {
     @Column(name = "password") // bcrypt hash
     private String password;
 
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @Column(name = "role_id")
+    @JoinTable(name = "unconfirmed_uzer_roles")
+    private Set<UserRole> roles = new HashSet<>();
+
 //    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 //    private Set<UserRole> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @Column(name = "role_id")
-    private Set<UserRole> roles = new HashSet<>();
+//    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+//    @Column(name = "role_id")
+//    private Set<UserRole> roles = new HashSet<>();
 
 //    // registration confirmation JWT
 //    @NotNull

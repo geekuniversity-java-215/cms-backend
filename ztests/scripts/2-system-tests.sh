@@ -16,7 +16,11 @@ kill -0 $PID2
 
 # process system tests
 mvn ${H2PARAMS} test -am -pl ztests/system-test -DskipTests=false
+RESULT_CODE=$?
+
 
 # kill all applications
 kill -9 ${PID1}
 kill -9 ${PID2}
+
+exit ${RESULT_CODE}

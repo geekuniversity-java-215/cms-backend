@@ -48,6 +48,7 @@ public class AuthServerInitializer implements ApplicationRunner {
                 "{bcrypt}$2y$10$yvFUsJ1pZJd7WNrJ/A8hCO47Z1cNBHfMiduq4yioaEzuM1.QfSTUa",
                 "root", "root", "root@mail.ru", "root");
             user.getRoles().add(userRoleService.findByName(UserRole.ADMIN));
+            user.getRoles().add(userRoleService.findByName(UserRole.MANAGER));
             userService.save(user);
         }
 

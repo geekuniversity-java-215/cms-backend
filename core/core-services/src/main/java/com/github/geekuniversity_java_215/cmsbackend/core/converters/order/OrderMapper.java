@@ -5,15 +5,13 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.Add
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 // При пересборке предупреждение пропадает ?
 //@SuppressWarnings({"SpringJavaAutowiredMembersInspection"})
@@ -24,6 +22,15 @@ import org.springframework.stereotype.Component;
             ClientMapper.class, CourierMapper.class})
 
 public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
+
+    @Autowired
+    private OrderService orderService;
+
+    @PostConstruct
+    private void postConstruct() {
+        super.setBaseRepoAccessService(orderService);
+    }
+
 
 //    @Autowired
 //    OrderService orderService;
@@ -65,6 +72,7 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 
         // map entity id
         idMap(source, target);
+        merge(target);
 
         // Manual mapping
 

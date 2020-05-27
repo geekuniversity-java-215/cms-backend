@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user;
 
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,8 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-public class UnconfirmedUserDto {
-    private Long id;
+public class UnconfirmedUserDto extends AbstractDto {
+
     private String username;
     private String password;
     private String firstName;
