@@ -4,16 +4,28 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.Abstr
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.services.AddressService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.address.AddressDto;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
 
 @Mapper(componentModel = "spring",
     unmappedTargetPolicy = ReportingPolicy.ERROR,
     uses = {InstantMapper.class})
 public abstract class AddressMapper extends AbstractMapper<Address, AddressDto> {
+
+    @Autowired
+    private AddressService addressService;
+
+    @PostConstruct
+    private void postConstruct() {
+        super.setBaseRepoAccessService(addressService);
+    }
 
     public abstract AddressDto toDto(Address order);
 

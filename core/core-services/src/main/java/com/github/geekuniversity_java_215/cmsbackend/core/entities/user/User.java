@@ -26,11 +26,11 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper=true)
 public class User extends AbstractEntity {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "user_id_seq")
-    @EqualsAndHashCode.Exclude
-    private Long id;
+//    @Id
+//    @Column(name = "id")
+//    @GeneratedValue(generator = "user_id_seq")
+//    @EqualsAndHashCode.Exclude
+//    private Long id;
 
     @NotNull
     @Column(name = "user_name")
@@ -108,13 +108,16 @@ public class User extends AbstractEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    protected void setId(Long id) {
-        this.id = id;
-    }
+//    protected void setId(Long id) {
+//        this.id = id;
+//    }
 
     public void setAccount(Account account) {
-        this.account = account;
-        account.setUser(this);
+
+        if (account != null) {
+            this.account = account;
+            account.setUser(this);
+        }
     }
 
     @Override

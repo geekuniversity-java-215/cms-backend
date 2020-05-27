@@ -1,8 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations;
 
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",

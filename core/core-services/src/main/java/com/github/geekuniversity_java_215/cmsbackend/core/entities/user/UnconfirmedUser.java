@@ -31,12 +31,6 @@ public class UnconfirmedUser extends AbstractEntity {
 
     //public static final Duration TTL = Duration.ofDays(1);
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "user_id_seq")
-    @EqualsAndHashCode.Exclude
-    private Long id;
-
     @NotNull
     @Column(name = "user_name")
     private String username;  // username is approved by dictionary.com //  use email as username ???

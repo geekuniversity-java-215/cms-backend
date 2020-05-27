@@ -113,6 +113,7 @@ public class Utils {
             Assert.notNull(field, "field == null");
             field.setAccessible(true);
             field.set(o, value);
+            System.out.println(o);
         }).run(); // замена try ... catch(Exception e) {throw new RuntimeException(e)}
     }
 
