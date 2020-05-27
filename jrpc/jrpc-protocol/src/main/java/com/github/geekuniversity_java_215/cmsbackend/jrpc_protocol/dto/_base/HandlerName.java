@@ -38,11 +38,59 @@ public class HandlerName {
         public static final String mul = HandlerName.mul;
         public static final String div = HandlerName.div;
     }
+    // USER --------------------------------------------------------
 
-    public static class order {
-        public static final String path = "cmsapp.core.order";
+    public static class user {
+
+        public static final String path = "cmsapp.core.user";
 
         public static final String findById = HandlerName.findById;
+        public static final String findAllById = HandlerName.findAllById;
+        public static final String findAll = HandlerName.findAll;
+        public static final String findFirst = HandlerName.findFirst;
+        public static final String save = HandlerName.save;
+        public static final String delete = HandlerName.delete;
+    }
+
+    // ORDER -------------------------------------------------------
+
+    public static class order {
+
+        public static class manager {
+            public static final String path = "cmsapp.core.order.manager";
+
+            public static final String findById = HandlerName.findById;
+            public static final String findAllById = HandlerName.findAllById;
+            public static final String findAll = HandlerName.findAll;
+            public static final String findFirst = HandlerName.findFirst;
+            public static final String save = HandlerName.save;
+            public static final String delete = HandlerName.delete;
+
+        }
+
+        public static class courier {
+            public static final String path = "cmsapp.core.order.courier";
+
+            public static final String findById = HandlerName.findById;
+            public static final String findAllById = HandlerName.findAllById;
+            public static final String findAll = HandlerName.findAll;
+            public static final String findFirst = HandlerName.findFirst;
+            public static final String save = HandlerName.save;
+            public static final String delete = HandlerName.delete;
+
+        }
+
+        public static class client {
+            public static final String path = "cmsapp.core.order.client";
+
+            public static final String findById = HandlerName.findById;
+            public static final String findAllById = HandlerName.findAllById;
+            public static final String findAll = HandlerName.findAll;
+            public static final String findFirst = HandlerName.findFirst;
+            public static final String save = HandlerName.save;
+            public static final String delete = HandlerName.delete;
+
+        }
     }
 
 //    public static class geodata {

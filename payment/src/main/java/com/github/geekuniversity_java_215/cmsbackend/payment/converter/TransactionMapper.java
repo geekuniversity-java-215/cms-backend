@@ -3,19 +3,14 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.converter;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.payment.dto.TransactionDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.Transaction;
 import org.mapstruct.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
         uses = {InstantMapper.class, AddressMapper.class})
 public abstract class TransactionMapper extends AbstractMapper<Transaction, TransactionDto> {
-
-    @Autowired
-    UserService userService;
 
     @Mapping(source = "typeOperation", target = "typeOperation")
     @Mapping(source = "currencyCodeType", target="currencyCodeType" )
