@@ -11,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.Optional;
-
 import static com.github.geekuniversity_java_215.cmsbackend.payment.data.constants.PaymentPropNames.*;
 
 
@@ -45,7 +42,7 @@ public class PaymentController {
     @PostMapping(CONTROLLER_EXECUTE_PAYMENT_PATH)
     private String executePayment(@RequestBody String amount) throws PayPalRESTException {
         User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
         String approvalLink = payPalService.authorizePayment(String.valueOf(user.getId()), Integer.valueOf(amount));
         log.info("Ответ запрос на authorize_payment=" + approvalLink);
         return "redirect:" + approvalLink;
@@ -64,7 +61,7 @@ public class PaymentController {
                           Model model) throws PayPalRESTException {
 
         User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
 
         if (user.getId().equals(clientId)) {
             String result = "";

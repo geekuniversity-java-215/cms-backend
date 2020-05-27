@@ -64,7 +64,7 @@ public class UserService extends BaseRepoAccessService<User> {
      * Get current authenticated user userName
      * @return User
      */
-    public static String getUsername() {
+    public static String getCurrentUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         UserDetailsCustom userDetails = (UserDetailsCustom)principal;
@@ -78,7 +78,7 @@ public class UserService extends BaseRepoAccessService<User> {
      * @return User
      */
     public Optional<User> getCurrentUser() {
-        return findByUsername(getUsername());
+        return findByUsername(getCurrentUsername());
     }
 
 }

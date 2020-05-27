@@ -18,8 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 
-import java.security.Principal;
-
 @Controller
 public class ChatMessageController {
     private final SimpMessagingTemplate template;
@@ -43,7 +41,7 @@ public class ChatMessageController {
                             @DestinationVariable Long orderId) {
 
         User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
 
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
@@ -58,7 +56,7 @@ public class ChatMessageController {
                         SimpMessageHeaderAccessor headerAccessor) {
 
         User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
 
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));

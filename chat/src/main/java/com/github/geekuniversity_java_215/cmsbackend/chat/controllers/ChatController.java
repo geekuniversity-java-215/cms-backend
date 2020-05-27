@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.security.Principal;
 import java.util.List;
 
 @RequestMapping("/chat")
@@ -34,7 +33,7 @@ public class ChatController {
     public String beginChat(Model model, @PathVariable Long orderId) {
 
         User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
 
         model.addAttribute("username", user.getFullName());
         model.addAttribute("orderId", orderId);
@@ -45,7 +44,7 @@ public class ChatController {
     public String viewHistory(Model model, @PathVariable Long orderId) {
 
         User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getUsername() + " not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
 
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));

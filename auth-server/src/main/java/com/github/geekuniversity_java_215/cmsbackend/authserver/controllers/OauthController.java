@@ -5,7 +5,6 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.R
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.aop.ValidAuthenticationType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.OauthResponse;
@@ -15,7 +14,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -51,7 +49,7 @@ public class OauthController {
     public ResponseEntity<?> getToken() {
         try {
             OauthResponse result;
-            result = tokenService.issueTokens(UserService.getUsername(), null);
+            result = tokenService.issueTokens(UserService.getCurrentUsername(), null);
             return ResponseEntity.ok(result);
         }
         catch (Exception e) {
@@ -78,7 +76,7 @@ public class OauthController {
             RefreshToken refreshToken = requestScopeBean.getRefreshToken();
 
             // Выдается пара токенов ACCESS + REFRESH
-            result = tokenService.issueTokens(UserService.getUsername(), refreshToken);
+            result = tokenService.issueTokens(UserService.getCurrentUsername(), refreshToken);
 
             return ResponseEntity.ok(result);
         }
