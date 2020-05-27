@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -31,6 +33,10 @@ public class Transaction extends AbstractEntity {
     @NotNull
     private String currencyCodeType;
 
+    @Email
+    @NotBlank
+    private String payPalEmail;
+
     @NotNull
     private Date dateCreate;
 
@@ -39,14 +45,15 @@ public class Transaction extends AbstractEntity {
     public Transaction(){
     }
 
-    public Transaction(User user, String typeOperation, BigDecimal amount, String currencyCodeType) {
+    public Transaction(User user, String typeOperation, BigDecimal amount, String payPalEmail, String currencyCodeType) {
         this.user=user;
         this.typeOperation=typeOperation;
         this.amount=amount;
+        this.payPalEmail = payPalEmail;
         this.currencyCodeType=currencyCodeType;
         this.dateCreate=new java.sql.Date(Calendar.getInstance().getTime().getTime());// (Date) new java.util.Date();
 
-        //временная заглушка. dateSuccess должен заполняться, когда транзакция отработана
+        //todo временная заглушка. dateSuccess должен заполняться, когда транзакция отработана
         this.dateSuccess=new java.sql.Date(Calendar.getInstance().getTime().getTime());// (Date) new java.util.Date();
     }
 
@@ -56,6 +63,7 @@ public class Transaction extends AbstractEntity {
                 "id=" + id +
                 ", userId=" + user.getId() +
                 ", amount=" + amount +
+                ", payPalEmail=" + payPalEmail +
                 ", typeOperation=" + typeOperation+
                 '}';
     }

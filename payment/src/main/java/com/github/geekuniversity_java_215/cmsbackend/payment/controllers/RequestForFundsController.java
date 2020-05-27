@@ -3,7 +3,6 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethod;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.payment.converter.TransactionConverter;
@@ -31,10 +30,9 @@ public class RequestForFundsController {
     @JrpcMethod(HandlerName.payment.requestForFunds)
     public void requestForFunds(JsonNode params) {
         log.info("Запустил requestForFunds");
-        String[] pair = transactionConverter.parseParams(params);
-        User user=userService.getCurrentUser().get();
-        transactionService.addRequestForFunds(user.getId()
-                , new BigDecimal(pair[0]), "RUB");
+        String[] pair = transactionConverter.parseParams(params,2);
+        transactionService.addRequestForFunds(userService.getCurrentUser().get().getId()
+                , new BigDecimal(pair[0]), pair[1],"RUB");
     }
 
 }

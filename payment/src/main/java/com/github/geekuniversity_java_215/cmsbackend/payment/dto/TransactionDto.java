@@ -15,6 +15,7 @@ public class TransactionDto extends AbstractDto {
 
     private User user;
     private BigDecimal amount;
+    private String payPalEmail;
 
     private String currencyCodeType;
     private String typeOperation;

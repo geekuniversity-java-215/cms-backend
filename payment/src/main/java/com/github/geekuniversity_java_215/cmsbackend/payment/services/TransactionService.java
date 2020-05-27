@@ -30,13 +30,18 @@ public class TransactionService extends BaseRepoAccessService<Transaction> {
         this.userService = userService;
     }
 
-    public Transaction addRequestForFunds(Long userId, BigDecimal amount, String currencyCodeType){
+    public Transaction addRequestForFunds(Long userId, BigDecimal amount,String payPalEmail, String currencyCodeType){
         Optional<User> user=userService.findById(userId);
-        Transaction transaction=new Transaction(user.get(),REQUEST,amount,currencyCodeType);
+        Transaction transaction=new Transaction(user.get(),REQUEST,amount,payPalEmail,currencyCodeType);
         transactionRepository.save(transaction);
-        log.info("Записана транзакция"+transaction.toString());
+        checkPayPalEmail(payPalEmail, user);
         return transaction;
+    }
 
+    private void checkPayPalEmail(String payPalEmail, Optional<User> user) {
+        if (user.get().getPayPalEmail()== null){
+            user.get().setPayPalEmail(payPalEmail);
+        }
     }
 
 }

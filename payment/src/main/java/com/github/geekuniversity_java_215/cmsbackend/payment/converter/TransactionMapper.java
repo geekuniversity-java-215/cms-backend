@@ -14,12 +14,14 @@ public abstract class TransactionMapper extends AbstractMapper<Transaction, Tran
 
     @Mapping(source = "typeOperation", target = "typeOperation")
     @Mapping(source = "currencyCodeType", target="currencyCodeType" )
+    @Mapping(source = "payPalEmail", target="payPalEmail" )
     @Mapping(source="dateCreate",target="dateCreate")
     @Mapping(source = "dateSuccess",target="dateSuccess")
     public abstract TransactionDto toDto(Transaction transaction);
 
     @Mapping(target = "typeOperation", ignore = true)
     @Mapping(target = "currencyCodeType", ignore=true)
+    @Mapping(target = "payPalEmail", ignore=true)
     @Mapping(target="dateCreate", ignore=true)
     @Mapping(target = "dateSuccess", ignore=true)
 
