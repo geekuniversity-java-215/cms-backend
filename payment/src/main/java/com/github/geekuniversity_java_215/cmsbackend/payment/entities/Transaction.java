@@ -40,6 +40,7 @@ public class Transaction extends AbstractEntity {
     @NotNull
     private Date dateCreate;
 
+    @NotNull
     private Date dateSuccess;
 
     public Transaction(){
@@ -51,10 +52,8 @@ public class Transaction extends AbstractEntity {
         this.amount=amount;
         this.payPalEmail = payPalEmail;
         this.currencyCodeType=currencyCodeType;
-        this.dateCreate=new java.sql.Date(Calendar.getInstance().getTime().getTime());// (Date) new java.util.Date();
-
-        //todo временная заглушка. dateSuccess должен заполняться, когда транзакция отработана
-        this.dateSuccess=new java.sql.Date(Calendar.getInstance().getTime().getTime());// (Date) new java.util.Date();
+        this.dateCreate=new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        this.dateSuccess=java.sql.Date.valueOf("4000-01-01");
     }
 
     @Override

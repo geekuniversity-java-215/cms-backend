@@ -29,7 +29,6 @@ public class RequestForFundsController {
 
     @JrpcMethod(HandlerName.payment.requestForFunds)
     public void requestForFunds(JsonNode params) {
-        log.info("Запустил requestForFunds");
         String[] pair = transactionConverter.parseParams(params,2);
         transactionService.addRequestForFunds(userService.getCurrentUser().get().getId()
                 , new BigDecimal(pair[0]), pair[1],"RUB");
