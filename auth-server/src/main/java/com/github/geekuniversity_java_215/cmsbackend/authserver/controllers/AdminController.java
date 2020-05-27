@@ -6,6 +6,7 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenSer
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin/")
+@Slf4j
 public class AdminController {
 
     private final TokenService tokenService;
@@ -32,6 +34,10 @@ public class AdminController {
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
     @Secured(UserRole.ADMIN)
 	public ResponseEntity<String> test() {
+
+        System.out.println(userService.getCurrentUser());
+        System.out.println(UserService.getCurrentUsername());
+
         return  ResponseEntity.ok("hello world");
 	}
 

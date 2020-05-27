@@ -7,6 +7,7 @@ import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,9 +67,7 @@ public class UserService extends BaseRepoAccessService<User> {
      */
     public static String getCurrentUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        UserDetailsCustom userDetails = (UserDetailsCustom)principal;
-        //UserDetails userDetails = (UserDetails)principal;
+        UserDetails userDetails = (UserDetails)principal;
         return userDetails.getUsername();
     }
 
