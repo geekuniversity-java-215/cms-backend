@@ -19,21 +19,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final BearerRequestResourceFilter bearerRequestResourceFilter;
     private final CorsAllowAllFilter corsAllowAllFilter;
 
-
-    @Bean
-    public FilterRegistrationBean<BearerRequestResourceFilter> bearerRequestFilterRegistration(BearerRequestResourceFilter filter) {
-        FilterRegistrationBean<BearerRequestResourceFilter> result = new FilterRegistrationBean<>(filter);
-        result.setEnabled(false);
-        return result;
-    }
-    @Bean
-    public FilterRegistrationBean<CorsAllowAllFilter> corsAllowAllFilterRegistration(CorsAllowAllFilter filter) {
-        FilterRegistrationBean<CorsAllowAllFilter> result = new FilterRegistrationBean<>(filter);
-        result.setEnabled(false);
-        return result;
-    }
-
-
     @Autowired
     public WebSecurityConfig(BearerRequestResourceFilter bearerRequestResourceFilter, CorsAllowAllFilter corsAllowAllFilter) {
         this.bearerRequestResourceFilter = bearerRequestResourceFilter;

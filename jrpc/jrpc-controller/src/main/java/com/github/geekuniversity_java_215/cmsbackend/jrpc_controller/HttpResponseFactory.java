@@ -47,8 +47,11 @@ public class HttpResponseFactory {
 
     static public HttpResponse getError(HttpStatus status, Throwable e) {
 
-        String message = "Invalid request json: " + e.getMessage();
-        JrpcErrorResponse jrpcResult = new JrpcErrorResponse(message, JrpcErrorCode.INVALID_REQUEST);
+        String message = status.getReasonPhrase() + " " + e.getMessage();
+        JrpcErrorCode jrpcErrorCode = status == HttpStatus.INTERNAL_SERVER_ERROR ?
+            JrpcErrorCode.INTERNAL_SERVER_ERROR : JrpcErrorCode.INVALID_REQUEST;
+
+        JrpcErrorResponse jrpcResult = new JrpcErrorResponse(message, jrpcErrorCode);
         return new HttpResponse(status, jrpcResult);
     }
 }
