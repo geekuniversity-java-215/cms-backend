@@ -22,6 +22,13 @@ public class HandlerName {
     //geodata specific
     private static final String getRoute = "getRoute";
 
+    //user specific
+    private static final String findByUsername = "findByUsername";
+    private static final String addRoles = "addRoles";
+    private static final String makeClient = "makeClient";
+    private static final String makeCourier = "makeCourier";
+
+
 
     // CALCULATOR -------------------------------------------------
     public static class calculator {
@@ -45,6 +52,12 @@ public class HandlerName {
         public static final String findFirst = HandlerName.findFirst;
         public static final String save = HandlerName.save;
         public static final String delete = HandlerName.delete;
+
+        public static final String findByUsername = HandlerName.findByUsername;
+        //public static final String addRoles = HandlerName.addRoles;
+        public static final String makeClient = HandlerName.makeClient;
+        public static final String makeCourier = HandlerName.makeCourier;
+
     }
 
     // ORDER -------------------------------------------------------

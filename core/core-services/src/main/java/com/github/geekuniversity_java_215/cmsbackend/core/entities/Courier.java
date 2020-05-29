@@ -32,7 +32,13 @@ public class Courier extends AbstractEntity {
     public Courier() {}
     public Courier(@NotNull User user, String courierSpecificData) {
         this.user = user;
+        user.setCourier(this);
         this.courierSpecificData = courierSpecificData;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        user.setCourier(this);
     }
 
     @Override

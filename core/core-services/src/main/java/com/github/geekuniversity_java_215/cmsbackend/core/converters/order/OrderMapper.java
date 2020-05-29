@@ -71,8 +71,8 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
     private void afterMapping(OrderDto source, @MappingTarget Order target) {
 
         // map entity id
-        idMap(source, target);
-        merge(target);
+        //idMap(source, target);
+        merge(source, target);
 
         // Manual mapping
 

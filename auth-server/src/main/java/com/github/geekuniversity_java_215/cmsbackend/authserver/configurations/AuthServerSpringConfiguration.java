@@ -9,4 +9,6 @@ public class AuthServerSpringConfiguration {
 //    public PasswordEncoder passwordEncoder() {
 //        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //    }
+
+
 }

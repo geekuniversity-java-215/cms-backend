@@ -5,8 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserConverter;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.user.UserSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
@@ -16,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,11 +33,19 @@ import java.util.Optional;
 @Secured(UserRole.MANAGER)
 public class UserController {
 
+    private final ClientService clientService;
+    private final CourierService courierService;
+
     private final UserService userService;
     private final UserConverter converter;
 
     @Autowired
-    public UserController(UserService userService, UserConverter converter) {
+    public UserController(ClientService clientService,
+                          CourierService courierService,
+                          UserService userService,
+                          UserConverter converter) {
+        this.clientService = clientService;
+        this.courierService = courierService;
         this.userService = userService;
         this.converter = converter;
     }
@@ -40,7 +53,7 @@ public class UserController {
     @JrpcMethod(HandlerName.user.findById)
     public JsonNode findById(JsonNode params) {
 
-        Long id = converter.getId(params);
+        Long id = converter.get(params, Long.class);
         User user = userService.findById(id).orElse(null);
         return converter.toDtoJson(user);
     }
@@ -54,10 +67,25 @@ public class UserController {
     @JrpcMethod(HandlerName.user.findAllById)
     public JsonNode findAllById(JsonNode params) {
 
-        List<Long> idList = converter.getIdList(params);
+        List<Long> idList = converter.getList(params, Long.class);
         List<User> list = userService.findAllById(idList);
         return converter.toDtoListJson(list);
     }
+
+
+    /**
+     * Get user by Specification
+     * @param params UserSpecDto
+     * @return
+     */
+    @JrpcMethod(HandlerName.user.findByUsername)
+    public JsonNode findByUsername(JsonNode params) {
+
+        String username = converter.get(params, String.class);
+        return converter.toDtoJson(userService.findByUsername(username).orElse(null));
+    }
+
+
 
     /**
      * Get user by Specification
@@ -116,6 +144,46 @@ public class UserController {
         User user = converter.toEntity(params);
         userService.delete(user);
         return null;
+    }
+
+    // ------------------------------------------------------------------------------
+
+
+    @JrpcMethod(HandlerName.user.makeClient)
+    public JsonNode makeClient(JsonNode params) {
+
+        long userId = converter.get(params, Long.class);
+
+        User user = userService.findById(userId)
+            .orElseThrow(() -> new UsernameNotFoundException("User by id " + userId + " not found"));
+
+        clientService.findOneByUser(user).ifPresent(client -> {
+            throw new IllegalArgumentException("User " + user.getUsername() + " is already Client");
+        });
+
+        Client client = new Client(user, "Client-Client-Client");
+        clientService.save(client);
+
+        return converter.toIdJson(client);
+    }
+
+
+    @JrpcMethod(HandlerName.user.makeCourier)
+    public JsonNode makeCourier(JsonNode params) {
+
+        long userId = converter.get(params, Long.class);
+
+        User user = userService.findById(userId)
+            .orElseThrow(() -> new UsernameNotFoundException("User by id " + userId + " not found"));
+
+        courierService.findOneByUser(user).ifPresent(courier -> {
+            throw new IllegalArgumentException("User " + user.getUsername() + " is already Courier");
+        });
+
+        Courier courier = new Courier(user, "Courier-Courier-Courier");
+        courierService.save(courier);
+
+        return converter.toIdJson(courier);
     }
 
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
+import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.io.DataInput;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public abstract class AbstractConverter<E extends AbstractEntity, D extends AbstractDto, S> {
@@ -40,8 +42,33 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
         this.objectMapper = objectMapper;
     }
 
+
+    // Json => T
+    public <T> T get(JsonNode params, Class<T> clazz) {
+
+        T result;
+
+        // parsing request
+        try {
+            result = objectMapper.treeToValue(params, clazz);
+
+            // validate
+            if (result == null) {
+                throw new ValidationException("Found null - validation failed");
+            }
+
+            //if(Number.class.isAssignableFrom(clazz))
+        }
+        catch (JsonProcessingException e) {
+            throw new ParseException(0, "Id parse error", e);
+        }
+        return result;
+    }
+
+
+/*
     // Json => Long
-    public Long getId(JsonNode params) {
+    public Long getLong(JsonNode params) {
 
         Long result;
 
@@ -59,10 +86,43 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
         }
         return result;
     }
+*/
 
+
+    // Json => List<T>
+    public <T> List<T> getList(JsonNode params, Class<T> clazz) {
+
+
+        List<T> result;
+        try {
+
+            if (params == null) {
+                throw new ValidationException("IdList = null");
+            }
+            // https://stackoverflow.com/questions/6349421/how-to-use-jackson-to-deserialise-an-array-of-objects
+
+            //noinspection rawtypes
+            Class tArrayClass = Array.newInstance(clazz, 0).getClass();
+            //noinspection unchecked
+            result = (List<T>) Collections.singletonList(objectMapper.treeToValue(params, tArrayClass));
+
+            result.forEach(l -> {
+                if (l == null) {
+                    throw new ValidationException("List<T> contains null elements");
+                }
+            });
+        }
+        catch (IOException e) {
+            throw new ParseException(0, "idList param parse error", e);
+        }
+
+        return result;
+    }
+
+/*
 
     // Json => List<Long>
-    public List<Long> getIdList(JsonNode params) {
+    public List<Long> getLongList(JsonNode params) {
 
         List<Long> result;
         try {
@@ -70,8 +130,7 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
             if (params == null) {
                 throw new ValidationException("IdList = null");
             }
-
-
+            
             // https://stackoverflow.com/questions/6349421/how-to-use-jackson-to-deserialise-an-array-of-objects
             result = Arrays.asList(objectMapper.treeToValue(params, Long[].class));
 
@@ -87,11 +146,40 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
 
         return result;
     }
+*/
 
-    // Long => Json
+/*
+
+    // Json => String
+    public String getId(JsonNode params) {
+
+        String result;
+
+        // parsing request
+        try {
+            result = objectMapper.treeToValue(params, String.class);
+
+            // validate
+            if (StringUtils.isBlank(result)) {
+                throw new ValidationException("String validation failed");
+            }
+        }
+        catch (JsonProcessingException e) {
+            throw new ParseException(0, "String parse error", e);
+        }
+        return result;
+    }
+
+*/
+    
+    // T => Json
     public JsonNode toIdJson(AbstractEntity entity) {
         return objectMapper.valueToTree(entity.getId());
     }
+
+    // ----------------------------------------------------------------------------
+
+
 
 
     // Json => Dto => Entity
@@ -153,6 +241,31 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
 
 
 
+    // =================================================================================================================
+
+
+    // check Entity validity
+    protected void validate(E entity) {
+        Set<ConstraintViolation<E>> violations = validator.validate(entity);
+        if (violations.size() != 0) {
+            throw new ConstraintViolationException("Entity validation failed", violations);
+        }
+    }
+
+
+    // check SpecDto validity
+    private void validateSpecDto(S specDto) {
+        Set<ConstraintViolation<S>> violations = validator.validate(specDto);
+        if (violations.size() != 0) {
+            throw new ConstraintViolationException("Specification validation failed", violations);
+        }
+
+    }
+
+}
+
+
+
 //    // (Spec)Json => Dto (Specifications have no Entities)
 //    public S toSpecDto(JsonNode params) {
 //
@@ -170,30 +283,3 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
 //            throw new ParseException(0, "toSpecDto convert error", e);
 //        }
 //    }
-
-
-
-
-    // -------------------------------------------------------------------------------------------------
-
-
-    // check Entity validity
-    protected void validate(E entity) {
-        Set<ConstraintViolation<E>> violations = validator.validate(entity);
-        if (violations.size() != 0) {
-            throw new ConstraintViolationException("Entity validation failed", violations);
-        }
-    }
-
-    // =================================================================================================================
-
-    // check SpecDto validity
-    private void validateSpecDto(S specDto) {
-        Set<ConstraintViolation<S>> violations = validator.validate(specDto);
-        if (violations.size() != 0) {
-            throw new ConstraintViolationException("Specification validation failed", violations);
-        }
-
-    }
-
-}

@@ -41,6 +41,8 @@ public class AuthServerInitializer implements ApplicationRunner {
 
         User user;
 
+        log.info("initialize default users");
+
         // admin user  --------------------------------------------------
         // root/toor
         if (!userService.findByUsername("root").isPresent()) {

@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.tests.system_test.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.ConfirmRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.user.UserRequest;
@@ -19,14 +20,8 @@ public class UserCreator {
     @Autowired
     private JrpcClientProperties defaultProperties;
 
-    public void createUser(UserDto user) {
 
-        // Use here admin login
-        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);
-        userRequest.save(user);
-    }
-
-    public void createClientUser() {
+    public void createClientUser() throws JsonProcessingException {
 
         // Use here client login
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.CLIENT);
@@ -40,11 +35,17 @@ public class UserCreator {
 
         // Use here admin login
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);
-        userRequest.save(user);
+
+        UserDto userExists = userRequest.findByUsername(user.getUsername());
+        if (userExists == null) {
+            long id = userRequest.save(user);
+            user = userRequest.findById(id);
+            userRequest.makeClient(user);
+        }
     }
 
 
-    public void createCourierUser() {
+    public void createCourierUser() throws JsonProcessingException {
 
         // Use here courier login
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.COURIER);
@@ -58,6 +59,37 @@ public class UserCreator {
 
         // Use here admin login
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);
+
+        UserDto userExists = userRequest.findByUsername(user.getUsername());
+        if (userExists == null) {
+            long id = userRequest.save(user);
+            user = userRequest.findById(id);
+            userRequest.save(user);
+            userRequest.makeCourier(user);
+        }
+    }
+
+    // -------------------------------------------------------------------------------
+
+    public void createUser(UserDto user) throws JsonProcessingException {
+
+        // Use here admin login
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);
         userRequest.save(user);
     }
+
+    public void makeUserClient(UserDto user) {
+
+        // Use here admin login
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);
+        userRequest.makeClient(user);
+    }
+
+    public void makeUserCourier(UserDto user) {
+
+        // Use here admin login
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);
+        userRequest.makeCourier(user);
+    }
+    
 }

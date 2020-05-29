@@ -31,18 +31,19 @@ public class AbstractJrpcRequest extends AbstractRequestWithOauth {
         return id.getAndIncrement();
     }
 
-    protected JsonNode performJrpcRequest(long id, String uri, Object params) {
+    protected JsonNode performJrpcRequest(String uri, Object params) {
 
         JsonNode result;
         JrpcRequest jrpcRequest = new JrpcRequest();
         jrpcRequest.setMethod(uri);
-        jrpcRequest.setId(id);
+        jrpcRequest.setId(AbstractJrpcRequest.nextId());
         jrpcRequest.setParams(objectMapper.valueToTree(params));
 
         String json = unchecked((request) -> objectMapper.writeValueAsString(request)).apply(jrpcRequest);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ResponseEntity<String> response = performRequest(uri, json, String.class, headers);
+
+        ResponseEntity<String> response = performRequest(clientProp.getApiURL(), json, String.class, headers);
 
         try {
             result = objectMapper.readTree(response.getBody()).get("result");

@@ -40,7 +40,7 @@ public class OrderManagerController {
     @JrpcMethod(HandlerName.order.manager.findById)
     public JsonNode findById(JsonNode params) {
 
-        Long id = converter.getId(params);
+        Long id = converter.get(params, Long.class);
         Order order = orderService.findById(id).orElse(null);
         return converter.toDtoJson(order);
     }
@@ -54,7 +54,7 @@ public class OrderManagerController {
     @JrpcMethod(HandlerName.order.manager.findAllById)
     public JsonNode findAllById(JsonNode params) {
 
-        List<Long> idList = converter.getIdList(params);
+        List<Long> idList = converter.getList(params, Long.class);
         List<Order> list = orderService.findAllById(idList);
         return converter.toDtoListJson(list);
     }
