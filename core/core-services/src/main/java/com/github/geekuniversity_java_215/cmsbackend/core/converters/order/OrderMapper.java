@@ -6,8 +6,10 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.Clie
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,9 +19,9 @@ import javax.annotation.PostConstruct;
 //@SuppressWarnings({"SpringJavaAutowiredMembersInspection"})
 
 @Mapper(componentModel = "spring",
-        unmappedTargetPolicy = ReportingPolicy.ERROR,
-        uses = {InstantMapper.class, AddressMapper.class,
-            ClientMapper.class, CourierMapper.class})
+    unmappedTargetPolicy = ReportingPolicy.ERROR,
+    uses = {InstantMapper.class, AddressMapper.class,
+        ClientMapper.class, CourierMapper.class})
 
 public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 
@@ -82,9 +84,17 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
     }
 
 
+    public static class orderConstructor extends Constructor<Order, OrderDto> {
+        @Override
+        public Order create(OrderDto dto, Order entity) {
+            return new Order();
+        }
+    }
 
 
-    
+
+
+
 
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  \\
     // ============================================== подвало-помойка-кода ================================================  \\
@@ -105,7 +115,7 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 //    @Mapping(target = "order", ignore = true)
 //    @Mapping(source = "productId", target = "product"/*, qualifiedByName = "toProduct"*/)
 //    public abstract OrderItem toItemEntity(OrderItemDto orderItemDto);
-    
+
 
 
 //    //ToDo its a stub, write Interfaces to convert  Client, Manager and add its to uses
@@ -213,10 +223,10 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 
 
 
-        // Do not map created & updated - only resourceserver produce this values
+    // Do not map created & updated - only resourceserver produce this values
 
-        // Utils.fieldSetter("created", target, source.getCreated());
-        // Utils.fieldSetter("updated", target, source.getUpdated());
+    // Utils.fieldSetter("created", target, source.getCreated());
+    // Utils.fieldSetter("updated", target, source.getUpdated());
 
 
 
