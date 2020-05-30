@@ -91,4 +91,5 @@ pipeline {
             echo 'One way or another, I have finished'
             // stop container
         }
+    }
 }
