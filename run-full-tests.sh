@@ -7,7 +7,7 @@ source ztests/scripts/0-config_params.sh
 
 {
 # unit/integration tests will run in H2
-# ztests/scripts/1-unit-tests.sh && \
+ztests/scripts/1-unit-tests.sh && \
 
 # system tests will run in docker postgres
 ztests/scripts/2-system-tests.sh && \
