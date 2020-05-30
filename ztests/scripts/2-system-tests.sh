@@ -4,6 +4,9 @@ mvn -DskipTests package
 
 # auth-server
 java ${POSTGRESQL_PARAMS} -jar auth-server/target/auth-server-0.1.jar & PID1=$(echo $!)
+
+sleep 4;
+
 # cms-app
 java ${POSTGRESQL_PARAMS} -jar cmsapp/target/cms-app-0.1.jar & PID2=$(echo $!)
 
