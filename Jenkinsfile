@@ -70,15 +70,15 @@ pipeline {
             }
         }
 
-//         stage('tests') {
-//             steps {
-//                 sh '''
-//                     . ./ztests/scripts/0-config_params.sh
-//                     echo $H2PARAMS
-//                     ./ztests/scripts/1-unit-tests.sh
-//                 '''
-//             }
-//         }
+        stage('tests') {
+            steps {
+                sh '''
+                    . ./ztests/scripts/0-config_params.sh
+                    echo $H2PARAMS
+                    ./ztests/scripts/1-unit-tests.sh
+                '''
+            }
+        }
 
         stage('system tests') {
             steps {
