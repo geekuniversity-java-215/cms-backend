@@ -5,10 +5,10 @@ mvn -DskipTests package
 
 # auth-server
 java ${POSTGRESQL_PARAMS} -jar auth-server/target/auth-server-0.1.jar & PID1=$(echo $!)
-sleep 10;
+sleep 2;
 # cms-app
 java ${POSTGRESQL_PARAMS} -jar cmsapp/target/cms-app-0.1.jar & PID2=$(echo $!)
-sleep 10;
+sleep 2;
 
 # check that process is running
 kill -0 $PID1
