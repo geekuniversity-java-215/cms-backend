@@ -20,7 +20,7 @@
 
 
     <modules>
-        <module>configuration</module>
+        <module>appconfiguration</module>
         <module>utils</module>
         <module>jrpc/jrpc-protocol</module>
         <module>jrpc/jrpc-controller</module>

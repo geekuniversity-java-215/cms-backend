@@ -24,6 +24,7 @@ public abstract class ClientMapper extends AbstractMapper<Client, ClientDto> {
     @PostConstruct
     private void postConstruct() {
         super.setBaseRepoAccessService(clientService);
+        constructor = new EntityConstructor();
     }
 
     public abstract ClientDto toDto(Client client);
@@ -39,7 +40,7 @@ public abstract class ClientMapper extends AbstractMapper<Client, ClientDto> {
         merge(source, target);
     }
 
-    public static class ClientConstructor extends Constructor<Client, ClientDto> {
+    protected class EntityConstructor extends Constructor<Client, ClientDto> {
         @Override
         public Client create(ClientDto dto, Client entity) {
             return new Client(

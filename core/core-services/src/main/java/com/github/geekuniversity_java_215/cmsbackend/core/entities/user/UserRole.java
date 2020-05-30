@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserRoleDto;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,6 +45,7 @@ public class UserRole extends AbstractEntity {
     }
 
     @Column(unique=true)
+    @Setter(AccessLevel.NONE)
     private String name;
 
 //    @Getter
@@ -55,9 +57,27 @@ public class UserRole extends AbstractEntity {
 //    private final Set<User> userList = new HashSet<>();
 
 
+    public static UserRole getByName(String role) {
+        return new UserRole(role);
+    }
+
     public UserRole(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserRole userRole = (UserRole) o;
+        return Objects.equals(name, userRole.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
 
     public static Set<GrantedAuthority> rolesToGrantedAuthority(Set<UserRole> roles) {
         return  roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());

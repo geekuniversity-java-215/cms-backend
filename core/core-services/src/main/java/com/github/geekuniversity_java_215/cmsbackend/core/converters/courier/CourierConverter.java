@@ -5,7 +5,9 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.Abstr
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CourierConverter extends AbstractConverter<Courier, CourierDto, Void> {
 
     @Autowired

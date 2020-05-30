@@ -11,7 +11,7 @@
     </parent>
 
 
-    <artifactId>configuration</artifactId>
+    <artifactId>appconfiguration</artifactId>
 
 
 </project>

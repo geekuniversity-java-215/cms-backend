@@ -13,6 +13,10 @@ public class HandlerName {
     private static final String put = "put";
     private static final String remove = "remove";
 
+    // common
+    private static final String getCurrent = "getCurrent";
+
+
     // calculator specific
     private static final String add ="add";
     private static final String sub ="sub";
@@ -25,8 +29,15 @@ public class HandlerName {
     //user specific
     private static final String findByUsername = "findByUsername";
     private static final String addRoles = "addRoles";
-    private static final String makeClient = "makeClient";
-    private static final String makeCourier = "makeCourier";
+    //private static final String makeClient = "makeClient";
+    //private static final String makeCourier = "makeCourier";
+
+    // order courier specific
+    public static final String findNew = "findNew";
+    public static final String accept = "accept";
+    public static final String execute = "execute";
+    public static final String complete = "complete";
+
 
 
 
@@ -54,11 +65,43 @@ public class HandlerName {
         public static final String delete = HandlerName.delete;
 
         public static final String findByUsername = HandlerName.findByUsername;
+        public static final String getCurrent = HandlerName.getCurrent;
+
         //public static final String addRoles = HandlerName.addRoles;
-        public static final String makeClient = HandlerName.makeClient;
-        public static final String makeCourier = HandlerName.makeCourier;
+        //public static final String makeClient = HandlerName.makeClient;
+        //public static final String makeCourier = HandlerName.makeCourier;
 
     }
+
+    // CLIENT --------------------------------------------------------
+
+
+    public static class client {
+
+        public static final String path = "cmsapp.core.client";
+        public static final String findById = HandlerName.findById;
+        public static final String save = HandlerName.save;
+        public static final String findByUsername = HandlerName.findByUsername;
+        public static final String getCurrent = HandlerName.getCurrent;
+    }
+
+
+
+    // COURIER --------------------------------------------------------
+
+
+    public static class courier {
+
+        public static final String path = "cmsapp.core.courier";
+        public static final String findById = HandlerName.findById;
+        public static final String save = HandlerName.save;
+        public static final String findByUsername = HandlerName.findByUsername;
+        public static final String getCurrent = HandlerName.getCurrent;
+    }
+
+
+
+
 
     // ORDER -------------------------------------------------------
 
@@ -83,8 +126,12 @@ public class HandlerName {
             public static final String findAllById = HandlerName.findAllById;
             public static final String findAll = HandlerName.findAll;
             public static final String findFirst = HandlerName.findFirst;
-            public static final String save = HandlerName.save;
-            public static final String delete = HandlerName.delete;
+            public static final String findNew = HandlerName.findNew;
+            //public static final String save = HandlerName.save;
+            //public static final String delete = HandlerName.delete;
+            public static final String accept = HandlerName.accept;
+            public static final String execute = HandlerName.execute;
+            public static final String complete = HandlerName.complete;
 
         }
 

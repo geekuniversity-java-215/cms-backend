@@ -24,6 +24,7 @@ public class OrderSpecBuilder {
         final String priceName = "price";
         final String courier = "courier";
         final String client = "client";
+        final String statusValue = "statusValue";
         //final String categoryName = "category";
 
 
@@ -97,9 +98,20 @@ public class OrderSpecBuilder {
         }
 
 
+        // FILTER BY STATUS
+        if (s.getStatus() != null) {
+
+            specA = specA.and(
+                (root, query, builder) -> {
+                    //query.orderBy(builder.desc(root.get(priceName)));
+                    return builder.equal(root.get(statusValue), s.getStatus().getId());
+                });
+        }
 
 
-        // DEFAULT SORT  BY ID ASC
+
+
+        // DEFAULT SORT BY ID ASC
         if(s.getPriceOrderBy() == null) {
 
             specA = specA.and(

@@ -34,7 +34,6 @@ public class UserDto extends AbstractDto {
     // private Client client;   // Not implemented
     // private Courier courier;  // Not implemented
 
-
     @Override
     public String toString() {
         return "UserDto{" +

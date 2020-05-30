@@ -171,7 +171,7 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
     }
 
 */
-    
+
     // T => Json
     public JsonNode toIdJson(AbstractEntity entity) {
         return objectMapper.valueToTree(entity.getId());
@@ -220,6 +220,18 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
         catch (Exception e) {
             throw new ParseException(0, "toDtoListJson convert error", e);
         }
+    }
+
+
+    // Entity => Dto
+    public D toDto(E entity) {
+        return entityMapper.toDto(entity);
+    }
+
+
+    // EntityList => Dto
+    public List<D> toDtoList(List<E> entityList) {
+        return entityMapper.toDtoList(entityList);
     }
 
 

@@ -11,13 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "courier")
+@Table(
+    name = "courier",
+    indexes = {@Index(name = "courier_user_id_unq", columnList = "user_id", unique = true)
+    })
 @Data
 @EqualsAndHashCode(callSuper=true)
 public class Courier extends AbstractEntity {
 
     @NotNull
-    @OneToOne
+    @OneToOne    
     @JoinColumn(name="user_id")
     private User user;
 

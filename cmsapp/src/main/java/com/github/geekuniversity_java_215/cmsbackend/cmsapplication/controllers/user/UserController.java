@@ -9,48 +9,49 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.user.UserSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserSpecDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
 
 
+// ToDo: перенести это все в управлялку ManagerUserController, кроме последнего метод
+
 /**
  * User management
  */
 @JrpcController(HandlerName.user.path)
-@Secured(UserRole.MANAGER)
 public class UserController {
 
-    private final ClientService clientService;
-    private final CourierService courierService;
+    //private final ClientService clientService;
+    //private final CourierService courierService;
 
     private final UserService userService;
+    private final UserRoleService userRoleService;
     private final UserConverter converter;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserController(ClientService clientService,
-                          CourierService courierService,
-                          UserService userService,
-                          UserConverter converter) {
-        this.clientService = clientService;
-        this.courierService = courierService;
+    public UserController(UserService userService, UserRoleService userRoleService,
+                          UserConverter converter, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.userRoleService = userRoleService;
         this.converter = converter;
+        this.passwordEncoder = passwordEncoder;
     }
 
+
     @JrpcMethod(HandlerName.user.findById)
+    @Secured(UserRole.MANAGER)
     public JsonNode findById(JsonNode params) {
 
         Long id = converter.get(params, Long.class);
@@ -65,6 +66,7 @@ public class UserController {
      * @return
      */
     @JrpcMethod(HandlerName.user.findAllById)
+    @Secured(UserRole.MANAGER)
     public JsonNode findAllById(JsonNode params) {
 
         List<Long> idList = converter.getList(params, Long.class);
@@ -79,6 +81,7 @@ public class UserController {
      * @return
      */
     @JrpcMethod(HandlerName.user.findByUsername)
+    @Secured(UserRole.MANAGER)
     public JsonNode findByUsername(JsonNode params) {
 
         String username = converter.get(params, String.class);
@@ -93,6 +96,7 @@ public class UserController {
      * @return
      */
     @JrpcMethod(HandlerName.user.findAll)
+    @Secured(UserRole.MANAGER)
     public JsonNode findAll(JsonNode params) {
 
         Optional<UserSpecDto> specDto = converter.toSpecDto(params);
@@ -109,6 +113,7 @@ public class UserController {
      * @return
      */
     @JrpcMethod(HandlerName.order.manager.findFirst)
+    @Secured(UserRole.MANAGER)
     public JsonNode findFirst(JsonNode params) {
 
         Optional<UserSpecDto> specDto = converter.toSpecDto(params);
@@ -125,9 +130,11 @@ public class UserController {
      * @return
      */
     @JrpcMethod(HandlerName.user.save)
+    @Secured(UserRole.MANAGER)
     public JsonNode save(JsonNode params) {
 
         User user = converter.toEntity(params);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userService.save(user);
         return converter.toIdJson(user);
     }
@@ -139,6 +146,7 @@ public class UserController {
      * @return
      */
     @JrpcMethod(HandlerName.user.delete)
+    @Secured(UserRole.MANAGER)
     public JsonNode delete(JsonNode params) {
 
         User user = converter.toEntity(params);
@@ -146,45 +154,15 @@ public class UserController {
         return null;
     }
 
-    // ------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------
 
+    @JrpcMethod(HandlerName.user.getCurrent)
+    @Secured(UserRole.USER)
+    public JsonNode getCurrent(JsonNode params) {
 
-    @JrpcMethod(HandlerName.user.makeClient)
-    public JsonNode makeClient(JsonNode params) {
-
-        long userId = converter.get(params, Long.class);
-
-        User user = userService.findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException("User by id " + userId + " not found"));
-
-        clientService.findOneByUser(user).ifPresent(client -> {
-            throw new IllegalArgumentException("User " + user.getUsername() + " is already Client");
-        });
-
-        Client client = new Client(user, "Client-Client-Client");
-        clientService.save(client);
-
-        return converter.toIdJson(client);
+        //noinspection OptionalGetWithoutIsPresent
+        User user = userService.getCurrentUser().get();
+        return converter.toDtoJson(user);
     }
-
-
-    @JrpcMethod(HandlerName.user.makeCourier)
-    public JsonNode makeCourier(JsonNode params) {
-
-        long userId = converter.get(params, Long.class);
-
-        User user = userService.findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException("User by id " + userId + " not found"));
-
-        courierService.findOneByUser(user).ifPresent(courier -> {
-            throw new IllegalArgumentException("User " + user.getUsername() + " is already Courier");
-        });
-
-        Courier courier = new Courier(user, "Courier-Courier-Courier");
-        courierService.save(courier);
-
-        return converter.toIdJson(courier);
-    }
-
 
 }

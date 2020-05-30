@@ -8,6 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import java.util.Set;
         indexes = {@Index(name = "user_account_id_idx", columnList = "account_id"),
                 @Index(name = "user_first_name_last_name_unq", columnList = "last_name, first_name",unique = true)
         })
+@EntityListeners(UserToPersistListener.class)
 @Data
 @EqualsAndHashCode(callSuper=true)
 public class User extends AbstractEntity {
@@ -44,7 +46,9 @@ public class User extends AbstractEntity {
 //    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 //    private Set<UserRole> roles = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @NotNull
+    @NotEmpty
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @Column(name = "role_id")
     private Set<UserRole> roles = new HashSet<>();
 
@@ -106,6 +110,8 @@ public class User extends AbstractEntity {
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+
+        this.getRoles().add(UserRole.getByName(UserRole.USER));
     }
 
 //    protected void setId(Long id) {
@@ -135,5 +141,14 @@ public class User extends AbstractEntity {
     @JsonIgnore
     public String getFullName() {
         return lastName + firstName;
+    }
+
+
+
+    @PrePersist
+    private void prePersists() {
+
+
+
     }
 }

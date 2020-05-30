@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.converters.courier;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
@@ -25,12 +26,12 @@ public abstract class CourierMapper extends AbstractMapper<Courier, CourierDto> 
     @PostConstruct
     private void postConstruct() {
         super.setBaseRepoAccessService(courierService);
+        constructor = new EntityConstructor();
     }
 
     //@Mapping(source = "courier.id", target = "courierId")
     public abstract CourierDto toDto(Courier courier);
 
-    @Mapping(target = "user", ignore = true)
     @Mapping(target = "orderList", ignore = true)
     public abstract Courier toEntity(CourierDto courierDto);
 
@@ -39,7 +40,7 @@ public abstract class CourierMapper extends AbstractMapper<Courier, CourierDto> 
         merge(source, target);
     }
 
-    public static class CourierConstructor extends Constructor<Courier, CourierDto> {
+    protected class EntityConstructor extends Constructor<Courier, CourierDto> {
         @Override
         public Courier create(CourierDto dto, Courier entity) {
             return new Courier(

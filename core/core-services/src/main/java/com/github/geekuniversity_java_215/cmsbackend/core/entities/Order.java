@@ -10,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "ordder")
+@Table(name = "orrder")
 @Data
 @EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
@@ -21,7 +21,6 @@ public class Order extends AbstractEntity {
     @JoinColumn(name="client_id")
     private Client client;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name="courier_id")
     private Courier courier;
@@ -29,15 +28,14 @@ public class Order extends AbstractEntity {
     @Transient
     private OrderStatus status;
 
+    //region Transient enum mapping OrderStatus
     // Enum mapping
     @Basic
     private int statusValue;
 
     @PostLoad
     void fillCurrencyCode() {
-        if (statusValue > 0) {
-            this.status = OrderStatus.getById(statusValue);
-        }
+        this.status = OrderStatus.getById(statusValue);
     }
 
     @PrePersist
@@ -46,6 +44,7 @@ public class Order extends AbstractEntity {
             this.statusValue = status.getId();
         }
     }
+    //endregion
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="from_id")
@@ -63,10 +62,10 @@ public class Order extends AbstractEntity {
     @Override
     public String toString() {
         return "Order{" +
-               "id=" + id +
-               ", client=" + client +
-               ", courier=" + courier +
-               ", status=" + status +
-               '}';
+            "id=" + id +
+            ", client=" + client +
+            ", courier=" + courier +
+            ", status=" + status +
+            '}';
     }
 }

@@ -5,7 +5,9 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.Abstr
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ClientConverter extends AbstractConverter<Client, ClientDto, Void> {
 
     @Autowired

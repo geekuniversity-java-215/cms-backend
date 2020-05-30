@@ -72,7 +72,7 @@ public abstract class AbstractMapper<E extends AbstractEntity, D extends Abstrac
     // метод create нельзя размещать внутри AbstractMapper - mapstruct начнет ругань
 
     // allow to obtain new object from descendants classes
-    public static abstract class Constructor<E extends AbstractEntity, D extends AbstractDto> {
+    protected abstract class Constructor<E extends AbstractEntity, D extends AbstractDto> {
         public abstract E create(D dto, E entity);
     }
 }

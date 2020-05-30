@@ -4,11 +4,13 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.Insta
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderStatusDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
     @PostConstruct
     private void postConstruct() {
         super.setBaseRepoAccessService(orderService);
+        constructor = new EntityConstructor();
     }
 
 
@@ -45,23 +48,20 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 
 
 
-    @Mapping(source = "status.id", target = "status")
-//    @Mapping(source = "client", target = "clientDto")
-//    @Mapping(source = "courier", target = "courierDto")
     public abstract OrderDto toDto(Order order);
 
-    //@Mapping(target = "client", ignore = true)
-    //@Mapping(target = "courier", ignore = true)
-
-    //@Mapping(target = "status", ignore = true)
-    //@Mapping(target = "statusValue", ignore = true)
     @Mapping(target = "statusValue", ignore = true)
     public abstract Order toEntity(OrderDto orderDto);
 
 
-    public OrderStatus toOrderStatus(int orderStatus) {
-        return OrderStatus.getById(orderStatus);
+    public OrderStatus toOrderStatus(OrderStatusDto dto) {
+        return OrderStatus.getById(dto.getId());
     }
+    public OrderStatusDto toOrderStatusDto(OrderStatus entity) {
+        return OrderStatusDto.getById(entity.getId());
+    }
+
+
 
 
     /**
@@ -72,19 +72,11 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
     @AfterMapping
     private void afterMapping(OrderDto source, @MappingTarget Order target) {
 
-        // map entity id
-        //idMap(source, target);
         merge(source, target);
-
-        // Manual mapping
-
-        //target.setClient(client);
-        //target.setCourier(courier);
-        //target.setStatus(OrderStatus.getById(source.getStatus()));
     }
 
 
-    public static class orderConstructor extends Constructor<Order, OrderDto> {
+    protected class EntityConstructor extends Constructor<Order, OrderDto> {
         @Override
         public Order create(OrderDto dto, Order entity) {
             return new Order();

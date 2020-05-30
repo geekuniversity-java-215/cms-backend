@@ -28,7 +28,7 @@ public abstract class AbstractEntityNoGen implements Serializable, IdGetter {
 
     @Setter
     @Getter
-    protected Boolean enabled = true;
+    protected boolean enabled = true;
 
     protected AbstractEntityNoGen() {}
 

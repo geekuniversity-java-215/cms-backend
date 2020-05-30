@@ -27,6 +27,7 @@ public abstract class AddressMapper extends AbstractMapper<Address, AddressDto> 
     @PostConstruct
     private void postConstruct() {
         super.setBaseRepoAccessService(addressService);
+        constructor = new EntityConstructor();
     }
 
     public abstract AddressDto toDto(Address order);
@@ -38,7 +39,7 @@ public abstract class AddressMapper extends AbstractMapper<Address, AddressDto> 
         return merge(source, target);
     }
 
-    public static class AddressConstructor extends Constructor<Address, AddressDto> {
+    protected class EntityConstructor extends Constructor<Address, AddressDto> {
         @Override
         public Address create(AddressDto dto, Address entity) {
             return new Address(

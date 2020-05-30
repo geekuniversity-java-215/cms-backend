@@ -24,4 +24,9 @@ public class CourierService extends BaseRepoAccessService<Courier> {
     public Optional<Courier> findOneByUser(User user) {
         return courierRepository.findOneByUser(user);
     }
+
+    public Optional<Courier> findByUsername(String username) {
+        return courierRepository.findOneByUserUsername(username);
+    }
+
 }

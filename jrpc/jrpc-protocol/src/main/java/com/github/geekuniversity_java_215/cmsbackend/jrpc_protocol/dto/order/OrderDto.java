@@ -18,5 +18,7 @@ public class OrderDto extends AbstractDto {
     private AddressDto from;
     private AddressDto to;
 
-    private Integer status;
+    private OrderStatusDto status;
+
+    // moar info ...
 }

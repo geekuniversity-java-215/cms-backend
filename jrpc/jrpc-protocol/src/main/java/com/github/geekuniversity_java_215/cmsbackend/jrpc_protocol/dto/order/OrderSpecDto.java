@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,13 @@ public class OrderSpecDto {
 
     // null - без верхней границы по цене
     private BigDecimal priceMax;
+
+    // интервал времени
+    private Instant from;
+    private Instant to;
+
+    private OrderStatusDto status;
+
 
 //    // Если пустой список - то поиск будет осуществляться по всем категориям
 //    @NotNull

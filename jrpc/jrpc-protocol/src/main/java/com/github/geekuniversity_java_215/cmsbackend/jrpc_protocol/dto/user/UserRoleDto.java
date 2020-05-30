@@ -38,7 +38,10 @@ public class UserRoleDto extends AbstractDto {
         ROLE_NAMES.add(MANAGER);
     }
 
-    @Setter(AccessLevel.NONE)
+    public static UserRoleDto getByName(String role) {
+        return new UserRoleDto(role);
+    }
+
     private String name;
 
     public UserRoleDto() {}

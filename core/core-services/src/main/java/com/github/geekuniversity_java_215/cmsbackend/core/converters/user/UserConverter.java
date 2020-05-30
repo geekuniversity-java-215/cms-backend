@@ -29,6 +29,8 @@ public class UserConverter extends AbstractConverter<User, UserDto, UserSpecDto>
     protected void validate(User user) {
         super.validate(user);
 
+
+
         // ... custom validation
     }
 }

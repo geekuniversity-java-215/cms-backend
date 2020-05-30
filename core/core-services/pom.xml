@@ -36,7 +36,7 @@
         <!--module configuration -->
         <dependency>
             <groupId>com.github.geekuniversity_java_215</groupId>
-            <artifactId>configuration</artifactId>
+            <artifactId>appconfiguration</artifactId>
             <version>${app.version}</version>
             <scope>compile</scope>
         </dependency>

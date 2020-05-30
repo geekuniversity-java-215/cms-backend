@@ -28,7 +28,6 @@ public abstract class BaseRepoAccessService<T> {
 //        this.baseRepository = baseRepository;
 //    }
 
-
     public Optional<T> findById(Long id) {
         return baseRepository.findById(id);
     }

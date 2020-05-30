@@ -6,6 +6,6 @@ docker run -d \
 -e POSTGRES_PASSWORD=gjhUY876787ytuh87gdf \
 -e PGDATA=/var/lib/postgresql/data/pgdata \
 -v $PGDATA_CMS:/var/lib/postgresql/data \
--p 5442:5432 \
+-p 5432:5432 \
 dreamworkerln/cms-postgres
 

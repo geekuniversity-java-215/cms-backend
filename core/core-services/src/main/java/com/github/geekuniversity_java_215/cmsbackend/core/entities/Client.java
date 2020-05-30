@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "client")
+@Table(
+    name = "client",
+    indexes = {@Index(name = "client_user_id_unq", columnList = "user_id", unique = true)
+    })
 @Data
 @EqualsAndHashCode(callSuper=true)
 public class Client extends AbstractEntity {

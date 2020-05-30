@@ -73,7 +73,8 @@ public class RegistrarService {
 
         log.info("Adding new user: {}", newUser);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        newUser.getRoles().add(userRoleService.findByName(UserRole.CONFIRM_REGISTRATION));
+        //noinspection OptionalGetWithoutIsPresent
+        newUser.getRoles().add(userRoleService.findByName(UserRole.CONFIRM_REGISTRATION).get());
 
         // save new user to UnconfirmedUser
         unconfirmedUserService.save(newUser);
@@ -105,12 +106,13 @@ public class RegistrarService {
             .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
 
 
-        //ToDo: move this to transactional service
+
         User user = unconfirmedUser.toUser();
 
         // Set user roles to USER
         user.getRoles().clear();
-        user.getRoles().add(userRoleService.findByName(UserRole.USER));
+        //noinspection OptionalGetWithoutIsPresent
+        user.getRoles().add(userRoleService.findByName(UserRole.USER).get());
         // save user
         userService.save(user);
 

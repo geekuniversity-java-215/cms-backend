@@ -1,9 +1,9 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.request.JrpcRequest;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static com.pivovarit.function.ThrowingFunction.unchecked;
 
@@ -31,6 +29,7 @@ public class AbstractJrpcRequest extends AbstractRequestWithOauth {
         return id.getAndIncrement();
     }
 
+    @SneakyThrows
     protected JsonNode performJrpcRequest(String uri, Object params) {
 
         JsonNode result;
@@ -45,11 +44,8 @@ public class AbstractJrpcRequest extends AbstractRequestWithOauth {
 
         ResponseEntity<String> response = performRequest(clientProp.getApiURL(), json, String.class, headers);
 
-        try {
-            result = objectMapper.readTree(response.getBody()).get("result");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        result = objectMapper.readTree(response.getBody()).get("result");
+
         return result;
     }
 }

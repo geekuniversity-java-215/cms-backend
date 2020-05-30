@@ -31,7 +31,7 @@ public class UserPrincipalCustom implements UserDetailsCustom {
 
     @Override
     public boolean isEnabled() {
-        return user.getEnabled();
+        return user.isEnabled();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class UserPrincipalCustom implements UserDetailsCustom {
 
     @Override
     public boolean isAccountNonLocked() {
-        return user.getEnabled();
+        return user.isEnabled();
     }
 
     // -------------------------------------------------------------

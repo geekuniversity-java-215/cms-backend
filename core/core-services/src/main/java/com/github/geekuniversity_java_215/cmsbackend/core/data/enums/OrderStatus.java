@@ -13,10 +13,11 @@ public enum OrderStatus {
 
     NULL(-1), // kludge
     NEW(0),
-    IN_PROGRESS(1),
-    IN_MODERATION(2),
+    ASSIGNED(1),
+    IN_PROGRESS(2),
     CANCEL(3),
-    DONE(4);
+    IN_MODERATION(4),
+    DONE(5);
 
     private final static Map<Integer, OrderStatus> ENUM_MAP = new HashMap<>();
 

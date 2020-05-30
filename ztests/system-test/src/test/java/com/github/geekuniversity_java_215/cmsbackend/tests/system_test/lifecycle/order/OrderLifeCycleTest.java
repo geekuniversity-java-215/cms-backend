@@ -1,10 +1,20 @@
 package com.github.geekuniversity_java_215.cmsbackend.tests.system_test.lifecycle.order;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.client.ClientRequest;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.courier.CourierRequest;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.order.OrderClientRequest;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.order.OrderCourierRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.ConfirmRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.oauth.OauthTestRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.RegistrarRequest;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.user.UserRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.Account.AccountDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.address.AddressDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderStatusDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import com.github.geekuniversity_java_215.cmsbackend.tests.system_test.configurations.SystemTestSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.utils.SpringBeanUtilsEx;
@@ -15,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.util.List;
 
 @SpringBootTest
 @Slf4j
@@ -28,43 +39,91 @@ public class OrderLifeCycleTest {
     private ConfirmRequest confirmRequest;
     @Autowired
     private OauthTestRequest oauthTestRequest;
-
     @Autowired
     private JrpcClientProperties defaultProperties;
+    @Autowired
+    private OrderClientRequest orderClientRequest;
+    @Autowired
+    private OrderCourierRequest orderCourierRequest;
+    @Autowired
+    private UserRequest userRequest;
+    @Autowired
+    private ClientRequest clientRequest;
+    @Autowired
+    private CourierRequest courierRequest;
 
     @Test
-    void newUserLifeCycle() throws InvocationTargetException, IllegalAccessException {
+    void orderLifeCycle() throws JsonProcessingException {
 
-        UserDto user = new UserDto();
-        user.setUsername("vasya");
+        AddressDto from;
+        AddressDto to;
+        OrderDto order;
 
-        AccountDto account = new AccountDto();
-        account.setBalance(new BigDecimal(3));
-        account.setUser(user);
-        account.setId(5L);
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.CLIENT);
+        ClientDto client = clientRequest.getCurrent();
 
-        user.setAccount(account);
+        // Prepare database here
+        from = new AddressDto("Москва", "Улица красных тюленей", 1, 2, 3);
+        to = new AddressDto("Мухосранск", "Западная", 2, 2, 5);
 
-        UserDto newUser = new UserDto();
-        newUser.setEmail("mm@mail.ru");
-        newUser.setId(1L);
-        AccountDto newAccount = new AccountDto();
-        newAccount.setUser(newUser);
-        newUser.setAccount(newAccount);
+        order = new OrderDto();
+        order.setFrom(from);
+        order.setTo(to);
+        order.setClient(client);
+        order.setStatus(OrderStatusDto.NEW);
 
 
-        System.out.println("newUser: " + newUser);
+        long id = orderClientRequest.save(order);
+        log.info("order id: {}", id);
 
-        SpringBeanUtilsEx.CopyPropertiesExcludeNull(user, newUser);
+        List<OrderDto> orderList = orderClientRequest.findAll(null);
+        log.info("orderz {}", orderList);
 
-        //BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
 
-        //BeanUtils.copyProperties(newUser, user);
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.COURIER);
 
-        System.out.println("user: " + user);
-        System.out.println("newUser: " + newUser);
+        orderList = orderCourierRequest.findNew(null);
 
-        System.out.println("OK");
+
+        
+
+
+
+
+
+
+
+
+//        UserDto user = new UserDto();
+//        user.setUsername("vasya");
+//
+//        AccountDto account = new AccountDto();
+//        account.setBalance(new BigDecimal(3));
+//        account.setUser(user);
+//        account.setId(5L);
+//
+//        user.setAccount(account);
+//
+//        UserDto newUser = new UserDto();
+//        newUser.setEmail("mm@mail.ru");
+//        newUser.setId(1L);
+//        AccountDto newAccount = new AccountDto();
+//        newAccount.setUser(newUser);
+//        newUser.setAccount(newAccount);
+//
+//
+//        System.out.println("newUser: " + newUser);
+//
+//        SpringBeanUtilsEx.CopyPropertiesExcludeNull(user, newUser);
+//
+//        //BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
+//
+//        //BeanUtils.copyProperties(newUser, user);
+//
+//        System.out.println("user: " + user);
+//        System.out.println("newUser: " + newUser);
+//
+//        System.out.println("OK");
 
 
 //        // 1. Register new user

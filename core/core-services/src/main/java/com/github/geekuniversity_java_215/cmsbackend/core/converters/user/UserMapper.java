@@ -4,16 +4,22 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.Abstr
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.userrole.UserRoleMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserRoleDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 
 @Mapper(componentModel = "spring",
     unmappedTargetPolicy = ReportingPolicy.ERROR,
@@ -22,14 +28,14 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
 
     @Autowired
     private UserService userService;
-    
+    @Autowired
+    private UserRoleService userRoleService;
 
 
     @PostConstruct
     private void postConstruct() {
-
         super.setBaseRepoAccessService(userService);
-        constructor = new UserConstructor();
+        constructor = new EntityConstructor();
     }
 
     @Mapping(target = "client", ignore = true)
@@ -39,14 +45,26 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
     @Mapping(target = "client", ignore = true)
     @Mapping(target = "courier", ignore = true)
     @Mapping(target = "refreshTokenList", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     public abstract User toEntity(UserDto userDto);
 
     @AfterMapping
     User afterMapping(UserDto source, @MappingTarget User target) {
-        return merge(source, target);
+
+        target = merge(source, target);
+
+        // update roles
+        for (UserRoleDto role : source.getRoles()) {
+            target.getRoles().add(userRoleService.findByName(role.getName())
+                .orElseThrow(() -> new IllegalArgumentException("UserRole " + role.getName() + "not found")));
+        }
+        return target;
     }
 
-    public static class UserConstructor extends Constructor<User, UserDto> {
+    protected class EntityConstructor extends Constructor<User, UserDto> {
+
+        private UserRoleService userRoleService;
+
         @Override
         public User create(UserDto dto, User entity) {
 
@@ -59,5 +77,6 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
             dto.getEmail(),
             dto.getPhoneNumber());
         }
+
     }
 }

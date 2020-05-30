@@ -77,11 +77,18 @@ pipeline {
 
         stage('system tests') {
             steps {
-                sh '''
-                    . ./ztests/scripts/0-config_params.sh
-                    ./ztests/scripts/2-system-tests.sh
-                '''
+
+                echo 'run docker postgres'
+                sh './infrastructure/database/docker_run_cms-postgres.sh'
+
+                sh './ztests/scripts/2-system-tests.sh'
+
             }
         }
     }
+    post {
+        always {
+            echo 'One way or another, I have finished'
+            // stop container
+        }
 }
