@@ -70,5 +70,7 @@ public class UsersInitializer {
                 "Сема", "Пасечкин", "sema@mail.ru", "908796786543");
             userService.save(user);
         }
+
+        log.info("initialize default users done");
     }
 }
