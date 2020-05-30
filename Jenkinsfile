@@ -2,7 +2,7 @@ pipeline {
         agent {
             docker {
                 image 'maven:3.6.3-jdk-8'
-                args '-v $HOME/.m2:/root/.m2:z -u root'
+                args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root'
                 reuseNode true
             }
         }
@@ -59,7 +59,14 @@ pipeline {
 
         stage('build') {
             steps {
-                sh 'mvn -U clean compile'
+                sh 'mvn -U -DskipTests clean package'
+
+                sh '''
+                    mkdir -p $HOME/out/auth-server
+                    mkdir -p $HOME/out/cmsapp
+                    cp auth-server/target/*.jar $HOME/out/auth-server/
+                    cp cmsapp/target/*.jar $HOME/out/cmsapp/
+                '''
             }
         }
 
