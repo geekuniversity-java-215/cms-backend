@@ -67,9 +67,9 @@ pipeline {
             steps {
                 sh '''
                     . ./ztests/scripts/0-config_params.sh
-                    echo "==========================="
-                    echo $H2PARAMS
-                    echo "==========================="
+                #    echo "==========================="
+                #    echo $H2PARAMS
+                #    echo "==========================="
                     ./ztests/scripts/1-unit-tests.sh
                 '''
             }
@@ -78,11 +78,11 @@ pipeline {
         stage('system tests') {
             steps {
 
-                echo 'run docker postgres'
-                sh './infrastructure/database/docker_run_cms-postgres.sh'
-
-                sh './ztests/scripts/2-system-tests.sh'
-
+                sh '''
+                    . ./ztests/scripts/0-config_params.sh
+                    POSTGRESQL_PARAMS=POSTGRESQL_EXTERNAL_PARAMS
+                    ./ztests/scripts/2-system-tests.sh
+                '''
             }
         }
     }

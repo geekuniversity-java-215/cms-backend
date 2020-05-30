@@ -1,3 +1,5 @@
 #!/bin/bash
 
-export H2PARAMS="-Dspring.datasource.url=jdbc:h2:mem:testdb -Dspring.datasource.driverClassName=org.h2.Driver -Dspring.datasource.username=sa -Dspring.datasource.password=password -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect"
+export H2_PARAMS="-Dspring.datasource.url=jdbc:h2:mem:testdb -Dspring.datasource.driverClassName=org.h2.Driver -Dspring.datasource.username=sa -Dspring.datasource.password=password -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect"
+export POSTGRESQL_PARAMS="-Dspring.datasource.url=jdbc:postgresql://localhost:5442/cms?currentSchema=cms&autoReconnect=true -Dspring.datasource.driverClassName=org.postgresql.Driver -Dspring.datasource.username=cmsadmin -Dspring.datasource.password=cmsadminpassword -Dspring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect"
+export POSTGRESQL_EXTERNAL_PARAMS="-Dspring.datasource.url=jdbc:postgresql://31.210.208.189:5442/cms?currentSchema=cms&autoReconnect=true -Dspring.datasource.driverClassName=org.postgresql.Driver -Dspring.datasource.username=cmsadmin -Dspring.datasource.password=cmsadminpassword -Dspring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect"

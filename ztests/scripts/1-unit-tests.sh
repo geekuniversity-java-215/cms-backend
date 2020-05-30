@@ -1,4 +1,4 @@
 #!/bin/bash
 
-mvn ${H2PARAMS} clean test
+mvn ${H2_PARAMS} clean test
 exit $?
