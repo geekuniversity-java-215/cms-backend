@@ -3,6 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.configurations;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Загружатель Properties для конфигураций.
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.PropertySource;
  * для разных модулей делать разными иначе перекроются.
  */
 @Configuration
+@EnableScheduling
 public class PaymentPropertiesConfiguration {
 
     @Configuration
@@ -24,4 +26,10 @@ public class PaymentPropertiesConfiguration {
     @PropertySource(value = {
         "classpath:payment-${spring.profiles.active}.properties"})
     static class NonDefaultProperties {}
+
+
+
+
+
+
 }

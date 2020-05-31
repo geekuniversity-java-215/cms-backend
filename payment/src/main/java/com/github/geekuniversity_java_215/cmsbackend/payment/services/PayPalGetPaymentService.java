@@ -10,7 +10,6 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,18 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.github.geekuniversity_java_215.cmsbackend.core.data.constants.CorePropNames.*;
+
 @Service
 @Slf4j
 public class PayPalGetPaymentService {
-
-    @Value("${server.port}")
-    private String serverPort;
-
-    @Value("${server.path}")
-    private String serverPath;
-
-    @Value("${server.localhost}")
-    private String serverLocalHost;
 
     private final PayPalAccount payPalAccount;
     private final MailService mailService;
@@ -90,8 +82,7 @@ public class PayPalGetPaymentService {
     }
 
     private String getStringURLS() {
-        System.out.println(serverPath);
-        return serverLocalHost + serverPort + serverPath;
+        return SERVER_HOST + SERVER_PORT   + SERVER_SERVLET_CONTEXT_PATH;
     }
 
     /*

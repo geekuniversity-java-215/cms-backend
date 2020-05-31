@@ -1,10 +1,12 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.payment.configurations.PayPalAccount;
+import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import com.paypal.exception.*;
 import com.paypal.sdk.exceptions.OAuthException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.*;
@@ -14,29 +16,35 @@ import urn.ebay.apis.eBLBaseComponents.ReceiverInfoCodeType;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+/*
+schedulerPayment 4 раза в неделю запускает doMassPayment для выполнения заявок на вывод средств
+paypal.cron.expression=0 58 23 * * 1,3,5,7
+ */
 
 @Service
 @Slf4j
 public class PayPalMassPaymentsService {
     private final PayPalAccount payPalAccount;
+    private final CashFlowService cashFlowService;
 
     @Autowired
-    public PayPalMassPaymentsService(PayPalAccount payPalAccount) {
+    public PayPalMassPaymentsService(PayPalAccount payPalAccount, CashFlowService cashFlowService) {
         this.payPalAccount = payPalAccount;
+        this.cashFlowService = cashFlowService;
     }
-    //todo создать сущность(журнал) вывода средств RequestForFunds с атрибутами(userId,amount,currencyCodeType,date_create,date_success).
-    //todo создать контроллер, который в автоматическом режиме 3 раза в неделю будет проверять RequestForFunds на наличие неввыполненных заявок
-    // и передавать их списков в doMassPayments, до 250 шт в одной пачке
 
-    public String doMassPayment(String userMail,String amount, String currencyCodeType) {
+    //todo передавать в doMassPayments до 250 шт в одном списке
+    @Scheduled(cron ="${paypal.cron.expression}" )
+    public void schedulerPayment(){
+        doMassPayment(cashFlowService.findAllWithEmptyDateSuccess());
+    }
+
+    public void doMassPayment(List<CashFlow> transactionsList) {
         MassPayReq massPayReq = new MassPayReq();
-        List<MassPayRequestItemType> massPayRequestItemTypeList = new ArrayList<>();
-        requestItemList(userMail, amount, currencyCodeType, massPayRequestItemTypeList);
-
+        List<MassPayRequestItemType> massPayRequestItemTypeList;
+        massPayRequestItemTypeList=requestItemList(transactionsList);
         massPayReq.setMassPayRequest(getRequestType(massPayRequestItemTypeList));
 
         // Creating service wrapper object to make an API call by loading configuration map.
@@ -45,7 +53,7 @@ public class PayPalMassPaymentsService {
         try {
             MassPayResponseType resp = service.massPay(massPayReq);
             log.info(resp.getAck().getValue());
-            return "success";
+            saveDateSuccess(massPayRequestItemTypeList);
         } catch (SSLConfigurationException e) {
             e.printStackTrace();
         } catch (InvalidCredentialException e) {
@@ -69,31 +77,34 @@ public class PayPalMassPaymentsService {
         } catch (SAXException e) {
             e.printStackTrace();
         }
-        return "failed";
     }
 
-    /*
- *  (Optional) How you identify the recipients of payments in this call to MassPay.
- *   It is one of the following values:
-        EmailAddress
-        UserID
-        PhoneNumber
- */
+    private void saveDateSuccess(List<MassPayRequestItemType> massPayRequestItemTypeList) {
+        Optional<CashFlow> cf;
+        for (MassPayRequestItemType massPayRequestItemType: massPayRequestItemTypeList) {
+            cf=cashFlowService.findById(Long.valueOf(massPayRequestItemType.getReceiverID()));
+            cf.get().setDateSuccess(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+            cashFlowService.save(cf.get());
+        }
+    }
+
     private MassPayRequestType getRequestType(List<MassPayRequestItemType> massPayRequestItemTypeList) {
         MassPayRequestType reqType = new MassPayRequestType(massPayRequestItemTypeList);
         reqType.setReceiverType(ReceiverInfoCodeType.fromValue("EmailAddress"));
         return reqType;
     }
 
-    private void requestItemList(String userMail, String amount, String currencyCodeType, List<MassPayRequestItemType> massPayRequestItemTypeList) {
-        BasicAmountType basicAmountType = new BasicAmountType(
-                CurrencyCodeType.fromValue(currencyCodeType),
-                amount);
-
-        MassPayRequestItemType item1 = new MassPayRequestItemType(basicAmountType);
-        item1.setReceiverEmail(userMail);
-
-        massPayRequestItemTypeList.add(item1);
+    private List<MassPayRequestItemType> requestItemList(List<CashFlow> tr) {
+        BasicAmountType basicAmountType;
+        List<MassPayRequestItemType> massPayRequestItemTypeList=new ArrayList<>();
+        for (CashFlow t: tr){
+            basicAmountType=new BasicAmountType(CurrencyCodeType.fromValue(t.getCurrencyCodeType()), String.valueOf(t.getAmount()));
+            MassPayRequestItemType ms=new MassPayRequestItemType(basicAmountType);
+            ms.setReceiverEmail(t.getPayPalEmail());
+            ms.setReceiverID(String.valueOf(t.getId()));
+            massPayRequestItemTypeList.add(ms);
+        }
+        return massPayRequestItemTypeList;
     }
 
     private Map<String,String> configurationMap() {

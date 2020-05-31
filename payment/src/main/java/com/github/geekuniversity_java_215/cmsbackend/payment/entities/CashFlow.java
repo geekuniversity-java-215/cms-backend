@@ -18,7 +18,10 @@ import java.util.Calendar;
 @Table(name = "request_for_funds")
 @Data
 @EqualsAndHashCode(callSuper=true)
-public class Transaction extends AbstractEntity {
+public class CashFlow extends AbstractEntity {
+
+    @NotNull
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id")
@@ -43,10 +46,10 @@ public class Transaction extends AbstractEntity {
     @NotNull
     private Date dateSuccess;
 
-    public Transaction(){
+    public CashFlow(){
     }
 
-    public Transaction(User user, String typeOperation, BigDecimal amount, String payPalEmail, String currencyCodeType) {
+    public CashFlow(User user, String typeOperation, BigDecimal amount, String payPalEmail, String currencyCodeType) {
         this.user=user;
         this.typeOperation=typeOperation;
         this.amount=amount;

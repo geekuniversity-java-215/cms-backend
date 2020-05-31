@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractConverter;
 import com.github.geekuniversity_java_215.cmsbackend.payment.dto.TransactionDto;
-import com.github.geekuniversity_java_215.cmsbackend.payment.entities.Transaction;
+import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
@@ -15,13 +15,13 @@ import javax.validation.ValidationException;
 
 @Component
 @Slf4j
-public class TransactionConverter extends AbstractConverter<Transaction, TransactionDto, Void> {
+public class TransactionConverter extends AbstractConverter<CashFlow, TransactionDto, Void> {
 
     @Autowired
     public TransactionConverter(TransactionMapper transactionMapper, ObjectMapper mapper) {
         this.entityMapper = transactionMapper;
 
-        this.entityClass = Transaction.class;
+        this.entityClass = CashFlow.class;
         this.dtoClass = TransactionDto.class;
         this.specClass = Void.class;
     }
@@ -48,8 +48,8 @@ public class TransactionConverter extends AbstractConverter<Transaction, Transac
     }
 
     @Override
-    protected void validate(Transaction transaction) {
-        super.validate(transaction);
+    protected void validate(CashFlow cashFlow) {
+        super.validate(cashFlow);
 
         // ... custom validation
     }

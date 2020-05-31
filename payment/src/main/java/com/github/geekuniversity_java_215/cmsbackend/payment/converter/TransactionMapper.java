@@ -4,20 +4,20 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.Abstr
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
 import com.github.geekuniversity_java_215.cmsbackend.payment.dto.TransactionDto;
-import com.github.geekuniversity_java_215.cmsbackend.payment.entities.Transaction;
+import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
         uses = {InstantMapper.class, AddressMapper.class})
-public abstract class TransactionMapper extends AbstractMapper<Transaction, TransactionDto> {
+public abstract class TransactionMapper extends AbstractMapper<CashFlow, TransactionDto> {
 
     @Mapping(source = "typeOperation", target = "typeOperation")
     @Mapping(source = "currencyCodeType", target="currencyCodeType" )
     @Mapping(source = "payPalEmail", target="payPalEmail" )
     @Mapping(source="dateCreate",target="dateCreate")
     @Mapping(source = "dateSuccess",target="dateSuccess")
-    public abstract TransactionDto toDto(Transaction transaction);
+    public abstract TransactionDto toDto(CashFlow cashFlow);
 
     @Mapping(target = "typeOperation", ignore = true)
     @Mapping(target = "currencyCodeType", ignore=true)
@@ -25,7 +25,7 @@ public abstract class TransactionMapper extends AbstractMapper<Transaction, Tran
     @Mapping(target="dateCreate", ignore=true)
     @Mapping(target = "dateSuccess", ignore=true)
 
-    public abstract Transaction toEntity(TransactionDto transactionDto);
+    public abstract CashFlow toEntity(TransactionDto transactionDto);
 
     /**
      * Custom conversion logic, need to further setup
@@ -34,7 +34,7 @@ public abstract class TransactionMapper extends AbstractMapper<Transaction, Tran
      * @param target Entity
      */
     @AfterMapping
-    void afterMapping(TransactionDto source, @MappingTarget Transaction target) {
+    void afterMapping(TransactionDto source, @MappingTarget CashFlow target) {
 
         // map entity id
         idMap(source, target);
