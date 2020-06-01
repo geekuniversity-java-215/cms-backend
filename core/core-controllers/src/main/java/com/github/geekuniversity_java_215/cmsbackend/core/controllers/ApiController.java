@@ -226,7 +226,15 @@ public class ApiController {
                         // Checked(как и unchecked) исключения будут проброшены к вызывающему
                         JrpcMethodHandler handler = params -> (JsonNode)method.invoke(bean,params);
 
-                        handlers.put(jrpcController.value() + "." + jrpcMethod.value(), handler);
+                        String controllerMethodName = jrpcController.value() + "." + jrpcMethod.value();
+
+                        // check that name is unique
+                        if(handlers.containsKey(controllerMethodName)) {
+                            throw new IllegalArgumentException("jrpcController.jrpcMethod: " +
+                                controllerMethodName + " already exists");
+                        }
+                        
+                        handlers.put(controllerMethodName, handler);
                     }
                 }
             }

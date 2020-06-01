@@ -16,27 +16,6 @@ import org.springframework.stereotype.Component;
 public class CourierRequest extends AbstractJrpcRequest {
 
     @SneakyThrows
-    public CourierDto findById(long id) {
-        String uri = HandlerName.courier.path + "." + HandlerName.courier.findById;
-        JsonNode response = performJrpcRequest(uri, id);
-        return objectMapper.treeToValue(response, CourierDto.class);
-    }
-
-    @SneakyThrows
-    public CourierDto findByUsername(String username) {
-        String uri = HandlerName.courier.path + "." + HandlerName.courier.findByUsername;
-        JsonNode response = performJrpcRequest(uri, username);
-        return objectMapper.treeToValue(response, CourierDto.class);
-    }
-
-    @SneakyThrows
-    public CourierDto findByUser(UserDto user) {
-        String uri = HandlerName.courier.path + "." + HandlerName.courier.findByUsername;
-        JsonNode response = performJrpcRequest(uri, user.getUsername());
-        return objectMapper.treeToValue(response, CourierDto.class);
-    }
-
-    @SneakyThrows
     public CourierDto getCurrent() {
         String uri = HandlerName.courier.path + "." + HandlerName.courier.getCurrent;
         JsonNode response = performJrpcRequest(uri, null);

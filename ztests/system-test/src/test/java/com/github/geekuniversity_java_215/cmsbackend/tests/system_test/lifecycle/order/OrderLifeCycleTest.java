@@ -79,10 +79,12 @@ public class OrderLifeCycleTest {
         List<OrderDto> orderList = orderClientRequest.findAll(null);
         log.info("orderz {}", orderList);
 
+        // =============================================================================================================
 
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.COURIER);
 
         orderList = orderCourierRequest.findNew(null);
+        log.info("new orderz {}", orderList);
 
 
         

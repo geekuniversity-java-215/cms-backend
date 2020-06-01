@@ -38,7 +38,7 @@ public class HandlerName {
     public static final String execute = "execute";
     public static final String complete = "complete";
 
-
+    // ------------------------------------------------------------
 
 
     // CALCULATOR -------------------------------------------------
@@ -56,21 +56,8 @@ public class HandlerName {
     public static class user {
 
         public static final String path = "cmsapp.core.user";
-
-        public static final String findById = HandlerName.findById;
-        public static final String findAllById = HandlerName.findAllById;
-        public static final String findAll = HandlerName.findAll;
-        public static final String findFirst = HandlerName.findFirst;
-        public static final String save = HandlerName.save;
-        public static final String delete = HandlerName.delete;
-
-        public static final String findByUsername = HandlerName.findByUsername;
         public static final String getCurrent = HandlerName.getCurrent;
-
-        //public static final String addRoles = HandlerName.addRoles;
-        //public static final String makeClient = HandlerName.makeClient;
-        //public static final String makeCourier = HandlerName.makeCourier;
-
+        public static final String save = HandlerName.save;
     }
 
     // CLIENT --------------------------------------------------------
@@ -79,12 +66,9 @@ public class HandlerName {
     public static class client {
 
         public static final String path = "cmsapp.core.client";
-        public static final String findById = HandlerName.findById;
-        public static final String save = HandlerName.save;
-        public static final String findByUsername = HandlerName.findByUsername;
         public static final String getCurrent = HandlerName.getCurrent;
+        public static final String save = HandlerName.save;
     }
-
 
 
     // COURIER --------------------------------------------------------
@@ -93,31 +77,13 @@ public class HandlerName {
     public static class courier {
 
         public static final String path = "cmsapp.core.courier";
-        public static final String findById = HandlerName.findById;
-        public static final String save = HandlerName.save;
-        public static final String findByUsername = HandlerName.findByUsername;
         public static final String getCurrent = HandlerName.getCurrent;
+        public static final String save = HandlerName.save;
     }
-
-
-
-
 
     // ORDER -------------------------------------------------------
 
     public static class order {
-
-        public static class manager {
-            public static final String path = "cmsapp.core.order.manager";
-
-            public static final String findById = HandlerName.findById;
-            public static final String findAllById = HandlerName.findAllById;
-            public static final String findAll = HandlerName.findAll;
-            public static final String findFirst = HandlerName.findFirst;
-            public static final String save = HandlerName.save;
-            public static final String delete = HandlerName.delete;
-
-        }
 
         public static class courier {
             public static final String path = "cmsapp.core.order.courier";
@@ -146,6 +112,60 @@ public class HandlerName {
             public static final String delete = HandlerName.delete;
 
         }
+    }
+
+
+    // MANAGER ------------------------------------------------------
+
+    public static class manager {
+
+        public static class order {
+
+            public static final String path = "cmsapp.core.manager.order";
+
+            public static final String findById = HandlerName.findById;
+            public static final String findAllById = HandlerName.findAllById;
+            public static final String findAll = HandlerName.findAll;
+            public static final String findFirst = HandlerName.findFirst;
+            public static final String save = HandlerName.save;
+            public static final String delete = HandlerName.delete;
+        }
+
+        public static class user {
+
+            public static final String path = "cmsapp.core.manager.user";
+
+            public static final String findById = HandlerName.findById;
+            public static final String findAllById = HandlerName.findAllById;
+            public static final String findAll = HandlerName.findAll;
+            public static final String findByUsername = HandlerName.findByUsername;
+            public static final String findFirst = HandlerName.findFirst;
+            public static final String save = HandlerName.save;
+            public static final String delete = HandlerName.delete;
+
+        }
+
+        public static class client {
+
+            public static final String path = "cmsapp.core.manager.client";
+
+            public static final String findById = HandlerName.findById;
+            public static final String save = HandlerName.save;
+            public static final String findByUsername = HandlerName.findByUsername;
+
+        }
+
+        public static class courier {
+
+            public static final String path = "cmsapp.core.manager.courier";
+
+            public static final String findById = HandlerName.findById;
+            public static final String save = HandlerName.save;
+            public static final String findByUsername = HandlerName.findByUsername;
+
+        }
+
+
     }
 
 

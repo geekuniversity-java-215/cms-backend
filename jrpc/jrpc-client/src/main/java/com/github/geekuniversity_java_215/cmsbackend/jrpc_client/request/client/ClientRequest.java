@@ -15,27 +15,6 @@ import org.springframework.stereotype.Component;
 public class ClientRequest extends AbstractJrpcRequest {
 
     @SneakyThrows
-    public ClientDto findById(long id) {
-        String uri = HandlerName.client.path + "." + HandlerName.client.findById;
-        JsonNode response = performJrpcRequest(uri, id);
-        return objectMapper.treeToValue(response, ClientDto.class);
-    }
-
-    @SneakyThrows
-    public ClientDto findByUsername(String username) {
-        String uri = HandlerName.client.path + "." + HandlerName.client.findByUsername;
-        JsonNode response = performJrpcRequest(uri, username);
-        return objectMapper.treeToValue(response, ClientDto.class);
-    }
-
-    @SneakyThrows
-    public ClientDto findByUser(UserDto user) {
-        String uri = HandlerName.client.path + "." + HandlerName.client.findByUsername;
-        JsonNode response = performJrpcRequest(uri, user.getUsername());
-        return objectMapper.treeToValue(response, ClientDto.class);
-    }
-
-    @SneakyThrows
     public ClientDto getCurrent() {
         String uri = HandlerName.client.path + "." + HandlerName.client.getCurrent;
         JsonNode response = performJrpcRequest(uri, null);
@@ -43,9 +22,9 @@ public class ClientRequest extends AbstractJrpcRequest {
     }
 
     @SneakyThrows
-    public Long save(ClientDto client) {
+    public ClientDto save() {
         String uri = HandlerName.client.path + "." + HandlerName.client.save;
-        JsonNode response = performJrpcRequest(uri, client);
-        return objectMapper.treeToValue(response, Long.class);
+        JsonNode response = performJrpcRequest(uri, null);
+        return objectMapper.treeToValue(response, ClientDto.class);
     }
 }

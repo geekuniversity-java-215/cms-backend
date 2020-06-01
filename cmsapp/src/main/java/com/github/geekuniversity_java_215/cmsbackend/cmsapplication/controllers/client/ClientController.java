@@ -27,65 +27,15 @@ public class ClientController {
     private final ClientService clientService;
     private final UserService userService;
     private final ClientConverter converter;
-    private final UserRoleService userRoleService;
 
     public ClientController(ClientService clientService, UserService userService,
-                            ClientConverter converter, UserRoleService userRoleService) {
+                            ClientConverter converter) {
         this.clientService = clientService;
         this.userService = userService;
         this.converter = converter;
-        this.userRoleService = userRoleService;
     }
 
 
-    @JrpcMethod(HandlerName.client.findByUsername)
-    @Secured(UserRole.MANAGER)
-    public JsonNode findByUsername(JsonNode params) {
-
-        String username = converter.get(params, String.class);
-        Client client = clientService.findByUsername(username).orElse(null);;
-        return converter.toDtoJson(client);
-    }
-
-
-
-    @JrpcMethod(HandlerName.client.save)
-    @Secured(UserRole.MANAGER)
-    public JsonNode save(JsonNode params) {
-
-        Client client = converter.toEntity(params);
-        Long clientId = client.getId();
-        if(client.getUser() == null) {
-            throw new IllegalArgumentException("Client without user");
-        }
-
-        long userId = client.getUser().getId();
-        User user = userService.findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException("User by id " + userId + " not found"));
-
-        clientService.findOneByUser(user).ifPresent(c -> {
-            if (clientId != null && !c.getId().equals(clientId))
-            throw new IllegalArgumentException("Stealing user: " + user.getUsername() + " from another client: " + c.getId());
-        });
-
-        //noinspection OptionalGetWithoutIsPresent
-        user.getRoles().add(userRoleService.findByName(UserRole.CLIENT).get());
-        userService.save(user);
-        client = clientService.save(client);
-
-        return converter.toIdJson(client);
-    }
-
-
-
-
-
-
-
-
-
-
-    // ====================================================================================
 
     @JrpcMethod(HandlerName.client.getCurrent)
     @Secured(UserRole.CLIENT)

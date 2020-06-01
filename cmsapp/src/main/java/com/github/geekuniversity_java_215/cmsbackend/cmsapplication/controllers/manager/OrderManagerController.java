@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.order;
+package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.manager;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
@@ -19,7 +19,7 @@ import org.springframework.security.access.annotation.Secured;
 import java.util.List;
 import java.util.Optional;
 
-@JrpcController(HandlerName.order.manager.path)
+@JrpcController(HandlerName.manager.order.path)
 @Secured(UserRole.MANAGER)
 public class OrderManagerController {
 
@@ -37,7 +37,7 @@ public class OrderManagerController {
      * @param params Long id
      * @return
      */
-    @JrpcMethod(HandlerName.order.manager.findById)
+    @JrpcMethod(HandlerName.manager.order.findById)
     public JsonNode findById(JsonNode params) {
 
         Long id = converter.get(params, Long.class);
@@ -51,7 +51,7 @@ public class OrderManagerController {
      * @param params List<Long> idList
      * @return
      */
-    @JrpcMethod(HandlerName.order.manager.findAllById)
+    @JrpcMethod(HandlerName.manager.order.findAllById)
     public JsonNode findAllById(JsonNode params) {
 
         List<Long> idList = converter.getList(params, Long.class);
@@ -64,7 +64,7 @@ public class OrderManagerController {
      * @param params OrderSpecDto
      * @return
      */
-    @JrpcMethod(HandlerName.order.manager.findAll)
+    @JrpcMethod(HandlerName.manager.order.findAll)
     public JsonNode findAll(JsonNode params) {
 
         Optional<OrderSpecDto> specDto = converter.toSpecDto(params);
@@ -84,7 +84,7 @@ public class OrderManagerController {
      * @param params
      * @return
      */
-    @JrpcMethod(HandlerName.order.manager.findFirst)
+    @JrpcMethod(HandlerName.manager.order.findFirst)
     public JsonNode findFirst(JsonNode params) {
 
         Optional<OrderSpecDto> specDto = converter.toSpecDto(params);
@@ -100,7 +100,7 @@ public class OrderManagerController {
      * @param params Order
      * @return
      */
-    @JrpcMethod(HandlerName.order.manager.save)
+    @JrpcMethod(HandlerName.manager.order.save)
     public JsonNode save(JsonNode params) {
 
         Order order = converter.toEntity(params);
@@ -114,7 +114,7 @@ public class OrderManagerController {
      * @param params
      * @return
      */
-    @JrpcMethod(HandlerName.order.manager.delete)
+    @JrpcMethod(HandlerName.manager.order.delete)
     public JsonNode delete(JsonNode params) {
         
         Order order = converter.toEntity(params);
