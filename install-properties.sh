@@ -12,6 +12,7 @@
 
 # lib modules
 LIB_MODULES=(core/core-controllers core/core-services \
+    jrpc/jrpc-client \
     mail payment utils geodata \
     ztests/system-test)
 
