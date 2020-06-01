@@ -2,20 +2,15 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.payment.configurations.PayPalAccount;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
-import com.paypal.exception.*;
-import com.paypal.sdk.exceptions.OAuthException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.*;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ReceiverInfoCodeType;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 
@@ -79,7 +74,7 @@ public class PayPalMassPaymentsService {
         BasicAmountType basicAmountType;
         List<MassPayRequestItemType> massPayRequestItemTypeList=new ArrayList<>();
         for (CashFlow t: tr){
-            basicAmountType=new BasicAmountType(CurrencyCodeType.fromValue(t.getCurrencyCodeType()), String.valueOf(t.getAmount()));
+            basicAmountType=new BasicAmountType(CurrencyCodeType.fromValue(String.valueOf(t.getCurrencyCodeType())), String.valueOf(t.getAmount()));
             MassPayRequestItemType ms=new MassPayRequestItemType(basicAmountType);
             ms.setReceiverEmail(t.getPayPalEmail());
             ms.setReceiverID(String.valueOf(t.getId()));

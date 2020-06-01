@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
@@ -32,7 +33,7 @@ public class CashFlowService extends BaseRepoAccessService<CashFlow> {
         this.userService = userService;
     }
 
-    public CashFlow addRequestForFunds(Long userId, BigDecimal amount, String payPalEmail, String currencyCodeType){
+    public CashFlow addRequestForFunds(Long userId, BigDecimal amount, String payPalEmail, CurrencyCode currencyCodeType){
         Optional<User> user=userService.findById(userId);
         CashFlow cashFlow =new CashFlow(user.get(),REQUEST,amount,payPalEmail,currencyCodeType);
         cashFlowRepository.save(cashFlow);
@@ -51,6 +52,9 @@ public class CashFlowService extends BaseRepoAccessService<CashFlow> {
         return cashFlowRepository.findAllWithEmptyDateSuccess();
     }
 
+    /*
+    who knows why this method is needed?
+     */
     public List<Date> findAllDateSuccess() {
         return cashFlowRepository.findAllDateSuccess();
     }

@@ -3,6 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethod;
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.payment.converter.CashFlowConverter;
@@ -33,7 +34,7 @@ public class RequestForFundsController {
     public void requestForFunds(JsonNode params) {
         String[] pair = cashFlowConverter.parseParams(params,2);
         cashFlowService.addRequestForFunds(userService.getCurrentUser().getId(),
-            new BigDecimal(pair[0]), pair[1],"RUB");
+            new BigDecimal(pair[0]), pair[1], CurrencyCode.codeOf(643));
         CashFlow cf = cashFlowService.findById(1L).get();
         log.info("payPalEmail = "+cf.getPayPalEmail());
         List<CashFlow> cfList=cashFlowService.findAllWithEmptyDateSuccess();
