@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#set -x
+
 # bash escape tool
 # http://dwaves.de/tools/escape/
 
@@ -59,9 +61,9 @@ done
 # located in <module_name>/src/main/resources/
 ##########################################################################################
 
-# configuration ------------------------------------------------------------
+# appconfiguration ------------------------------------------------------------
 # logback-spring.xml
-fromPath=configuration/src/main/resources/
+fromPath=appconfiguration/src/main/resources/
 FROM=${fromPath}logback-spring.xml
 TO=${fromPath}logback-spring-dev.xml
 if [[ ! -f "$TO" ]]; then
@@ -121,8 +123,8 @@ fi
 # copy <module-name>.properties to <module-name>-dev.properties
 create_custom_dev () {
     fromPath=$1/src/main/resources/
-    FROM=${fromPath}$1.properties
-    TO=${fromPath}$1-dev.properties
+    FROM=${fromPath}$(basename "$1").properties
+    TO=${fromPath}$(basename "$1")-dev.properties
     cp -an $FROM $TO 2>/dev/null || :
 }
 

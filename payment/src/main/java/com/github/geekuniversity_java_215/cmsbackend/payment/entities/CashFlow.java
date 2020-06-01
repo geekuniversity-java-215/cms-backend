@@ -38,10 +38,6 @@ public class CashFlow extends AbstractEntity {
     @NotBlank
     private String payPalEmail;
 
-//    @NotNull
-//    private Date dateCreate;
-
-    @NotNull
     private Instant dateSuccess;
 
     public CashFlow(){

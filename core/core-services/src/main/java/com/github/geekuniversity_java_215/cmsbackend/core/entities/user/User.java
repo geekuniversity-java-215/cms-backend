@@ -22,7 +22,6 @@ import java.util.*;
         })
 @EntityListeners(UserToPersistListener.class)
 @Data
-@EqualsAndHashCode(callSuper=true)
 public class User extends AbstractEntity {
 
 //    @Id
@@ -91,7 +90,6 @@ public class User extends AbstractEntity {
     @OrderBy("id ASC")
     private Courier courier;
 
-
     public User() {}
 
     public User(@NotNull String username,
@@ -146,7 +144,8 @@ public class User extends AbstractEntity {
     private void prePersists() {
     }
 
-
+    // ToDo: что делать с остальными полями я хз
+    //  пользователь идентифицируется(principals) по username,email, phoneNumber
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
