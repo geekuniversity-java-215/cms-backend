@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment;
 
 
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import lombok.Data;
@@ -18,7 +19,7 @@ public class CashFlowDto extends AbstractDto {
     private BigDecimal amount;
     private String payPalEmail;
 
-    private String currencyCodeType;
+    private CurrencyCode currencyCodeType;
     private String typeOperation;
 
     private Instant dateSuccess;

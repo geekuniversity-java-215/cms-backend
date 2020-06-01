@@ -14,4 +14,12 @@
     <artifactId>jrpc-protocol</artifactId>
     <description>JSON-RPC protocol</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.geekuniversity_java_215</groupId>
+            <artifactId>core-services</artifactId>
+            <version>${app.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 </project>

@@ -3,7 +3,6 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.converter;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import com.github.geekuniversity_java_215.cmsbackend.payment.services.CashFlowService;
@@ -29,7 +28,7 @@ public abstract class CashFlowMapper extends AbstractMapper<CashFlow, CashFlowDt
     }
 
 
-        public abstract CashFlowDto toDto(CashFlow cashFlow);
+    public abstract CashFlowDto toDto(CashFlow cashFlow);
 
 //    @Mapping(target = "typeOperation", ignore = true)
 //    @Mapping(target = "currencyCodeType", ignore=true)
@@ -37,9 +36,9 @@ public abstract class CashFlowMapper extends AbstractMapper<CashFlow, CashFlowDt
 //    @Mapping(target="dateCreate", ignore=true)
 //    @Mapping(target = "dateSuccess", ignore=true)
 
-    @Mapping(target = "user.client", ignore=true)
-    @Mapping(target = "user.courier", ignore=true)
-    @Mapping(target = "user.refreshTokenList", ignore=true)
+    @Mapping(target = "user.client", ignore = true)
+    @Mapping(target = "user.courier", ignore = true)
+    @Mapping(target = "user.refreshTokenList", ignore = true)
     public abstract CashFlow toEntity(CashFlowDto transactionDto);
 
     /**
@@ -61,11 +60,11 @@ public abstract class CashFlowMapper extends AbstractMapper<CashFlow, CashFlowDt
 
             // Mapstruct 1.4 maybe will support constructors with params
             return new CashFlow(
-                entity.getUser(),
-                dto.getTypeOperation(),
-                dto.getAmount(),
-                dto.getPayPalEmail(),
-                    CurrencyCode.valueOf(dto.getCurrencyCodeType()));
+                    entity.getUser(),
+                    dto.getTypeOperation(),
+                    dto.getAmount(),
+                    dto.getPayPalEmail(),
+                    dto.getCurrencyCodeType());
 
         }
     }
