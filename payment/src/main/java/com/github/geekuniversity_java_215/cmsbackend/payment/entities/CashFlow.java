@@ -50,14 +50,6 @@ public class CashFlow extends AbstractEntity {
         this.currencyCodeType=currencyCodeType;
     }
 
-    public CashFlow(User user, String typeOperation, BigDecimal amount, String payPalEmail, String currencyCodeType) {
-        this.user=user;
-        this.typeOperation=typeOperation;
-        this.amount=amount;
-        this.payPalEmail = payPalEmail;
-        this.currencyCodeType= CurrencyCode.valueOf(currencyCodeType);
-    }
-
     @Override
     public String toString() {
         return "User{" +
