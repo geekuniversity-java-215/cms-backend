@@ -11,9 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.Instant;
-import java.util.Calendar;
 
 @Entity
 @Table(name = "cashflow")
@@ -38,10 +36,6 @@ public class CashFlow extends AbstractEntity {
     @NotBlank
     private String payPalEmail;
 
-//    @NotNull
-//    private Date dateCreate;
-
-    @NotNull
     private Instant dateSuccess;
 
     public CashFlow(){
