@@ -16,7 +16,7 @@ class GeoServiceTest {
     @Autowired
     private GeoService geoService;
 
-
+    @Disabled
     @Test
     void getRoute() {
 

@@ -74,7 +74,7 @@ public class OrderClientController {
     private Client getCurrentClient() {
 
         AtomicReference<Client> result = new AtomicReference<>();
-        userService.getCurrentUser().flatMap(clientService::findOneByUser).ifPresent(result::set);
+        clientService.findOneByUser(userService.getCurrentUser()).ifPresent(result::set);
         return result.get();
     }
 

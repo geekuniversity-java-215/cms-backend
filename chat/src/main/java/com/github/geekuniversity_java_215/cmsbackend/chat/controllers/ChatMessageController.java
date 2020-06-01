@@ -40,8 +40,7 @@ public class ChatMessageController {
     public void sendMessage(@Payload ChatMessageDto messageLite,
                             @DestinationVariable Long orderId) {
 
-        User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
+        User user = userService.getCurrentUser();
 
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
@@ -55,8 +54,7 @@ public class ChatMessageController {
                         @DestinationVariable Long orderId,
                         SimpMessageHeaderAccessor headerAccessor) {
 
-        User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
+        User user = userService.getCurrentUser();
 
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));

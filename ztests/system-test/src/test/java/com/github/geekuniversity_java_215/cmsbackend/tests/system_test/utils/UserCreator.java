@@ -89,7 +89,7 @@ public class UserCreator {
 
         UserDto userExists = userManagerRequest.findByUsername(user.getUsername());
         if (userExists == null) {
-            userRequest.save(user);
+            userManagerRequest.save(user);
         }
         // update user (get persisted id)
         user = userManagerRequest.findByUsername(user.getUsername());

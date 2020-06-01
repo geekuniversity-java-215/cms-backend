@@ -41,8 +41,7 @@ public class ClientController {
     @Secured(UserRole.CLIENT)
     public JsonNode getCurrent(JsonNode params) {
 
-        //noinspection OptionalGetWithoutIsPresent
-        User user = userService.getCurrentUser().get();
+        User user = userService.getCurrentUser();
         Client client = clientService.findOneByUser(user).orElse(null);
         return converter.toDtoJson(client);
     }

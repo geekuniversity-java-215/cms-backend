@@ -28,7 +28,7 @@ public class UserToPersistListener {
     @PreUpdate
     public void methodExecuteBeforeSave(User user) {
 
-        // Make shure that User contains persisted UserRoles
+        // Make sure that User contains persisted UserRoles
         // So CascadeType.MERGE will be successful
         for (UserRole role : new HashSet<>(user.getRoles())) {
 

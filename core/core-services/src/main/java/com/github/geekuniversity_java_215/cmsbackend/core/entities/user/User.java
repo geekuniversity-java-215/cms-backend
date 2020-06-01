@@ -10,10 +10,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 //@MappedSuperclass
 @Entity
@@ -147,8 +144,21 @@ public class User extends AbstractEntity {
 
     @PrePersist
     private void prePersists() {
+    }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username) &&
+            email.equals(user.email) &&
+            phoneNumber.equals(user.phoneNumber);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, email, phoneNumber);
     }
 }

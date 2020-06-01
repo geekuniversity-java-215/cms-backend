@@ -133,7 +133,7 @@ public class OrderCourierController {
     private Courier getCurrentCourier() {
 
         AtomicReference<Courier> result = new AtomicReference<>();
-        userService.getCurrentUser().flatMap(courierService::findOneByUser).ifPresent(result::set);
+        courierService.findOneByUser(userService.getCurrentUser()).ifPresent(result::set);
         return result.get();
     }
 

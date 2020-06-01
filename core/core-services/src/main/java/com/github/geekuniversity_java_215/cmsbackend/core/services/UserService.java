@@ -76,8 +76,9 @@ public class UserService extends BaseRepoAccessService<User> {
      * Get current authenticated user
      * @return User
      */
-    public Optional<User> getCurrentUser() {
-        return findByUsername(getCurrentUsername());
+    public User getCurrentUser() {
+        //noinspection OptionalGetWithoutIsPresent
+        return findByUsername(getCurrentUsername()).get();
     }
 
 }

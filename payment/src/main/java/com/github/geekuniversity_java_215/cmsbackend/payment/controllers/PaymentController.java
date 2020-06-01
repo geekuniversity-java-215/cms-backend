@@ -41,8 +41,7 @@ public class PaymentController {
 
     @PostMapping(CONTROLLER_EXECUTE_PAYMENT_PATH)
     private String executePayment(@RequestBody String amount) throws PayPalRESTException {
-        User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
+        User user = userService.getCurrentUser();
         String approvalLink = payPalGetPaymentService.authorizePayment(String.valueOf(user.getId()), Integer.valueOf(amount));
         log.info("Ответ запрос на authorize_payment=" + approvalLink);
         return "redirect:" + approvalLink;
@@ -60,8 +59,7 @@ public class PaymentController {
                           @PathVariable Long clientId,
                           Model model) throws PayPalRESTException {
 
-        User user = userService.getCurrentUser()
-            .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
+        User user = userService.getCurrentUser();
 
         if (user.getId().equals(clientId)) {
             String result = "";

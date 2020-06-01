@@ -36,8 +36,7 @@ public class CourierController {
     @Secured(UserRole.COURIER)
     public JsonNode getCurrent(JsonNode params) {
 
-        //noinspection OptionalGetWithoutIsPresent
-        User user = userService.getCurrentUser().get();
+        User user = userService.getCurrentUser();
         Courier client = courierService.findOneByUser(user).orElse(null);
         return converter.toDtoJson(client);
     }

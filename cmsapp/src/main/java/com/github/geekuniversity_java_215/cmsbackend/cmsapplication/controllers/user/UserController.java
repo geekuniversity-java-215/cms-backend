@@ -35,13 +35,12 @@ public class UserController {
     @JrpcMethod(HandlerName.user.getCurrent)
     public JsonNode getCurrent(JsonNode params) {
 
-        //noinspection OptionalGetWithoutIsPresent
-        User user = userService.getCurrentUser().get();
+        User user = userService.getCurrentUser();
         return converter.toDtoJson(user);
     }
 
     /**
-     * Save User(insert new or update existing)
+     * Update user data
      * @param params User
      * @return
      */
@@ -49,6 +48,12 @@ public class UserController {
     public JsonNode save(JsonNode params) {
 
         User user = converter.toEntity(params);
+
+        // Check that userDto have same username, mail, phone
+        if(!user.equals(userService.getCurrentUser())) {
+            throw new IllegalArgumentException("Invalid user params. Username, mail, phone should be the same");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userService.save(user);
         return converter.toIdJson(user);
