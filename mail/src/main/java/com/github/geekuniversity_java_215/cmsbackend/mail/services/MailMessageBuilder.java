@@ -3,6 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -13,6 +14,7 @@ import java.net.URI;
 
 
 @Service
+@Slf4j
 public class MailMessageBuilder {
     private TemplateEngine templateEngine;
 
@@ -34,7 +36,6 @@ public class MailMessageBuilder {
     public String buildRegistrationConfirmationEmail(UnconfirmedUser user, URI url) {
         Context context = new Context();
         context.setVariable("user", user.getLastName() + " " + user.getFirstName());
-
         context.setVariable("reg_url", url.toString());
         context.setVariable("user_confirm_mail", "Завершить регистрацию");
         return templateEngine.process("mail/reg_confirmation-mail", context);

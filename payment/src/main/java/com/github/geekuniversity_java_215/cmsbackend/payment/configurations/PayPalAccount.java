@@ -17,5 +17,14 @@ public class PayPalAccount {
     @Value("${paypal.mode}")
     private String mode;
 
+    @Value("${paypal.username}")
+    private String username;
+
+    @Value("${paypal.password}")
+    private String password;
+
+    @Value("${paypal.signature}")
+    private String signature;
+
 
 }

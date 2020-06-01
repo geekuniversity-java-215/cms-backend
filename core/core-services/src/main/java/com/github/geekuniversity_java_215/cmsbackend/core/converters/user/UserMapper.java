@@ -63,7 +63,7 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
 
     protected class EntityConstructor extends Constructor<User, UserDto> {
 
-        private UserRoleService userRoleService;
+        //private UserRoleService userRoleService;
 
         @Override
         public User create(UserDto dto, User entity) {

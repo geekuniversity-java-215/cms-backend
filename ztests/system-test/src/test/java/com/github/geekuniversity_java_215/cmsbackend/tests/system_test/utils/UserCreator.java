@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.configurations.JrpcClientProperties;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.client.ClientRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.courier.CourierRequest;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.manager.ClientManagerRequest;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.manager.CourierManagerRequest;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.manager.UserManagerRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.ConfirmRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.user.UserRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
@@ -29,6 +32,13 @@ public class UserCreator {
     @Autowired
     private JrpcClientProperties defaultProperties;
 
+    @Autowired
+    private UserManagerRequest userManagerRequest;
+    @Autowired
+    private ClientManagerRequest clientManagerRequest;
+    @Autowired
+    private CourierManagerRequest courierManagerRequest;
+
 
     public void createClientUser() throws JsonProcessingException {
 
@@ -46,15 +56,16 @@ public class UserCreator {
         // Use here admin login
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);
 
-        UserDto userDto = userRequest.findByUsername(user.getUsername());
+        UserDto userDto = userManagerRequest.findByUsername(user.getUsername());
         if (userDto == null) {
-            userRequest.save(user);
+            userManagerRequest.save(user);
         }
-        user = userRequest.findByUsername(user.getUsername());
+        // update user (get persisted id)
+        user = userManagerRequest.findByUsername(user.getUsername());
 
-        if (clientRequest.findByUser(user) == null) {
+        if (clientManagerRequest.findByUser(user) == null) {
             ClientDto client = new ClientDto(user, "Client-Client-Client");
-            clientRequest.save(client);
+            clientManagerRequest.save(client);
         }
     }
 
@@ -76,15 +87,16 @@ public class UserCreator {
         // Use here admin login
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);
 
-        UserDto userExists = userRequest.findByUsername(user.getUsername());
+        UserDto userExists = userManagerRequest.findByUsername(user.getUsername());
         if (userExists == null) {
             userRequest.save(user);
         }
-        user = userRequest.findByUsername(user.getUsername());
+        // update user (get persisted id)
+        user = userManagerRequest.findByUsername(user.getUsername());
 
-        if (courierRequest.findByUser(user) == null) {
+        if (courierManagerRequest.findByUser(user) == null) {
             CourierDto courier = new CourierDto(user, "Courier-Courier-Courier");
-            courierRequest.save(courier);
+            courierManagerRequest.save(courier);
         }
     }
 

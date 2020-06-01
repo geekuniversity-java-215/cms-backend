@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.controllers;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
-import com.github.geekuniversity_java_215.cmsbackend.payment.services.PayPalService;
+import com.github.geekuniversity_java_215.cmsbackend.payment.services.PayPalGetPaymentService;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ import static com.github.geekuniversity_java_215.cmsbackend.payment.data.constan
 @Slf4j
 public class PaymentController {
 
-    private final PayPalService payPalService;
+    private final PayPalGetPaymentService payPalGetPaymentService;
     private final UserService userService;
 
     @Autowired
-    public PaymentController(PayPalService payPalService, UserService userService) {
-        this.payPalService = payPalService;
+    public PaymentController(PayPalGetPaymentService payPalGetPaymentService, UserService userService) {
+        this.payPalGetPaymentService = payPalGetPaymentService;
         this.userService = userService;
     }
 
@@ -43,7 +43,7 @@ public class PaymentController {
     private String executePayment(@RequestBody String amount) throws PayPalRESTException {
         User user = userService.getCurrentUser()
             .orElseThrow(() -> new UsernameNotFoundException("User " + UserService.getCurrentUsername() + " not found"));
-        String approvalLink = payPalService.authorizePayment(String.valueOf(user.getId()), Integer.valueOf(amount));
+        String approvalLink = payPalGetPaymentService.authorizePayment(String.valueOf(user.getId()), Integer.valueOf(amount));
         log.info("Ответ запрос на authorize_payment=" + approvalLink);
         return "redirect:" + approvalLink;
     }
@@ -67,7 +67,7 @@ public class PaymentController {
             String result = "";
             log.info("payerId:" + payerId);
             log.info("paymentId:" + paymentId);
-            result = payPalService.executePayment(paymentId, payerId, user);
+            result = payPalGetPaymentService.executePayment(paymentId, payerId, user);
             log.info("result: " + result);
             model.addAttribute("result", result);
         }

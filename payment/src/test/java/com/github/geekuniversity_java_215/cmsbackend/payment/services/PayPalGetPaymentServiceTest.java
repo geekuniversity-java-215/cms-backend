@@ -1,19 +1,24 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
 import com.paypal.base.rest.PayPalRESTException;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 
 @SpringBootTest
 @Slf4j
-class PayPalServiceTest {
+class PayPalGetPaymentServiceTest {
 
     private static String clientId;
     private static Integer tax;
     private final PayPalGetPaymentService payPalGetPaymentService;
+
+    @Autowired
+    private  Environment environment;
 
     @BeforeAll
     public static void beforeAll() {
@@ -22,13 +27,13 @@ class PayPalServiceTest {
     }
 
     @Autowired
-    public PayPalServiceTest(PayPalGetPaymentService payPalGetPaymentService) {
+    public PayPalGetPaymentServiceTest(PayPalGetPaymentService payPalGetPaymentService) {
         this.payPalGetPaymentService = payPalGetPaymentService;
     }
 
     @Test
+    @SneakyThrows
     void authorizePayment() {
-
         try {
             payPalGetPaymentService.authorizePayment(clientId,tax);
         } catch (PayPalRESTException e) {

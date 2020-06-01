@@ -26,7 +26,7 @@ import static com.github.geekuniversity_java_215.cmsbackend.payment.data.constan
 
 @Service
 @Slf4j
-public class PayPalService {
+public class PayPalGetPaymentService {
 
     private final EnvStringBuilder envStringBuilder;
     private final PayPalAccount payPalAccount;
@@ -38,10 +38,10 @@ public class PayPalService {
 
 
     @Autowired
-    public PayPalService(EnvStringBuilder envStringBuilder,
-                         PayPalAccount payPalAccount,
-                         MailService mailService,
-                         AccountService accountService){
+    public PayPalGetPaymentService(EnvStringBuilder envStringBuilder,
+                                   PayPalAccount payPalAccount,
+                                   MailService mailService,
+                                   AccountService accountService){
         this.envStringBuilder = envStringBuilder;
         this.payPalAccount = payPalAccount;
         this.mailService = mailService;

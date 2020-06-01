@@ -22,9 +22,9 @@ public class ClientRequest extends AbstractJrpcRequest {
     }
 
     @SneakyThrows
-    public ClientDto save() {
+    public Long save(ClientDto client) {
         String uri = HandlerName.client.path + "." + HandlerName.client.save;
-        JsonNode response = performJrpcRequest(uri, null);
-        return objectMapper.treeToValue(response, ClientDto.class);
+        JsonNode response = performJrpcRequest(uri, client);
+        return objectMapper.treeToValue(response, Long.class);
     }
 }

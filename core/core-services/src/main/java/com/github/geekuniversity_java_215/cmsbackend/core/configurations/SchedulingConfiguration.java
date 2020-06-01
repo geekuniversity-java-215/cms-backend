@@ -1,13 +1,15 @@
-package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations;
+package com.github.geekuniversity_java_215.cmsbackend.core.configurations;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 @Configuration
-public class SchedulingConfigurerConfiguration implements SchedulingConfigurer {
+@EnableScheduling
+public class SchedulingConfiguration implements SchedulingConfigurer {
 
     // By default all @Scheduled methods share a single thread (of same TaskPool).
     // https://stackoverflow.com/questions/29796651/what-is-the-default-scheduler-pool-size-in-spring-boot
