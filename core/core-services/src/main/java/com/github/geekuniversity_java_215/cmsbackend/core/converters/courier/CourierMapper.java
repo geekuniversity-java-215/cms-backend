@@ -25,7 +25,7 @@ public abstract class CourierMapper extends AbstractMapper<Courier, CourierDto> 
 
     @PostConstruct
     private void postConstruct() {
-        super.setBaseRepoAccessService(courierService);
+        this.baseRepoAccessService = courierService;
         constructor = new EntityConstructor();
     }
 

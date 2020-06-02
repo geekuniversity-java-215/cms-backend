@@ -23,7 +23,7 @@ public abstract class ClientMapper extends AbstractMapper<Client, ClientDto> {
 
     @PostConstruct
     private void postConstruct() {
-        super.setBaseRepoAccessService(clientService);
+        this.baseRepoAccessService = clientService;
         constructor = new EntityConstructor();
     }
 

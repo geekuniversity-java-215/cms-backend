@@ -32,7 +32,7 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
 
     @PostConstruct
     private void postConstruct() {
-        super.setBaseRepoAccessService(orderService);
+        this.baseRepoAccessService = orderService;
         constructor = new EntityConstructor();
     }
 

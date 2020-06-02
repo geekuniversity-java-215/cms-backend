@@ -26,7 +26,7 @@ public abstract class AddressMapper extends AbstractMapper<Address, AddressDto> 
 
     @PostConstruct
     private void postConstruct() {
-        super.setBaseRepoAccessService(addressService);
+        this.baseRepoAccessService = addressService;
         constructor = new EntityConstructor();
     }
 

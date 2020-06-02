@@ -18,13 +18,13 @@ import java.util.function.Supplier;
 
 public abstract class AbstractMapper<E extends AbstractEntity, D extends AbstractDto> {
 
-    private BaseRepoAccessService<E> baseRepoAccessService;
+    protected BaseRepoAccessService<E> baseRepoAccessService;
 
     protected Constructor<E,D> constructor;
 
-    public void setBaseRepoAccessService(BaseRepoAccessService<E> baseRepoAccessService) {
-        this.baseRepoAccessService = baseRepoAccessService;
-    }
+//    public void setBaseRepoAccessService(BaseRepoAccessService<E> baseRepoAccessService) {
+//        this.baseRepoAccessService = baseRepoAccessService;
+//    }
 
 //    /**
 //     * Set id for Entity  //-created, -created

@@ -24,7 +24,7 @@ public abstract class CashFlowMapper extends AbstractMapper<CashFlow, CashFlowDt
 
     @PostConstruct
     private void postConstruct() {
-        super.setBaseRepoAccessService(cashFlowService);
+        this.baseRepoAccessService = cashFlowService;
         constructor = new CashFlowMapper.EntityConstructor();
     }
 

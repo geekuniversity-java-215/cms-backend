@@ -24,7 +24,7 @@ public abstract class UserRoleMapper extends AbstractMapper<UserRole, UserRoleDt
 
     @PostConstruct
     private void postConstruct() {
-        super.setBaseRepoAccessService(userRoleService);
+        this.baseRepoAccessService = userRoleService;
         constructor = new EntityConstructor();
     }
 

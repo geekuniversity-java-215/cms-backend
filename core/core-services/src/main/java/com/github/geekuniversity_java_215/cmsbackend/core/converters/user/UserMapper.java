@@ -34,7 +34,7 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
 
     @PostConstruct
     private void postConstruct() {
-        super.setBaseRepoAccessService(userService);
+        this.baseRepoAccessService = userService;
         constructor = new EntityConstructor();
     }
 
