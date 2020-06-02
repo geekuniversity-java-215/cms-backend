@@ -3,7 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_controller.HttpResponseFactory;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.data.HttpResponseFactory;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.JrpcException;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.request.JrpcRequestHeader;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.response.JrpcErrorCode;
@@ -30,10 +30,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
-import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcController;
-import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethod;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethodHandler;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_controller.HttpResponse;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.data.HttpResponse;
 
 
 

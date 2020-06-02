@@ -65,23 +65,6 @@
             <scope>compile</scope>
         </dependency>
 
-
-        <!--module oauth-utils -->
-        <dependency>
-            <groupId>com.github.geekuniversity_java_215</groupId>
-            <artifactId>jrpc-controller</artifactId>
-            <version>${app.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-
-        <!--
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
-        -->
-
     </dependencies>
 
     <!--

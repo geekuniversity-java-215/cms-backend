@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.jrpc_controller;
+package com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.data;
 
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.JrpcBase;
 import org.springframework.http.HttpStatus;

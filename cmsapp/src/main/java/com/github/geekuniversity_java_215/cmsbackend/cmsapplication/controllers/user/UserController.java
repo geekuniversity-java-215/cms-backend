@@ -2,8 +2,8 @@ package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers
 
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcController;
-import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.JrpcMethod;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;

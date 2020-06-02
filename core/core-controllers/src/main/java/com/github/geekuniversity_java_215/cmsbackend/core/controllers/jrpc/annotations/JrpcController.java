@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc;
+package com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations;
 
 import org.springframework.stereotype.Component;
 
