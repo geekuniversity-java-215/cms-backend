@@ -17,6 +17,13 @@ import java.util.List;
 public class OrderCourierRequest extends AbstractJrpcRequest {
 
     @SneakyThrows
+    public OrderDto findById(long id) {
+        String uri = HandlerName.order.courier.path + "." + HandlerName.order.courier.findById;
+        JsonNode response = performJrpcRequest(uri, id);
+        return objectMapper.treeToValue(response, OrderDto.class);
+    }
+
+    @SneakyThrows
     public List<OrderDto> findAll(OrderSpecDto spec) {
         String uri = HandlerName.order.courier.path + "." + HandlerName.order.courier.findAll;
         JsonNode response = performJrpcRequest(uri, spec);
@@ -28,5 +35,28 @@ public class OrderCourierRequest extends AbstractJrpcRequest {
         String uri = HandlerName.order.courier.path + "." + HandlerName.order.courier.findNew;
         JsonNode response = performJrpcRequest(uri, spec);
         return Arrays.asList(objectMapper.treeToValue(response, OrderDto[].class));
+    }
+
+    @SneakyThrows
+    public Long accept(long id) {
+        String uri = HandlerName.order.courier.path + "." + HandlerName.order.courier.accept;
+        JsonNode response = performJrpcRequest(uri, id);
+        return objectMapper.treeToValue(response, Long.class);
+    }
+
+
+    @SneakyThrows
+    public Long execute(long id) {
+        String uri = HandlerName.order.courier.path + "." + HandlerName.order.courier.execute;
+        JsonNode response = performJrpcRequest(uri, id);
+        return objectMapper.treeToValue(response, Long.class);
+    }
+
+
+    @SneakyThrows
+    public Long complete(long id) {
+        String uri = HandlerName.order.courier.path + "." + HandlerName.order.courier.complete;
+        JsonNode response = performJrpcRequest(uri, id);
+        return objectMapper.treeToValue(response, Long.class);
     }
 }

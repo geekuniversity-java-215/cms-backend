@@ -17,6 +17,14 @@ import java.util.List;
 @Slf4j
 public class OrderClientRequest extends AbstractJrpcRequest {
 
+
+    @SneakyThrows
+    public OrderDto findById(long id) {
+        String uri = HandlerName.order.client.path + "." + HandlerName.order.client.findById;
+        JsonNode response = performJrpcRequest(uri, id);
+        return objectMapper.treeToValue(response, OrderDto.class);
+    }
+
     @SneakyThrows
     public List<OrderDto> findAll(OrderSpecDto spec) {
         String uri = HandlerName.order.client.path + "." + HandlerName.order.client.findAll;
@@ -30,7 +38,4 @@ public class OrderClientRequest extends AbstractJrpcRequest {
         JsonNode response = performJrpcRequest(uri, order);
         return objectMapper.treeToValue(response, Long.class);
     }
-
-
-
 }

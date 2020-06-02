@@ -28,7 +28,15 @@ public class OrderSpecBuilder {
         //final String categoryName = "category";
 
 
-        // BETWEEN
+        // FILTER BY ID
+        if (s.getId() != null) {
+
+            specA = specA.and(
+                (root, query, builder) -> builder.equal(root.get(idName), s.getId()));
+        }
+
+
+        // BETWEEN PRICES
         if (s.getPriceMin() != null && s.getPriceMax() != null) {
 
 //                specA = specA
@@ -76,6 +84,7 @@ public class OrderSpecBuilder {
 //                    //return builder.in(root.get("category.id")).value(p.getCategoryList());
 //                });
 //        }
+
 
         // FILTER BY COURIER
         if (s.getCourier() != null) {

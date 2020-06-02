@@ -44,6 +44,24 @@ public class OrderCourierController {
         this.courierService = courierService;
     }
 
+    // ToDo: перенести логику жизненного цикла Order в сервис
+
+    /**
+     * Get Order by id, only in my orders
+     * @param params Long id
+     * @return
+     */
+    @JrpcMethod(HandlerName.order.courier.findById)
+    public JsonNode findById(JsonNode params) {
+
+        Long id = converter.get(params, Long.class);
+        OrderSpecDto specDto = filterOrderShowOnlyMineSpec(null);
+        specDto.setId(id);
+        Specification<Order> spec =  OrderSpecBuilder.build(specDto);
+        Order order = orderService.findById(id).orElse(null);
+        return converter.toDtoJson(order);
+    }
+
     // Will not show new Orders, only all of mine orders
     @JrpcMethod(HandlerName.order.courier.findAll)
     public JsonNode findAll(JsonNode params) {
@@ -139,20 +157,26 @@ public class OrderCourierController {
 
     private OrderSpecDto filterOrderShowOnlyMine(JsonNode params) {
 
-        OrderSpecDto result;
+        OrderSpecDto specDto;
         AtomicReference<OrderSpecDto> specDtoAtom = new AtomicReference<>();
         converter.toSpecDto(params).ifPresent(specDtoAtom::set);
-        result = specDtoAtom.get();
+        specDto = specDtoAtom.get();
+        return filterOrderShowOnlyMineSpec(specDto);
+    }
 
+    private OrderSpecDto filterOrderShowOnlyMineSpec(OrderSpecDto specDto) {
+        OrderSpecDto result = specDto;
         // assign current courier to OrderSpecDto
         if(result == null) {
             result = new OrderSpecDto();
         }
         CourierDto courierDto = courierConverter.toDto(getCurrentCourier());
         result.setCourier(courierDto);
-
         return result;
     }
+
+
+
 
 
     private OrderSpecDto filterOrderShowOnlyNew(JsonNode params) {

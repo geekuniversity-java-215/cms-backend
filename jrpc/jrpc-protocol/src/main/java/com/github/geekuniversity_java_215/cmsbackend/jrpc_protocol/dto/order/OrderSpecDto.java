@@ -3,6 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -11,10 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class OrderSpecDto {
 
     public enum OrderBy {ASC,DESC}
 
+    private Long id;
     // null - не сортировать
     private OrderBy priceOrderBy;
 

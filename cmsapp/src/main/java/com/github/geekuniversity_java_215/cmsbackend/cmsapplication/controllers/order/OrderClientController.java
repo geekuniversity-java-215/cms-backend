@@ -14,6 +14,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.annotation.Secured;
@@ -41,6 +42,25 @@ public class OrderClientController {
         this.clientConverter = clientConverter;
         this.userService = userService;
         this.clientService = clientService;
+    }
+
+    // ToDo: перенести логику жизненного цикла Order в сервис
+
+
+    /**
+     * Get Order by id, only in my orders
+     * @param params Long id
+     * @return
+     */
+    @JrpcMethod(HandlerName.order.client.findById)
+    public JsonNode findById(JsonNode params) {
+
+        Long id = converter.get(params, Long.class);
+        OrderSpecDto specDto = filterOrderShowOnlyMineSpec(null);
+        specDto.setId(id);
+        Specification<Order> spec =  OrderSpecBuilder.build(specDto);
+        Order order = orderService.findById(id).orElse(null);
+        return converter.toDtoJson(order);
     }
 
 
@@ -78,21 +98,27 @@ public class OrderClientController {
         return result.get();
     }
 
-
     private OrderSpecDto filterOrderShowOnlyMine(JsonNode params) {
 
-        OrderSpecDto result;
+        OrderSpecDto specDto;
         AtomicReference<OrderSpecDto> specDtoAtom = new AtomicReference<>();
         converter.toSpecDto(params).ifPresent(specDtoAtom::set);
-        result = specDtoAtom.get();
+        specDto = specDtoAtom.get();
+        return filterOrderShowOnlyMineSpec(specDto);
+    }
 
-        // assign current client to OrderSpecDto
+    private OrderSpecDto filterOrderShowOnlyMineSpec(OrderSpecDto specDto) {
+        OrderSpecDto result = specDto;
+        // assign current courier to OrderSpecDto
         if(result == null) {
             result = new OrderSpecDto();
         }
         ClientDto clientDto = clientConverter.toDto(getCurrentClient());
         result.setClient(clientDto);
-
         return result;
     }
+
+
+
+
 }

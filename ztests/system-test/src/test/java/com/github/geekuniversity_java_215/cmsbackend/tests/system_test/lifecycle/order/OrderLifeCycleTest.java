@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.Assert;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -58,7 +59,9 @@ public class OrderLifeCycleTest {
         AddressDto from;
         AddressDto to;
         OrderDto order;
+        Long orderId;
 
+        // CLIENT ----------------------------------------------------------------------------------
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.CLIENT);
         ClientDto client = clientRequest.getCurrent();
 
@@ -66,35 +69,48 @@ public class OrderLifeCycleTest {
         from = new AddressDto("Москва", "Улица красных тюленей", 1, 2, 3);
         to = new AddressDto("Мухосранск", "Западная", 2, 2, 5);
 
+        // создаем заказ клиентом
         order = new OrderDto();
         order.setFrom(from);
         order.setTo(to);
         order.setClient(client);
         order.setStatus(OrderStatusDto.NEW);
 
-
+        // сохраняем заказ
         long id = orderClientRequest.save(order);
         log.info("order id: {}", id);
 
+        // смотрим на свой заказ
         List<OrderDto> orderList = orderClientRequest.findAll(null);
         log.info("orderz {}", orderList);
 
-        // =============================================================================================================
+        // COURIER ----------------------------------------------------------------------------------
 
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.COURIER);
 
+        // получаем список новых заказов
         orderList = orderCourierRequest.findNew(null);
         log.info("new orderz {}", orderList);
 
+        Assert.notEmpty(orderList, "orderList == null");
 
-        
+        order = orderList.get(0);
+        Assert.isTrue(order.getStatus() == OrderStatusDto.NEW, "order.status != NEW");
 
+        // берем заказ
+        orderId = orderCourierRequest.accept(order.getId());
+        order = orderCourierRequest.findById(orderId);
+        Assert.isTrue(order.getStatus() == OrderStatusDto.ASSIGNED, "order.status != ASSIGNED");
 
+        // выполняем заказ
+        orderId = orderCourierRequest.execute(order.getId());
+        order = orderCourierRequest.findById(orderId);
+        Assert.isTrue(order.getStatus() == OrderStatusDto.IN_PROGRESS, "order.status != IN_PROGRESS");
 
-
-
-
-
+        // завершаем заказ
+        orderId = orderCourierRequest.complete(order.getId());
+        order = orderCourierRequest.findById(orderId);
+        Assert.isTrue(order.getStatus() == OrderStatusDto.DONE, "order.status != DONE");
 
 //        UserDto user = new UserDto();
 //        user.setUsername("vasya");

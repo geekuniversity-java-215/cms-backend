@@ -16,6 +16,9 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public class ExchangeRate extends AbstractEntity {
 
+    //@Transient - нельзя иначе хибер скажет что изменения только в этом поле
+    // не меняют сущность и не будет вызывать @PreUpdate
+    // - мусорное поле в базе
     @Column(name = "currency_code")
     private CurrencyCode currencyCode;
 
@@ -37,6 +40,7 @@ public class ExchangeRate extends AbstractEntity {
     }
 
     @PrePersist
+    @PreUpdate
     void fillCurrencyCodeValue() {
         if (currencyCode != null) {
             this.currencyCodeValue = currencyCode.getCode();

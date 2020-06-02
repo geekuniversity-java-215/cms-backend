@@ -25,7 +25,9 @@ public class Order extends AbstractEntity {
     @JoinColumn(name="courier_id")
     private Courier courier;
 
-    @Transient
+    //@Transient - нельзя иначе хибер скажет что изменения только в этом поле
+    // не меняют сущность и не будет вызывать @PreUpdate
+    // - мусорное поле в базе
     private OrderStatus status;
 
     //region Transient enum mapping OrderStatus
@@ -34,12 +36,13 @@ public class Order extends AbstractEntity {
     private int statusValue;
 
     @PostLoad
-    void fillCurrencyCode() {
+    void fillStatusCode() {
         this.status = OrderStatus.getById(statusValue);
     }
 
     @PrePersist
-    void fillCurrencyCodeValue() {
+    @PreUpdate
+    void fillStatusCodeValue() {
         if (status != null) {
             this.statusValue = status.getId();
         }
