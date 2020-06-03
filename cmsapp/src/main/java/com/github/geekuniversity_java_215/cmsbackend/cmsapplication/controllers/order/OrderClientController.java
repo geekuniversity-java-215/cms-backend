@@ -100,10 +100,9 @@ public class OrderClientController {
 
     private OrderSpecDto filterOrderShowOnlyMine(JsonNode params) {
 
-        OrderSpecDto specDto;
         AtomicReference<OrderSpecDto> specDtoAtom = new AtomicReference<>();
         converter.toSpecDto(params).ifPresent(specDtoAtom::set);
-        specDto = specDtoAtom.get();
+        OrderSpecDto specDto = specDtoAtom.get();
         return filterOrderShowOnlyMineSpec(specDto);
     }
 
