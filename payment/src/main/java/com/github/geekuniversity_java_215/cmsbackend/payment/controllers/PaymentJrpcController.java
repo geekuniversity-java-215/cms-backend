@@ -17,14 +17,14 @@ import java.util.List;
 
 @JrpcController(HandlerName.payment.path_payment)
 @Slf4j
-public class RequestForFundsController {
+public class PaymentJrpcController {
 
     private final CashFlowConverter cashFlowConverter;
     private final CashFlowService cashFlowService;
     private final UserService userService;
 
     @Autowired
-    public RequestForFundsController(CashFlowConverter cashFlowConverter, CashFlowService cashFlowService, UserService userService) {
+    public PaymentJrpcController(CashFlowConverter cashFlowConverter, CashFlowService cashFlowService, UserService userService) {
         this.cashFlowConverter = cashFlowConverter;
         this.cashFlowService = cashFlowService;
         this.userService = userService;
@@ -33,12 +33,18 @@ public class RequestForFundsController {
     @JrpcMethod(HandlerName.payment.requestForFunds)
     public void requestForFunds(JsonNode params) {
         String[] pair = cashFlowConverter.parseParams(params,2);
-        cashFlowService.addRequestForFunds(userService.getCurrentUser().getId(),
+        cashFlowService.addRequestForFunds(userService.getCurrentUser(),
             new BigDecimal(pair[0]), pair[1], CurrencyCode.codeOf(643));
-        CashFlow cf = cashFlowService.findById(1L).get();
-        log.info("payPalEmail = "+cf.getPayPalEmail());
         List<CashFlow> cfList=cashFlowService.findAllWithEmptyDateSuccess();
         cfList.forEach(cashFlow -> System.out.println(cashFlow.getPayPalEmail()));
+    }
+
+    @JrpcMethod(HandlerName.payment.requestCashFlow)
+    public JsonNode requestCashFlow(JsonNode params){
+        String[] pair = cashFlowConverter.parseParams(params,2);
+        JsonNode jsonNode = null;
+
+        return jsonNode;
     }
 
 }
