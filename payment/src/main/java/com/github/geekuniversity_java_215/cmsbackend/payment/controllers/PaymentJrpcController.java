@@ -7,13 +7,11 @@ import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCod
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.payment.converter.CashFlowConverter;
-import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import com.github.geekuniversity_java_215.cmsbackend.payment.services.CashFlowService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @JrpcController(HandlerName.payment.path_payment)
 @Slf4j
@@ -35,8 +33,8 @@ public class PaymentJrpcController {
         String[] pair = cashFlowConverter.parseParams(params,2);
         cashFlowService.addRequestForFunds(userService.getCurrentUser(),
             new BigDecimal(pair[0]), pair[1], CurrencyCode.codeOf(643));
-        List<CashFlow> cfList=cashFlowService.findAllWithEmptyDateSuccess();
-        cfList.forEach(cashFlow -> System.out.println(cashFlow.getPayPalEmail()));
+//        List<CashFlow> cfList=cashFlowService.findAllWithEmptyDateSuccess();
+//        cfList.forEach(cashFlow -> System.out.println(cashFlow.getPayPalEmail()));
     }
 
     @JrpcMethod(HandlerName.payment.requestCashFlow)
