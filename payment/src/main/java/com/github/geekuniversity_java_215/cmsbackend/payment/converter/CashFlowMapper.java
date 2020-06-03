@@ -3,6 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.converter;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import com.github.geekuniversity_java_215.cmsbackend.payment.services.CashFlowService;
@@ -65,7 +66,7 @@ public abstract class CashFlowMapper extends AbstractMapper<CashFlow, CashFlowDt
                 dto.getTypeOperation(),
                 dto.getAmount(),
                 dto.getPayPalEmail(),
-                dto.getCurrencyCodeType());
+                    CurrencyCode.valueOf(dto.getCurrencyCodeType()));
 
         }
     }

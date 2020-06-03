@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
@@ -7,11 +8,13 @@ import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import com.github.geekuniversity_java_215.cmsbackend.payment.repository.CashFlowRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,18 +35,20 @@ public class CashFlowService extends BaseRepoAccessService<CashFlow> {
         this.userService = userService;
     }
 
-    public CashFlow addRequestForFunds(Long userId, BigDecimal amount, String payPalEmail, String currencyCodeType){
-        Optional<User> user=userService.findById(userId);
-        CashFlow cashFlow =new CashFlow(user.get(),REQUEST,amount,payPalEmail,currencyCodeType);
+    public CashFlow addRequestForFunds(Long userId, BigDecimal amount, String payPalEmail, CurrencyCode currencyCodeType){
+        User user = userService.findById(userId)
+            .orElseThrow(() -> new UsernameNotFoundException("User by id" + userId + " not found"));
+
+        CashFlow cashFlow =new CashFlow(user,REQUEST,amount,payPalEmail,currencyCodeType);
         cashFlowRepository.save(cashFlow);
         checkPayPalEmail(payPalEmail, user);
         log.info("id transaction = "+ cashFlow.getId());
         return cashFlow;
     }
 
-    private void checkPayPalEmail(String payPalEmail, Optional<User> user) {
-        if (user.get().getPayPalEmail()== null){
-            user.get().setPayPalEmail(payPalEmail);
+    private void checkPayPalEmail(String payPalEmail, User user) {
+        if (user.getPayPalEmail()== null){
+            user.setPayPalEmail(payPalEmail);
         }
     }
 
@@ -51,7 +56,10 @@ public class CashFlowService extends BaseRepoAccessService<CashFlow> {
         return cashFlowRepository.findAllWithEmptyDateSuccess();
     }
 
-    public List<Date> findAllDateSuccess() {
+    /*
+    who knows why this method is needed?
+     */
+    public List<Instant> findAllDateSuccess() {
         return cashFlowRepository.findAllDateSuccess();
     }
 }

@@ -79,7 +79,7 @@ public class PayPalMassPaymentsService {
         BasicAmountType basicAmountType;
         List<MassPayRequestItemType> massPayRequestItemTypeList=new ArrayList<>();
         for (CashFlow t: tr){
-            basicAmountType=new BasicAmountType(CurrencyCodeType.fromValue(t.getCurrencyCodeType()), String.valueOf(t.getAmount()));
+            basicAmountType=new BasicAmountType(CurrencyCodeType.fromValue(String.valueOf(t.getCurrencyCodeType())), String.valueOf(t.getAmount()));
             MassPayRequestItemType ms=new MassPayRequestItemType(basicAmountType);
             ms.setReceiverEmail(t.getPayPalEmail());
             ms.setReceiverID(String.valueOf(t.getId()));

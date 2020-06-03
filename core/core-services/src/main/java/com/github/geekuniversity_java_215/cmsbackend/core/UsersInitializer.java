@@ -22,6 +22,7 @@ public class UsersInitializer {
         this.userRoleService = userRoleService;
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public void initUsers() {
 
         User user;

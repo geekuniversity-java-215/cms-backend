@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.entities;
 
 
+import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import lombok.Data;
@@ -11,9 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.Instant;
-import java.util.Calendar;
 
 @Entity
 @Table(name = "cashflow")
@@ -32,7 +31,7 @@ public class CashFlow extends AbstractEntity {
     private BigDecimal amount;
 
     @NotNull
-    private String currencyCodeType;
+    private CurrencyCode currencyCodeType;
 
     @Email
     @NotBlank
@@ -43,7 +42,7 @@ public class CashFlow extends AbstractEntity {
     public CashFlow(){
     }
 
-    public CashFlow(User user, String typeOperation, BigDecimal amount, String payPalEmail, String currencyCodeType) {
+    public CashFlow(User user, String typeOperation, BigDecimal amount, String payPalEmail, CurrencyCode currencyCodeType) {
         this.user=user;
         this.typeOperation=typeOperation;
         this.amount=amount;
