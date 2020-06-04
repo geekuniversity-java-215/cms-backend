@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mvn -DskipTests package
+#mvn -DskipTests package
 
 # auth-server
 java ${POSTGRESQL_PARAMS} -jar auth-server/target/auth-server-0.1.jar & PID1=$(echo $!)
