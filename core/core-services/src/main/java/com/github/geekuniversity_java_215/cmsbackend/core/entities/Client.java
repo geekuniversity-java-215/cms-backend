@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(
@@ -16,7 +17,6 @@ import java.util.List;
     indexes = {@Index(name = "client_user_id_unq", columnList = "user_id", unique = true)
     })
 @Data
-@EqualsAndHashCode(callSuper=true)
 public class Client extends AbstractEntity {
 
     @NotNull
@@ -45,10 +45,23 @@ public class Client extends AbstractEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client)) return false;
+        Client client = (Client) o;
+        return user.equals(client.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user);
+    }
+
+    @Override
     public String toString() {
         return "Client{" +
-                "id=" + id +
-                ", user=" + user +
-                '}';
+            "id=" + id +
+            ", user=" + user +
+            '}';
     }
 }

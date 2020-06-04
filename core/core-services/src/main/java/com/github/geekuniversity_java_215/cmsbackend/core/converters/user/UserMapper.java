@@ -2,24 +2,15 @@ package com.github.geekuniversity_java_215.cmsbackend.core.converters.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.userrole.UserRoleMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserRoleDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.HashSet;
 
 @Mapper(componentModel = "spring",
     unmappedTargetPolicy = ReportingPolicy.ERROR,

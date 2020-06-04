@@ -8,7 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import org.springframework.security.access.annotation.Secured;
 
@@ -38,7 +38,7 @@ public class ClientController {
     @Secured(UserRole.CLIENT)
     public JsonNode getCurrent(JsonNode params) {
 
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrent();
         Client client = clientService.findOneByUser(user).orElse(null);
         return converter.toDtoJson(client);
     }

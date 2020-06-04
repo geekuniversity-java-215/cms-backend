@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.data.HttpResponseFactory;
+import com.github.geekuniversity_java_215.cmsbackend.core.exceptions.InvalidLogicException;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.JrpcException;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.request.JrpcRequestHeader;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.response.JrpcErrorCode;
@@ -168,6 +169,19 @@ public class ApiController {
         catch (ValidationException e) {
             log.error("Param validation violation: " + e.getMessage(), e);
             JrpcException ex = new JrpcException("Param validation violation", JrpcErrorCode.INVALID_PARAMS, e);
+            httpResponse = HttpResponseFactory.getError(ex);
+        }
+        // hand-made param check
+        catch (IllegalArgumentException e) {
+            log.error("Illegal param: " + e.getMessage(), e);
+            JrpcException ex = new JrpcException("Illegal param", JrpcErrorCode.INVALID_PARAMS, e);
+            httpResponse = HttpResponseFactory.getError(ex);
+        }
+
+        // params logic violation
+        catch (InvalidLogicException e) {
+            log.error("Logic violation: " + e.getMessage(), e);
+            JrpcException ex = new JrpcException("Logic violation", JrpcErrorCode.INVALID_PARAMS, e);
             httpResponse = HttpResponseFactory.getError(ex);
         }
 

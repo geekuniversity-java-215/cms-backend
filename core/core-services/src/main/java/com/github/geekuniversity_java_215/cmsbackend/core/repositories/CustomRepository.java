@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 
 @NoRepositoryBean
+@Transactional
 public interface CustomRepository<T, ID extends Serializable> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
 
     @Transactional
@@ -15,4 +16,7 @@ public interface CustomRepository<T, ID extends Serializable> extends JpaReposit
 
     @Transactional
     void merge(T t);
+
+    @Transactional
+    void detach(T t);
 }

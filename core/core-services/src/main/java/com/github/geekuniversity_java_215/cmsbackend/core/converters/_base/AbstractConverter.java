@@ -60,7 +60,7 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
             //if(Number.class.isAssignableFrom(clazz))
         }
         catch (JsonProcessingException e) {
-            throw new ParseException(0, "Id parse error", e);
+            throw new ParseException(0, "Param parse error", e);
         }
         return result;
     }
@@ -236,11 +236,11 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
 
 
     // (Spec)Json => Dto (Specifications have no Entities)
-    public Optional<S> toSpecDto(JsonNode params) {
+    public S toSpecDto(JsonNode params) {
 
         try {
-            Optional<S> result = Optional.ofNullable(objectMapper.treeToValue(params, specClass));
-            result.ifPresent(this::validateSpecDto);
+            S result = objectMapper.treeToValue(params, specClass);
+            validateSpecDto(result);
             return result;
         }
         catch (ValidationException e) {
@@ -267,11 +267,13 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
 
     // check SpecDto validity
     private void validateSpecDto(S specDto) {
-        Set<ConstraintViolation<S>> violations = validator.validate(specDto);
-        if (violations.size() != 0) {
-            throw new ConstraintViolationException("Specification validation failed", violations);
-        }
 
+        if (specDto != null) {
+            Set<ConstraintViolation<S>> violations = validator.validate(specDto);
+            if (violations.size() != 0) {
+                throw new ConstraintViolationException("Specification validation failed", violations);
+            }
+        }
     }
 
 }

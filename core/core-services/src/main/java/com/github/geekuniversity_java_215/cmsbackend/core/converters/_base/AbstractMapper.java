@@ -36,8 +36,9 @@ public abstract class AbstractMapper<E extends AbstractEntity, D extends Abstrac
 //    }
 
     /**
-     * Merge Entity converted from DTO to entity loaded from database, exclude null fields
-     * @param converted
+     * Merge Entity converted from DTO to entity loaded from database, exclude null fiel
+     * @param source
+     * @param target
      * @return
      */
     public E merge(D source, E target) {

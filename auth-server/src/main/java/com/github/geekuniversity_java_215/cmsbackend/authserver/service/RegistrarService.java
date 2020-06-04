@@ -6,8 +6,8 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.Unconfir
 import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.services.JwtTokenService;

@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services.base;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.CustomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,16 @@ public abstract class BaseRepoAccessService<T> {
 
     public Optional<T> findById(Long id) {
         return baseRepository.findById(id);
+    }
+
+
+    public T findByIdOrError(Long id) {
+        return baseRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Entity by id: " + id + " not found"));
+    }
+
+    public Optional<T> findOne(Specification<T> spec) {
+        return baseRepository.findOne(spec);
     }
 
     public List<T> findAllById(List<Long> listId) {

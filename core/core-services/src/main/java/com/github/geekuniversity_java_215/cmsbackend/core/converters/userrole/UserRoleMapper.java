@@ -3,11 +3,8 @@ package com.github.geekuniversity_java_215.cmsbackend.core.converters.userrole;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserRoleDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;

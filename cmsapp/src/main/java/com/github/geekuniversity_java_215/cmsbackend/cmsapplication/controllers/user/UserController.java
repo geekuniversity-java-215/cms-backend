@@ -7,7 +7,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annot
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +35,7 @@ public class UserController {
     @JrpcMethod(HandlerName.user.getCurrent)
     public JsonNode getCurrent(JsonNode params) {
 
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrent();
         return converter.toDtoJson(user);
     }
 
@@ -50,7 +50,7 @@ public class UserController {
         User user = converter.toEntity(params);
 
         // Check that userDto have same username, mail, phone
-        if(!user.equals(userService.getCurrentUser())) {
+        if(!user.equals(userService.getCurrent())) {
             throw new IllegalArgumentException("Invalid user params. Username, mail, phone should be the same");
         }
 

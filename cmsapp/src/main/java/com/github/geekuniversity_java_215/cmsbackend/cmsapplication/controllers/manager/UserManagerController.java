@@ -7,7 +7,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annot
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.user.UserSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserSpecDto;
@@ -82,8 +82,8 @@ public class UserManagerController {
     @JrpcMethod(HandlerName.manager.user.findAll)
     public JsonNode findAll(JsonNode params) {
 
-        Optional<UserSpecDto> specDto = converter.toSpecDto(params);
-        Specification<User> spec =  UserSpecBuilder.build(specDto.orElse(null));
+        UserSpecDto specDto = converter.toSpecDto(params);
+        Specification<User> spec =  UserSpecBuilder.build(specDto);
         return converter.toDtoListJson(userService.findAll(spec));
     }
 
@@ -98,9 +98,9 @@ public class UserManagerController {
     @JrpcMethod(HandlerName.manager.user.findFirst)
     public JsonNode findFirst(JsonNode params) {
 
-        Optional<UserSpecDto> specDto = converter.toSpecDto(params);
-        Specification<User> spec = UserSpecBuilder.build(specDto.orElse(null));
-        int limit = specDto.map(UserSpecDto::getLimit).orElse(1);
+        UserSpecDto specDto = converter.toSpecDto(params);
+        int limit = specDto != null ? specDto.getLimit() : 1;
+        Specification<User> spec = UserSpecBuilder.build(specDto);
         Page<User> page = userService.findAll(spec, PageRequest.of(0, limit));
         return converter.toDtoListJson(page.toList());
     }

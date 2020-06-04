@@ -1,12 +1,11 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.controllers;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.payment.services.PayPalGetPaymentService;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +40,7 @@ public class PaymentController {
 
     @PostMapping(CONTROLLER_EXECUTE_PAYMENT_PATH)
     private String executePayment(@RequestBody String amount) throws PayPalRESTException {
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrent();
         String approvalLink = payPalGetPaymentService.authorizePayment(String.valueOf(user.getId()), Integer.valueOf(amount));
         log.info("Ответ запрос на authorize_payment=" + approvalLink);
         return "redirect:" + approvalLink;
@@ -59,7 +58,7 @@ public class PaymentController {
                           @PathVariable Long clientId,
                           Model model) throws PayPalRESTException {
 
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrent();
 
         if (user.getId().equals(clientId)) {
             String result = "";

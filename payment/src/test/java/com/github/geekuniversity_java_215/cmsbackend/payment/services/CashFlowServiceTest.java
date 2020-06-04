@@ -1,7 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;

@@ -8,7 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import org.springframework.security.access.annotation.Secured;
 
@@ -36,7 +36,7 @@ public class CourierController {
     @Secured(UserRole.COURIER)
     public JsonNode getCurrent(JsonNode params) {
 
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrent();
         Courier client = courierService.findOneByUser(user).orElse(null);
         return converter.toDtoJson(client);
     }

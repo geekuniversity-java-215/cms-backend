@@ -3,16 +3,13 @@ package com.github.geekuniversity_java_215.cmsbackend.chat.basic;
 import com.github.geekuniversity_java_215.cmsbackend.chat.ChatApplication;
 import com.github.geekuniversity_java_215.cmsbackend.chat.entities.ChatMessage;
 import com.github.geekuniversity_java_215.cmsbackend.chat.services.MessageService;
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 

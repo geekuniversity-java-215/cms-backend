@@ -5,8 +5,8 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.Order
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AddressService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

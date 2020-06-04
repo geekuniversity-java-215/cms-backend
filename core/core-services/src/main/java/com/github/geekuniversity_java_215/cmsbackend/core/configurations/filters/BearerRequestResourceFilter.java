@@ -3,7 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.configurations.filter
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.services.JwtTokenService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;

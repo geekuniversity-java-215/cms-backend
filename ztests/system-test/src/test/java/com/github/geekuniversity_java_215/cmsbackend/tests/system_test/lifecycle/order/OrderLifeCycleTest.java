@@ -10,22 +10,17 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registr
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.oauth.OauthTestRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.RegistrarRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.user.UserRequest;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.Account.AccountDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.address.AddressDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderStatusDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import com.github.geekuniversity_java_215.cmsbackend.tests.system_test.configurations.SystemTestSpringConfiguration;
-import com.github.geekuniversity_java_215.cmsbackend.utils.SpringBeanUtilsEx;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.List;
 
 @SpringBootTest
@@ -105,12 +100,12 @@ public class OrderLifeCycleTest {
         // выполняем заказ
         orderId = orderCourierRequest.execute(order.getId());
         order = orderCourierRequest.findById(orderId);
-        Assert.isTrue(order.getStatus() == OrderStatusDto.IN_PROGRESS, "order.status != IN_PROGRESS");
+        Assert.isTrue(order.getStatus() == OrderStatusDto.TRANSIT, "order.status != IN_PROGRESS");
 
         // завершаем заказ
         orderId = orderCourierRequest.complete(order.getId());
         order = orderCourierRequest.findById(orderId);
-        Assert.isTrue(order.getStatus() == OrderStatusDto.DONE, "order.status != DONE");
+        Assert.isTrue(order.getStatus() == OrderStatusDto.COMPLETED, "order.status != DONE");
 
 //        UserDto user = new UserDto();
 //        user.setUsername("vasya");

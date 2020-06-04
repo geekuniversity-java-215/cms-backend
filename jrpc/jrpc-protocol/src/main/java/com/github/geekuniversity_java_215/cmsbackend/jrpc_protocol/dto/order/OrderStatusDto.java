@@ -11,13 +11,14 @@ import java.util.Map;
 //@ToString(exclude = "inWork")
 public enum OrderStatusDto {
 
-    NULL(-1), // kludge
-    NEW(0),
-    ASSIGNED(1),
-    IN_PROGRESS(2),
-    CANCEL(3),
-    IN_MODERATION(4),
-    DONE(5);
+    NULL(0), // kludge
+    NEW(1),
+    ASSIGNED(2),
+    TRANSIT(3),
+    CANCELLED(4),
+    MODERATION(5),
+    COMPLETED(6),
+    CLOSED(7);
 
     private final static Map<Integer, OrderStatusDto> ENUM_MAP = new HashMap<>();
 

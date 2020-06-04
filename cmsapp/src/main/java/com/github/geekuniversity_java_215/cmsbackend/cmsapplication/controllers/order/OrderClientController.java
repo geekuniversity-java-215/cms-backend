@@ -3,23 +3,14 @@ package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
-import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderClientService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.annotation.Secured;
-
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.List;
 
 
 @JrpcController(HandlerName.order.client.path)
@@ -27,25 +18,14 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OrderClientController {
 
 
-    private final OrderService orderService;
+
     private final OrderConverter converter;
-    private final ClientConverter clientConverter;
+    private final OrderClientService orderClientService;
 
-    private final UserService userService;
-    private final ClientService clientService;
-
-    public OrderClientController(OrderService orderService, OrderConverter converter,
-                                 ClientConverter clientConverter, UserService userService,
-                                 ClientService clientService) {
-        this.orderService = orderService;
+    public OrderClientController(OrderConverter converter, OrderClientService orderClientService) {
         this.converter = converter;
-        this.clientConverter = clientConverter;
-        this.userService = userService;
-        this.clientService = clientService;
+        this.orderClientService = orderClientService;
     }
-
-    // ToDo: перенести логику жизненного цикла Order в сервис
-
 
     /**
      * Get Order by id, only in my orders
@@ -56,10 +36,7 @@ public class OrderClientController {
     public JsonNode findById(JsonNode params) {
 
         Long id = converter.get(params, Long.class);
-        OrderSpecDto specDto = filterOrderShowOnlyMineSpec(null);
-        specDto.setId(id);
-        Specification<Order> spec =  OrderSpecBuilder.build(specDto);
-        Order order = orderService.findById(id).orElse(null);
+        Order order = orderClientService.findById(id).orElse(null);
         return converter.toDtoJson(order);
     }
 
@@ -68,56 +45,33 @@ public class OrderClientController {
     @JrpcMethod(HandlerName.order.client.findAll)
     public JsonNode findAll(JsonNode params) {
 
-        OrderSpecDto specDto = filterOrderShowOnlyMine(params);
-        Specification<Order> spec =  OrderSpecBuilder.build(specDto);
-        return converter.toDtoListJson(orderService.findAll(spec));
+        OrderSpecDto specDto = converter.toSpecDto(params);
+        List<Order> orderList =  orderClientService.findAll(specDto);
+        return converter.toDtoListJson(orderList);
     }
 
 
     // ToDo: если клиент нажмет кнопку сохранить еще раз - затрет существующий заказ
-    //  Фиксить пересохранение существующего заказа
+    //  Фиксить пересохранение существующего заказа - может не разрешать это делать
     @JrpcMethod(HandlerName.order.client.save)
     public JsonNode save(JsonNode params) {
 
         Order order = converter.toEntity(params);
-        order.setClient(getCurrentClient());
-        order = orderService.save(order);
+        order = orderClientService.save(order);
+        return converter.toIdJson(order);
+    }
+
+
+    @JrpcMethod(HandlerName.order.client.cancel)
+    public JsonNode cancel(JsonNode params) {
+
+        Long id = converter.get(params, Long.class);
+        Order order = orderClientService.cancel(id);
         return converter.toIdJson(order);
     }
 
 
     // ==================================================================================
-
-
-
-
-    private Client getCurrentClient() {
-
-        AtomicReference<Client> result = new AtomicReference<>();
-        clientService.findOneByUser(userService.getCurrentUser()).ifPresent(result::set);
-        return result.get();
-    }
-
-    private OrderSpecDto filterOrderShowOnlyMine(JsonNode params) {
-
-        AtomicReference<OrderSpecDto> specDtoAtom = new AtomicReference<>();
-        converter.toSpecDto(params).ifPresent(specDtoAtom::set);
-        OrderSpecDto specDto = specDtoAtom.get();
-        return filterOrderShowOnlyMineSpec(specDto);
-    }
-
-    private OrderSpecDto filterOrderShowOnlyMineSpec(OrderSpecDto specDto) {
-        OrderSpecDto result = specDto;
-        // assign current courier to OrderSpecDto
-        if(result == null) {
-            result = new OrderSpecDto();
-        }
-        ClientDto clientDto = clientConverter.toDto(getCurrentClient());
-        result.setClient(clientDto);
-        return result;
-    }
-
-
 
 
 }

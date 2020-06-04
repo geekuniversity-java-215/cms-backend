@@ -32,11 +32,16 @@ public class HandlerName {
     //private static final String makeClient = "makeClient";
     //private static final String makeCourier = "makeCourier";
 
+    // order specific
+    private static final String cancel = "cancel";
+    private static final String close = "close";
+
+
     // order courier specific
     public static final String findNew = "findNew";
     public static final String accept = "accept";
     public static final String execute = "execute";
-    public static final String complete = "complete";
+    private static final String complete = "complete";
 
     //payment
     public static final String requestForFunds="requestForFunds";
@@ -101,7 +106,7 @@ public class HandlerName {
             public static final String accept = HandlerName.accept;
             public static final String execute = HandlerName.execute;
             public static final String complete = HandlerName.complete;
-
+            public static final String close = HandlerName.close;
         }
 
         public static class client {
@@ -112,8 +117,8 @@ public class HandlerName {
             public static final String findAll = HandlerName.findAll;
             public static final String findFirst = HandlerName.findFirst;
             public static final String save = HandlerName.save;
+            public static final String cancel = HandlerName.cancel;
             public static final String delete = HandlerName.delete;
-
         }
     }
 

@@ -6,15 +6,14 @@ import com.github.geekuniversity_java_215.cmsbackend.chat.services.MessageServic
 import com.github.geekuniversity_java_215.cmsbackend.chat.utils.MessageMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 
@@ -40,7 +39,7 @@ public class ChatMessageController {
     public void sendMessage(@Payload ChatMessageDto messageLite,
                             @DestinationVariable Long orderId) {
 
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrent();
 
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));
@@ -54,7 +53,7 @@ public class ChatMessageController {
                         @DestinationVariable Long orderId,
                         SimpMessageHeaderAccessor headerAccessor) {
 
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrent();
 
         Order order = orderService.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order " + orderId + " not found"));

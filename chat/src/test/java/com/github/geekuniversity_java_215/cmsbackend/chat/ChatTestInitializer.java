@@ -4,6 +4,8 @@ import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -47,7 +49,7 @@ public class ChatTestInitializer implements ApplicationRunner {
         Order order = new Order();
         order.setClient(client);
         order.setCourier(courier);
-        order.setStatus(OrderStatus.IN_PROGRESS);
+        order.setStatus(OrderStatus.TRANSIT);
         orderService.save(order);
     }
 }

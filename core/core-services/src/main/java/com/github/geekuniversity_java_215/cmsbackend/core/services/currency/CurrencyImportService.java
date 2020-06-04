@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.services;
+package com.github.geekuniversity_java_215.cmsbackend.core.services.currency;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.currencyconverter.ValCurs;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.currencyconverter.Valute;

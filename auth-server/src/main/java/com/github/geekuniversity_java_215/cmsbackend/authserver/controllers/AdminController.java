@@ -5,7 +5,7 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.a
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +35,7 @@ public class AdminController {
     @Secured(UserRole.ADMIN)
 	public ResponseEntity<String> test() {
 
-        System.out.println(userService.getCurrentUser());
+        System.out.println(userService.getCurrent());
         System.out.println(UserService.getCurrentUsername());
 
         return  ResponseEntity.ok("hello world");

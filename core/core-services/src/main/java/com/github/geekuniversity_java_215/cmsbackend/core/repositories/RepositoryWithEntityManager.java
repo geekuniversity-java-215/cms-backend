@@ -42,6 +42,12 @@ public class RepositoryWithEntityManager<T, ID extends Serializable> extends Sim
         entityManager.merge(t);
     }
 
+    @Override
+    public void detach(T t) {
+        entityManager.detach(t);
+    }
+
+
 }
 
 

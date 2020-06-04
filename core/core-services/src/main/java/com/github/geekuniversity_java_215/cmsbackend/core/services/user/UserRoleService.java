@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.services;
+package com.github.geekuniversity_java_215.cmsbackend.core.services.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRoleRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;

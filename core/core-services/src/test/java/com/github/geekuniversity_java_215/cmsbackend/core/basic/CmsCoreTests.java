@@ -8,6 +8,8 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +88,7 @@ class CmsCoreTests {
         Order o = new Order();
         o.setCourier(courier);
         o.setClient(client);
-        o.setStatus(OrderStatus.IN_PROGRESS);
+        o.setStatus(OrderStatus.TRANSIT);
         o = orderService.save(o);
         log.info("order: {}", o);
 

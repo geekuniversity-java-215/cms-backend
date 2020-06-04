@@ -1,17 +1,13 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.user;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserRoleService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Set;
 
 @Component
 @Slf4j

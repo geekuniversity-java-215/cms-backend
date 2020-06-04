@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import net.tascalate.concurrent.Promise;
 import org.junit.jupiter.api.Test;

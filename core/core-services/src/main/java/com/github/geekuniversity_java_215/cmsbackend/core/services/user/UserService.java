@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.services;
+package com.github.geekuniversity_java_215.cmsbackend.core.services.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRepository;
@@ -76,7 +76,7 @@ public class UserService extends BaseRepoAccessService<User> {
      * Get current authenticated user
      * @return User
      */
-    public User getCurrentUser() {
+    public User getCurrent() {
         //noinspection OptionalGetWithoutIsPresent
         return findByUsername(getCurrentUsername()).get();
     }

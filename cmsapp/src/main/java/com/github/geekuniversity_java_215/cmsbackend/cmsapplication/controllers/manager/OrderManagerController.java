@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.OrderService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
@@ -67,8 +67,8 @@ public class OrderManagerController {
     @JrpcMethod(HandlerName.manager.order.findAll)
     public JsonNode findAll(JsonNode params) {
 
-        Optional<OrderSpecDto> specDto = converter.toSpecDto(params);
-        Specification<Order> spec =  OrderSpecBuilder.build(specDto.orElse(null));
+        OrderSpecDto specDto = converter.toSpecDto(params);
+        Specification<Order> spec =  OrderSpecBuilder.build(specDto);
         return converter.toDtoListJson(orderService.findAll(spec));
     }
 
@@ -87,9 +87,9 @@ public class OrderManagerController {
     @JrpcMethod(HandlerName.manager.order.findFirst)
     public JsonNode findFirst(JsonNode params) {
 
-        Optional<OrderSpecDto> specDto = converter.toSpecDto(params);
-        Specification<Order> spec = OrderSpecBuilder.build(specDto.orElse(null));
-        int limit = specDto.map(OrderSpecDto::getLimit).orElse(1);
+        OrderSpecDto specDto = converter.toSpecDto(params);
+        int limit = specDto != null ? specDto.getLimit() : 1;
+        Specification<Order> spec = OrderSpecBuilder.build(specDto);
         Page<Order> page = orderService.findAll(spec, PageRequest.of(0, limit));
         return converter.toDtoListJson(page.toList());
     }

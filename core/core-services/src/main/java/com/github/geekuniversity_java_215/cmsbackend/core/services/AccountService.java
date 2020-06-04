@@ -6,6 +6,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepo
 import com.github.geekuniversity_java_215.cmsbackend.core.aop.LogExecutionTime;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.currency.CurrencyConverterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

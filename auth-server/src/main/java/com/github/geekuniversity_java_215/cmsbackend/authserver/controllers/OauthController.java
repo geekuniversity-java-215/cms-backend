@@ -6,7 +6,7 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.a
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.BlackListResponse;
 import lombok.extern.slf4j.Slf4j;
