@@ -38,6 +38,8 @@ public class RequestForFundsController {
             new BigDecimal(pair[0]), pair[1], CurrencyCode.RUB);
     }
 
+
+
     //НЕ РАБОТАЕТ ССУКА
     @JrpcMethod(HandlerName.payment.requestForCashFlows)
     public JsonNode requestForCashFlows(JsonNode params){

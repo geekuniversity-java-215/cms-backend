@@ -5,6 +5,7 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.client.
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.payment.CashFlowRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.user.UserRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowRequestDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import com.github.geekuniversity_java_215.cmsbackend.tests.system_test.configurations.SystemTestSpringConfiguration;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class CashFlowLifeCycleTest {
     private CashFlowRequest cashFlowRequest;
 
     private CashFlowDto cashFlow;
+    private CashFlowRequestDto cashFlowRequestDto;
 
     @Autowired
     public CashFlowLifeCycleTest(SystemTestSpringConfiguration userConfig, ClientRequest clientRequest, UserRequest userRequest, CashFlowRequest cashFlowRequest) {
@@ -41,16 +43,11 @@ public class CashFlowLifeCycleTest {
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.CLIENT);
         UserDto user=userRequest.getCurrent();
 
+        cashFlowRequestDto=new CashFlowRequestDto();
+        cashFlowRequestDto.setAmount(new BigDecimal(100));
+        cashFlowRequestDto.setPayPalEmail("1@1.ru");
 
-
-        cashFlow=new CashFlowDto();
-        cashFlow.setAmount(new BigDecimal(100));
-        cashFlow.setPayPalEmail("1@1.ru");
-        cashFlow.setUser(user);
-        cashFlow.setId(22L);
-        //cashFlow.setId(22L);
-
-        Long id=cashFlowRequest.save(cashFlow);
+        Long id=cashFlowRequest.save(cashFlowRequestDto);
         log.info("CashFlow id="+id);
 
         List<CashFlowDto> cashFlowDtoList= cashFlowRequest.findAll(null);

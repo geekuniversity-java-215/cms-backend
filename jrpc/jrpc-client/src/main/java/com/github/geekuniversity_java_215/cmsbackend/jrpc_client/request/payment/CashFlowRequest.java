@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.base.AbstractJrpcRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowRequestDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowSpecDto;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ public class CashFlowRequest extends AbstractJrpcRequest {
     }
 
     @SneakyThrows
-    public Long save(CashFlowDto cashFlow) {
+    public Long save(CashFlowRequestDto cashFlow) {
         String uri = HandlerName.payment.path + "." +HandlerName.payment.requestForFunds;
         JsonNode response = performJrpcRequest(uri, cashFlow);
         return objectMapper.treeToValue(response, Long.class);
