@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order;
 
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class OrderSpecDto {
+public class OrderSpecDto extends AbstractSpecDto {
 
     public enum OrderBy {ASC,DESC}
 

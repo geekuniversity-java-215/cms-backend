@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
@@ -21,7 +22,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service
-public abstract class AbstractConverter<E extends AbstractEntity, D extends AbstractDto, S> {
+public abstract class AbstractConverter<E extends AbstractEntity, D extends AbstractDto, S extends AbstractSpecDto> {
 
     private  Validator validator;
     protected ObjectMapper objectMapper;
