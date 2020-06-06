@@ -17,9 +17,17 @@ import java.util.List;
 public class CashFlowRequest extends AbstractJrpcRequest {
 
     @SneakyThrows
-    public List<CashFlowDto> findByUserAndDate(CashFlowSpecDto spec) {
+    public List<CashFlowDto> findAll(CashFlowSpecDto spec) {
         String uri = HandlerName.payment.path + "." +HandlerName.payment.requestForCashFlows;
         JsonNode response = performJrpcRequest(uri, spec);
         return Arrays.asList(objectMapper.treeToValue(response, CashFlowDto[].class));
     }
+
+    @SneakyThrows
+    public Long save(CashFlowDto cashFlow) {
+        String uri = HandlerName.payment.path + "." +HandlerName.payment.requestForFunds;
+        JsonNode response = performJrpcRequest(uri, cashFlow);
+        return objectMapper.treeToValue(response, Long.class);
+    }
 }
+

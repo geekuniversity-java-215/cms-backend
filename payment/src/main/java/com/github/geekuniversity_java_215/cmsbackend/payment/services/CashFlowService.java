@@ -7,10 +7,8 @@ import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserServ
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import com.github.geekuniversity_java_215.cmsbackend.payment.repository.CashFlowRepository;
-import com.github.geekuniversity_java_215.cmsbackend.payment.specification.CashFlowSpecBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,10 +54,11 @@ public class CashFlowService extends BaseRepoAccessService<CashFlow> {
         return cashFlowRepository.findAllWithEmptyDateSuccess();
     }
 
-    public List<CashFlow> findByUserAndDate(CashFlowSpecDto specDto) {
+    public List<CashFlow> findAll(CashFlowSpecDto specDto) {
+        log.info("findByUserAndDate specDto.getUser_id = "+specDto.getUser_id());
         specDto=filterCashFlowByUserAndDate(specDto);
-        Specification<CashFlow> spec = CashFlowSpecBuilder.build(specDto);
-        return cashFlowRepository.findAll(spec);
+        //CashFlowSpecBuilder spec=cashFlowSpecBuilder.build(specDto);
+        return null;//cashFlowRepository.findAll(cashFlowSpecBuilder.build(specDto));
     }
 
     private CashFlowSpecDto filterCashFlowByUserAndDate(CashFlowSpecDto specDto) {

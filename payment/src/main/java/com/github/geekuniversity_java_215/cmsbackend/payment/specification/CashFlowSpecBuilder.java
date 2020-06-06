@@ -26,6 +26,11 @@ public class CashFlowSpecBuilder {
                     .and((root, query, builder) ->builder.lessThanOrEqualTo(root.get(userId), s.getUser_id()));
         }
 
+        if (s.getStartDate()==null && s.getEndDate()==null){
+            specOut=specOut
+                    .and((root, query, builder) ->builder.lessThanOrEqualTo(root.get(userId), s.getUser_id()));
+        }
+
         return specOut;
     }
 

@@ -27,17 +27,17 @@ public class CashFlowConverter extends AbstractConverter<CashFlow, CashFlowDto, 
         this.specClass = CashFlowSpecDto.class;
     }
 
-      public String[] parseParams(JsonNode params, Integer countParams) {
+      public String[] doubleParams(JsonNode params) {
         String[] result;
 
         try {
             result = objectMapper.treeToValue(params, String[].class);
             // validate
-            if (result == null || result.length != countParams) {
+            if (result == null || result.length != 2) {
                 throw new ValidationException("Wrong arguments count");
             }
 
-            for (int i = 0; i < countParams; i++) {
+            for (int i = 0; i < 2; i++) {
                 if (result[i] == null ) {
                     throw new ValidationException(i + "st argument validation failed");
                 }

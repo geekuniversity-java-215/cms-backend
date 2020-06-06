@@ -33,17 +33,18 @@ public class RequestForFundsController {
 
     @JrpcMethod(HandlerName.payment.requestForFunds)
     public void requestForFunds(JsonNode params) {
-        String[] pair = cashFlowConverter.parseParams(params,2);
+        String[] pair = cashFlowConverter.doubleParams(params);
         cashFlowService.addRequestForFunds(userService.getCurrent().getId(),
             new BigDecimal(pair[0]), pair[1], CurrencyCode.RUB);
     }
 
+    //НЕ РАБОТАЕТ ССУКА
     @JrpcMethod(HandlerName.payment.requestForCashFlows)
     public JsonNode requestForCashFlows(JsonNode params){
         //String[] pair=cashFlowConverter.parseParams(params,2);
         CashFlowSpecDto specDto=cashFlowConverter.toSpecDto(params);
         log.info("CashFlowSpecDto = "+specDto.toString());
-        List<CashFlow> cashFlowList=cashFlowService.findByUserAndDate(specDto);
+        List<CashFlow> cashFlowList=cashFlowService.findAll(specDto);
         return null;
     }
 
