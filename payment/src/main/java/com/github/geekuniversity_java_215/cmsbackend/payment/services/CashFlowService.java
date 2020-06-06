@@ -2,18 +2,20 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import com.github.geekuniversity_java_215.cmsbackend.payment.repository.CashFlowRepository;
+import com.github.geekuniversity_java_215.cmsbackend.payment.specification.CashFlowSpecBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -54,10 +56,18 @@ public class CashFlowService extends BaseRepoAccessService<CashFlow> {
         return cashFlowRepository.findAllWithEmptyDateSuccess();
     }
 
-    /*
-    who knows why this method is needed?
-     */
-    public List<Instant> findAllDateSuccess() {
-        return cashFlowRepository.findAllDateSuccess();
+    public List<CashFlow> findByUserAndDate(CashFlowSpecDto specDto) {
+        specDto=filterCashFlowByUserAndDate(specDto);
+        Specification<CashFlow> spec = CashFlowSpecBuilder.build(specDto);
+        return cashFlowRepository.findAll(spec);
+    }
+
+    private CashFlowSpecDto filterCashFlowByUserAndDate(CashFlowSpecDto specDto) {
+        CashFlowSpecDto result=specDto;
+        if(result==null){
+            result=new CashFlowSpecDto();
+        }
+        result.setUser_id(userService.getCurrent().getId());
+        return result;
     }
 }

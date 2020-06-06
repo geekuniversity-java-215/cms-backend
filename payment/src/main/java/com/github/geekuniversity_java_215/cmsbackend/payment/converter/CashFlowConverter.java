@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractConverter;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import javax.validation.ValidationException;
 
 @Component
 @Slf4j
-public class CashFlowConverter extends AbstractConverter<CashFlow, CashFlowDto, Void> {
+public class CashFlowConverter extends AbstractConverter<CashFlow, CashFlowDto, CashFlowSpecDto> {
 
     @Autowired
     public CashFlowConverter(CashFlowMapper transactionMapper, ObjectMapper mapper) {
@@ -23,7 +24,7 @@ public class CashFlowConverter extends AbstractConverter<CashFlow, CashFlowDto, 
 
         this.entityClass = CashFlow.class;
         this.dtoClass = CashFlowDto.class;
-        this.specClass = Void.class;
+        this.specClass = CashFlowSpecDto.class;
     }
 
       public String[] parseParams(JsonNode params, Integer countParams) {

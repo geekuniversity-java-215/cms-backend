@@ -5,7 +5,6 @@ import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.time.Instant;
 import java.util.List;
 
@@ -18,11 +17,4 @@ public interface CashFlowRepository extends CustomRepository<CashFlow, Long> {
     @Query("SELECT dateSuccess FROM CashFlow")
     List<Instant> findAllDateSuccess();
 
-//    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END " +
-//            "FROM User u " +
-//            "WHERE " +
-//            "lower(u.username) = :#{#user.username.toLowerCase()} OR " +
-//            "lower(u.lastName) = :#{#user.lastName.toLowerCase()} AND u.firstName = :#{#user.firstName} OR " +
-//            "lower(u.email) = :#{#user.email.toLowerCase()} OR " +
-//            "u.phoneNumber = :#{#user.phoneNumber}")
 }

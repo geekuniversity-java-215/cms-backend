@@ -45,6 +45,7 @@ public class HandlerName {
 
     //payment
     public static final String requestForFunds="requestForFunds";
+    public static final String requestCashFlows="requestCashFlows";
 
     // ------------------------------------------------------------
 
@@ -180,8 +181,9 @@ public class HandlerName {
 
 
     public static class payment {
-        public static final String path_payment="cms.payment";
+        public static final String path ="cms.payment";
         public static final String requestForFunds=HandlerName.requestForFunds;
+        public static final String requestForCashFlows=HandlerName.requestCashFlows;
     }
 
 }
