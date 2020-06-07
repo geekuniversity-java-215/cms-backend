@@ -14,7 +14,7 @@ pipeline {
         
     stages {
 
-        stage('purge cms schema') {
+        stage('purge cms') {
             agent {
                 docker {
                     image 'jbergknoff/postgresql-client'
