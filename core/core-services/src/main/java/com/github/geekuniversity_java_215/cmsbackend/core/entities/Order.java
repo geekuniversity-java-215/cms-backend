@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,7 +30,7 @@ public class Order extends AbstractEntity {
     // - мусорное поле в базе
     private OrderStatus status;
 
-    //region Transient enum mapping OrderStatus
+    //region enum mapping OrderStatus
     // Enum mapping
     @Basic
     private int statusValue;

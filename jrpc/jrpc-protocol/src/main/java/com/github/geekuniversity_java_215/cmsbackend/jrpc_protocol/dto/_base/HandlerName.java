@@ -44,7 +44,8 @@ public class HandlerName {
     private static final String complete = "complete";
 
     //payment
-    public static final String requestForFunds="requestForFunds";
+    //public static final String addCashFlow="addCashFlow";
+    //public static final String getCashFlow="getCashFlow";
 
     // ------------------------------------------------------------
 
@@ -180,8 +181,13 @@ public class HandlerName {
 
 
     public static class payment {
-        public static final String path_payment="cms.payment";
-        public static final String requestForFunds=HandlerName.requestForFunds;
+
+
+        public static class cashflow {
+            public static final String path = "cmsapp.core.payment.cashflow";
+            public static final String findAll = HandlerName.findAll;
+            public static final String save = HandlerName.save;
+        }
     }
 
 }

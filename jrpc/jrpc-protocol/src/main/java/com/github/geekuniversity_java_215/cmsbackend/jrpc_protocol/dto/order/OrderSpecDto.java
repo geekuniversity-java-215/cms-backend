@@ -3,14 +3,12 @@ package com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -32,7 +30,7 @@ public class OrderSpecDto extends AbstractSpecDto {
     private Instant from;
     private Instant to;
 
-    private OrderStatusDto status;
+    private OrderStatus status;
 
 
 //    // Если пустой список - то поиск будет осуществляться по всем категориям

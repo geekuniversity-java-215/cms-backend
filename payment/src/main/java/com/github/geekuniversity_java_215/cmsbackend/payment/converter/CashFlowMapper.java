@@ -3,7 +3,8 @@ package com.github.geekuniversity_java_215.cmsbackend.payment.converter;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserMapper;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import com.github.geekuniversity_java_215.cmsbackend.payment.services.CashFlowService;
@@ -12,11 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.ERROR,
-        uses = {InstantMapper.class, AddressMapper.class})
+        uses = {InstantMapper.class, UserMapper.class})
 public abstract class CashFlowMapper extends AbstractMapper<CashFlow, CashFlowDto> {
 
     @Autowired
@@ -38,10 +38,11 @@ public abstract class CashFlowMapper extends AbstractMapper<CashFlow, CashFlowDt
 //    @Mapping(target="dateCreate", ignore=true)
 //    @Mapping(target = "dateSuccess", ignore=true)
 
-    @Mapping(target = "user.client", ignore=true)
-    @Mapping(target = "user.courier", ignore=true)
-    @Mapping(target = "user.refreshTokenList", ignore=true)
-    public abstract CashFlow toEntity(CashFlowDto transactionDto);
+    @Mapping(target = "user.client", ignore = true)
+    @Mapping(target = "user.courier", ignore = true)
+    @Mapping(target = "user.refreshTokenList", ignore = true)
+    @Mapping(target = "currencyCodeValue", ignore = true)
+    public abstract CashFlow toEntity(CashFlowDto cashFlowDto);
 
     /**
      * Custom conversion logic, need to further setup
@@ -66,7 +67,7 @@ public abstract class CashFlowMapper extends AbstractMapper<CashFlow, CashFlowDt
                 dto.getTypeOperation(),
                 dto.getAmount(),
                 dto.getPayPalEmail(),
-                    CurrencyCode.valueOf(dto.getCurrencyCodeType()));
+                dto.getCurrencyCode());
 
         }
     }

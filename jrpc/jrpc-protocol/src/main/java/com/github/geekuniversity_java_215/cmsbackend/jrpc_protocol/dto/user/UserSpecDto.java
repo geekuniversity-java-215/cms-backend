@@ -5,8 +5,6 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.Cl
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 @Data
 public class UserSpecDto extends AbstractSpecDto {
 

@@ -13,8 +13,8 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.user.Us
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.address.AddressDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderStatusDto;
 import com.github.geekuniversity_java_215.cmsbackend.tests.system_test.configurations.SystemTestSpringConfiguration;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,7 @@ public class OrderLifeCycleTest {
         order.setFrom(from);
         order.setTo(to);
         order.setClient(client);
-        order.setStatus(OrderStatusDto.NEW);
+        order.setStatus(OrderStatus.NEW);
 
         // сохраняем заказ
         long id = orderClientRequest.save(order);
@@ -90,22 +90,22 @@ public class OrderLifeCycleTest {
         Assert.notEmpty(orderList, "orderList == null");
 
         order = orderList.get(0);
-        Assert.isTrue(order.getStatus() == OrderStatusDto.NEW, "order.status != NEW");
+        Assert.isTrue(order.getStatus() == OrderStatus.NEW, "order.status != NEW");
 
         // берем заказ
         orderId = orderCourierRequest.accept(order.getId());
         order = orderCourierRequest.findById(orderId);
-        Assert.isTrue(order.getStatus() == OrderStatusDto.ASSIGNED, "order.status != ASSIGNED");
+        Assert.isTrue(order.getStatus() == OrderStatus.ASSIGNED, "order.status != ASSIGNED");
 
         // выполняем заказ
         orderId = orderCourierRequest.execute(order.getId());
         order = orderCourierRequest.findById(orderId);
-        Assert.isTrue(order.getStatus() == OrderStatusDto.TRANSIT, "order.status != IN_PROGRESS");
+        Assert.isTrue(order.getStatus() == OrderStatus.TRANSIT, "order.status != IN_PROGRESS");
 
         // завершаем заказ
         orderId = orderCourierRequest.complete(order.getId());
         order = orderCourierRequest.findById(orderId);
-        Assert.isTrue(order.getStatus() == OrderStatusDto.COMPLETED, "order.status != DONE");
+        Assert.isTrue(order.getStatus() == OrderStatus.COMPLETED, "order.status != DONE");
 
 //        UserDto user = new UserDto();
 //        user.setUsername("vasya");

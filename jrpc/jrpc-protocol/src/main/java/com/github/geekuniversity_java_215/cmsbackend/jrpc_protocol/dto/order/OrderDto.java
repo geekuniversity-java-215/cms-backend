@@ -4,6 +4,7 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.Abs
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.address.AddressDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,7 +19,7 @@ public class OrderDto extends AbstractDto {
     private AddressDto from;
     private AddressDto to;
 
-    private OrderStatusDto status;
+    private OrderStatus status;
 
     // moar info ...
 }

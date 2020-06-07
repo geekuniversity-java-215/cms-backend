@@ -18,7 +18,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
-import java.util.Optional;
 
 @JrpcController(HandlerName.manager.user.path)
 @Secured(UserRole.MANAGER)

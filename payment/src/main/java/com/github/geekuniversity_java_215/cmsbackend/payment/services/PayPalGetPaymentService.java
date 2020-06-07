@@ -1,21 +1,17 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.constants.CorePropNames;
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
 import com.github.geekuniversity_java_215.cmsbackend.core.utils.EnvStringBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
 import com.github.geekuniversity_java_215.cmsbackend.payment.configurations.PayPalAccount;
-import com.github.geekuniversity_java_215.cmsbackend.payment.data.constants.PaymentPropNames;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;

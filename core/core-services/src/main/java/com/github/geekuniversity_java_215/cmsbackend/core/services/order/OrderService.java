@@ -1,24 +1,21 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services.order;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.exceptions.InvalidLogicException;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.OrderRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.validation.ValidationException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 
 

@@ -2,8 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.services.currency;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.data.currencyconverter.ValCurs;
 import com.github.geekuniversity_java_215.cmsbackend.core.data.currencyconverter.Valute;
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
-import lombok.Data;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.net.URL;
 import java.text.SimpleDateFormat;

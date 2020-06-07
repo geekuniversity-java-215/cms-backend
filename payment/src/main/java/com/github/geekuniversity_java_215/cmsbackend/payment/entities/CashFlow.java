@@ -1,9 +1,10 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.entities;
 
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,8 +31,7 @@ public class CashFlow extends AbstractEntity {
     @NotNull
     private BigDecimal amount;
 
-    @NotNull
-    private CurrencyCode currencyCodeType;
+    private CurrencyCode currencyCode;
 
     @Email
     @NotBlank
@@ -39,15 +39,36 @@ public class CashFlow extends AbstractEntity {
 
     private Instant dateSuccess;
 
-    public CashFlow(){
+
+    //region enum mapping CurrencyCode
+    @Basic
+    private int currencyCodeValue;
+
+    @PostLoad
+    void fillCurrencyCode() {
+        if (currencyCodeValue > 0) {
+            this.currencyCode = CurrencyCode.codeOf(currencyCodeValue);
+        }
     }
 
-    public CashFlow(User user, String typeOperation, BigDecimal amount, String payPalEmail, CurrencyCode currencyCodeType) {
-        this.user=user;
-        this.typeOperation=typeOperation;
-        this.amount=amount;
+    @PrePersist
+    @PreUpdate
+    void fillCurrencyCodeValue() {
+        if (currencyCode != null) {
+            this.currencyCodeValue = currencyCode.getCode();
+        }
+    }
+    //endregion
+
+    public CashFlow() {
+    }
+
+    public CashFlow(User user, String typeOperation, BigDecimal amount, String payPalEmail, CurrencyCode currencyCode) {
+        this.user = user;
+        this.typeOperation = typeOperation;
+        this.amount = amount;
         this.payPalEmail = payPalEmail;
-        this.currencyCodeType=currencyCodeType;
+        this.currencyCode = currencyCode;
     }
 
     @Override

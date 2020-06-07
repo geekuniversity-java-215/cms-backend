@@ -4,11 +4,9 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.Insta
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderStatusDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -51,12 +49,12 @@ public abstract class OrderMapper extends AbstractMapper<Order, OrderDto> {
     public abstract Order toEntity(OrderDto orderDto);
 
 
-    public OrderStatus toOrderStatus(OrderStatusDto dto) {
-        return OrderStatus.getById(dto.getId());
-    }
-    public OrderStatusDto toOrderStatusDto(OrderStatus entity) {
-        return OrderStatusDto.getById(entity.getId());
-    }
+//    public OrderStatus toOrderStatus(OrderStatusDto dto) {
+//        return OrderStatus.getById(dto.getId());
+//    }
+//    public OrderStatusDto toOrderStatusDto(OrderStatus entity) {
+//        return OrderStatusDto.getById(entity.getId());
+//    }
 
 
 

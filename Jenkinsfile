@@ -14,6 +14,21 @@ pipeline {
         
     stages {
 
+        stage('purge cms schema') {
+            agent {
+                docker {
+                    image 'jbergknoff/postgresql-client'
+                    //args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh 'echo "31.210.208.189:5442:cms:cmsadmin:cmsadminpassword" > ~/.pgpass'
+                sh 'chmod go-rwx ~/.pgpass'
+                sh 'PGOPTIONS=--search_path=cms psql -h 31.210.208.189 -p 5442 -U cmsadmin --dbname=cms -f infrastructure/database/purge_schema.sql'
+            }
+        }
+
         // madness
         stage('dependencies') {
             steps {

@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.AccountRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.core.aop.LogExecutionTime;

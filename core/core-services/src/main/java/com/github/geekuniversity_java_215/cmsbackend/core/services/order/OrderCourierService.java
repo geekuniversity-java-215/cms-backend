@@ -1,13 +1,12 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services.order;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierConverter;
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderStatusDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
@@ -51,7 +50,7 @@ public class OrderCourierService {
     public List<Order> findNew(OrderSpecDto specDto) {
 
         specDto = specDto == null ?  new OrderSpecDto() : specDto;
-        specDto.setStatus(OrderStatusDto.NEW);
+        specDto.setStatus(OrderStatus.NEW);
         Specification<Order> spec =  OrderSpecBuilder.build(specDto);
         return orderService.findAll(spec);
     }

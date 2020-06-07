@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractSpecDto;
-import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
@@ -15,10 +14,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
-import java.io.DataInput;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -51,6 +48,35 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
 
         // parsing request
         try {
+            result = objectMapper.treeToValue(params, clazz);
+
+            // validate
+            if (result == null) {
+                throw new ValidationException("Found null - validation failed");
+            }
+
+            //if(Number.class.isAssignableFrom(clazz))
+        }
+        catch (JsonProcessingException e) {
+            throw new ParseException(0, "Param parse error", e);
+        }
+        return result;
+    }
+
+
+    // Json => T
+    public <T> T getByField(JsonNode params, String fieldName, Class<T> clazz) {
+
+        T result;
+
+        // parsing request
+        try {
+            params = params.get(fieldName);
+            // validate
+            if (params == null) {
+                throw new ValidationException("Field not found - validation failed");
+            }
+
             result = objectMapper.treeToValue(params, clazz);
 
             // validate

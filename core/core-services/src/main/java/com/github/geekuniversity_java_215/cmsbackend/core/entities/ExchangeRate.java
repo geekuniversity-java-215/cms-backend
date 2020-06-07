@@ -2,7 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.entities;
 
 import javax.persistence.*;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,7 +28,7 @@ public class ExchangeRate extends AbstractEntity {
     @Column(name = "value")
     private BigDecimal value;
 
-    // Enum mapping
+    //region enum mapping CurrencyCode
     @Basic
     private int currencyCodeValue;
 
@@ -46,4 +46,5 @@ public class ExchangeRate extends AbstractEntity {
             this.currencyCodeValue = currencyCode.getCode();
         }
     }
+    //endregion
 }

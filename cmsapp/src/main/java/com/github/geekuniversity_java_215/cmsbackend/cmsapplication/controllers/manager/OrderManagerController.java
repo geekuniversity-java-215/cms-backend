@@ -17,7 +17,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.annotation.Secured;
 
 import java.util.List;
-import java.util.Optional;
 
 @JrpcController(HandlerName.manager.order.path)
 @Secured(UserRole.MANAGER)

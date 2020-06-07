@@ -1,45 +1,56 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.CurrencyCode;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
+import com.github.geekuniversity_java_215.cmsbackend.payment.specification.CashFlowSpecBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig
+@SuppressWarnings("OptionalGetWithoutIsPresent")
+//@SpringJUnitConfig
 @SpringBootTest
 @Slf4j
 class CashFlowServiceTest {
 
+    @Autowired
     private CashFlowService cashFlowService;
-    private UserService userService;
 
     @Autowired
-    public CashFlowServiceTest(CashFlowService cashFlowService,UserService userService) {
-        this.cashFlowService = cashFlowService;
-        this.userService=userService;
-    }
+    private UserService userService;
+
+
 
     @Test
     void addRequestForFunds() {
-        CashFlow cf;
-        cf=cashFlowService.addRequestForFunds(userService.findByUsername("vasya").get().getId(),new BigDecimal(1),"1@1.ru",CurrencyCode.codeOf(643));
+        CashFlow cf = new CashFlow(
+            userService.findByUsername("vasya").get(),
+            "залупа+",
+            new BigDecimal(1),
+            "1@1.ru",
+            CurrencyCode.RUB);
+
+        cf = cashFlowService.save(cf);
         Assert.assertNotNull(cf);
 
     }
 
     @Test
-    void findAllWithEmptyDateSuccess() {
-        List<CashFlow> cashFlowList =cashFlowService.findAllWithEmptyDateSuccess();
+    void findAllNoSuccess() {
+        CashFlowSpecDto specDto = new CashFlowSpecDto();
+        specDto.setSuccessful(false);
+        Specification<CashFlow> spec = CashFlowSpecBuilder.build(specDto);
+        List<CashFlow> cashFlowList = cashFlowService.findAll(spec);
         assertThat(cashFlowList.size()).isGreaterThan(0);
     }
 }

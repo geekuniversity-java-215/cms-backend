@@ -1,6 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.data.enums.OrderStatus;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;

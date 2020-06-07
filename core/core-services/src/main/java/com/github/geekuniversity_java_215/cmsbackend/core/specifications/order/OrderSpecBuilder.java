@@ -4,7 +4,6 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
-import static com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto.OrderBy.*;
 
 @SuppressWarnings("ConstantConditions")
 @Slf4j

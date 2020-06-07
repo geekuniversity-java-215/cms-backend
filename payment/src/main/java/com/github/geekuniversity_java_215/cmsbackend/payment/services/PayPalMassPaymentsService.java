@@ -1,21 +1,19 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.configurations.PayPalAccount;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
-import com.paypal.exception.*;
-import com.paypal.sdk.exceptions.OAuthException;
+import com.github.geekuniversity_java_215.cmsbackend.payment.specification.CashFlowSpecBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.*;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ReceiverInfoCodeType;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 
@@ -38,8 +36,12 @@ public class PayPalMassPaymentsService {
 
     //todo передавать в doMassPayments до 250 шт в одном списке
     @Scheduled(cron ="${paypal.cron.expression}" )
-    public void schedulerPayment(){
-        doMassPayment(cashFlowService.findAllWithEmptyDateSuccess());
+    public void schedulerPayment() {
+
+        CashFlowSpecDto specDto = new CashFlowSpecDto();
+        specDto.setSuccessful(false);
+        Specification<CashFlow> spec = CashFlowSpecBuilder.build(specDto);
+        doMassPayment(cashFlowService.findAll(spec));
     }
 
     public void doMassPayment(List<CashFlow> cashFlowList) {
@@ -63,7 +65,7 @@ public class PayPalMassPaymentsService {
     private void saveDateSuccess(List<MassPayRequestItemType> massPayRequestItemTypeList) {
         Optional<CashFlow> cf;
         for (MassPayRequestItemType massPayRequestItemType: massPayRequestItemTypeList) {
-            cf=cashFlowService.findById(Long.valueOf(massPayRequestItemType.getReceiverID()));
+            cf = cashFlowService.findById(Long.valueOf(massPayRequestItemType.getReceiverID()));
             cf.get().setDateSuccess(Instant.now());
             cashFlowService.save(cf.get());
         }
@@ -79,7 +81,7 @@ public class PayPalMassPaymentsService {
         BasicAmountType basicAmountType;
         List<MassPayRequestItemType> massPayRequestItemTypeList=new ArrayList<>();
         for (CashFlow t: tr){
-            basicAmountType=new BasicAmountType(CurrencyCodeType.fromValue(String.valueOf(t.getCurrencyCodeType())), String.valueOf(t.getAmount()));
+            basicAmountType = new BasicAmountType(CurrencyCodeType.fromValue(String.valueOf(t.getCurrencyCode())), String.valueOf(t.getAmount()));
             MassPayRequestItemType ms=new MassPayRequestItemType(basicAmountType);
             ms.setReceiverEmail(t.getPayPalEmail());
             ms.setReceiverID(String.valueOf(t.getId()));

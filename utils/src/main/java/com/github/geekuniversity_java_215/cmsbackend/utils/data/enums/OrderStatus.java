@@ -1,4 +1,4 @@
-package com.github.geekuniversity_java_215.cmsbackend.core.data.enums;
+package com.github.geekuniversity_java_215.cmsbackend.utils.data.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
