@@ -1,11 +1,12 @@
 pipeline {
-        agent {
-            docker {
-                image 'maven:3.6.3-jdk-8'
-                args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root'
-                reuseNode true
-            }
-        }
+           agent none
+//         agent {
+//             docker {
+//                 image 'maven:3.6.3-jdk-8'
+//                 args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root'
+//                 reuseNode true
+//             }
+//         }
 
     environment {
         MAIL_URL=credentials('mail_url')
