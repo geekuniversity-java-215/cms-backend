@@ -74,5 +74,4 @@ public abstract class BaseRepoAccessService<T> {
         baseRepository.delete(t);
     }
 
-
 }

@@ -3,7 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.converters.user;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.account.AccountMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.userrole.UserRoleMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 
 @Mapper(componentModel = "spring",
     unmappedTargetPolicy = ReportingPolicy.ERROR,
-    uses = {InstantMapper.class, AccountMapper.class})
+    uses = {InstantMapper.class, UserRoleMapper.class, AccountMapper.class})
 public abstract class UserMapper extends AbstractMapper<User, UserDto> {
 
     @Autowired
@@ -38,8 +38,7 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
 
     @Mapping(target = "client", ignore = true)
     @Mapping(target = "courier", ignore = true)
-    @Mapping(target = "refreshTokenList", ignore = true)
-    @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "refreshTokenList", expression = "java(null)") // всегда подгружаем из БД
     @Mapping(target = "account", ignore = true)
     public abstract User toEntity(UserDto userDto);
 
@@ -56,14 +55,14 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
     @AfterMapping
     User afterMapping(UserDto source, @MappingTarget User target) {
 
-        target = merge(source, target);
+        return merge(source, target);
 
-        // update roles (add/remove)
-        for (UserRoleDto role : source.getRoles()) {
-            target.getRoles().add(userRoleService.findByName(role.getName())
-                .orElseThrow(() -> new IllegalArgumentException("UserRole " + role.getName() + "not found")));
-        }
-        return target;
+//        // update roles manually
+//        target.getRoles().clear();
+//        for (UserRoleDto role : source.getRoles()) {
+//            target.getRoles().add(userRoleService.findByName(role.getName())
+//                .orElseThrow(() -> new IllegalArgumentException("UserRole " + role.getName() + "not found")));
+//        }
     }
 
     protected class EntityConstructor extends Constructor<User, UserDto> {

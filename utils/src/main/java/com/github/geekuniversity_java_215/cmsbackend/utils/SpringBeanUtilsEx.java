@@ -21,6 +21,7 @@ public class SpringBeanUtilsEx {
             if (srcValue == null) emptyNames.add(pd.getName());
         }
 
+        /*
         // add lazy initialization proxy holder(PersistentBag) fields from target
         final BeanWrapper tgt = new BeanWrapperImpl(target);
         java.beans.PropertyDescriptor[] pdt = tgt.getPropertyDescriptors();
@@ -30,6 +31,7 @@ public class SpringBeanUtilsEx {
                 emptyNames.add(pd.getName());
             }
         }
+        */
         return emptyNames.toArray(new String[0]);
     }
 

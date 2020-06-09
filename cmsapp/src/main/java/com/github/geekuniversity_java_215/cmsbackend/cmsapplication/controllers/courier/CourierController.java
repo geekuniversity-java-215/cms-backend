@@ -14,7 +14,6 @@ import org.springframework.security.access.annotation.Secured;
 
 
 
-// ToDo: перенести это все в управлялку ManagerCourierController, кроме последнего метода
 /**
  * Courier management
  */

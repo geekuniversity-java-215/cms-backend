@@ -51,8 +51,6 @@ public class OrderClientController {
     }
 
 
-    // ToDo: если клиент нажмет кнопку сохранить еще раз - затрет существующий заказ
-    //  Фиксить пересохранение существующего заказа - может не разрешать это делать
     @JrpcMethod(HandlerName.order.client.save)
     public JsonNode save(JsonNode params) {
 

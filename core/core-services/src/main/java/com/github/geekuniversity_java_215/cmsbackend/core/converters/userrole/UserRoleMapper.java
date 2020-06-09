@@ -26,15 +26,20 @@ public abstract class UserRoleMapper extends AbstractMapper<UserRole, UserRoleDt
     }
 
 
-
+    @Mapping(target = "created", ignore = true)
+    @Mapping(target = "updated", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
     public abstract UserRoleDto toDto(UserRole user);
 
-    @Mapping(target = "name", ignore = true)
     public abstract UserRole toEntity(UserRoleDto userDto);
 
     @AfterMapping
     UserRole afterMapping(UserRoleDto source, @MappingTarget UserRole target) {
-        return merge(source, target);
+
+        // костыль, роли невозможно изменять через jrpc, они hardcoded, в БД присутствуют для мебели
+        // (поэтому и не enum)
+        return userRoleService.findByName(source.getName())
+            .orElseThrow(() -> new IllegalArgumentException("UserRole " + source.getName() + "not found"));
     }
 
     protected class EntityConstructor extends Constructor<UserRole, UserRoleDto> {

@@ -8,10 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AddressService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.address.AddressDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +27,8 @@ public abstract class AddressMapper extends AbstractMapper<Address, AddressDto> 
         constructor = new EntityConstructor();
     }
 
+    @Mapping(target = "created", ignore = true)
+    @Mapping(target = "updated", ignore = true)
     public abstract AddressDto toDto(Address order);
 
     public abstract Address toEntity(AddressDto orderDto);

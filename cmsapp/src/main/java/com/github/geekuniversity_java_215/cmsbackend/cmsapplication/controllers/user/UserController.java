@@ -83,6 +83,8 @@ public class UserController {
         user.setRoles(currentUser.getRoles());
         // preserve Account
         user.setAccount(currentUser.getAccount());
+        // preserve enabled
+        user.setEnabled(currentUser.isEnabled());
 
         user = userService.save(user);
         return converter.toIdJson(user);
