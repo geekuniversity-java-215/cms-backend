@@ -37,6 +37,7 @@ public class UserManagerController {
     }
 
 
+
     @JrpcMethod(HandlerName.manager.user.findById)
     public JsonNode findById(JsonNode params) {
 
@@ -87,9 +88,7 @@ public class UserManagerController {
         return converter.toDtoListJson(userService.findAll(spec));
     }
 
-    //
-    //  Return first ProductSpecDto.limit elements
-    //
+
 
     /***
      * Get first limit elements by UserSpecDto (with ~pagination)

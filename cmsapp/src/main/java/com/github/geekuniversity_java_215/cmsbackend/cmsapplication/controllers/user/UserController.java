@@ -45,6 +45,11 @@ public class UserController {
         this.courierService = courierService;
     }
 
+    /**
+     * Return current user
+     * @param params null
+     * @return UserDto
+     */
     @JrpcMethod(HandlerName.user.getCurrent)
     public JsonNode getCurrent(JsonNode params) {
 
@@ -53,10 +58,10 @@ public class UserController {
     }
 
     /**
-     * Update user data (password, firstName, lastName)
-     * <br> Will not save Account, UserRoles
-     * @param params User
-     * @return
+     * Update user data (password, payPalEmail)
+     * <br> Will not save firstName, lastName, account, UserRoles, client, courier, refreshTokenList
+     * @param params Userdto
+     * @return Long userId
      */
     @JrpcMethod(HandlerName.user.save)
     public JsonNode save(JsonNode params) {
@@ -89,8 +94,8 @@ public class UserController {
 
 
     /**
-     * Up user to Client
-     * @param params
+     * Up current user to Client
+     * @param params null
      * @return Long id of created Client
      */
     @JrpcMethod(HandlerName.user.makeClient)
@@ -126,6 +131,11 @@ public class UserController {
     }
 
 
+    /**
+     * Up current user to Courier
+     * @param params null
+     * @return Long id of created Client
+     */
     @JrpcMethod(HandlerName.user.makeCourier)
     public JsonNode makeCourier(JsonNode params) {
 

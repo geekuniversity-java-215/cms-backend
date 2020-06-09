@@ -30,9 +30,9 @@ public class OrderCourierController {
 
 
     /**
-     * Get Order by id, only in my orders
+     * Get Order by id, filtered by orders belonged only to current courier
      * @param params Long id
-     * @return
+     * @return OrderDto
      */
     @JrpcMethod(HandlerName.order.courier.findById)
     public JsonNode findById(JsonNode params) {
@@ -42,7 +42,12 @@ public class OrderCourierController {
         return converter.toDtoJson(order);
     }
 
-    // Will not show new Orders, only all of mine orders
+
+    /**
+     * Get all my Orders, filtered by orders belonged only to current courier
+     * @param params OrderSpecDto/null
+     * @return {@code List<OrderDto>}
+     */
     @JrpcMethod(HandlerName.order.courier.findAll)
     public JsonNode findAll(JsonNode params) {
 
@@ -52,6 +57,11 @@ public class OrderCourierController {
     }
 
 
+    /**
+     * Get all Orders, that have status == NEW
+     * @param params OrderSpecDto/null
+     * @return {@code List<OrderDto>}
+     */
     @JrpcMethod(HandlerName.order.courier.findNew)
     public JsonNode findNew(JsonNode params) {
 
@@ -61,6 +71,11 @@ public class OrderCourierController {
     }
 
 
+    /**
+     * Accept Order. Order should have status == NEW
+     * @param params Long orderId
+     * @return Long orderId
+     */
     @JrpcMethod(HandlerName.order.courier.accept)
     public JsonNode accept(JsonNode params) {
 
@@ -69,6 +84,11 @@ public class OrderCourierController {
         return converter.toIdJson(order);
     }
 
+    /**
+     * Execute Order. Order should have status == ASSIGNED
+     * @param params Long orderId
+     * @return Long orderId
+     */
     @JrpcMethod(HandlerName.order.courier.execute)
     public JsonNode execute(JsonNode params) {
 
@@ -78,6 +98,11 @@ public class OrderCourierController {
     }
 
 
+    /**
+     * Complete Order. Order should have status == TRANSIT
+     * @param params Long orderId
+     * @return Long orderId
+     */
     @JrpcMethod(HandlerName.order.courier.complete)
     public JsonNode complete(JsonNode params) {
 
@@ -87,6 +112,11 @@ public class OrderCourierController {
     }
 
 
+    /**
+     * Close Order. Order should have status == COMPLETED
+     * @param params Long orderId
+     * @return Long orderId
+     */
     @JrpcMethod(HandlerName.order.courier.close)
     public JsonNode close(JsonNode params) {
 

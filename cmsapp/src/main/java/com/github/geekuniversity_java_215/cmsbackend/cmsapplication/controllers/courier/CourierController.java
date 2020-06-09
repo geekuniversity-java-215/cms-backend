@@ -31,6 +31,11 @@ public class CourierController {
     }
 
 
+    /**
+     * Return current courier
+     * @param params null
+     * @return CourierDto
+     */
     @JrpcMethod(HandlerName.courier.getCurrent)
     @Secured(UserRole.VAL.COURIER)
     public JsonNode getCurrent(JsonNode params) {

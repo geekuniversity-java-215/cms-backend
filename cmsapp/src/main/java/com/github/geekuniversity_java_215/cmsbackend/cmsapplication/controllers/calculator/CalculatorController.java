@@ -43,7 +43,11 @@ public class CalculatorController {
     // + проводит валидацию входных данных
 
 
-
+    /**
+     * Add
+     * @param params Double[2]
+     * @return
+     */
     @JrpcMethod(HandlerName.calculator.add)
     public JsonNode add(JsonNode params) {
 
@@ -52,6 +56,11 @@ public class CalculatorController {
     }
 
 
+    /**
+     * Substract
+     * @param params Double[2]
+     * @return
+     */
     @JrpcMethod(HandlerName.calculator.sub)
     public JsonNode sub(JsonNode params) {
 
@@ -60,6 +69,11 @@ public class CalculatorController {
     }
 
 
+    /**
+     * Multiply
+     * @param params Double[2]
+     * @return
+     */
     @JrpcMethod(HandlerName.calculator.mul)
     public JsonNode mul(JsonNode params) {
 
@@ -68,6 +82,11 @@ public class CalculatorController {
     }
 
 
+    /**
+     * Divide
+     * @param params Double[2]
+     * @return
+     */
     @JrpcMethod(HandlerName.calculator.div)
     public JsonNode div(JsonNode params) {
 

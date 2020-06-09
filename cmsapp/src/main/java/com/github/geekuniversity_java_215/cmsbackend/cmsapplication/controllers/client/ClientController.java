@@ -33,7 +33,11 @@ public class ClientController {
     }
 
 
-
+    /**
+     * Return current client
+     * @param params null
+     * @return ClientDto
+     */
     @JrpcMethod(HandlerName.client.getCurrent)
     @Secured(UserRole.VAL.CLIENT)
     public JsonNode getCurrent(JsonNode params) {

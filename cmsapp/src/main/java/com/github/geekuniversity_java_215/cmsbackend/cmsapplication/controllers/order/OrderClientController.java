@@ -28,9 +28,9 @@ public class OrderClientController {
     }
 
     /**
-     * Get Order by id, only in my orders
+     * Get Order by id, filtered by orders belonged only to current client
      * @param params Long id
-     * @return
+     * @return OrderDto
      */
     @JrpcMethod(HandlerName.order.client.findById)
     public JsonNode findById(JsonNode params) {
@@ -41,7 +41,11 @@ public class OrderClientController {
     }
 
 
-    // Will show only all mine orders
+    /**
+     * Get all my Orders, filtered by orders belonged only to current client
+     * @param params OrderSpecDto/null
+     * @return {@code List<OrderDto>}
+     */
     @JrpcMethod(HandlerName.order.client.findAll)
     public JsonNode findAll(JsonNode params) {
 
@@ -51,6 +55,11 @@ public class OrderClientController {
     }
 
 
+    /**
+     * Save new created Order
+     * @param params OrderDto
+     * @return Long orderId
+     */
     @JrpcMethod(HandlerName.order.client.save)
     public JsonNode save(JsonNode params) {
 
@@ -60,6 +69,11 @@ public class OrderClientController {
     }
 
 
+    /**
+     * Delete order if its status == NEW
+     * @param params Long orderId
+     * @return Long deleted orderId
+     */
     @JrpcMethod(HandlerName.order.client.cancel)
     public JsonNode cancel(JsonNode params) {
 

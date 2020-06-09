@@ -23,12 +23,14 @@ public class ClientManagerController {
     private final UserService userService;
     private final ClientConverter converter;
 
+
     public ClientManagerController(ClientService clientService, UserService userService,
                                     ClientConverter converter) {
         this.clientService = clientService;
         this.userService = userService;
         this.converter = converter;
     }
+
 
     @JrpcMethod(HandlerName.manager.client.findByUsername)
     public JsonNode findByUsername(JsonNode params) {
@@ -37,6 +39,7 @@ public class ClientManagerController {
         Client client = clientService.findByUsername(username).orElse(null);;
         return converter.toDtoJson(client);
     }
+
 
     @JrpcMethod(HandlerName.manager.client.save)
     public JsonNode save(JsonNode params) {
