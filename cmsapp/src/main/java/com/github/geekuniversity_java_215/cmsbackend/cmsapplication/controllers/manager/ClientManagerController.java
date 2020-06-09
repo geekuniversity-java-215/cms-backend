@@ -6,30 +6,27 @@ import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annot
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
 @JrpcController(HandlerName.manager.client.path)
-@Secured(UserRole.MANAGER)
+@Secured(UserRole.VAL.MANAGER)
 public class ClientManagerController {
 
 
     private final ClientService clientService;
     private final UserService userService;
-    private final UserRoleService userRoleService;
     private final ClientConverter converter;
 
     public ClientManagerController(ClientService clientService, UserService userService,
-                                   UserRoleService userRoleService, ClientConverter converter) {
+                                    ClientConverter converter) {
         this.clientService = clientService;
         this.userService = userService;
-        this.userRoleService = userRoleService;
         this.converter = converter;
     }
 
@@ -64,8 +61,7 @@ public class ClientManagerController {
         });
 
         // assign CLIENT role
-        //noinspection OptionalGetWithoutIsPresent
-        user.getRoles().add(userRoleService.findByName(UserRole.CLIENT).get());
+        user.getRoles().add(UserRole.CLIENT);
         userService.save(user);
         client = clientService.save(client);
 

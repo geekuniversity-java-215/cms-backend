@@ -3,6 +3,7 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 import com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +17,6 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.token.RefreshTokenRepository;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.entities.BlacklistedToken;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UnconfirmedUserRepository;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
@@ -86,7 +86,7 @@ public class TokenService {
         refreshToken = new RefreshToken(user, expiredAt);
         refreshToken = refreshTokenRepository.save(refreshToken);
 
-        Set<String> refreshRoles = new HashSet<>(Collections.singletonList(UserRole.REFRESH));
+        Set<String> refreshRoles = new HashSet<>(Collections.singletonList(UserRole.REFRESH.getName()));
 
         refreshTokenString = jwtTokenService.createJWT(
             tokenType, refreshToken.getId().toString(), coreSpringConfiguration.getISSUER(), user.getUsername(), refreshRoles);

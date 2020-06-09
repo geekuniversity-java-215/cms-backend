@@ -8,13 +8,12 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserCo
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
@@ -26,24 +25,22 @@ import org.springframework.util.Assert;
  * User management
  */
 @JrpcController(HandlerName.user.path)
-@Secured(UserRole.USER)
+@Secured(UserRole.VAL.USER)
 public class UserController {
 
     private final UserService userService;
     private final UserConverter converter;
     private final PasswordEncoder passwordEncoder;
 
-    private final UserRoleService userRoleService;
     private final ClientService clientService;
     private final CourierService courierService;
 
     public UserController(UserService userService, UserConverter converter,
-                          PasswordEncoder passwordEncoder, UserRoleService userRoleService,
-                          ClientService clientService, CourierService courierService) {
+                          PasswordEncoder passwordEncoder, ClientService clientService,
+                          CourierService courierService) {
         this.userService = userService;
         this.converter = converter;
         this.passwordEncoder = passwordEncoder;
-        this.userRoleService = userRoleService;
         this.clientService = clientService;
         this.courierService = courierService;
     }
@@ -103,7 +100,7 @@ public class UserController {
         User user = userService.getCurrent();
 
         // already has ROLE_CLIENT
-        if(user.getRoles().contains(UserRole.getByName(UserRole.CLIENT))) {
+        if(user.getRoles().contains(UserRole.CLIENT)) {
 
             result = clientService.getCurrent();
             Assert.notNull(result,user.getUsername() + " has role ROLE_CLIENT, but user.client == null");
@@ -116,8 +113,7 @@ public class UserController {
             });
 
             // Add ROLE_CLIENT
-            //noinspection OptionalGetWithoutIsPresent
-            user.getRoles().add(userRoleService.findByName(UserRole.CLIENT).get());
+            user.getRoles().add(UserRole.CLIENT);
 
             // Add Client
             result = new Client();
@@ -137,7 +133,7 @@ public class UserController {
         User user = userService.getCurrent();
 
         // already has ROLE_CLIENT
-        if(user.getRoles().contains(UserRole.getByName(UserRole.COURIER))) {
+        if(user.getRoles().contains(UserRole.COURIER)) {
 
             result = courierService.getCurrent();
             Assert.notNull(result,user.getUsername() + " has role ROLE_COURIER, but user.courier == null");
@@ -150,8 +146,7 @@ public class UserController {
             });
 
             // Add ROLE_COURIER
-            //noinspection OptionalGetWithoutIsPresent
-            user.getRoles().add(userRoleService.findByName(UserRole.COURIER).get());
+            user.getRoles().add(UserRole.COURIER);
 
             // Add Client
             result = new Courier();

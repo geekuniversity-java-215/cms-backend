@@ -1,10 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.converter;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.address.AddressMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserMapper;
-import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import com.github.geekuniversity_java_215.cmsbackend.payment.services.CashFlowService;
@@ -14,9 +11,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-@Mapper(componentModel = "spring",
-        unmappedTargetPolicy = ReportingPolicy.ERROR,
-        uses = {InstantMapper.class, UserMapper.class})
+
+@Mapper(config = AbstractMapper.class,
+    uses = {UserMapper.class})
 public abstract class CashFlowMapper extends AbstractMapper<CashFlow, CashFlowDto> {
 
     @Autowired

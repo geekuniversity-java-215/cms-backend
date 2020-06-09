@@ -2,11 +2,11 @@ package com.github.geekuniversity_java_215.cmsbackend.core.configurations.filter
 
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.services.JwtTokenService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

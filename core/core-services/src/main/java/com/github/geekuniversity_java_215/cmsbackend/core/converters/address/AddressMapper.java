@@ -1,21 +1,15 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.converters.address;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
-
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AddressService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.address.AddressDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
-@Mapper(componentModel = "spring",
-    unmappedTargetPolicy = ReportingPolicy.ERROR,
-    uses = {InstantMapper.class})
+@Mapper(config = AbstractMapper.class)
 public abstract class AddressMapper extends AbstractMapper<Address, AddressDto> {
 
     @Autowired

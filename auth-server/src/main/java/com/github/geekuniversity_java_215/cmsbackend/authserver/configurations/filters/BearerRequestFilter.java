@@ -3,7 +3,6 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.RequestScopeBean;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.AccessToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.Token;
@@ -11,6 +10,7 @@ import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.services.JwtTokenService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.SecurityUtils;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,7 +184,7 @@ public class BearerRequestFilter extends OncePerRequestFilter {
         // Для refresh_token возвращаем только роль REFRESH,никакими другими ресурсами(контроллерами) кроме обновления
         // с этим токеном пользоваться нельзя
         else if (type == TokenType.REFRESH) {
-            grantedAuthorities = SecurityUtils.rolesToGrantedAuthority(Collections.singletonList(UserRole.REFRESH));
+            grantedAuthorities = SecurityUtils.rolesToGrantedAuthority(Collections.singletonList(UserRole.REFRESH.getName()));
         }
         else {
             throw new BadCredentialsException("Token type " + type + " not allowed");

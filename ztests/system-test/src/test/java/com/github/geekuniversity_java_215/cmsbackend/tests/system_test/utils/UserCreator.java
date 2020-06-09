@@ -7,14 +7,12 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.courier
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.manager.ClientManagerRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.manager.CourierManagerRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.manager.UserManagerRequest;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registrar.ConfirmRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.user.UserRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UnconfirmedUserDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserRoleDto;
 import com.github.geekuniversity_java_215.cmsbackend.tests.system_test.configurations.SystemTestSpringConfiguration;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +49,7 @@ public class UserCreator {
         user.setFirstName("Клиент");
         user.setLastName("Клиентович");
         user.setPhoneNumber("4358789567568");
-        user.getRoles().add(UserRoleDto.getByName(UserRoleDto.USER));
+        user.getRoles().add(UserRole.USER);
 
         // Use here admin login
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);
@@ -82,7 +80,7 @@ public class UserCreator {
         user.setFirstName("Курьер");
         user.setLastName("Курьерович");
         user.setPhoneNumber("56767957549");
-        user.getRoles().add(UserRoleDto.getByName(UserRoleDto.USER));
+        user.getRoles().add(UserRole.USER);
 
         // Use here admin login
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.ADMIN);

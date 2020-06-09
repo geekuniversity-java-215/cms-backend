@@ -3,13 +3,13 @@ package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +19,7 @@ import org.springframework.security.access.annotation.Secured;
 import java.util.List;
 
 @JrpcController(HandlerName.manager.order.path)
-@Secured(UserRole.MANAGER)
+@Secured(UserRole.VAL.MANAGER)
 public class OrderManagerController {
 
     private final OrderService orderService;

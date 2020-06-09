@@ -1,12 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.converters.account;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.Account.AccountDto;
 
 import org.mapstruct.*;
@@ -14,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
-@Mapper(componentModel = "spring",
-    unmappedTargetPolicy = ReportingPolicy.ERROR,
-    uses = {InstantMapper.class})
+@Mapper(config = AbstractMapper.class)
 public abstract class AccountMapper extends AbstractMapper<Account, AccountDto> {
 
     @Autowired

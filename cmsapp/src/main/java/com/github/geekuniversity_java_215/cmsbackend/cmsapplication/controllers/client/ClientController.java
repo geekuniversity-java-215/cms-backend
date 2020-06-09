@@ -6,10 +6,10 @@ import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annot
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.security.access.annotation.Secured;
 
 
@@ -35,7 +35,7 @@ public class ClientController {
 
 
     @JrpcMethod(HandlerName.client.getCurrent)
-    @Secured(UserRole.CLIENT)
+    @Secured(UserRole.VAL.CLIENT)
     public JsonNode getCurrent(JsonNode params) {
 
         User user = userService.getCurrent();

@@ -3,12 +3,9 @@ package com.github.geekuniversity_java_215.cmsbackend.authserver.configurations;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BasicAuthRequestFilter;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.filters.BearerRequestFilter;
 import com.github.geekuniversity_java_215.cmsbackend.core.configurations.filters.CorsAllowAllFilter;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -94,7 +91,7 @@ public class MultipleWebSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
 
             http
-                .antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.ADMIN)
+                .antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(UserRole.VAL.ADMIN)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable()
                 .addFilterBefore(corsAllowAllFilter, ChannelProcessingFilter.class)

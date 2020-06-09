@@ -1,8 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core;
 
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -20,14 +18,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CoreInitializer implements ApplicationRunner {
 
-    private final UserRoleService userRoleService;
-
     private final Environment environment;
 
 
 
-    public CoreInitializer(UserRoleService userRoleService, Environment environment) {
-        this.userRoleService = userRoleService;
+    public CoreInitializer(Environment environment) {
         this.environment = environment;
     }
 
@@ -46,22 +41,22 @@ public class CoreInitializer implements ApplicationRunner {
 
     private void initDataBase() {
 
-        // Merge UserRole.Values to database
-        log.debug("Update database");
-
-        log.debug("Merge roles");
-        List<UserRole> roleList = userRoleService.findAll(null);
-        Map<String, UserRole> roleMap =
-                roleList.stream().collect(Collectors.toMap(UserRole::getName, Function.identity()));
-
-        List<UserRole> toUpdate = new ArrayList<>();
-
-        for (String name : UserRole.ROLE_NAMES) {
-            if (!roleMap.containsKey(name)) {
-                toUpdate.add(new UserRole(name));
-            }
-        }
-        userRoleService.saveAll(toUpdate);
-        log.debug("Database updated");
+//        // Merge UserRole.Values to database
+//        log.debug("Update database");
+//
+//        log.debug("Merge roles");
+//        List<UserRole> roleList = userRoleService.findAll(null);
+//        Map<String, UserRole> roleMap =
+//                roleList.stream().collect(Collectors.toMap(UserRole::getName, Function.identity()));
+//
+//        List<UserRole> toUpdate = new ArrayList<>();
+//
+//        for (String name : UserRole.ROLE_NAMES) {
+//            if (!roleMap.containsKey(name)) {
+//                toUpdate.add(new UserRole(name));
+//            }
+//        }
+//        userRoleService.saveAll(toUpdate);
+//        log.debug("Database updated");
     }
 }

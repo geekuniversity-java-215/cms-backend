@@ -4,8 +4,8 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.A
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.aop.ValidAuthenticationType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.*;
 
 @RestController
 @RequestMapping("/admin/")
@@ -34,19 +32,15 @@ public class AdminController {
 
     @PostMapping("/test")
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
-    @Secured(UserRole.ADMIN)
+    @Secured(UserRole.VAL.ADMIN)
 	public ResponseEntity<String> test() {
-
-        System.out.println(userService.getCurrent());
-        System.out.println(UserService.getCurrentUsername());
-
         return  ResponseEntity.ok("hello world");
 	}
 
 
     @PostMapping("/user/revoke_token")
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
-    @Secured(UserRole.ADMIN)
+    @Secured(UserRole.VAL.ADMIN)
     public ResponseEntity<String> revokeTokenByUsername(@RequestBody String username) {
 
         HttpStatus result;

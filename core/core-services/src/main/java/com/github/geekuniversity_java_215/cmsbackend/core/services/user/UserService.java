@@ -2,19 +2,21 @@ package com.github.geekuniversity_java_215.cmsbackend.core.services.user;
 
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 
@@ -71,9 +73,21 @@ public class UserService extends BaseRepoAccessService<User> {
      * @return User
      */
     public static String getCurrentUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails)principal;
-        return userDetails.getUsername();
+
+        String result;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            result = userDetails.getUsername();
+        }
+        else {
+            result = authentication.getName();
+        }
+        return result;
+    }
+
+    public static Collection<? extends GrantedAuthority> getCurrentUserAuthorities() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities();
     }
 
 
@@ -82,8 +96,21 @@ public class UserService extends BaseRepoAccessService<User> {
      * @return User
      */
     public User getCurrent() {
-        //noinspection OptionalGetWithoutIsPresent
-        return findByUsername(getCurrentUsername()).get();
+
+        User result;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // Auth server
+        if (authentication.getPrincipal() instanceof UserDetailsCustom) {
+            UserDetailsCustom userDetails = (UserDetailsCustom)authentication.getPrincipal();
+            return userDetails.getUser();
+        }
+        // Resource server
+        else {
+            //noinspection OptionalGetWithoutIsPresent
+            result = findByUsername(authentication.getName()).get();
+
+        }
+        return result;
     }
 
     @Override

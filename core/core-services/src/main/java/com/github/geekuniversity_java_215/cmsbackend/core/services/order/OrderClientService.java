@@ -2,11 +2,11 @@ package com.github.geekuniversity_java_215.cmsbackend.core.services.order;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@Secured(UserRole.CLIENT)
+@Secured(UserRole.VAL.CLIENT)
 @Slf4j
 public class OrderClientService {
 

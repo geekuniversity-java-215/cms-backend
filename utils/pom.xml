@@ -25,7 +25,7 @@
             <artifactId>spring-security-core</artifactId>
             <scope>compile</scope>
         </dependency>
-
+        
     </dependencies>
 
 

@@ -3,17 +3,18 @@ package com.github.geekuniversity_java_215.cmsbackend.core.entities.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 //@MappedSuperclass
 @Entity
@@ -39,21 +40,12 @@ public class UnconfirmedUser extends AbstractEntity {
     @Column(name = "password") // bcrypt hash
     private String password;
 
-    @ManyToMany(/*cascade = CascadeType.MERGE,*/ fetch = FetchType.EAGER)
-    @Column(name = "role_id")
-    @JoinTable(name = "unconfirmed_uzer_roles")
+    @NotNull
+    @NotEmpty
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "unconfirmed_uzer_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
     private Set<UserRole> roles = new HashSet<>();
-
-//    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-//    private Set<UserRole> roles = new HashSet<>();
-
-//    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-//    @Column(name = "role_id")
-//    private Set<UserRole> roles = new HashSet<>();
-
-//    // registration confirmation JWT
-//    @NotNull
-//    private String token;
 
     @NotNull
     @Column(name = "first_name")

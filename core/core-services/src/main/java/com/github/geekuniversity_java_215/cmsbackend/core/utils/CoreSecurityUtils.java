@@ -1,7 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.utils;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;

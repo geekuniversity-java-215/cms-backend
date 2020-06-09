@@ -1,29 +1,21 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.converters.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.account.AccountMapper;
-import com.github.geekuniversity_java_215.cmsbackend.core.converters.userrole.UserRoleMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
-import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserRoleDto;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
-@Mapper(componentModel = "spring",
-    unmappedTargetPolicy = ReportingPolicy.ERROR,
-    uses = {InstantMapper.class, UserRoleMapper.class, AccountMapper.class})
+@Mapper(config = AbstractMapper.class,
+        uses = {AccountMapper.class})
 public abstract class UserMapper extends AbstractMapper<User, UserDto> {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRoleService userRoleService;
-
 
     @PostConstruct
     private void postConstruct() {

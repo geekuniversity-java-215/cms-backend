@@ -5,6 +5,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -49,10 +50,21 @@ public class User extends AbstractEntity {
 //    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 //    private Set<UserRole> roles = new HashSet<>();
 
+//    @NotNull
+//    @NotEmpty
+//    @OneToMany
+//    //@ManyToMany(/*cascade = {CascadeType.MERGE},*/ fetch = FetchType.EAGER)
+//    @Column(name = "roles")
+//    private Set<UserRole> roles = new HashSet<>();
+
+    // https://www.w3ma.com/persisting-set-of-enums-in-a-many-to-many-spring-data-relationship/
+
     @NotNull
     @NotEmpty
-    @ManyToMany(/*cascade = {CascadeType.MERGE},*/ fetch = FetchType.EAGER)
-    @Column(name = "role_id")
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "uzer_role", joinColumns = @JoinColumn(name = "user_id"))
+    //@Enumerated(EnumType.)
+    @Column(name = "role")
     private Set<UserRole> roles = new HashSet<>();
 
     // Это список только refresh_token
@@ -113,7 +125,7 @@ public class User extends AbstractEntity {
         this.email = email;
         this.phoneNumber = phoneNumber;
 
-        this.getRoles().add(UserRole.getByName(UserRole.USER));
+        this.getRoles().add(UserRole.USER);
     }
 
 //    protected void setId(Long id) {

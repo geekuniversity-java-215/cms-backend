@@ -2,9 +2,8 @@ package com.github.geekuniversity_java_215.cmsbackend.core;
 
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,12 +13,10 @@ import org.springframework.stereotype.Component;
 public class UsersInitializer {
 
     private final UserService userService;
-    private final UserRoleService userRoleService;
 
     @Autowired
-    public UsersInitializer(UserService userService, UserRoleService userRoleService) {
+    public UsersInitializer(UserService userService) {
         this.userService = userService;
-        this.userRoleService = userRoleService;
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -34,8 +31,8 @@ public class UsersInitializer {
             user = new User("root",
                 "{bcrypt}$2a$10$SQUaDnIckmdPr1Wf/WOYiOL42yn0zCPHoM9qC3XNYsH9NyLqVbWKK",
                 "root", "root", "root@mail.ru", "root");
-            user.getRoles().add(userRoleService.findByName(UserRole.ADMIN).get());
-            user.getRoles().add(userRoleService.findByName(UserRole.MANAGER).get());
+            user.getRoles().add(UserRole.ADMIN);
+            user.getRoles().add(UserRole.MANAGER);
             userService.save(user);
         }
 

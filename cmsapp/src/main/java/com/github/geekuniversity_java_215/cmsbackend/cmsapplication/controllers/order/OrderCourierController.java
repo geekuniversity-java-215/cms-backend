@@ -5,17 +5,17 @@ import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annot
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderCourierService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 
 import java.util.List;
 
 @JrpcController(HandlerName.order.courier.path)
-@Secured(UserRole.COURIER)
+@Secured(UserRole.VAL.COURIER)
 public class OrderCourierController {
 
     private final OrderConverter converter;

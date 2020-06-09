@@ -4,9 +4,9 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.Account.A
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ public class UserDto extends AbstractDto {
 
     private String username;
     private String password;
-    private Set<UserRoleDto> roles = new HashSet<>();
+    private Set<UserRole> roles = new HashSet<>();
 
     private String firstName;
     private String lastName;

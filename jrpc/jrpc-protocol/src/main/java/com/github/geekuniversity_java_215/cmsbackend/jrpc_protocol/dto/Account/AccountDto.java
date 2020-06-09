@@ -15,6 +15,10 @@ public class AccountDto extends AbstractDto {
     private BigDecimal balance = new BigDecimal(0);
     private UserDto user;
 
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "AccountDto{" +

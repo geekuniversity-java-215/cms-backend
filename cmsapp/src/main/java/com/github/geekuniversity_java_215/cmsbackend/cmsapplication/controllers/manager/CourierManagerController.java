@@ -6,30 +6,27 @@ import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annot
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
 @JrpcController(HandlerName.manager.courier.path)
-@Secured(UserRole.MANAGER)
+@Secured(UserRole.VAL.MANAGER)
 public class CourierManagerController {
 
     private final CourierService courierService;
     private final UserService userService;
     private final CourierConverter converter;
-    private final UserRoleService userRoleService;
 
     public CourierManagerController(CourierService courierService, UserService userService,
-                                    CourierConverter converter, UserRoleService userRoleService) {
+                                    CourierConverter converter) {
         this.courierService = courierService;
         this.userService = userService;
         this.converter = converter;
-        this.userRoleService = userRoleService;
     }
 
 
@@ -68,7 +65,7 @@ public class CourierManagerController {
 
         // assign COURIER role
         //noinspection OptionalGetWithoutIsPresent
-        user.getRoles().add(userRoleService.findByName(UserRole.COURIER).get());
+        user.getRoles().add(UserRole.COURIER);
         userService.save(user);
         courier = courierService.save(courier);
 

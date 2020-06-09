@@ -25,7 +25,7 @@ public abstract class UserRoleMapper extends AbstractMapper<UserRole, UserRoleDt
         constructor = new EntityConstructor();
     }
 
-
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "updated", ignore = true)
     @Mapping(target = "enabled", ignore = true)

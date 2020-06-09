@@ -49,6 +49,11 @@ public class UserPrincipalCustom implements UserDetailsCustom {
         return user.isEnabled();
     }
 
+    @Override
+    public User getUser() {
+        return user;
+    }
+
     // -------------------------------------------------------------
 
     // Better don't do this - user fields  may change during request scope

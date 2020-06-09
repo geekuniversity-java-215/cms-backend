@@ -1,21 +1,19 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.converters._base;
 
+
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.SpringBeanUtilsEx;
-import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.SerializationUtils;
-import org.mapstruct.Mapper;
+import org.mapstruct.MapperConfig;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
 
+
+@MapperConfig(componentModel = "spring",
+    unmappedTargetPolicy = ReportingPolicy.ERROR,
+    uses = {InstantMapper.class})
 public abstract class AbstractMapper<E extends AbstractEntity, D extends AbstractDto> {
 
     protected BaseRepoAccessService<E> baseRepoAccessService;
@@ -69,6 +67,10 @@ public abstract class AbstractMapper<E extends AbstractEntity, D extends Abstrac
 
     public abstract E toEntity(D dto);
 
+    //@Mapping(target = "{created,updated,enabled}", ignore = true)
+//    @Mapping(target = "enabled", ignore = true)
+//    @Mapping(target = "created", ignore = true)
+//    @Mapping(target = "updated", ignore = true)
     public abstract D toDto(E entity);
 
     public abstract List<D> toDtoList(List<E> entityList);

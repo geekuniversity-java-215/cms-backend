@@ -4,11 +4,11 @@ import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.A
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.RequestScopeBean;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.aop.ValidAuthenticationType;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.TokenService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.oauth2.token.RefreshToken;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.BlackListResponse;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -45,7 +45,7 @@ public class OauthController {
      */
     @PostMapping( value = "/get")
     @ValidAuthenticationType(AuthType.BASIC_AUTH)
-    @Secured({UserRole.USER, UserRole.ADMIN})
+    @Secured({UserRole.VAL.USER, UserRole.VAL.ADMIN})
     public ResponseEntity<?> getToken() {
         try {
             OauthResponse result;
@@ -67,7 +67,7 @@ public class OauthController {
      */
     @PostMapping(value = "/refresh")
     @ValidAuthenticationType(AuthType.REFRESH_TOKEN)
-    @Secured(UserRole.REFRESH)
+    @Secured(UserRole.VAL.REFRESH)
     public ResponseEntity<?> refreshToken() {
 
         try {
@@ -96,7 +96,7 @@ public class OauthController {
      */
     @PostMapping(value = "/listblack")
     @ValidAuthenticationType({AuthType.ACCESS_TOKEN})
-    @Secured({UserRole.RESOURCE, UserRole.ADMIN})
+    @Secured({UserRole.VAL.RESOURCE, UserRole.VAL.ADMIN})
     public ResponseEntity<?> getBlackList(@Param("from") Long from) {
 
         try {
@@ -116,7 +116,7 @@ public class OauthController {
 
     @PostMapping("/test")
     @ValidAuthenticationType({AuthType.BASIC_AUTH, AuthType.ACCESS_TOKEN})
-    @Secured({UserRole.USER, UserRole.ADMIN, UserRole.RESOURCE})
+    @Secured({UserRole.VAL.USER, UserRole.VAL.ADMIN, UserRole.VAL.RESOURCE})
     public ResponseEntity<String> hello() {
         return  ResponseEntity.ok("SERVLET CONTAINER GRRREET YOU!");
     }

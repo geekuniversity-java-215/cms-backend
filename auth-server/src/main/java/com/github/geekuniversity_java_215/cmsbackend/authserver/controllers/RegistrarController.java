@@ -1,16 +1,17 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.controllers;
 
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.properties.AuthServerConfig;
+import com.github.geekuniversity_java_215.cmsbackend.authserver.service.UnconfirmedUserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.service.RegistrarService;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,19 +26,20 @@ public class RegistrarController {
     private final RegistrarService registrarService;
     private final AuthServerConfig authServerConfig;
 
-    public RegistrarController(RegistrarService registrarService, AuthServerConfig authServerConfig) {
+    public RegistrarController( RegistrarService registrarService, AuthServerConfig authServerConfig) {
         this.registrarService = registrarService;
         this.authServerConfig = authServerConfig;
     }
 
 
     @PostMapping("/new")
-    //@Secured({UserRole.REGISTRAR})
     public ResponseEntity<?> add(@RequestBody UnconfirmedUser newUser) {
 
         ResponseEntity<?> result; // ResponseEntity.badRequest().body("Bad user");
 
         try {
+            newUser.setRoles(UserRole.grantedAuthorityToRoles(UserService.getCurrentUserAuthorities()));
+
             String registrantToken = registrarService.registrate(newUser);
             // toDo: remove returning registrantToken after DEBUG
             result = ResponseEntity.ok(registrantToken);

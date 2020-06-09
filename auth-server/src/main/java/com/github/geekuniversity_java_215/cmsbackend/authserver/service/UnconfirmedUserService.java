@@ -4,9 +4,13 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.Unconfir
 import com.github.geekuniversity_java_215.cmsbackend.authserver.repository.UnconfirmedUserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 

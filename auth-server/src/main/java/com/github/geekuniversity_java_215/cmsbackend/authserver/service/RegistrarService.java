@@ -5,12 +5,11 @@ import com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpr
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.exceptions.UserAlreadyExistsException;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
-import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.mail.services.MailService;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.services.JwtTokenService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,7 +34,6 @@ public class RegistrarService {
     private final CoreSpringConfiguration coreSpringConfiguration;
     private final AuthServerConfig authServerConfig;
     private final UserService userService;
-    private final UserRoleService userRoleService;
     private final UnconfirmedUserService unconfirmedUserService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService jwtTokenService;
@@ -43,14 +41,13 @@ public class RegistrarService {
     private final Validator validator;
 
     public RegistrarService(CoreSpringConfiguration coreSpringConfiguration, AuthServerConfig authServerConfig, UserService userService,
-                            UserRoleService userRoleService, UnconfirmedUserService unconfirmedUserService,
+                            UnconfirmedUserService unconfirmedUserService,
                             PasswordEncoder passwordEncoder,
                             JwtTokenService jwtTokenService,
                             MailService mailService, Validator validator) {
         this.coreSpringConfiguration = coreSpringConfiguration;
         this.authServerConfig = authServerConfig;
         this.userService = userService;
-        this.userRoleService = userRoleService;
         this.unconfirmedUserService = unconfirmedUserService;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenService = jwtTokenService;
@@ -73,8 +70,9 @@ public class RegistrarService {
 
         log.info("Adding new user: {}", newUser);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        //noinspection OptionalGetWithoutIsPresent
-        newUser.getRoles().add(userRoleService.findByName(UserRole.CONFIRM_REGISTRATION).get());
+
+        newUser.getRoles().clear();
+        newUser.getRoles().add(UserRole.CONFIRM_REGISTRATION);
 
         // save new user to UnconfirmedUser
         unconfirmedUserService.save(newUser);
@@ -111,8 +109,7 @@ public class RegistrarService {
 
         // Set user roles to USER
         user.getRoles().clear();
-        //noinspection OptionalGetWithoutIsPresent
-        user.getRoles().add(userRoleService.findByName(UserRole.USER).get());
+        user.getRoles().add(UserRole.USER);
         // save user
         userService.save(user);
 
