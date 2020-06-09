@@ -48,13 +48,6 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
     User afterMapping(UserDto source, @MappingTarget User target) {
 
         return merge(source, target);
-
-//        // update roles manually
-//        target.getRoles().clear();
-//        for (UserRoleDto role : source.getRoles()) {
-//            target.getRoles().add(userRoleService.findByName(role.getName())
-//                .orElseThrow(() -> new IllegalArgumentException("UserRole " + role.getName() + "not found")));
-//        }
     }
 
     protected class EntityConstructor extends Constructor<User, UserDto> {

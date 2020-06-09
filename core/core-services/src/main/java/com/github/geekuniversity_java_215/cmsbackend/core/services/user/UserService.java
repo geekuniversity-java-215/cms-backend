@@ -65,30 +65,14 @@ public class UserService extends BaseRepoAccessService<User> {
         return userRepository.checkIfExists(user);
     }
 
-
-
-
-    /**
-     * Get current authenticated user userName
-     * @return User
-     */
-    public static String getCurrentUsername() {
-
-        String result;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            result = userDetails.getUsername();
-        }
-        else {
-            result = authentication.getName();
-        }
-        return result;
+    @Override
+    public Optional<User> findByIdEager(Long id) {
+        return userRepository.findById(id, EntityGraphs.named(User.FULL_ENTITY_GRAPH));
     }
 
-    public static Collection<? extends GrantedAuthority> getCurrentUserAuthorities() {
-        return SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-    }
+
+
+
 
 
     /**
@@ -113,8 +97,28 @@ public class UserService extends BaseRepoAccessService<User> {
         return result;
     }
 
-    @Override
-    public Optional<User> findByIdEager(Long id) {
-        return userRepository.findById(id, EntityGraphs.named(User.FULL_ENTITY_GRAPH));
+
+
+
+    /**
+     * Get current authenticated user userName
+     * @return User
+     */
+    public static String getCurrentUsername() {
+
+        String result;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            result = userDetails.getUsername();
+        }
+        else {
+            result = authentication.getName();
+        }
+        return result;
+    }
+
+    public static Collection<? extends GrantedAuthority> getCurrentUserAuthorities() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities();
     }
 }
