@@ -36,17 +36,24 @@ public abstract class AbstractMapper<E extends AbstractEntity, D extends Abstrac
 //    }
 
     /**
-     * Merge Entity converted from DTO to entity loaded from database, exclude null fiel
-     * @param source
-     * @param target
-     * @return
+     * Merge Entity converted from DTO(target) to entity loaded from database(result),
+     * exclude null fields on target and PersistentBag(lazy-loaded fields) on result
+     * @param source - unconverted Dto from client
+     * @param target - converted Dto -> Entity
+     * result - entity uploaded by target.id from DB
+     * @return merge result
      */
     public E merge(D source, E target) {
 
+
+
         E result;
 
+
+        // source.getId() - cause entity.id has protected setter and target.id always be null
         // Update existing entity
         if(source.getId() != null) {
+            //result = baseRepoAccessService.findByIdEager(source.getId());  // Загружаем сущность целиком, без lazy initialization
             result = baseRepoAccessService.findById(source.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Entity by id: " + source.getId() + " not found"));
             // Merge entity from DTO to entity loaded from DB
@@ -70,7 +77,8 @@ public abstract class AbstractMapper<E extends AbstractEntity, D extends Abstrac
 
     // ====================================================
 
-    // метод create нельзя размещать внутри AbstractMapper - mapstruct начнет ругань
+    // метод create нельзя размещать внутри AbstractMapper - mapstruct начнет ругань,
+    // что он не знает, куда прикрутить этот ваш create() и что им делать.
 
     // allow to obtain new object from descendants classes
     protected abstract class Constructor<E extends AbstractEntity, D extends AbstractDto> {

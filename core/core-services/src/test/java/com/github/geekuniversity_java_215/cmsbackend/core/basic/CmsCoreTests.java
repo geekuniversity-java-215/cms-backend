@@ -11,6 +11,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.services.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -74,6 +75,9 @@ class CmsCoreTests {
         userService.findByFullName(user.getLastName(), user.getFirstName())
                 .orElseThrow( () -> new UsernameNotFoundException(finalUser.getFullName() + " не найден"));
 
+        user = userService.findByIdEager(user.getId()).get();
+        Assert.assertNotNull(user.getRefreshTokenList());
+
         acc = new Account();
         user = new User("sema", "INVALID",
                 "Семенов", "Семен", "semen@mail.ru", "456");
@@ -84,6 +88,8 @@ class CmsCoreTests {
 
         acc = accountService.findById(2L).get();
         log.info("loaded: {} ok!", acc);
+
+
 
         Order o = new Order();
         o.setCourier(courier);

@@ -48,12 +48,12 @@ public class CourierManagerController {
 
         Courier courier = converter.toEntity(params);
         Long courierId = courier.getId();
-        long userId = courier.getUser().getId();
 
         // check courier have user
         if(courier.getUser() == null) {
             throw new IllegalArgumentException("Courier without user");
         }
+        long userId = courier.getUser().getId();
 
         // check courier user exists
         User user = userService.findById(userId)

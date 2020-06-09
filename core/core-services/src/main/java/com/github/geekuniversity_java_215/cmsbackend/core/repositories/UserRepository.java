@@ -23,4 +23,8 @@ public interface UserRepository extends CustomRepository<User, Long> {
         "lower(u.email) = :#{#user.email.toLowerCase()} OR " +
         "u.phoneNumber = :#{#user.phoneNumber}")
     boolean checkIfExists(@Param("user")User user);
+
+    //@EntityGraph(value = "Item.characteristics")
+    //load
+
 }

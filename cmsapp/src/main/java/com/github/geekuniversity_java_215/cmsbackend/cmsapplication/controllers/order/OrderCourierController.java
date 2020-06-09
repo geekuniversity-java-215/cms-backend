@@ -16,7 +16,6 @@ import java.util.List;
 
 @JrpcController(HandlerName.order.courier.path)
 @Secured(UserRole.COURIER)
-//@SuppressWarnings("DuplicatedCode")
 public class OrderCourierController {
 
     private final OrderConverter converter;
@@ -96,3 +95,5 @@ public class OrderCourierController {
         return converter.toIdJson(order);
     }
 }
+
+//@SuppressWarnings("DuplicatedCode")

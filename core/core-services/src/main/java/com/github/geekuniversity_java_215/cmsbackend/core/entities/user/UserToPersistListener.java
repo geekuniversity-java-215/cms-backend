@@ -1,5 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.entities.user;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
+import com.github.geekuniversity_java_215.cmsbackend.core.services.AccountService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,12 @@ import java.util.HashSet;
 public class UserToPersistListener {
 
     static private UserRoleService userRoleService;
+    static private AccountService accountService;
 
     @Autowired
-    public void init(UserRoleService userRoleService){
+    public void init(UserRoleService userRoleService, AccountService accountService) {
         UserToPersistListener.userRoleService = userRoleService;
+        UserToPersistListener.accountService = accountService;
     }
 
     @PrePersist
@@ -25,7 +29,6 @@ public class UserToPersistListener {
     public void methodExecuteBeforeSave(User user) {
 
         // Make sure that User contains persisted UserRoles
-        // So CascadeType.MERGE will be successful
         for (UserRole role : new HashSet<>(user.getRoles())) {
 
             if (role.getId() == null) {
@@ -34,5 +37,17 @@ public class UserToPersistListener {
                     .orElseThrow(() -> new IllegalArgumentException("UserRole " + role.getName() + "not found")));
             }
         }
+
+        // создадим для User аккаунт, если его у него нет
+        if (user.getAccount() == null) {
+            accountService.findByUser(user)
+                .ifPresent(account -> {
+                    throw new IllegalArgumentException("User " + user.getUsername() + " already have Account");
+                });
+        }
+        Account account = new Account();
+        user.setAccount(account);
+        account.setUser(user);
+        accountService.save(account);
     }
 }

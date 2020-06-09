@@ -2,6 +2,8 @@ package com.github.geekuniversity_java_215.cmsbackend.core.converters.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.AbstractMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.InstantMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.account.AccountMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserRoleService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
@@ -14,7 +16,7 @@ import javax.annotation.PostConstruct;
 
 @Mapper(componentModel = "spring",
     unmappedTargetPolicy = ReportingPolicy.ERROR,
-    uses = {InstantMapper.class})
+    uses = {InstantMapper.class, AccountMapper.class})
 public abstract class UserMapper extends AbstractMapper<User, UserDto> {
 
     @Autowired
@@ -29,6 +31,7 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
         constructor = new EntityConstructor();
     }
 
+    @Mapping(target = "password", ignore = true)
     @Mapping(target = "client", ignore = true)
     @Mapping(target = "courier", ignore = true)
     public abstract UserDto toDto(User user);
@@ -37,14 +40,25 @@ public abstract class UserMapper extends AbstractMapper<User, UserDto> {
     @Mapping(target = "courier", ignore = true)
     @Mapping(target = "refreshTokenList", ignore = true)
     @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "account", ignore = true)
     public abstract User toEntity(UserDto userDto);
+
+
+//    @AfterMapping
+//    UserDto afterMapping(User source, @MappingTarget UserDto target) {
+//
+//        UserDto result = target;
+//        result.getAccount().setUser(result);
+//        return result;
+//    }
+
 
     @AfterMapping
     User afterMapping(UserDto source, @MappingTarget User target) {
 
         target = merge(source, target);
 
-        // update roles
+        // update roles (add/remove)
         for (UserRoleDto role : source.getRoles()) {
             target.getRoles().add(userRoleService.findByName(role.getName())
                 .orElseThrow(() -> new IllegalArgumentException("UserRole " + role.getName() + "not found")));

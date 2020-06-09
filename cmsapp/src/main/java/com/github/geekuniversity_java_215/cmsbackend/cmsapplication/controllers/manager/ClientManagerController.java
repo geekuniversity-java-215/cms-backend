@@ -46,18 +46,18 @@ public class ClientManagerController {
 
         Client client = converter.toEntity(params);
         Long clientId = client.getId();
-        long userId = client.getUser().getId();
 
         // check client have user
         if(client.getUser() == null) {
             throw new IllegalArgumentException("Client without user");
         }
+        long userId = client.getUser().getId();
 
         // check client user exists
         User user = userService.findById(userId)
             .orElseThrow(() -> new UsernameNotFoundException("User by id " + userId + " not found"));
 
-        // check user not stealed from other client
+        // check user not stolen from other client
         clientService.findOneByUser(user).ifPresent(c -> {
             if (clientId != null && !c.getId().equals(clientId))
                 throw new IllegalArgumentException("Stealing user: " + user.getUsername() + " from another client: " + c.getId());

@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.repositories;
 
+import com.cosium.spring.data.jpa.entity.graph.repository.support.EntityGraphSimpleJpaRepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -19,7 +20,7 @@ import java.io.Serializable;
 
 @NoRepositoryBean
 @Transactional
-public class RepositoryWithEntityManager<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
+public class RepositoryWithEntityManager<T, ID extends Serializable> extends EntityGraphSimpleJpaRepository<T, ID> /*SimpleJpaRepository<T, ID>*/
     implements CustomRepository<T, ID> {
 
     private final EntityManager entityManager;

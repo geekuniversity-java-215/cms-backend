@@ -61,14 +61,14 @@ public class OrderCourierService {
         Order order = orderService.findByIdOrError(id);
         order.setCourier(courierService.getCurrent());
         order.setStatus(OrderStatus.ASSIGNED);
-        // will check that previous version of Order.status == NEW
+        // later  will check that previous version of Order.status should be == NEW
         return orderService.save(order);
     }
 
     public Order execute(Long id) {
 
         Order order = orderService.findByIdOrError(id);
-        checkOrderOwner(order);
+        checkOrderOwner(order.getId());
         order.setStatus(OrderStatus.TRANSIT);
         return orderService.save(order);
     }
@@ -76,7 +76,7 @@ public class OrderCourierService {
     public Order complete(Long id) {
 
         Order order = orderService.findByIdOrError(id);
-        checkOrderOwner(order);
+        checkOrderOwner(order.getId());
         order.setStatus(OrderStatus.COMPLETED);
         return orderService.save(order);
     }
@@ -84,7 +84,7 @@ public class OrderCourierService {
     public Order close(Long id) {
 
         Order order = orderService.findByIdOrError(id);
-        checkOrderOwner(order);
+        checkOrderOwner(order.getId());
         order.setStatus(OrderStatus.CLOSED);
         return orderService.save(order);
     }
@@ -111,13 +111,13 @@ public class OrderCourierService {
 
     /**
      * Check that currently being modified Order is belong to current Courier
-     * @param order
+     * @param id Order id
      */
-    private void checkOrderOwner(Order order) {
+    private void checkOrderOwner(Long id) {
 
-        if(order != null && order.getId() != null) {
-            Order old = orderService.findById(order.getId()).orElseThrow(() ->
-                new IllegalArgumentException("Order with id:\n" + order.getId() + " not exists"));
+        if(id != null) {
+            Order old = orderService.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Order with id:\n" + id + " not exists"));
 
             if (!old.getCourier().equals(courierService.getCurrent())) {
                 throw new AccessDeniedException("HAAKCEEER !!!");

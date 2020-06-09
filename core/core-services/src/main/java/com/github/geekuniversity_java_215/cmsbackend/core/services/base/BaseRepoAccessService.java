@@ -1,5 +1,8 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services.base;
 
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.CustomRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,10 @@ public abstract class BaseRepoAccessService<T> {
         return baseRepository.findById(id);
     }
 
+    public Optional<T> findByIdEager(Long id) {
+        return baseRepository.findById(id, EntityGraphs.empty());
+    }
+
 
     public T findByIdOrError(Long id) {
         return baseRepository.findById(id)
@@ -44,7 +51,6 @@ public abstract class BaseRepoAccessService<T> {
     }
 
     public List<T> findAllById(List<Long> listId) {
-
         return baseRepository.findAllById(listId);
     }
 

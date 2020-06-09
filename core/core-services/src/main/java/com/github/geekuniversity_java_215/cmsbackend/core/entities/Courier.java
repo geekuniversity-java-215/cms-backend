@@ -41,7 +41,9 @@ public class Courier extends AbstractEntity {
 
     public void setUser(User user) {
         this.user = user;
-        user.setCourier(this);
+        if (user.getCourier() != this) {
+            user.setCourier(this);
+        }
     }
 
     @Override

@@ -200,9 +200,17 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
 */
 
     // T => Json
+    public JsonNode toJson(JsonNode params) {
+        return objectMapper.valueToTree(params);
+    }
+
+
+    // T.getId() => Json
     public JsonNode toIdJson(AbstractEntity entity) {
         return objectMapper.valueToTree(entity.getId());
     }
+
+
 
     // ----------------------------------------------------------------------------
 

@@ -2,6 +2,7 @@ package com.github.geekuniversity_java_215.cmsbackend.core.services.order;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +20,8 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@Secured(UserRole.CLIENT)
 @Slf4j
-// @SuppressWarnings("DuplicatedCode")
 public class OrderClientService {
 
     private final OrderService orderService;
@@ -53,7 +55,7 @@ public class OrderClientService {
     public Order save(Order order) {
 
         order.setClient(clientService.getCurrent());
-        checkOrderOwner(order);
+        checkOrderOwner(order.getId());
         return orderService.save(order);
     }
 
@@ -83,22 +85,22 @@ public class OrderClientService {
 
     /**
      * Check that currently being modified Order is belong to current Client
-     * @param order
+     * @param id Order Id
      */
-    private void checkOrderOwner(Order order) {
+    private void checkOrderOwner(Long id) {
 
-        if(order != null &&  order.getId() != null) {
-            Order old = orderService.findById(order.getId()).orElseThrow(() ->
-                new IllegalArgumentException("Order with id:\n" + order.getId() + " not exists"));
+        // order was persisted
+        if(id != null) {
+            Order old = orderService.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Order with id:\n" + id + " not exists"));
 
+            // client try to modify foreign Order (belonged to other client)
             if (!old.getClient().equals(clientService.getCurrent())) {
-                throw new AccessDeniedException("HAAKCEEER !!!");
+                throw new AccessDeniedException("HAAKCEEER GTFO !!!");
             }
         }
     }
-
-    private void checkOrderOwner(Long orderId) {
-        Order order = orderService.findByIdOrError(orderId);
-        checkOrderOwner(order);
-    }
 }
+
+
+// @SuppressWarnings("DuplicatedCode")

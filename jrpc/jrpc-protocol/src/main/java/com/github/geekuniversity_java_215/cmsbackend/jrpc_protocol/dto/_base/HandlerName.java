@@ -28,9 +28,8 @@ public class HandlerName {
 
     //user specific
     private static final String findByUsername = "findByUsername";
-    private static final String addRoles = "addRoles";
-    //private static final String makeClient = "makeClient";
-    //private static final String makeCourier = "makeCourier";
+    private static final String makeClient = "makeClient";
+    private static final String makeCourier = "makeCourier";
 
     // order specific
     private static final String cancel = "cancel";
@@ -67,6 +66,8 @@ public class HandlerName {
         public static final String path = "cmsapp.core.user";
         public static final String getCurrent = HandlerName.getCurrent;
         public static final String save = HandlerName.save;
+        public static final String makeClient = HandlerName.makeClient;
+        public static final String makeCourier = HandlerName.makeCourier;
     }
 
     // CLIENT --------------------------------------------------------

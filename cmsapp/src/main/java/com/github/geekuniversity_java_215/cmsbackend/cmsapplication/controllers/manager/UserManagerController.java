@@ -11,6 +11,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserServ
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.user.UserSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserSpecDto;
+import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -106,7 +107,8 @@ public class UserManagerController {
 
 
     /**
-     * Save User(insert new or update existing)
+     * Save User, may change roles
+     * <br> Will not save Account
      * @param params User
      * @return
      */
@@ -115,12 +117,17 @@ public class UserManagerController {
 
         User user = converter.toEntity(params);
 
-        // convert password from plain text to bcrypt
-        if (user.getPassword() != null &&
+        // update/set password - if not empty and not loaded from DB
+        if (!StringUtils.isBlank(user.getPassword()) &&
             !user.getPassword().contains("{bcrypt}")) {
-
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
+
+        // Security
+        User currentUser = userService.getCurrent();
+        // preserve Account
+        user.setAccount(currentUser.getAccount());
+
         user = userService.save(user);
         return converter.toIdJson(user);
     }

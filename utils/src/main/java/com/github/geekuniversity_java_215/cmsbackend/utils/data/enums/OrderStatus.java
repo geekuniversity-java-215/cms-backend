@@ -22,6 +22,8 @@ public enum OrderStatus {
 
     private final static Map<Integer, OrderStatus> ENUM_MAP = new HashMap<>();
 
+    public static final String ASSIGNED_S = ASSIGNED.name();
+
     static {
         for(OrderStatus item : OrderStatus.values()) {
             if (ENUM_MAP.containsKey(item.id)){

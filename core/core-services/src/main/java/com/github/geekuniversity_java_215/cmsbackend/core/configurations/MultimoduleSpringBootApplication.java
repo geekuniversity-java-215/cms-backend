@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.configurations;
 
+import com.cosium.spring.data.jpa.entity.graph.repository.support.EntityGraphJpaRepositoryFactoryBean;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.RepositoryWithEntityManager;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -16,7 +17,8 @@ import java.lang.annotation.*;
 
 @SpringBootApplication(scanBasePackages = "com.github.geekuniversity_java_215.cmsbackend")
 @EnableJpaRepositories(basePackages = "com.github.geekuniversity_java_215.cmsbackend",
-                       repositoryBaseClass = RepositoryWithEntityManager.class)
+                       repositoryBaseClass = RepositoryWithEntityManager.class,
+                       repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class)
 @EntityScan(basePackages = {"com.github.geekuniversity_java_215.cmsbackend"})
 @EnableGlobalMethodSecurity(
     prePostEnabled = true,

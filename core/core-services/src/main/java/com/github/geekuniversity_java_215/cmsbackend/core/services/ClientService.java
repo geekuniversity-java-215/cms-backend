@@ -5,6 +5,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.repositories.ClientRep
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class ClientService extends BaseRepoAccessService<Client> {
     private final ClientRepository clientRepository;
     private final UserService userService;
 
+    @Lazy
     public ClientService(ClientRepository clientRepository, UserService userService) {
         super(clientRepository);
         this.clientRepository = clientRepository;

@@ -39,7 +39,7 @@ public class UnconfirmedUser extends AbstractEntity {
     @Column(name = "password") // bcrypt hash
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(/*cascade = CascadeType.MERGE,*/ fetch = FetchType.EAGER)
     @Column(name = "role_id")
     @JoinTable(name = "unconfirmed_uzer_roles")
     private Set<UserRole> roles = new HashSet<>();

@@ -41,7 +41,9 @@ public class Client extends AbstractEntity {
 
     public void setUser(User user) {
         this.user = user;
-        user.setClient(this);
+        if (user.getClient() != this) {
+            user.setClient(this);
+        }
     }
 
     @Override

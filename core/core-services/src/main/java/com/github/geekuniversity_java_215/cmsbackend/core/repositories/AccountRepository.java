@@ -1,6 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.repositories;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Account;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +20,6 @@ public interface AccountRepository extends CustomRepository<Account, Long> {
     @Query("FROM Account a " +
            "WHERE a = :#{#account}")
     Optional<Account> lockByAccount(@Param("account")Account account);
+
+    Optional<Account> findByUser(User user);
 }

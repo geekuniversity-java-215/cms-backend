@@ -20,9 +20,16 @@ import java.util.*;
         indexes = {@Index(name = "user_account_id_idx", columnList = "account_id"),
                 @Index(name = "user_first_name_last_name_unq", columnList = "last_name, first_name",unique = true)
         })
+
+@NamedEntityGraph(name = User.FULL_ENTITY_GRAPH,
+    attributeNodes = @NamedAttributeNode("refreshTokenList")
+)
+
 @EntityListeners(UserToPersistListener.class)
 @Data
 public class User extends AbstractEntity {
+
+    public static final String FULL_ENTITY_GRAPH = "User.full";
 
 //    @Id
 //    @Column(name = "id")
@@ -44,7 +51,7 @@ public class User extends AbstractEntity {
 
     @NotNull
     @NotEmpty
-    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(/*cascade = {CascadeType.MERGE},*/ fetch = FetchType.EAGER)
     @Column(name = "role_id")
     private Set<UserRole> roles = new HashSet<>();
 
@@ -74,10 +81,10 @@ public class User extends AbstractEntity {
 
     @NotNull
     @Column(name = "phone_number")  // may change or not?
+    @Setter(AccessLevel.NONE)
     private String phoneNumber;
 
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(/*cascade = CascadeType.ALL,*/ orphanRemoval = true/*, fetch = FetchType.EAGER*/)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
@@ -136,6 +143,20 @@ public class User extends AbstractEntity {
     @JsonIgnore
     public String getFullName() {
         return lastName + firstName;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+        if (client.getUser() != this) {
+            client.setUser(this);
+        }
+    }
+
+    public void setCourier(Courier courier) {
+        this.courier = courier;
+        if (courier.getUser() != this) {
+            courier.setUser(this);
+        }
     }
 
 

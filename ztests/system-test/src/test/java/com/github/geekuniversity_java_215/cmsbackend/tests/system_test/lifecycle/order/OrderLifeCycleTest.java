@@ -12,7 +12,9 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.registr
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_client.request.user.UserRequest;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.address.AddressDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import com.github.geekuniversity_java_215.cmsbackend.tests.system_test.configurations.SystemTestSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -55,10 +57,31 @@ public class OrderLifeCycleTest {
         AddressDto to;
         OrderDto order;
         Long orderId;
+        UserDto user;
 
+        // VASYA ----------------------------------------------------------------------------------
+
+        // Up vasya to client and courier
+        userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.VASYA);
+        user = userRequest.getCurrent();
+        Long clientId = userRequest.makeClient();
+        log.info("clientId: {}", clientId);
+        Long courierId = userRequest.makeCourier();
+        log.info("courierId: {}", courierId);
+        
         // CLIENT ----------------------------------------------------------------------------------
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.CLIENT);
+        user = userRequest.getCurrent();
+
+        user.setPayPalEmail("НаНаНАнАнАнАнАнА!!!!");
+        userRequest.save(user);
+
+
         ClientDto client = clientRequest.getCurrent();
+
+
+
+
 
         // Prepare database here
         from = new AddressDto("Москва", "Улица красных тюленей", 1, 2, 3);
@@ -82,6 +105,8 @@ public class OrderLifeCycleTest {
         // COURIER ----------------------------------------------------------------------------------
 
         userConfig.switchJrpcClientProperties(SystemTestSpringConfiguration.COURIER);
+
+        CourierDto courier = courierRequest.getCurrent();
 
         // получаем список новых заказов
         orderList = orderCourierRequest.findNew(null);

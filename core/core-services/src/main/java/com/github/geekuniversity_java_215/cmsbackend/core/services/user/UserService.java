@@ -1,6 +1,10 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services.user;
 
-import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.UserDetailsCustom;
+
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Client;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Courier;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UserRole;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.UserRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
@@ -18,10 +22,11 @@ import java.util.Optional;
 @Transactional
 public class UserService extends BaseRepoAccessService<User> {
 
+
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService( UserRepository userRepository) {
         super(userRepository);
         this.userRepository = userRepository;
     }
@@ -81,4 +86,8 @@ public class UserService extends BaseRepoAccessService<User> {
         return findByUsername(getCurrentUsername()).get();
     }
 
+    @Override
+    public Optional<User> findByIdEager(Long id) {
+        return userRepository.findById(id, EntityGraphs.named(User.FULL_ENTITY_GRAPH));
+    }
 }

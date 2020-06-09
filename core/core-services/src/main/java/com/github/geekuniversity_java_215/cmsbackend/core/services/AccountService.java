@@ -1,5 +1,7 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services;
 
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.repositories.AccountRepository;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.base.BaseRepoAccessService;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.geekuniversity_java_215.cmsbackend.utils.Utils.fieldSetter;
@@ -98,6 +101,11 @@ public class AccountService extends BaseRepoAccessService<Account> {
         }
 
         return amount;
+    }
+
+
+    public Optional<Account> findByUser(User user) {
+        return accountRepository.findByUser(user);
     }
 
 }

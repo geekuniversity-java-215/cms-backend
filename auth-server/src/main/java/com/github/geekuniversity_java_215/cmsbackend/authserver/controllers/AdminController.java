@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.*;
+
 @RestController
 @RequestMapping("/admin/")
 @Slf4j

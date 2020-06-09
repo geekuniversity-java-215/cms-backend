@@ -10,12 +10,21 @@ import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// https://stackoverflow.com/questions/13253624/how-to-supply-enum-value-to-an-annotation-from-a-constant-in-java
+// All problems in computer science can be solved by another level of indirection,
+// except for the problem of too many layers of indirection.
 
+
+// ToDo: Use
+//  https://www.baeldung.com/jpa-persisting-enums-in-jpa#converter
+
+
+// Entity-Enum (stored in code and in DB)
+// наверное стоит убрать из БД
 @Entity
 @Table(name="uzer_role")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class UserRole extends AbstractEntity {
 
     //public static final String REGISTRAR              = "ROLE_REGISTRAR";
