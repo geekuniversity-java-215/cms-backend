@@ -119,3 +119,15 @@ git checkout dev_имясвоейветки
 git merge dev
 ```
 При этом конфликты слияния будете разруливать самостоятельно. 
+<br>
+<br>
+
+## Documentation
+<br>
+
+
+JRPC API  
+https://docs.google.com/document/d/1T_bhJhTNQsgpSe6ZfIcXWyHdEfJTl_U_JJo0rFpmFRY/edit
+
+AUTH API  
+https://docs.google.com/document/d/1T_bhJhTNQsgpSe6ZfIcXWyHdEfJTl_U_JJo0rFpmFRY/edit
