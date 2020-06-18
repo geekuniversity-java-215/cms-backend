@@ -133,4 +133,4 @@ JRPC API
 https://docs.google.com/document/d/1T_bhJhTNQsgpSe6ZfIcXWyHdEfJTl_U_JJo0rFpmFRY/edit
 
 AUTH API  
-https://docs.google.com/document/d/1T_bhJhTNQsgpSe6ZfIcXWyHdEfJTl_U_JJo0rFpmFRY/edit
+https://docs.google.com/document/d/16FoZU9HqNRRSnwK0ZRUmDe2MgdBLCEaBpwr3xg1sKxo/edit
