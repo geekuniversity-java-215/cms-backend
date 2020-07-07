@@ -1,15 +1,20 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.specification;
 
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.core.specifications.base.SpecBuilder;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
+@Service
 @SuppressWarnings("ConstantConditions")
 @Slf4j
-public class CashFlowSpecBuilder {
+public class CashFlowSpecBuilder implements SpecBuilder<CashFlow, CashFlowSpecDto> {
 
-    public static Specification<CashFlow> build (CashFlowSpecDto cashFlowSpecDto){
+    public Specification<CashFlow> build (CashFlowSpecDto cashFlowSpecDto){
 
         if (cashFlowSpecDto == null){
             return null;

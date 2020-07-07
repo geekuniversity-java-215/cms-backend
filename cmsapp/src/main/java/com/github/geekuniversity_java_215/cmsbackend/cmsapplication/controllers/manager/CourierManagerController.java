@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.manager;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierConverter;
@@ -9,6 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,19 +31,18 @@ public class CourierManagerController {
 
 
     @JrpcMethod(HandlerName.manager.courier.findByUsername)
-    public JsonNode findByUsername(JsonNode params) {
+    public CourierDto findByUsername(String username) {
 
-        String username = converter.get(params, String.class);
         Courier courier = courierService.findByUsername(username).orElse(null);;
-        return converter.toDtoJson(courier);
+        return converter.toDto(courier);
     }
 
 
     @JrpcMethod(HandlerName.manager.courier.save)
-    public JsonNode save(JsonNode params) {
+    public Long save(CourierDto courierDto) {
 
 
-        Courier courier = converter.toEntity(params);
+        Courier courier = converter.toEntity(courierDto);
         Long courierId = courier.getId();
 
         // check courier have user
@@ -64,11 +63,10 @@ public class CourierManagerController {
 
 
         // assign COURIER role
-        //noinspection OptionalGetWithoutIsPresent
         user.getRoles().add(UserRole.COURIER);
         userService.save(user);
         courier = courierService.save(courier);
 
-        return converter.toIdJson(courier);
+        return courier.getId();
     }
 }

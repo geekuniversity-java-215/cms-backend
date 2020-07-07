@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.data.HttpResponseFactory;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.utils.HandlerSignature;
+import com.github.geekuniversity_java_215.cmsbackend.core.controllers.utils.ReflectionUtils;
 import com.github.geekuniversity_java_215.cmsbackend.core.exceptions.InvalidLogicException;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.JrpcException;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.protocol.request.JrpcRequestHeader;
@@ -27,8 +29,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
@@ -47,16 +48,21 @@ public class ApiController {
 
     private final ApplicationContext context;
     private final ObjectMapper objectMapper;
+    private final ReflectionUtils reflectionUtils;
 
 
 
-    // Map обработчиков jrpc запросов
-    private final Map<String, JrpcMethodHandler> handlers = new ConcurrentHashMap<>();
+    // Map обработчиков jrpc запросов                           // ConcurrentHashMap
+    private final Map<String, JrpcMethodHandler> handlers = new HashMap<>();
+
+    // Список параметров обработчиков jrpc запроса
+    private final Map<String, HandlerSignature> handlersParams = new HashMap<>();
 
     @Autowired
-    public ApiController(ApplicationContext context, ObjectMapper objectMapper) {
+    public ApiController(ApplicationContext context, ObjectMapper objectMapper, ReflectionUtils reflectionUtils) {
         this.context = context;
         this.objectMapper = objectMapper;
+        this.reflectionUtils = reflectionUtils;
     }
 
     @PostConstruct
@@ -204,6 +210,8 @@ public class ApiController {
 
 
     // =================================================================================================
+    // Reflection manipulations
+    // =================================================================================================
 
     /**
      * Fill handlers based on beans annotated with @JrpcController
@@ -232,13 +240,14 @@ public class ApiController {
                 
                 // Ищем в бине метод, помеченный аннотацией @JrpcMethod
                 for (Method method : beanClass.getDeclaredMethods()) {
-                    if (method.isAnnotationPresent(JrpcMethod.class)) {
 
+                    if (method.isAnnotationPresent(JrpcMethod.class)) {
                         //Should give you expected results
                         JrpcMethod jrpcMethod = method.getAnnotation(JrpcMethod.class);
 
                         // Checked(как и unchecked) исключения будут проброшены к вызывающему
-                        JrpcMethodHandler handler = params -> (JsonNode)method.invoke(bean,params);
+                        //JrpcMethodHandler handler = params -> (JsonNode)method.invoke(bean, params);
+                        JrpcMethodHandler handler = reflectionUtils.createJrpcHandlerExecutor(bean, method);
 
                         String controllerMethodName = jrpcController.value() + "." + jrpcMethod.value();
 
@@ -249,6 +258,7 @@ public class ApiController {
                         }
                         
                         handlers.put(controllerMethodName, handler);
+                        //handlersParams.put(controllerMethodName, getHandlerParams(method));
                     }
                 }
             }
@@ -258,5 +268,4 @@ public class ApiController {
         }
 
     }
-
 }

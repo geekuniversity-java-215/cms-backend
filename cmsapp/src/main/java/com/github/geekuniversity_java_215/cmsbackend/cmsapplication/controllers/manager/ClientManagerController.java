@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.manager;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientConverter;
@@ -9,6 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,18 +33,17 @@ public class ClientManagerController {
 
 
     @JrpcMethod(HandlerName.manager.client.findByUsername)
-    public JsonNode findByUsername(JsonNode params) {
+    public ClientDto findByUsername(String username) {
 
-        String username = converter.get(params, String.class);
         Client client = clientService.findByUsername(username).orElse(null);;
-        return converter.toDtoJson(client);
+        return converter.toDto(client);
     }
 
 
     @JrpcMethod(HandlerName.manager.client.save)
-    public JsonNode save(JsonNode params) {
+    public Long save(ClientDto clientDto) {
 
-        Client client = converter.toEntity(params);
+        Client client = converter.toEntity(clientDto);
         Long clientId = client.getId();
 
         // check client have user
@@ -68,7 +67,7 @@ public class ClientManagerController {
         userService.save(user);
         client = clientService.save(client);
 
-        return converter.toIdJson(client);
+        return client.getId();
     }
 
 

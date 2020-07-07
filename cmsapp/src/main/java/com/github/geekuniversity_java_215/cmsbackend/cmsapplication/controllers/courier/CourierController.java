@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.courier;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierConverter;
@@ -9,6 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.security.access.annotation.Secured;
 
@@ -38,11 +38,11 @@ public class CourierController {
      */
     @JrpcMethod(HandlerName.courier.getCurrent)
     @Secured(UserRole.VAL.COURIER)
-    public JsonNode getCurrent(JsonNode params) {
+    public CourierDto getCurrent() {
 
         User user = userService.getCurrent();
         Courier client = courierService.findOneByUser(user).orElse(null);
-        return converter.toDtoJson(client);
+        return converter.toDto(client);
     }
 
 

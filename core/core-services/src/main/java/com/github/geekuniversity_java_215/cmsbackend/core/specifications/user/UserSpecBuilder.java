@@ -1,15 +1,18 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.specifications.user;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
+import com.github.geekuniversity_java_215.cmsbackend.core.specifications.base.SpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserSpecDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
+@Service
 @SuppressWarnings("ConstantConditions")
 @Slf4j
-public class UserSpecBuilder {
+public class UserSpecBuilder implements SpecBuilder<User, UserSpecDto> {
 
-    public static Specification<User> build(UserSpecDto userSpecDto) {
+    public Specification<User> build(UserSpecDto userSpecDto) {
 
         if (userSpecDto == null) {
             return null;

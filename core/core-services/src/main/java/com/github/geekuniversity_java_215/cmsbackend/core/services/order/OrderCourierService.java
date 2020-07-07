@@ -1,11 +1,11 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services.order;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.courier.CourierConverter;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
-import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.courier.CourierDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
@@ -24,11 +24,14 @@ public class OrderCourierService {
     private final OrderService orderService;
     private final CourierService courierService;
     private final CourierConverter courierConverter;
+    private final OrderConverter orderConverter;
 
-    public OrderCourierService(OrderService orderService, CourierService courierService, CourierConverter courierConverter) {
+    public OrderCourierService(OrderService orderService, CourierService courierService,
+                               CourierConverter courierConverter, OrderConverter orderConverter) {
         this.orderService = orderService;
         this.courierService = courierService;
         this.courierConverter = courierConverter;
+        this.orderConverter = orderConverter;
     }
 
 
@@ -36,14 +39,14 @@ public class OrderCourierService {
 
         OrderSpecDto specDto = filterOrderShowOnlyMine(null);
         specDto.setId(id);
-        Specification<Order> spec = OrderSpecBuilder.build(specDto);
+        Specification<Order> spec = orderConverter.buildSpec(specDto);
         return orderService.findOne(spec);
     }
 
     public List<Order> findAll(OrderSpecDto specDto) {
 
         specDto = filterOrderShowOnlyMine(specDto);
-        Specification<Order> spec =  OrderSpecBuilder.build(specDto);
+        Specification<Order> spec = orderConverter.buildSpec(specDto);
         return orderService.findAll(spec);
     }
 
@@ -51,7 +54,7 @@ public class OrderCourierService {
 
         specDto = specDto == null ?  new OrderSpecDto() : specDto;
         specDto.setStatus(OrderStatus.NEW);
-        Specification<Order> spec =  OrderSpecBuilder.build(specDto);
+        Specification<Order> spec =  orderConverter.buildSpec(specDto);
         return orderService.findAll(spec);
     }
 

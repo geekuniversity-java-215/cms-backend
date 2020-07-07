@@ -1,6 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientConverter;
@@ -9,6 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.security.access.annotation.Secured;
 
@@ -40,11 +40,11 @@ public class ClientController {
      */
     @JrpcMethod(HandlerName.client.getCurrent)
     @Secured(UserRole.VAL.CLIENT)
-    public JsonNode getCurrent(JsonNode params) {
+    public ClientDto getCurrent() {
 
         User user = userService.getCurrent();
         Client client = clientService.findOneByUser(user).orElse(null);
-        return converter.toDtoJson(client);
+        return converter.toDto(client);
     }
 
 

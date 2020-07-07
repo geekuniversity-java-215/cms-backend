@@ -1,15 +1,19 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.specifications.order;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
+import com.github.geekuniversity_java_215.cmsbackend.core.specifications.base.SpecBuilder;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
+@Service
 @SuppressWarnings("ConstantConditions")
 @Slf4j
-public class OrderSpecBuilder {
+public class OrderSpecBuilder implements SpecBuilder<Order, OrderSpecDto> {
 
-    public static Specification<Order> build(OrderSpecDto orderSpecDto) {
+    public Specification<Order> build(OrderSpecDto orderSpecDto) {
 
         if (orderSpecDto == null) {
             return null;
@@ -150,16 +154,9 @@ public class OrderSpecBuilder {
                 });
         }
 
-
-
-
-
-
-
-
-
         return specA;
     }
+
 
 
 }

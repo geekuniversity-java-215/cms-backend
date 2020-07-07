@@ -5,6 +5,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.converters._base.Abstr
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.payment.entities.CashFlow;
+import com.github.geekuniversity_java_215.cmsbackend.payment.specification.CashFlowSpecBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,8 +15,9 @@ import org.springframework.stereotype.Component;
 public class CashFlowConverter extends AbstractConverter<CashFlow, CashFlowDto, CashFlowSpecDto> {
 
     @Autowired
-    public CashFlowConverter(CashFlowMapper transactionMapper, ObjectMapper mapper) {
-        this.entityMapper = transactionMapper;
+    public CashFlowConverter(CashFlowMapper cashFlowMapper, CashFlowSpecBuilder cashFlowSpecBuilder) {
+        this.entityMapper = cashFlowMapper;
+        this.specBuilder = cashFlowSpecBuilder;
 
         this.entityClass = CashFlow.class;
         this.dtoClass = CashFlowDto.class;

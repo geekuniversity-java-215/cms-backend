@@ -27,11 +27,13 @@ paypal.cron.expression=0 58 23 * * 1,3,5,7
 public class PayPalMassPaymentsService {
     private final PayPalAccount payPalAccount;
     private final CashFlowService cashFlowService;
+    private final CashFlowSpecBuilder cashFlowSpecBuilder;
 
     @Autowired
-    public PayPalMassPaymentsService(PayPalAccount payPalAccount, CashFlowService cashFlowService) {
+    public PayPalMassPaymentsService(PayPalAccount payPalAccount, CashFlowService cashFlowService, CashFlowSpecBuilder cashFlowSpecBuilder) {
         this.payPalAccount = payPalAccount;
         this.cashFlowService = cashFlowService;
+        this.cashFlowSpecBuilder = cashFlowSpecBuilder;
     }
 
     //todo передавать в doMassPayments до 250 шт в одном списке
@@ -40,7 +42,7 @@ public class PayPalMassPaymentsService {
 
         CashFlowSpecDto specDto = new CashFlowSpecDto();
         specDto.setSuccessful(false);
-        Specification<CashFlow> spec = CashFlowSpecBuilder.build(specDto);
+        Specification<CashFlow> spec = cashFlowSpecBuilder.build(specDto);
         doMassPayment(cashFlowService.findAll(spec));
     }
 

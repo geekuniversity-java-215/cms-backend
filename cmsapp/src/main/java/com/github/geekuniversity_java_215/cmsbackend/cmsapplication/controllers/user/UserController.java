@@ -1,7 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.user;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserConverter;
@@ -12,6 +11,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.security.access.annotation.Secured;
@@ -47,14 +47,13 @@ public class UserController {
 
     /**
      * Return current user
-     * @param params null
      * @return UserDto
      */
     @JrpcMethod(HandlerName.user.getCurrent)
-    public JsonNode getCurrent(JsonNode params) {
+    public UserDto getCurrent() {
 
         User user = userService.getCurrent();
-        return converter.toDtoJson(user);
+        return converter.toDto(user);
     }
 
     /**
@@ -64,9 +63,9 @@ public class UserController {
      * @return Long userId
      */
     @JrpcMethod(HandlerName.user.save)
-    public JsonNode save(JsonNode params) {
+    public Long save(UserDto userDto) {
 
-        User user = converter.toEntity(params);
+        User user = converter.toEntity(userDto);
 
         // Check that userDto have same username, mail, phone
         if(!user.equals(userService.getCurrent())) {
@@ -89,17 +88,16 @@ public class UserController {
         user.setEnabled(currentUser.isEnabled());
 
         user = userService.save(user);
-        return converter.toIdJson(user);
+        return user.getId();
     }
 
 
     /**
      * Up current user to Client
-     * @param params null
      * @return Long id of created Client
      */
     @JrpcMethod(HandlerName.user.makeClient)
-    public JsonNode makeClient(JsonNode params) {
+    public Long makeClient() {
 
         Client result;
         User user = userService.getCurrent();
@@ -127,17 +125,16 @@ public class UserController {
 
             userService.save(user);
         }
-        return converter.toIdJson(result);
+        return result.getId();
     }
 
 
     /**
      * Up current user to Courier
-     * @param params null
      * @return Long id of created Client
      */
     @JrpcMethod(HandlerName.user.makeCourier)
-    public JsonNode makeCourier(JsonNode params) {
+    public Long makeCourier() {
 
         Courier result;
         User user = userService.getCurrent();
@@ -165,7 +162,7 @@ public class UserController {
 
             userService.save(user);
         }
-        return converter.toIdJson(result);
+        return result.getId();
     }
 }
 

@@ -18,10 +18,14 @@ public class HandlerName {
 
 
     // calculator specific
-    private static final String add ="add";
-    private static final String sub ="sub";
-    private static final String mul ="mul";
-    private static final String div ="div";
+    private static final String add = "add";
+    private static final String sub = "sub";
+    private static final String mul = "mul";
+    private static final String div = "div";
+    private static final String ssuper ="ssuper";
+    private static final String zoper ="zoper";
+
+    
 
     //geodata specific
     private static final String getRoute = "getRoute";
@@ -57,6 +61,10 @@ public class HandlerName {
         public static final String sub = HandlerName.sub;
         public static final String mul = HandlerName.mul;
         public static final String div = HandlerName.div;
+        public static final String ssuper = HandlerName.ssuper;
+        public static final String zoper = HandlerName.zoper;
+
+
     }
 
     // USER --------------------------------------------------------

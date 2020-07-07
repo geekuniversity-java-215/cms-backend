@@ -1,7 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.calculator;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.cmsapplication.services.CalculatorService;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
@@ -10,11 +9,13 @@ import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.Han
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.ParseException;
 
 
-import javax.validation.ValidationException;
+
 import java.lang.invoke.MethodHandles;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -25,7 +26,7 @@ public class CalculatorController {
 
     private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private CalculatorService calculatorService;
+    private final CalculatorService calculatorService;
     private final ObjectMapper objectMapper;
 
 
@@ -45,56 +46,62 @@ public class CalculatorController {
 
     /**
      * Add
-     * @param params Double[2]
-     * @return
      */
     @JrpcMethod(HandlerName.calculator.add)
-    public JsonNode add(JsonNode params) {
+    public double add(double a, double b) {
 
-        Double[] pair = parseDoublePair(params);
-        return toJson(calculatorService.add(pair[0], pair[1]));
+        return calculatorService.add(a, b);
     }
 
 
     /**
      * Substract
-     * @param params Double[2]
-     * @return
      */
     @JrpcMethod(HandlerName.calculator.sub)
-    public JsonNode sub(JsonNode params) {
+    public Double sub(Double a, Double b) {
 
-        Double[] pair = parseDoublePair(params);
-        return toJson(calculatorService.sub(pair[0], pair[1]));
+        return calculatorService.sub(a, b);
     }
 
 
     /**
      * Multiply
-     * @param params Double[2]
-     * @return
      */
     @JrpcMethod(HandlerName.calculator.mul)
-    public JsonNode mul(JsonNode params) {
+    public Double mul(Double a, Double b) {
 
-        Double[] pair = parseDoublePair(params);
-        return toJson(calculatorService.mul(pair[0], pair[1]));
+        return calculatorService.mul(a, b);
     }
 
 
     /**
      * Divide
-     * @param params Double[2]
-     * @return
      */
     @JrpcMethod(HandlerName.calculator.div)
-    public JsonNode div(JsonNode params) {
-
-        Double[] pair = parseDoublePair(params);
-        return toJson(calculatorService.div(pair[0], pair[1]));
+    public Double div(Double a, Double b) {
+        
+        return calculatorService.div(a, b);
     }
 
 
+
+    @JrpcMethod(HandlerName.calculator.ssuper)
+    public List<Double> ssuper(List<Double> list) {
+
+        double l0 = 34;
+        double l1 = list.get(0) + list.get(1);
+        return Stream.of(l0, l1).collect(Collectors.toList());
+    }
+
+
+    @JrpcMethod(HandlerName.calculator.zoper)
+    public List<Double> zoper(double l0, List<Double> list) {
+
+        double l1 = list.get(0) + list.get(1);
+        return Stream.of(l0, l1).collect(Collectors.toList());
+    }
+
+     /*
 
 
     // ====================================================================================
@@ -143,5 +150,8 @@ public class CalculatorController {
             throw new ParseException(0, "toJson convert error", e);
         }
     }
+
+    */
+
 
 }

@@ -131,14 +131,14 @@ public class OrderService extends BaseRepoAccessService<Order> {
 
 
         // смотрим, что у нас тут
-        int oldOrd = old.getStatus().getId();;
+        int oldOrd = old.getStatus().getId();
         int newOrd = order.getStatus().getId();
 
 
         // выполняем логику жизненного цикла заказа
         if (m[oldOrd][newOrd] != null) {
             // поочередно применяем назначенные действия к заказу
-            for (OrderAct act :  m[oldOrd][newOrd]) {
+            for (OrderAct act : m[oldOrd][newOrd]) {
                 order = act.apply(order);
             }
             // сохраняем все изменения

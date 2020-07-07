@@ -29,6 +29,9 @@ class CashFlowServiceTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    CashFlowSpecBuilder cashFlowSpecBuilder;
+
 
 
     @Test
@@ -49,7 +52,7 @@ class CashFlowServiceTest {
     void findAllNoSuccess() {
         CashFlowSpecDto specDto = new CashFlowSpecDto();
         specDto.setSuccessful(false);
-        Specification<CashFlow> spec = CashFlowSpecBuilder.build(specDto);
+        Specification<CashFlow> spec = cashFlowSpecBuilder.build(specDto);
         List<CashFlow> cashFlowList = cashFlowService.findAll(spec);
         assertThat(cashFlowList.size()).isGreaterThan(0);
     }

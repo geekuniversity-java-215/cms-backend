@@ -1,7 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.manager;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.user.UserConverter;
@@ -9,6 +8,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.core.specifications.user.UserSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.user.UserSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.StringUtils;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
@@ -39,82 +39,78 @@ public class UserManagerController {
 
 
     @JrpcMethod(HandlerName.manager.user.findById)
-    public JsonNode findById(JsonNode params) {
+    public UserDto findById(Long id) {
 
-        Long id = converter.get(params, Long.class);
         User user = userService.findById(id).orElse(null);
-        return converter.toDtoJson(user);
+        return converter.toDto(user);
     }
 
 
     /**
      * Get List<User> by idList
      * @param params List<Long> idList
-     * @return
+     * @return List<UserDto>
      */
     @JrpcMethod(HandlerName.manager.user.findAllById)
-    public JsonNode findAllById(JsonNode params) {
+    public List<UserDto> findAllById(List<Long> idList) {
 
-        List<Long> idList = converter.getList(params, Long.class);
         List<User> list = userService.findAllById(idList);
-        return converter.toDtoListJson(list);
+        return converter.toDtoList(list);
     }
 
 
     /**
-     * Get user by Specification
-     * @param params UserSpecDto
-     * @return
+     * Find user by username
+     * @param String username
+     * @return UserDto
      */
     @JrpcMethod(HandlerName.manager.user.findByUsername)
-    public JsonNode findByUsername(JsonNode params) {
+    public UserDto findByUsername(String username) {
 
-        String username = converter.get(params, String.class);
-        return converter.toDtoJson(userService.findByUsername(username).orElse(null));
+        User user = userService.findByUsername(username).orElse(null);
+        return converter.toDto(user);
     }
 
 
 
     /**
-     * Get user by Specification
+     * Find all users
      * @param params UserSpecDto
-     * @return
+     * @return List<UserDto>
      */
     @JrpcMethod(HandlerName.manager.user.findAll)
-    public JsonNode findAll(JsonNode params) {
+    public List<UserDto> findAll(UserSpecDto specDto) {
 
-        UserSpecDto specDto = converter.toSpecDto(params);
-        Specification<User> spec =  UserSpecBuilder.build(specDto);
-        return converter.toDtoListJson(userService.findAll(spec));
+        Specification<User> spec =  converter.buildSpec(specDto);
+        return converter.toDtoList(userService.findAll(spec));
     }
 
 
 
     /***
      * Get first limit elements by UserSpecDto (with ~pagination)
-     * @return
+     * @return List<UserDto>
      */
     @JrpcMethod(HandlerName.manager.user.findFirst)
-    public JsonNode findFirst(JsonNode params) {
+    public List<UserDto> findFirst(UserSpecDto specDto) {
 
-        UserSpecDto specDto = converter.toSpecDto(params);
         int limit = specDto != null ? specDto.getLimit() : 1;
-        Specification<User> spec = UserSpecBuilder.build(specDto);
+        Specification<User> spec =  converter.buildSpec(specDto);
         Page<User> page = userService.findAll(spec, PageRequest.of(0, limit));
-        return converter.toDtoListJson(page.toList());
+        return converter.toDtoList(page.toList());
     }
 
 
     /**
      * Save User, may change roles
      * <br> Will not save Account
-     * @param params User
+     * @param params userDto
      * @return
      */
     @JrpcMethod(HandlerName.manager.user.save)
-    public JsonNode save(JsonNode params) {
+    public Long save(UserDto userDto) {
 
-        User user = converter.toEntity(params);
+        User user = converter.toEntity(userDto);
 
         // update/set password - if not empty and not loaded from DB
         if (!StringUtils.isBlank(user.getPassword()) &&
@@ -128,7 +124,7 @@ public class UserManagerController {
         user.setAccount(currentUser.getAccount());
 
         user = userService.save(user);
-        return converter.toIdJson(user);
+        return user.getId();
     }
 
 
@@ -138,11 +134,10 @@ public class UserManagerController {
      * @return
      */
     @JrpcMethod(HandlerName.manager.user.delete)
-    public JsonNode delete(JsonNode params) {
+    public void delete(UserDto userDto) {
 
-        User user = converter.toEntity(params);
+        User user = converter.toEntity(userDto);
         userService.delete(user);
-        return null;
     }
 
 }

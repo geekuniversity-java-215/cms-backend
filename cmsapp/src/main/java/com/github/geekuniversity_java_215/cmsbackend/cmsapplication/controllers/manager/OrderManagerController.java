@@ -1,13 +1,12 @@
 package com.github.geekuniversity_java_215.cmsbackend.cmsapplication.controllers.manager;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcController;
 import com.github.geekuniversity_java_215.cmsbackend.core.controllers.jrpc.annotations.JrpcMethod;
-import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.HandlerName;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +36,10 @@ public class OrderManagerController {
      * @return
      */
     @JrpcMethod(HandlerName.manager.order.findById)
-    public JsonNode findById(JsonNode params) {
+    public OrderDto findById(Long id) {
 
-        Long id = converter.get(params, Long.class);
         Order order = orderService.findById(id).orElse(null);
-        return converter.toDtoJson(order);
+        return converter.toDto(order);
     }
 
 
@@ -51,11 +49,10 @@ public class OrderManagerController {
      * @return
      */
     @JrpcMethod(HandlerName.manager.order.findAllById)
-    public JsonNode findAllById(JsonNode params) {
+    public List<OrderDto> findAllById(List<Long> idList) {
 
-        List<Long> idList = converter.getList(params, Long.class);
         List<Order> list = orderService.findAllById(idList);
-        return converter.toDtoListJson(list);
+        return converter.toDtoList(list);
     }
 
     /**
@@ -64,11 +61,10 @@ public class OrderManagerController {
      * @return
      */
     @JrpcMethod(HandlerName.manager.order.findAll)
-    public JsonNode findAll(JsonNode params) {
+    public List<OrderDto> findAll(OrderSpecDto specDto) {
 
-        OrderSpecDto specDto = converter.toSpecDto(params);
-        Specification<Order> spec =  OrderSpecBuilder.build(specDto);
-        return converter.toDtoListJson(orderService.findAll(spec));
+        Specification<Order> spec = converter.buildSpec(specDto);
+        return converter.toDtoList(orderService.findAll(spec));
     }
 
     //
@@ -84,40 +80,36 @@ public class OrderManagerController {
      * @return
      */
     @JrpcMethod(HandlerName.manager.order.findFirst)
-    public JsonNode findFirst(JsonNode params) {
+    public List<OrderDto> findFirst(OrderSpecDto specDto) {
 
-        OrderSpecDto specDto = converter.toSpecDto(params);
         int limit = specDto != null ? specDto.getLimit() : 1;
-        Specification<Order> spec = OrderSpecBuilder.build(specDto);
+        Specification<Order> spec = converter.buildSpec(specDto);
         Page<Order> page = orderService.findAll(spec, PageRequest.of(0, limit));
-        return converter.toDtoListJson(page.toList());
+        return converter.toDtoList(page.toList());
     }
 
 
     /**
      * Save Order(insert new or update existing)
      * @param params Order
-     * @return
-     */
+     * @return order.id     */
     @JrpcMethod(HandlerName.manager.order.save)
-    public JsonNode save(JsonNode params) {
+    public Long save(OrderDto orderDto) {
 
-        Order order = converter.toEntity(params);
+        Order order = converter.toEntity(orderDto);
         order = orderService.save(order);
-        return converter.toIdJson(order);
+        return order.getId();
     }
     
 
     /**
      * Delete Order
-     * @param params
-     * @return
+     * @param OrderDto
      */
     @JrpcMethod(HandlerName.manager.order.delete)
-    public JsonNode delete(JsonNode params) {
+    public void delete(OrderDto orderDto) {
         
-        Order order = converter.toEntity(params);
+        Order order = converter.toEntity(orderDto);
         orderService.delete(order);
-        return null;
     }
 }

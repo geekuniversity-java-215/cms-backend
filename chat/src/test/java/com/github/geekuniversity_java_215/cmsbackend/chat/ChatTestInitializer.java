@@ -32,15 +32,15 @@ public class ChatTestInitializer implements ApplicationRunner {
         log.info("ChatTestInitializer started!");
 
         // INIT DB
-        User user = new User("vasya", "INVALID",
-            "Вася", "Пупкин", "vasya@mail.ru", "1122334455");
+        User user = new User("vasya2", "INVALID",
+            "Вася2", "Пупкин2", "vasya2@mail.ru", "11223344552");
         user.setAccount(new Account());
         userService.save(user);
         Client client = new Client(user, "CLIENT");
         clientService.save(client);
 
-        user = new User("semen", "INVALID",
-            "Semen", "Semenov", "semen@mail.ru", "46657435645778");
+        user = new User("semen2", "INVALID",
+            "Semen2", "Semenov2", "semen2@mail.ru", "466574356457782");
         user.setAccount(new Account());
         userService.save(user);
         Courier courier = new Courier(user, "COURIER");

@@ -1,8 +1,5 @@
 package com.github.geekuniversity_java_215.cmsbackend.geodata.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Address;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.geodata.configurations.GeodataConfiguration;

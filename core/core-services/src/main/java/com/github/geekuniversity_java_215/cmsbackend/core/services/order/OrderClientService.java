@@ -1,9 +1,9 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.services.order;
 
 import com.github.geekuniversity_java_215.cmsbackend.core.converters.client.ClientConverter;
+import com.github.geekuniversity_java_215.cmsbackend.core.converters.order.OrderConverter;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
-import com.github.geekuniversity_java_215.cmsbackend.core.specifications.order.OrderSpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.client.ClientDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.UserRole;
@@ -27,12 +27,14 @@ public class OrderClientService {
     private final OrderService orderService;
     private final ClientService clientService;
     private final ClientConverter clientConverter;
+    private final OrderConverter orderConverter;
 
     public OrderClientService(OrderService orderService, ClientService clientService,
-                              ClientConverter clientConverter) {
+                              ClientConverter clientConverter, OrderConverter orderConverter) {
         this.orderService = orderService;
         this.clientService = clientService;
         this.clientConverter = clientConverter;
+        this.orderConverter = orderConverter;
     }
 
 
@@ -41,14 +43,14 @@ public class OrderClientService {
 
         OrderSpecDto specDto = filterOrderShowOnlyMine(null);
         specDto.setId(id);
-        Specification<Order> spec = OrderSpecBuilder.build(specDto);
+        Specification<Order> spec = orderConverter.buildSpec(specDto);
         return orderService.findOne(spec);
     }
 
     public List<Order> findAll(OrderSpecDto specDto) {
 
         specDto = filterOrderShowOnlyMine(specDto);
-        Specification<Order> spec =  OrderSpecBuilder.build(specDto);
+        Specification<Order> spec =  orderConverter.buildSpec(specDto);
         return orderService.findAll(spec);
     }
 

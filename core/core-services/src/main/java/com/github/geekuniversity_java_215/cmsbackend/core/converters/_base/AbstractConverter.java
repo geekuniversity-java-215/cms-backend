@@ -3,10 +3,14 @@ package com.github.geekuniversity_java_215.cmsbackend.core.converters._base;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.base.AbstractEntity;
+import com.github.geekuniversity_java_215.cmsbackend.core.specifications.base.SpecBuilder;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractDto;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto._base.AbstractSpecDto;
+import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.order.OrderSpecDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +25,15 @@ import java.util.*;
 @Service
 public abstract class AbstractConverter<E extends AbstractEntity, D extends AbstractDto, S extends AbstractSpecDto> {
 
-    private  Validator validator;
+    private   Validator validator;
     protected ObjectMapper objectMapper;
     protected AbstractMapper<E,D> entityMapper;
+    protected SpecBuilder<E,S> specBuilder;
 
     protected Class<E> entityClass;
     protected Class<D> dtoClass;
     protected Class<S> specClass;
+
 
     // Будешь @Autowired через конструктор - придется в конструкторах наследников юзать super.constructor(...)
     @Autowired
@@ -39,7 +45,6 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
     public void setObjectMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
-
 
     // Json => T
     public <T> T get(JsonNode params, Class<T> clazz) {
@@ -124,14 +129,14 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
         try {
 
             if (params == null) {
-                throw new ValidationException("IdList = null");
+                throw new ValidationException("params = null");
             }
             // https://stackoverflow.com/questions/6349421/how-to-use-jackson-to-deserialise-an-array-of-objects
 
             //noinspection rawtypes
             Class tArrayClass = Array.newInstance(clazz, 0).getClass();
             //noinspection unchecked
-            result = (List<T>) Collections.singletonList(objectMapper.treeToValue(params, tArrayClass));
+            result = /*(List<T>)*/Arrays.asList((T[])objectMapper.treeToValue(params, tArrayClass));
 
             result.forEach(l -> {
                 if (l == null) {
@@ -234,11 +239,37 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
     }
 
 
+    // Dto => Entity
+    public E toEntity(D dto)  {
+        try {
+            E result = entityMapper.toEntity(dto);
+            validate(result);
+            return result;
+        }
+        catch (ValidationException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new ParseException(0, "toEntity parse error", e);
+        }
+    }
+
+
     // Entity => Dto => Json
     public JsonNode toDtoJson(E entity) {
         try {
             D dto = entityMapper.toDto(entity);
             return objectMapper.valueToTree(dto);
+        }
+        catch (Exception e) {
+            throw new ParseException(0, "toDtoJson convert error", e);
+        }
+    }
+
+    // Entity => Dto
+    public D toDto(E entity) {
+        try {
+            return entityMapper.toDto(entity);
         }
         catch (Exception e) {
             throw new ParseException(0, "toDtoJson convert error", e);
@@ -257,20 +288,13 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
         }
     }
 
-
-    // Entity => Dto
-    public D toDto(E entity) {
-        return entityMapper.toDto(entity);
-    }
-
-
     // EntityList => Dto
     public List<D> toDtoList(List<E> entityList) {
         return entityMapper.toDtoList(entityList);
     }
 
 
-    // (Spec)Json => Dto (Specifications have no Entities)
+/*    // (Spec)Json => Dto (Specifications have no Entities)
     public S toSpecDto(JsonNode params) {
 
         try {
@@ -284,6 +308,37 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
         catch (Exception e) {
             throw new ParseException(0, "toSpecDto convert error", e);
         }
+    }*/
+
+
+    // (Spec)Json => Dto (Specifications have no Entities)
+
+//    /**
+//     * Validate specification
+//     * @param spec Specification
+//     */
+//    public void validate(S spec) {
+//
+//        try {
+//            validateSpecDto(spec);
+//        }
+//        catch (ValidationException e) {
+//            throw e;
+//        }
+//        catch (Exception e) {
+//            throw new ParseException(0, "toSpecDto convert error", e);
+//        }
+//    }
+
+    /**
+     * Validate specDto and build specification
+     * @param specDto SpecDto
+     * @return Specification
+     */
+    public Specification<E> buildSpec(S specDto) {
+
+        validate(specDto);
+        return specBuilder.build(specDto);
     }
 
 
@@ -301,7 +356,7 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
 
 
     // check SpecDto validity
-    private void validateSpecDto(S specDto) {
+    private void validate(S specDto) {
 
         if (specDto != null) {
             Set<ConstraintViolation<S>> violations = validator.validate(specDto);
@@ -310,6 +365,7 @@ public abstract class AbstractConverter<E extends AbstractEntity, D extends Abst
             }
         }
     }
+
 
 }
 
