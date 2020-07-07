@@ -1,4 +1,7 @@
 # cms_backend
+Система управления курьерами.  
+Статус - разработка прекращена.  
+Состояние - не реализована бизнес логика перечисления средств при изменении состояния заказа.  
 
 ## Installation
 
@@ -119,3 +122,15 @@ git checkout dev_имясвоейветки
 git merge dev
 ```
 При этом конфликты слияния будете разруливать самостоятельно. 
+<br>
+<br>
+
+## Documentation
+<br>
+
+
+JRPC API  
+https://docs.google.com/document/d/1T_bhJhTNQsgpSe6ZfIcXWyHdEfJTl_U_JJo0rFpmFRY/edit
+
+AUTH API  
+https://docs.google.com/document/d/16FoZU9HqNRRSnwK0ZRUmDe2MgdBLCEaBpwr3xg1sKxo/edit
