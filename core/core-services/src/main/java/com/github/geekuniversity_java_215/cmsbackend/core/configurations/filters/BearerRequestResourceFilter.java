@@ -28,6 +28,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 
+/**
+ * Bearer authentication filter
+ * <br>Normally JWT should be signed with the pubkey instead using HMAC secret
+ * Normally resource server should use claims from jwt itself rather than use some services
+ * to obtain user username, principals, roles/privileges and other info
+ * (Because user database located on authentication server and therefore unavailable for resource server)
+ */
 @Component
 @Slf4j
 public class BearerRequestResourceFilter extends OncePerRequestFilter {
@@ -81,7 +88,9 @@ public class BearerRequestResourceFilter extends OncePerRequestFilter {
 
     /**
      * Cook spring security.authentication token
-     * <br> Load User from DB by token claims.subject
+     * <br> Here we load User from DB by token claims.subject,
+     * because auth server and resource server located on same machine
+     * and can access same DB
      * @param claims token claims
      * @throws RuntimeException user not found, user without roles, token type not allowed
      */

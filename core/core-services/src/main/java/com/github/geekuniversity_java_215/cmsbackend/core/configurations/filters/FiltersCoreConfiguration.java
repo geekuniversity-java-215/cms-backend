@@ -4,13 +4,18 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Отключатель автодобавления кастомных авторизационных Spring Security фильтров в Servlet Filter Chain
+ * <br>(Они должны присутствовать только SpringSecurityFilterChain)
+ */
 @Configuration
 public class FiltersCoreConfiguration {
 
     // Отключаем к хренам BearerRequestResourceFilter и CorsAllowAllFilter,
     // иначе spring boot автоматом запхнет их в filterChain (servlet filter chain)
     // https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-disable-registration-of-a-servlet-or-filter
-    // (Этот фильтр должен работать только в springSecurityFilterChain)
+    // (BearerRequestResourceFilter и CorsAllowAllFilter должны работать только в springSecurityFilterChain)
+    //
     // Хотите проще(в аннотации самого фильтра отключить)? - нате
     // https://github.com/spring-projects/spring-boot/issues/16500
     //

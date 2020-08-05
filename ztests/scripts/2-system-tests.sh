@@ -14,9 +14,13 @@ sleep 6;
 kill -0 $PID1
 kill -0 $PID2
 
+# -am, --also-make: If project list is specified, also build projects required by the list
+# -pl, --projects:  Comma-delimited list of specified reactor projects to build instead of all projects.
+
 # process system tests
 mvn ${POSTGRESQL_PARAMS} test -am -pl ztests/system-test -DskipTests=false
 RESULT_CODE=$?
+
 
 
 # kill all applications

@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthServerSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_protocol.protocol.OauthResponse;
 import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.data.TokenType;
@@ -29,8 +30,7 @@ import com.github.geekuniversity_java_215.cmsbackend.oauth_utils.services.JwtTok
 @Slf4j
 public class TokenService {
 
-
-    private final CoreSpringConfiguration coreSpringConfiguration;
+    private final AuthServerSpringConfiguration authServerSpringConfiguration;
     private final JwtTokenService jwtTokenService;
     private final UserService userService;
     private final AccessTokenRepository accessTokenRepository;
@@ -40,13 +40,12 @@ public class TokenService {
 
 
     @Autowired
-    public TokenService(CoreSpringConfiguration coreSpringConfiguration, JwtTokenService jwtTokenService,
-                        UserService userService,
-                        AccessTokenRepository accessTokenRepository,
-                        RefreshTokenRepository refreshTokenRepository,
-                        BlacklistedTokenRepository blacklistedTokenRepository, UnconfirmedUserRepository unconfirmedUserRepository) {
-        this.coreSpringConfiguration = coreSpringConfiguration;
+    public TokenService(AuthServerSpringConfiguration authServerSpringConfiguration,
+                        JwtTokenService jwtTokenService, UserService userService, AccessTokenRepository accessTokenRepository,
+                        RefreshTokenRepository refreshTokenRepository, BlacklistedTokenRepository blacklistedTokenRepository,
+                        UnconfirmedUserRepository unconfirmedUserRepository) {
 
+        this.authServerSpringConfiguration = authServerSpringConfiguration;
         this.jwtTokenService = jwtTokenService;
         this.userService = userService;
         this.accessTokenRepository = accessTokenRepository;
@@ -89,7 +88,7 @@ public class TokenService {
         Set<String> refreshRoles = new HashSet<>(Collections.singletonList(UserRole.REFRESH.getName()));
 
         refreshTokenString = jwtTokenService.createJWT(
-            tokenType, refreshToken.getId().toString(), coreSpringConfiguration.getISSUER(), user.getUsername(), refreshRoles);
+            tokenType, refreshToken.getId().toString(), authServerSpringConfiguration.getISSUER(), user.getUsername(), refreshRoles);
 
         // 2. Access Token ---------------------------------------------------------------------
 
@@ -104,7 +103,7 @@ public class TokenService {
                 user.getRoles().stream().map(UserRole::getName).collect(Collectors.toSet());
 
         accessTokenString = jwtTokenService.createJWT(
-            tokenType, accessToken.getId().toString(), coreSpringConfiguration.getISSUER(), user.getUsername(), roles);
+            tokenType, accessToken.getId().toString(), authServerSpringConfiguration.getISSUER(), user.getUsername(), roles);
 
         // Delete here deprecated refresh_token and access_token, no blacklisting
         if (oldRefreshToken != null) {

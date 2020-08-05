@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Allow CORS in web browsers.<br>
+ * Mysterious thing, wont work baeldung.com solution,
+ * <br>so will fill CORS headers manually
+ */
 @Component
 public class CorsAllowAllFilter extends OncePerRequestFilter {
 

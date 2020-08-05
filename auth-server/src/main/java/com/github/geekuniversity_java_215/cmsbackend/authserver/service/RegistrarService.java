@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.authserver.service;
 
+import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.AuthServerSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.authserver.configurations.properties.AuthServerConfig;
 import com.github.geekuniversity_java_215.cmsbackend.core.configurations.CoreSpringConfiguration;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
@@ -31,7 +32,7 @@ import static com.pivovarit.function.ThrowingSupplier.unchecked;
 @Slf4j
 public class RegistrarService {
 
-    private final CoreSpringConfiguration coreSpringConfiguration;
+    private final AuthServerSpringConfiguration authServerSpringConfiguration;
     private final AuthServerConfig authServerConfig;
     private final UserService userService;
     private final UnconfirmedUserService unconfirmedUserService;
@@ -40,12 +41,12 @@ public class RegistrarService {
     private final MailService mailService;
     private final Validator validator;
 
-    public RegistrarService(CoreSpringConfiguration coreSpringConfiguration, AuthServerConfig authServerConfig, UserService userService,
+    public RegistrarService(AuthServerSpringConfiguration authServerSpringConfiguration, AuthServerConfig authServerConfig, UserService userService,
                             UnconfirmedUserService unconfirmedUserService,
                             PasswordEncoder passwordEncoder,
                             JwtTokenService jwtTokenService,
                             MailService mailService, Validator validator) {
-        this.coreSpringConfiguration = coreSpringConfiguration;
+        this.authServerSpringConfiguration = authServerSpringConfiguration;
         this.authServerConfig = authServerConfig;
         this.userService = userService;
         this.unconfirmedUserService = unconfirmedUserService;
@@ -82,7 +83,7 @@ public class RegistrarService {
         String registrantToken = jwtTokenService.createJWT(
             TokenType.CONFIRM,
             newUser.getUsername(),
-            coreSpringConfiguration.getISSUER(),
+            authServerSpringConfiguration.getISSUER(),
             newUser.getUsername(),
             confirmationRole);
 

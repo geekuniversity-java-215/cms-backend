@@ -26,16 +26,12 @@ import static com.github.geekuniversity_java_215.cmsbackend.core.data.constants.
 public class CoreSpringConfiguration {
 
 
-    private final Environment environment;
+    //private final Environment environment;
 
-    @Value("auth-server.issuer")
-    @Getter(AccessLevel.PUBLIC)
-    private String ISSUER;
-
-    @Autowired
-    public CoreSpringConfiguration(Environment environment) {
-        this.environment = environment;
-    }
+//    @Autowired
+//    public CoreSpringConfiguration(Environment environment) {
+//        this.environment = environment;
+//    }
 
     @Bean
     public ObjectMapper objectMapper() {

@@ -14,23 +14,16 @@
 
     <groupId>com.github.geekuniversity_java_215.tests</groupId>
     <artifactId>system-test</artifactId>
-    <description>Subsystem tests, disabled by default, required running
-        auth-server and cmsapp to perform</description>
-
+    <description>
+        Subsystem tests, disabled by default, required running
+        auth-server and cmsapp to perform
+    </description>
 
     <properties>
         <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
-
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>commons-beanutils</groupId>-->
-<!--            <artifactId>commons-beanutils</artifactId>-->
-<!--            <version>1.9.4</version>-->
-<!--        </dependency>-->
-
 
         <!--module configuration -->
         <dependency>
@@ -66,19 +59,4 @@
 
 
     </dependencies>
-
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>2.12.4</version>-->
-<!--                <configuration>-->
-<!--                    <skipTests>false</skipTests>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
-
-
 </project>

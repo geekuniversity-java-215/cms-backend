@@ -20,7 +20,7 @@ public class JwtTokenService implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    // "jwt.secret" property should be declared in module/app properties that use this module
+    // "jwt.secret" property is declared in cmsapp module
     @Value("${jwt.secret:empty}")
     private String SECRET_KEY;
 
