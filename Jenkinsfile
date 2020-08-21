@@ -3,7 +3,8 @@ pipeline {
             docker {
                 //image 'maven:3.6.3-jdk-8'
                 image 'dreamworkerln/cms-mvn'
-                args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root'
+                //args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root'
+                args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root --network="host"'
                 reuseNode true
             }
         }
