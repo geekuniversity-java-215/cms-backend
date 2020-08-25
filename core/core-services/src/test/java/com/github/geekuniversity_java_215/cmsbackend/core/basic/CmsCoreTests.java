@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.core.basic;
 
+import com.github.geekuniversity_java_215.cmsbackend.utils.Junit5Extension;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.OrderStatus;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
@@ -13,6 +14,7 @@ import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserServ
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -27,13 +29,13 @@ import static com.pivovarit.function.ThrowingRunnable.unchecked;
 
 
 @SpringBootTest
+@ExtendWith({Junit5Extension.class})
 @Slf4j
 @SuppressWarnings({"OptionalGetWithoutIsPresent"})
 class CmsCoreTests {
 
     @Autowired
     ApplicationContext context;
-
     @Autowired
     private AccountService accountService;
     @Autowired
@@ -45,6 +47,11 @@ class CmsCoreTests {
     @Autowired
     private OrderService orderService;
 
+
+//    @BeforeAll
+//    private static void beforeAll() {
+//        AbstractContainerBaseTest.init();
+//    }
 
     @Test
     @org.junit.jupiter.api.Order(-1000)
@@ -64,7 +71,7 @@ class CmsCoreTests {
 
         Account acc = new Account();
         User user = new User("vasya", "INVALID",
-                "Залипов", "Вася", "vasya@mail.ru", "123");
+            "Залипов", "Вася", "vasya@mail.ru", "123");
         user.setAccount(acc);
         userService.save(user);
         log.info("user id: {}", user.getId());
@@ -73,14 +80,14 @@ class CmsCoreTests {
 
         User finalUser = user;
         userService.findByFullName(user.getLastName(), user.getFirstName())
-                .orElseThrow( () -> new UsernameNotFoundException(finalUser.getFullName() + " не найден"));
+            .orElseThrow( () -> new UsernameNotFoundException(finalUser.getFullName() + " не найден"));
 
         user = userService.findByIdEager(user.getId()).get();
         Assert.assertNotNull(user.getRefreshTokenList());
 
         acc = new Account();
         user = new User("sema", "INVALID",
-                "Семенов", "Семен", "semen@mail.ru", "456");
+            "Семенов", "Семен", "semen@mail.ru", "456");
         user.setAccount(acc);
         userService.save(user);
         Client client = new Client(user, "КЛИЕНТ_DATA");
@@ -111,9 +118,9 @@ class CmsCoreTests {
         Account finalAcc1 = accountService.findById(1L).get();
         Account finalAcc2 = accountService.findById(1L).get();
         Future<?> f1 = executor.submit(unchecked(() ->
-                accountService.addBalance(finalAcc1, BigDecimal.valueOf(100), CurrencyCode.RUB)));
+            accountService.addBalance(finalAcc1, BigDecimal.valueOf(100), CurrencyCode.RUB)));
         Future<?> f2 = executor.submit(unchecked(() ->
-                accountService.addBalance(finalAcc2, BigDecimal.valueOf(100), CurrencyCode.RUB)));
+            accountService.addBalance(finalAcc2, BigDecimal.valueOf(100), CurrencyCode.RUB)));
 
         f1.get();
         f2.get();

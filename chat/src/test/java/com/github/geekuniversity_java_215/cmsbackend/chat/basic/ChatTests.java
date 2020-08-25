@@ -7,8 +7,10 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.*;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.ClientService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.CourierService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.Junit5Extension;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -16,6 +18,7 @@ import org.springframework.context.ApplicationContext;
 import java.util.List;
 
 @SpringBootTest(classes = {ChatApplication.class})
+@ExtendWith({Junit5Extension.class})
 @Slf4j
 @SuppressWarnings({"OptionalGetWithoutIsPresent"})
 public class ChatTests {

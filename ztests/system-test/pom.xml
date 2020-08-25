@@ -19,6 +19,7 @@
         auth-server and cmsapp to perform
     </description>
 
+    <!-- This test suite is DISABLED by default-->
     <properties>
         <skipTests>true</skipTests>
     </properties>

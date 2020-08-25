@@ -34,11 +34,7 @@ class PayPalGetPaymentServiceTest {
     @Test
     @SneakyThrows
     void authorizePayment() {
-        try {
-            payPalGetPaymentService.authorizePayment(clientId,tax);
-        } catch (PayPalRESTException e) {
-            e.printStackTrace();
-        }
+        payPalGetPaymentService.authorizePayment(clientId,tax);
     }
 
     @Test

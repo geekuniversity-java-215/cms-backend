@@ -7,9 +7,11 @@ import com.github.geekuniversity_java_215.cmsbackend.core.entities.Order;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.AddressService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.order.OrderService;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.Junit5Extension;
 import com.github.geekuniversity_java_215.cmsbackend.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
@@ -19,6 +21,7 @@ import javax.annotation.PostConstruct;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 @SpringBootTest
+@ExtendWith({Junit5Extension.class})
 @Slf4j
 class ConverterTests {
 
@@ -31,9 +34,11 @@ class ConverterTests {
     @Autowired
     private AddressService addressService;
 
+//    @BeforeAll
+//    private static void beforeAll() {
+//        AbstractContainerBaseTest.init();
+//    }
 
-
-    //Заместо @BeforeAll
     @PostConstruct
     private void postConstruct() {
         log.info("Checking Converter an Mapper logic");

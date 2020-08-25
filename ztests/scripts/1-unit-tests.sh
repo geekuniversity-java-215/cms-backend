@@ -1,4 +1,4 @@
 #!/bin/bash
 
-mvn ${H2_PARAMS} clean test package
+mvn ${POSTGRESQL_PARAMS} clean test package
 exit $?

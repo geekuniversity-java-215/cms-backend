@@ -1,5 +1,6 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
+import com.github.geekuniversity_java_215.cmsbackend.utils.Junit5Extension;
 import com.github.geekuniversity_java_215.cmsbackend.utils.data.enums.CurrencyCode;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
 import com.github.geekuniversity_java_215.cmsbackend.jrpc_protocol.dto.payment.CashFlowSpecDto;
@@ -8,6 +9,7 @@ import com.github.geekuniversity_java_215.cmsbackend.payment.specification.CashF
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,9 +20,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
-//@SpringJUnitConfig
 @SpringBootTest
 @Slf4j
+@ExtendWith({Junit5Extension.class})
 class CashFlowServiceTest {
 
     @Autowired

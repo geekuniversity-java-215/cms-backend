@@ -1,13 +1,16 @@
 package com.github.geekuniversity_java_215.cmsbackend.payment.services;
 
+import com.github.geekuniversity_java_215.cmsbackend.utils.Junit5Extension;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@ExtendWith({Junit5Extension.class})
 @Slf4j
 class PayPalServiceTest {
 

@@ -3,9 +3,11 @@ package com.github.geekuniversity_java_215.cmsbackend.mail.services;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.UnconfirmedUser;
 import com.github.geekuniversity_java_215.cmsbackend.core.entities.user.User;
 import com.github.geekuniversity_java_215.cmsbackend.core.services.user.UserService;
+import com.github.geekuniversity_java_215.cmsbackend.utils.Junit5Extension;
 import lombok.extern.slf4j.Slf4j;
 import net.tascalate.concurrent.Promise;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,6 +19,7 @@ import static com.pivovarit.function.ThrowingSupplier.unchecked;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 @SpringBootTest
+@ExtendWith({Junit5Extension.class})
 @Slf4j
 class MailServiceTest {
 
