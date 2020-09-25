@@ -109,7 +109,10 @@ pipeline {
                 sh '''
                     set -a
                     . ./ztests/scripts/0-config_params
+
+                    ./ztests/scripts/docker_run_cms-postgres.sh
                     ./ztests/scripts/2-system-tests.sh
+                    docker container rm -f cms-postgres
                 '''
             }
         }
