@@ -38,6 +38,8 @@ pipeline {
             steps {
 
                 sh '''
+                docker --version
+
                 #ls -lah
                 pwd
                 mkdir -p dependencies
