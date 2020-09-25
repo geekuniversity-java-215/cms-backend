@@ -38,7 +38,7 @@ pipeline {
             steps {
 
                 sh '''
-                docker --version
+                /usr/bin/docker --version
 
                 #ls -lah
                 pwd
