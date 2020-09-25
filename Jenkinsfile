@@ -87,7 +87,7 @@ pipeline {
         stage('tests') {
             steps {
                 sh '''
-                    . ./ztests/scripts/0-config_params.sh
+                    . ./ztests/scripts/0-config_params
                     echo $H2PARAMS
                     ./ztests/scripts/1-unit-tests.sh
                 '''
@@ -98,7 +98,7 @@ pipeline {
             steps {
 
                 sh '''
-                    . ./ztests/scripts/0-config_params.sh
+                    . ./ztests/scripts/0-config_params
                     POSTGRESQL_PARAMS=$POSTGRESQL_EXTERNAL_PARAMS
                     echo $POSTGRESQL_PARAMS
                     ./ztests/scripts/2-system-tests.sh
