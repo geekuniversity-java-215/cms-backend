@@ -37,8 +37,9 @@ pipeline {
         stage('dependencies') {
             steps {
 
+//                 /usr/bin/docker --version
                 sh '''
-                /usr/bin/docker --version
+                docker --version
 
                 #ls -lah
                 pwd
