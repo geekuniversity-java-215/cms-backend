@@ -92,8 +92,9 @@ pipeline {
         stage('tests') {
             steps {
                 sh '''
+                    set -a
                     . ./ztests/scripts/0-config_params
-                    echo $H2PARAMS
+                    echo $POSTGRESQL_PARAMS
                     ./ztests/scripts/1-unit-tests.sh
                 '''
             }
