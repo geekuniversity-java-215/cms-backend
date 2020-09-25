@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
+// https://stackoverflow.com/questions/43282798/in-junit-5-how-to-run-code-before-all-tests/51556718#51556718
+// In JUnit 5, how to run code before all tests
 public class Junit5Extension implements BeforeAllCallback, ExtensionContext.Store.CloseableResource, AfterAllCallback {
 
     private static boolean started = false;

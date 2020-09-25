@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ztests/scripts/0-config_params.sh
+source ztests/scripts/99-java_home
+source ztests/scripts/0-config_params
 
 {
 # unit/integration tests

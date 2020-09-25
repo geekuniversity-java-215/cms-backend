@@ -4,7 +4,10 @@ pipeline {
                 //image 'maven:3.6.3-jdk-8'
                 image 'dreamworkerln/cms-mvn'
                 //args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root'
-                args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root --network="host"'
+                //args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root --network="host"'
+                args '-v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root --network="host"'
+                //args '-v /var/run/docker.sock:/var/run/docker.sock ... --network="host" -u jenkins:docker'
+
                 reuseNode true
             }
         }

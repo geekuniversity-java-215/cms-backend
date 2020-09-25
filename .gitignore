@@ -47,3 +47,6 @@ auth-server-dev.properties
 geodata-dev.properties
 logback-spring-dev.xml
 
+### JAVA_HOME ###
+ztests/scripts/99-java_home
+

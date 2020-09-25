@@ -25,7 +25,6 @@ public class CoreTestInitializer implements ApplicationRunner {
     private final AccountService accountService;
     private final OrderService orderService;
 
-
     @Autowired
     public CoreTestInitializer(UserService userService,
                                ClientService clientService, CourierService courierService, AccountService accountService,
