@@ -19,14 +19,14 @@ pipeline {
         
     stages {
 
-        stage('purge cms') {
+/*         stage('purge cms') {
             steps {
                 //sh 'echo "31.210.208.189:5442:cms:cmsadmin:cmsadminpassword" > ~/.pgpass'
                 //sh 'chmod go-rwx ~/.pgpass'
                 //sh 'PGOPTIONS=--search_path=cms psql -h 31.210.208.189 -p 5442 -U cmsadmin --dbname=cms -f infrastructure/database/purge_schema.sql'
                 sh 'PGOPTIONS=--search_path=cms psql postgresql://cmsadmin:cmsadminpassword@31.210.208.189:5442/cms -f infrastructure/database/purge_schema.sql'
             }
-        }
+        } */
 
         // madness
         stage('dependencies') {
