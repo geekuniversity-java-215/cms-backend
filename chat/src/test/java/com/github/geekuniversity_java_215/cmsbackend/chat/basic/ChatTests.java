@@ -17,7 +17,8 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
-@SpringBootTest(classes = {ChatApplication.class})
+//@SpringBootTest(classes = {ChatApplication.class})
+@SpringBootTest
 @ExtendWith({Junit5Extension.class})
 @Slf4j
 @SuppressWarnings({"OptionalGetWithoutIsPresent"})

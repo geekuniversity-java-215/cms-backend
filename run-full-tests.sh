@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -a
+
 source ztests/scripts/99-java_home
 source ztests/scripts/0-config_params
 
