@@ -7,7 +7,7 @@ pipeline {
                 // https://stackoverflow.com/questions/55653747/using-testcontainers-in-a-jenkins-docker-agent-containers-fail-to-start-norout
 
                 //image 'maven:3.6.3-jdk-8'
-                image 'dreamworkerln/cms-mvn'
+                image 'dreamworkerln/mvn-docker-cli'
                 //args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root'
                 //args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root --network="host"'
                 args '-v /var/run/docker.sock:/var/run/docker.sock -v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root --network="host"'
