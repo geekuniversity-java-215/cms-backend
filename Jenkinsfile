@@ -1,6 +1,11 @@
 pipeline {
         agent {
             docker {
+
+                // docker container inside docker container
+                // Using testcontainers in a Jenkins Docker Agent: containers fail to start, NoRouteToHostException
+                // https://stackoverflow.com/questions/55653747/using-testcontainers-in-a-jenkins-docker-agent-containers-fail-to-start-norout
+
                 //image 'maven:3.6.3-jdk-8'
                 image 'dreamworkerln/cms-mvn'
                 //args '-v $HOME/.m2:/root/.m2:z -u root -v /root/projects/cms-backend/build:$HOME/out:z -u root'
@@ -97,10 +102,11 @@ pipeline {
         stage('system tests') {
             steps {
 
+                    //POSTGRESQL_PARAMS=$POSTGRESQL_EXTERNAL_PARAMS
+                    //echo $POSTGRESQL_PARAMS
+
                 sh '''
                     . ./ztests/scripts/0-config_params
-                    POSTGRESQL_PARAMS=$POSTGRESQL_EXTERNAL_PARAMS
-                    echo $POSTGRESQL_PARAMS
                     ./ztests/scripts/2-system-tests.sh
                 '''
             }
