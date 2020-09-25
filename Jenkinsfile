@@ -107,6 +107,7 @@ pipeline {
                     //echo $POSTGRESQL_PARAMS
 
                 sh '''
+                    set -a
                     . ./ztests/scripts/0-config_params
                     ./ztests/scripts/2-system-tests.sh
                 '''
